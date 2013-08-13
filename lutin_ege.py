@@ -8,11 +8,19 @@ def Create(target):
 	
 	# add the file to compile:
 	myModule.AddSrcFile([
-		'ege/.cpp'
+		'ege/AudioElement.cpp',
+		'ege/AudioEngine.cpp',
+		'ege/Camera.cpp',
+		'ege/ElementGame.cpp',
+		'ege/ElementGameIA.cpp',
+		'ege/Particule.cpp',
+		'ege/ParticuleEngine.cpp',
+		'ege/Scene.cpp',
+		'ege/Environement.cpp'
 		])
 	
 	# name of the dependency
-	myModule.AddModuleDepend(['ewol', 'bullet'])
+	myModule.AddModuleDepend(['etk', 'ewol', 'bullet'])
 	
 	myModule.CompileFlags_CC([
 		'-Wno-write-strings',
