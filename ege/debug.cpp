@@ -8,4 +8,7 @@
 
 #include <ege/debug.h>
 
-const char * egamiLibName = "ege      ";
+const char * egeLibName = "ege      ";
+
+
+

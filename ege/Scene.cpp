@@ -78,46 +78,8 @@ ege::Scene::Scene(void) :
 	m_dynamicsWorld->setGravity(btVector3(0,0,0));
 	m_env.SetDynamicWorld(m_dynamicsWorld);
 	
-	// Add debug display :
-	ege::ElementGame* tmpElement = NULL;
-	
 	// SET THE STATION ..
 	m_camera.SetEye(vec3(0,0,0));
-	/*
-	tmpElement = appl::env::GetCreatorList().CreateElement("Station", "(0,0,0)");
-	if (NULL != tmpElement) {
-		appl::env::AddElementGame(tmpElement);
-		tmpElement = NULL;
-	}
-	// for the debug : 
-	for (int32_t iii=0; iii<appl::env::GetGird().GetNumberElementInMap(); iii++) {
-		int32_t typeID = appl::env::GetGird().GetElementType(iii);
-		char tmppp[256];
-		vec3 posss = appl::env::GetGird().GetElementPos(iii);
-		sprintf(tmppp, "(%f,%f,%f)", posss.x(), posss.y(), posss.z());
-		if (GIRD_ID_GENERATOR==typeID) {
-			tmpElement = appl::env::GetCreatorList().CreateElement("MonsterGenerator", tmppp);
-			if (NULL != tmpElement) {
-				m_env.AddElementGame(tmpElement);
-				tmpElement = NULL;
-			}
-		}
-		if (GIRD_ID_TOWER==typeID) {
-			tmpElement = appl::env::GetCreatorList().CreateElement("Tower1", tmppp);
-			if (NULL != tmpElement) {
-				m_env.AddElementGame(tmpElement);
-				tmpElement = NULL;
-			}
-		}
-		if (GIRD_ID_METEOR==typeID) {
-			tmpElement = appl::env::GetCreatorList().CreateElement("Meteor", tmppp);
-			if (NULL != tmpElement) {
-				m_env.AddElementGame(tmpElement);
-				tmpElement = NULL;
-			}
-		}
-	}
-	*/
 }
 
 

@@ -189,6 +189,17 @@ namespace ege
 			 */
 			inline bool IsFixed(void) { return m_fixe; };
 		protected:
+			float m_radius; //!< Radius of the element (all element have a radius, if ==0 ==> then ghost ...
+		public:
+			/**
+			 * @brief Get the current space needed by the element in the workspace
+			 * @return The dimention needed.
+			 */
+			inline float GetRadius(void)
+			{
+				return m_radius;
+			};
+		protected:
 			bool m_elementInPhysicsSystem;
 		public:
 			/**

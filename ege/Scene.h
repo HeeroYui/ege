@@ -80,6 +80,7 @@ namespace ege {
 			ewol::Colored3DObject* m_debugDrawing;  //!< for the debug draw elements
 			// Note : This is only for temporary elements : on the display
 			etk::Vector<ege::Environement::ResultNearestElement> m_displayElementOrdered;
+		public:
 			/**
 			 * @brief Set the scene in pause for a while
 			 */
@@ -124,7 +125,7 @@ namespace ege {
 		protected: // Derived function
 			virtual void OnDraw(void);
 		public: // Derived function
-			virtual const char * const GetObjectType(void) { return "appl::Game"; };
+			virtual const char * const GetObjectType(void) { return "ege::Scene"; };
 			virtual void SystemDraw(const ewol::DrawProperty& _displayProp);
 			virtual void OnRegenerateDisplay(void);
 			virtual void PeriodicCall(const ewol::EventTime& _event);

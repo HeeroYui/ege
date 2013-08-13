@@ -42,6 +42,7 @@ ege::ElementGame::ElementGame(ege::Environement& _env) :
 	m_lifeMax(100),
 	m_group(0),
 	m_fixe(true),
+	m_radius(0),
 	m_elementInPhysicsSystem(false)
 {
 	static uint32_t unique=0;
