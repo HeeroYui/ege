@@ -9,6 +9,7 @@
 #ifndef __EGE_ENVIRONEMENT_H__
 #define __EGE_ENVIRONEMENT_H__
 
+#include <etk/UString.h>
 #include <BulletDynamics/Dynamics/btActionInterface.h>
 class btDynamicsWorld;
 
@@ -17,6 +18,9 @@ class btDynamicsWorld;
 
 namespace ege {
 	class ElementGame;
+	class Environement;
+	typedef ege::ElementGame* (*createElement_tf)(ege::Environement& _env, const etk::UString& _description);
+	
 	class Environement
 	{
 		private:
@@ -25,7 +29,22 @@ namespace ege {
 		public:
 			Environement(void) : m_dynamicsWorld(NULL) { };
 			virtual ~Environement(void) { };
-			
+		public:
+			/**
+			 * @brief Add a creator element system
+			 * @param[in] _type Type of the element.
+			 * @param[in] _creator Function pointer that reference the element creating.
+			 */
+			static void AddCreator(const etk::UString& _type, ege::createElement_tf _creator);
+			/**
+			 * @brief Create an element on the curent scene.
+			 * @param[in] _type Type of the element that might be created.
+			 * @param[in] _description String that describe the content of the element properties.
+			 * @param[in] _autoAddElement this permit to add the element if it is created ==> no more action ...
+			 * @return NULL if an error occured OR the pointer on the element and it is already added on the system.
+			 * @note Pointer is return in case of setting properties on it...
+			 */
+			ege::ElementGame* CreateElement(const etk::UString& _type, const etk::UString& _description, bool _autoAddElement=true);
 		public:
 			class ResultNearestElement
 			{

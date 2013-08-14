@@ -13,7 +13,6 @@ def Create(target):
 		'ege/AudioEngine.cpp',
 		'ege/Camera.cpp',
 		'ege/ElementGame.cpp',
-		'ege/ElementGameIA.cpp',
 		'ege/Particule.cpp',
 		'ege/ParticuleEngine.cpp',
 		'ege/Scene.cpp',

@@ -111,6 +111,46 @@ void ege::Environement::GetElementNearestFixed(const vec3& _sourcePosition,
 	}
 }
 
+static etk::Hash<ege::createElement_tf>& GetHachTableCreating(void)
+{
+	static etk::Hash<ege::createElement_tf> s_table;
+	return s_table;
+}
+
+
+void ege::Environement::AddCreator(const etk::UString& _type, ege::createElement_tf _creator)
+{
+	if (NULL == _creator) {
+		EGE_ERROR("Try to add an empty CREATOR ...");
+		return;
+	}
+	GetHachTableCreating().Add(_type, _creator);
+}
+
+ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, const etk::UString& _description, bool _autoAddElement)
+{
+	if (false==GetHachTableCreating().Exist(_type)) {
+		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
+		return NULL;
+	}
+	ege::createElement_tf pointerFunction = GetHachTableCreating()[_type];
+	if (NULL == pointerFunction) {
+		EGE_ERROR("NULL pointer ==> internal error... '" << _type << "'");
+		// internal error
+		return NULL;
+	}
+	ege::ElementGame* tmpElement = pointerFunction(*this, _description);
+	if (NULL == tmpElement) {
+		EGE_ERROR("Sub creator han an error when creating element : '" << _type << "'");
+		return NULL;
+	}
+	if (_autoAddElement==true) {
+		AddElementGame(tmpElement);
+	}
+	return tmpElement;
+}
+
+
 void ege::Environement::AddElementGame(ege::ElementGame* _newElement)
 {
 	// prevent memory allocation and un allocation ...

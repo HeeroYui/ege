@@ -43,7 +43,8 @@ ege::ElementGame::ElementGame(ege::Environement& _env) :
 	m_group(0),
 	m_fixe(true),
 	m_radius(0),
-	m_elementInPhysicsSystem(false)
+	m_elementInPhysicsSystem(false),
+	m_IA(NULL)
 {
 	static uint32_t unique=0;
 	m_uID = unique;
@@ -53,6 +54,10 @@ ege::ElementGame::ElementGame(ege::Environement& _env) :
 
 ege::ElementGame::~ElementGame(void)
 {
+	// in every case remove IA
+	IADisable();
+	// same ...
+	DynamicDisable();
 	EGE_DEBUG("Destroy element : uId=" << m_uID);
 }
 
@@ -71,6 +76,9 @@ void ege::ElementGame::SetFireOn(int32_t groupIdSource, int32_t type, float powe
 	float previousLife = m_life;
 	m_life += power;
 	m_life = etk_avg(0, m_life, m_lifeMax);
+	if (m_life<=0) {
+		EGE_DEBUG("[" << GetUID() << "] element is killed ..." << GetType());
+	}
 	if (m_life!=previousLife) {
 		OnLifeChange();
 	}
@@ -350,5 +358,34 @@ void ege::ElementGame::DynamicDisable(void)
 		m_elementInPhysicsSystem = false;
 	}
 }
+
+void ege::ElementGame::IAEnable(void)
+{
+	if (NULL != m_IA) {
+		// IA already started ...
+		return;
+	}
+	DynamicEnable();
+	m_IA = new localIA(*this);
+	if (NULL == m_IA) {
+		EGE_ERROR("Can not start the IA ==> allocation error");
+		return;
+	}
+	m_env.GetDynamicWorld()->addAction(m_IA);
+}
+
+void ege::ElementGame::IADisable(void)
+{
+	if (NULL == m_IA) {
+		// IA already stopped ...
+		return;
+	}
+	m_env.GetDynamicWorld()->removeAction(m_IA);
+	// Remove IA :
+	delete(m_IA);
+	m_IA = NULL;
+}
+
+
 
 

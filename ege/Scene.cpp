@@ -41,12 +41,17 @@ const char * const ege::Scene::eventKillEnemy = "event-scene-kill-ennemy";
 #define  WALK_FLAG_RIGHT    (1<<3)
 #define  WALK_FLAG_CAUTION  (1<<4)
 
-ege::Scene::Scene(void) :
+ege::Scene::Scene(btDefaultCollisionConfiguration* _collisionConfiguration,
+                  btCollisionDispatcher* _dispatcher,
+                  btBroadphaseInterface* _broadphase,
+                  btConstraintSolver* _solver,
+                  btDynamicsWorld* _dynamicsWorld,
+                  ege::Camera* _camera) :
 	m_gameTime(0),
 	m_angleView(M_PI/3.0),
 	m_finger_DoubleTouch(false),
 	m_dynamicsWorld(NULL),
-	m_camera(vec3(0,0,0), 0, DEG_TO_RAD(45) ,50),
+	m_camera(NULL),
 	m_isRunning(true),
 	m_walk(0),
 	m_debugMode(false),
@@ -60,26 +65,48 @@ ege::Scene::Scene(void) :
 	
 	ewol::resource::Keep(m_debugDrawing);
 	
-	m_zoom = 1.0/1000.0;
 	m_ratioTime = 1.0f;
-	
-	m_collisionConfiguration = new btDefaultCollisionConfiguration();
+	if (NULL != _collisionConfiguration) {
+		m_collisionConfiguration = _collisionConfiguration;
+	} else {
+		m_collisionConfiguration = new btDefaultCollisionConfiguration();
+	}
 	///use the default collision dispatcher.
-	m_dispatcher = new btCollisionDispatcher(m_collisionConfiguration);
-	
-	m_broadphase = new btDbvtBroadphase();
+	if (NULL != _dispatcher) {
+		m_dispatcher = _dispatcher;
+	} else {
+		m_dispatcher = new btCollisionDispatcher(m_collisionConfiguration);
+	}
+	if (NULL != _broadphase) {
+		m_broadphase = _broadphase;
+	} else {
+		m_broadphase = new btDbvtBroadphase();
+	}
 	
 	///the default constraint solver.
-	btSequentialImpulseConstraintSolver* sol = new btSequentialImpulseConstraintSolver;
-	m_solver = sol;
+	if (NULL != _solver) {
+		m_solver = _solver;
+	} else {
+		m_solver = new btSequentialImpulseConstraintSolver();
+	}
 	
-	m_dynamicsWorld = new btDiscreteDynamicsWorld(m_dispatcher,m_broadphase,m_solver,m_collisionConfiguration);
-	// in space, we set no gravity ...
-	m_dynamicsWorld->setGravity(btVector3(0,0,0));
+	if (NULL != _dynamicsWorld) {
+		m_dynamicsWorld = _dynamicsWorld;
+	} else {
+		m_dynamicsWorld = new btDiscreteDynamicsWorld(m_dispatcher,m_broadphase,m_solver,m_collisionConfiguration);
+		// By default we set no gravity
+		m_dynamicsWorld->setGravity(btVector3(0,0,0));
+	}
+	
 	m_env.SetDynamicWorld(m_dynamicsWorld);
 	
-	// SET THE STATION ..
-	m_camera.SetEye(vec3(0,0,0));
+	if (NULL != _camera) {
+		m_camera = _camera;
+	} else {
+		m_camera = new ege::Camera(vec3(0,0,0), 0, DEG_TO_RAD(45) ,50);
+		// SET THE STATION ..
+		m_camera->SetEye(vec3(0,0,0));
+	}
 }
 
 
@@ -162,12 +189,12 @@ void ege::Scene::OnDraw(void)
 	//EGE_DEBUG("Draw (start)");
 	mat4 tmpMatrix;
 	if (m_dynamicsWorld) {
-		m_env.GetOrderedElementForDisplay(m_displayElementOrdered, m_camera.GetOrigin(), m_camera.GetViewVector());
+		m_env.GetOrderedElementForDisplay(m_displayElementOrdered, m_camera->GetOrigin(), m_camera->GetViewVector());
 		//EGE_DEBUG("DRAW : " << m_displayElementOrdered.Size() << " elements");
 		
 		// TODO : Remove this ==> no more needed ==> checked in the Generate the list of the element ordered
 		for (int32_t iii=0; iii<m_displayElementOrdered.Size(); iii++) {
-			m_displayElementOrdered[iii].element->PreCalculationDraw(m_camera);
+			m_displayElementOrdered[iii].element->PreCalculationDraw(*m_camera);
 		}
 		// note :  the first pass is done at the reverse way to prevent multiple display od the same point in the screen 
 		//         (and we remember that the first pass is to display all the non transparent elements)
@@ -186,12 +213,12 @@ void ege::Scene::OnDraw(void)
 			}
 		}
 		for (int32_t iii=0; iii<m_displayElementOrdered.Size(); iii++) {
-			m_displayElementOrdered[iii].element->DrawLife(m_debugDrawing, m_camera);
+			m_displayElementOrdered[iii].element->DrawLife(m_debugDrawing, *m_camera);
 		}
 		#ifdef DEBUG
 			if (true == m_debugMode) {
 				for (int32_t iii=0; iii<m_displayElementOrdered.Size(); iii++) {
-					m_displayElementOrdered[iii].element->DrawDebug(m_debugDrawing, m_camera);
+					m_displayElementOrdered[iii].element->DrawDebug(m_debugDrawing, *m_camera);
 				}
 			}
 		#endif
@@ -247,7 +274,7 @@ void ege::Scene::PeriodicCall(const ewol::EventTime& _event)
 	//EWOL_DEBUG("Time: m_lastCallTime=" << m_lastCallTime << " deltaTime=" << deltaTime);
 	
 	// update camera positions:
-	m_camera.PeriodicCall(curentDelta);
+	m_camera->PeriodicCall(curentDelta);
 	
 	//EGE_DEBUG("stepSimulation (start)");
 	///step the simulation
@@ -261,13 +288,14 @@ void ege::Scene::PeriodicCall(const ewol::EventTime& _event)
 		int32_t numberEnnemyKilled=0;
 		int32_t victoryPoint=0;
 		etk::Vector<ege::ElementGame*>& elementList = m_env.GetElementGame();
-		for (int32_t iii=0; iii<elementList.Size(); iii++) {
+		for (int32_t iii=elementList.Size()-1; iii>=0; --iii) {
 			if(NULL != elementList[iii]) {
 				if (true == elementList[iii]->NeedToRemove()) {
 					if (elementList[iii]->GetGroup() > 1) {
 						numberEnnemyKilled++;
 						victoryPoint++;
 					}
+					EGE_DEBUG("[" << elementList[iii]->GetUID() << "] element Removing ... " << elementList[iii]->GetType());
 					m_env.RmElementGame(elementList[iii]);
 				}
 			}
@@ -290,14 +318,14 @@ void ege::Scene::PeriodicCall(const ewol::EventTime& _event)
 			walkValue = -1;
 		}
 		if (walkValue!=0) {
-			float angleZ = m_camera.GetAngleZ();
+			float angleZ = m_camera->GetAngleZ();
 			vec3 offsetPosition( cosf(angleZ-M_PI/2.0)*walkValue,
 			                    -sinf(angleZ-M_PI/2.0)*walkValue,
 			                    0);
 			//EWOL_DEBUG("Walk : " << ((int32_t)(angles.z/M_PI*180+180)%360-180) << " ==> " << angles);
 			// walk is 6 km/h
-			vec3 pos = m_camera.GetEye() + offsetPosition*l_walkRatio*curentDelta;
-			m_camera.SetEye(pos);
+			vec3 pos = m_camera->GetEye() + offsetPosition*l_walkRatio*curentDelta;
+			m_camera->SetEye(pos);
 		}
 		walkValue=0;
 		if(    (m_walk&WALK_FLAG_LEFT)!=0
@@ -310,14 +338,14 @@ void ege::Scene::PeriodicCall(const ewol::EventTime& _event)
 			walkValue = -1;
 		}
 		if (walkValue != 0) {
-			float angleZ = m_camera.GetAngleZ();
+			float angleZ = m_camera->GetAngleZ();
 			vec3 offsetPosition( cosf(angleZ)*walkValue,
 			                    -sinf(angleZ)*walkValue,
 			                    0);
 			//EWOL_DEBUG("Walk : " << ((int32_t)(angles.z/M_PI*180+180)%360-180) << " ==> " << angles);
 			// lateral walk is 4 km/h
-			vec3 pos = m_camera.GetEye() + offsetPosition*l_walkLateralRatio*curentDelta;
-			m_camera.SetEye(pos);
+			vec3 pos = m_camera->GetEye() + offsetPosition*l_walkLateralRatio*curentDelta;
+			m_camera->SetEye(pos);
 		}
 	}
 }
@@ -351,8 +379,8 @@ float tmp___localTime1 = (float)(ewol::GetTime() - tmp___startTime1) / 1000.0f;
 EWOL_DEBUG("      SCENE111  : " << tmp___localTime1 << "ms ");
 int64_t tmp___startTime2 = ewol::GetTime();
 #endif
-	ewol::openGL::SetCameraMatrix(m_camera.GetMatrix());
-	//mat4 tmpMat = tmpProjection * m_camera.GetMatrix();
+	ewol::openGL::SetCameraMatrix(m_camera->GetMatrix());
+	//mat4 tmpMat = tmpProjection * m_camera->GetMatrix();
 	// set internal matrix system :
 	//ewol::openGL::SetMatrix(tmpMat);
 	ewol::openGL::SetMatrix(tmpProjection);
@@ -397,7 +425,7 @@ vec2 ege::Scene::CalculateDeltaAngle(const vec2& posScreen)
 
 vec3 ege::Scene::ConvertScreenPositionInMapPosition(const vec2& posScreen)
 {
-	return m_camera.projectOnZGround(CalculateDeltaAngle(posScreen));
+	return m_camera->projectOnZGround(CalculateDeltaAngle(posScreen));
 }
 
 bool ege::Scene::OnEventInput(const ewol::EventInput& _event)
@@ -430,8 +458,8 @@ bool ege::Scene::OnEventInput(const ewol::EventInput& _event)
 			if (ewol::keyEvent::statusMove == _event.GetStatus()) {
 				vec2 tmppPos = relPos-m_centerButtonStartPos;
 				tmppPos *= M_PI/(360.0f*6);
-				m_camera.SetAngleZ(m_camera.GetAngleZ()- tmppPos.x());
-				m_camera.SetAngleTeta(m_camera.GetAngleTeta()-tmppPos.y());
+				m_camera->SetAngleZ(m_camera->GetAngleZ()- tmppPos.x());
+				m_camera->SetAngleTeta(m_camera->GetAngleTeta()-tmppPos.y());
 			}
 			// update register position ...
 			m_centerButtonStartPos = relPos;
@@ -440,12 +468,12 @@ bool ege::Scene::OnEventInput(const ewol::EventInput& _event)
 			if (ewol::keyEvent::statusMove == _event.GetStatus()) {
 				vec3 nextPosition = ConvertScreenPositionInMapPosition(relPos);
 				vec3 tmppPos = nextPosition-m_finger_StartPosMoving;
-				vec3 oldposition = m_camera.GetEye();
+				vec3 oldposition = m_camera->GetEye();
 				// update the camera positions:
 				oldposition.setX(oldposition.x() - tmppPos.x());
 				oldposition.setY(oldposition.y() - tmppPos.y());
 				// set the new position
-				m_camera.SetEye(oldposition);
+				m_camera->SetEye(oldposition);
 			}
 			// update register position ...
 			m_leftButtonStartPos = relPos;
@@ -453,16 +481,16 @@ bool ege::Scene::OnEventInput(const ewol::EventInput& _event)
 		} else if (4 == _event.GetId()) {
 			if (ewol::keyEvent::statusSingle == _event.GetStatus()) {
 				// scrool input
-				float cameraDistance = m_camera.GetDistance()-3;
+				float cameraDistance = m_camera->GetDistance()-3;
 				EGE_DEBUG("New camera distance : " << etk_avg(10, cameraDistance, 100));
-				m_camera.SetDistance(etk_avg(10, cameraDistance, 100));
+				m_camera->SetDistance(etk_avg(10, cameraDistance, 100));
 			}
 		} else if (5 == _event.GetId()) {
 			if (ewol::keyEvent::statusSingle == _event.GetStatus()) {
 				// scrool output
-				float cameraDistance = m_camera.GetDistance()+3;
+				float cameraDistance = m_camera->GetDistance()+3;
 				EGE_DEBUG("New camera distance : " << etk_avg(10, cameraDistance, 100));
-				m_camera.SetDistance(etk_avg(10, cameraDistance, 100));
+				m_camera->SetDistance(etk_avg(10, cameraDistance, 100));
 			}
 		}
 	/*
@@ -504,9 +532,9 @@ bool ege::Scene::OnEventInput(const ewol::EventInput& _event)
 						realDistance /= 2.0f;
 						if (m_finger_oldDistance>=0) {
 							float distanceDelta = m_finger_oldDistance-realDistance;
-							m_camera.SetDistance(etk_avg(10,m_camera.GetDistance()+distanceDelta/3.0f,100));
+							m_camera->SetDistance(etk_avg(10,m_camera->GetDistance()+distanceDelta/3.0f,100));
 							float angleDelta = m_finger_oldAngle - fingerAngle;
-							m_camera.SetAngleZ(m_camera.GetAngleZ()+angleDelta);
+							m_camera->SetAngleZ(m_camera->GetAngleZ()+angleDelta);
 						}
 						m_finger_oldDistance = realDistance;
 						m_finger_oldAngle = fingerAngle;
@@ -536,9 +564,9 @@ bool ege::Scene::OnEventInput(const ewol::EventInput& _event)
 					realDistance /= 2.0f;
 					if (m_finger_oldDistance>=0) {
 						float distanceDelta = m_finger_oldDistance-realDistance;
-						m_camera.SetDistance(etk_avg(10,m_camera.GetDistance()+distanceDelta/3.0f,100));
+						m_camera->SetDistance(etk_avg(10,m_camera->GetDistance()+distanceDelta/3.0f,100));
 						float angleDelta = m_finger_oldAngle - fingerAngle;
-						m_camera.SetAngleZ(m_camera.GetAngleZ()+angleDelta);
+						m_camera->SetAngleZ(m_camera->GetAngleZ()+angleDelta);
 					}
 					m_finger_oldDistance = realDistance;
 					m_finger_oldAngle = fingerAngle;

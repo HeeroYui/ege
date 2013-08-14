@@ -45,6 +45,19 @@ namespace ege
 			 * @brief Destructor
 			 */
 			virtual ~ElementGame(void);
+			/**
+			 * @brief Get the element Type description string
+			 * @return A pointer on the descriptive string (Do not free it ==> it might be a const)
+			 */
+			virtual const etk::UString& GetType(void) const;
+		private:
+			uint32_t m_uID; //!< This is a reference on a basic element ID
+		public:
+			/**
+			 * @brief Get the curent Element Unique ID in the all Game.
+			 * @return The requested Unique ID.
+			 */
+			inline uint32_t GetUID(void) const { return m_uID; };
 		protected:
 			ewol::Mesh* m_mesh; //!< Mesh of the Element (can be NULL)
 			btCollisionShape* m_shape; //!< shape of the element (set a copy here to have the debug display of it)
@@ -88,22 +101,6 @@ namespace ege
 			 * @brief Call chan the element life change
 			 */
 			virtual void OnLifeChange(void) {}
-		private:
-			uint32_t m_uID; //!< This is a reference on a basic element ID
-		public:
-			/**
-			 * @brief Get the curent Element Unique ID in the all Game.
-			 * @return The requested Unique ID.
-			 */
-			inline uint32_t GetUID(void) const
-			{
-				return m_uID;
-			}
-			/**
-			 * @brief Get the element Type description string
-			 * @return A pointer on the descriptive string (Do not free it ==> it might be a const)
-			 */
-			virtual const etk::UString& GetType(void) const;
 		protected:
 			int32_t m_group; //!< Every element has a generic group
 		public:
@@ -203,10 +200,51 @@ namespace ege
 			bool m_elementInPhysicsSystem;
 		public:
 			/**
-			 * @brief For intelligent system : this activate the Dynamic object
+			 * @brief Set the elment in the physique engine
 			 */
-			virtual void DynamicEnable(void);
-			virtual void DynamicDisable(void);
+			void DynamicEnable(void);
+			/**
+			 * @brief Remove this element from the physique engine
+			 */
+			void DynamicDisable(void);
+		private:
+			class localIA : public btActionInterface
+			{
+				private:
+					ege::ElementGame& m_element;
+				public:
+					/**
+					 * @brief Constructor
+					 */
+					localIA(ElementGame& element) : m_element(element) { };
+					/**
+					 * @brief Destructor
+					 */
+					virtual ~localIA(void) { };
+					
+					// herited function
+					void debugDraw(btIDebugDraw* debugDrawer) { };
+					// herited function
+					void updateAction(btCollisionWorld* collisionWorld, btScalar step)
+					{
+						m_element.IAAction(step);
+					}
+			};
+			localIA* m_IA;
+		public:
+			/**
+			 * @brief Enable periodic call Of this object for processing Artificial Intelligence
+			 */
+			void IAEnable(void);
+			/**
+			 * @brief Disable periodic call Of this object for processing Artificial Intelligence
+			 */
+			void IADisable(void);
+			/**
+			 * @brief Periodic call for intelligence artificial.
+			 * @param[in] step : step of time in s
+			 */
+			virtual void IAAction(float _step) { };
 	};
 };
 

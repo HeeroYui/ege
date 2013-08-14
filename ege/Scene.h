@@ -46,7 +46,12 @@ namespace ege {
 			 * @brief Constructor of the widget classes
 			 * @return (no execption generated (not managed in embended platform))
 			 */
-			Scene(void);
+			Scene(btDefaultCollisionConfiguration* _collisionConfiguration=NULL,
+			      btCollisionDispatcher* _dispatcher=NULL,
+			      btBroadphaseInterface* _broadphase=NULL,
+			      btConstraintSolver* _solver=NULL,
+			      btDynamicsWorld* _dynamicsWorld=NULL,
+			      ege::Camera* _camera=NULL);
 			/**
 			 * @brief Destructor of the widget classes
 			 */
@@ -70,14 +75,12 @@ namespace ege {
 			btConstraintSolver* m_solver;
 			btDynamicsWorld* m_dynamicsWorld;
 		// camera section
-			ege::Camera m_camera; //!< Display point of view.
+			ege::Camera* m_camera; //!< Display point of view.
 			vec3 m_cameraMovePointStart; //!< Position where the mouse start to move
 		// Other elements
 			bool m_isRunning; //!< the display is running (not in pause)
 			float m_ratioTime; //!< Ratio time for the speed of the game ...
 			uint32_t m_walk; //!< Wolk properties
-			bool m_debugMode;
-			ewol::Colored3DObject* m_debugDrawing;  //!< for the debug draw elements
 			// Note : This is only for temporary elements : on the display
 			etk::Vector<ege::Environement::ResultNearestElement> m_displayElementOrdered;
 		public:
@@ -93,20 +96,24 @@ namespace ege {
 			 * @brief Toggle between pause and running
 			 */
 			void PauseToggle(void);
+		protected:
+			bool m_debugMode;
+			ewol::Colored3DObject* m_debugDrawing;  //!< for the debug draw elements
+		public:
+			/**
+			 * @brief Toggle the debug mode ==> usefull for DEBUG only ...
+			 */
 			void DebugToggle(void) { m_debugMode = m_debugMode?false:true; };
 		protected:
 			// Derived function
 			virtual void ScenePeriodicCall(int64_t localTime, int32_t deltaTime) { };
-		// camera properties :
-		private:
-			float m_zoom;
 		public:
 			vec2 CalculateDeltaAngle(const vec2& posScreen);
 			vec3 ConvertScreenPositionInMapPosition(const vec2& posScreen);
 			/**
 			 * @brief Get the current camera reference for the scene rendering
 			 */
-			ege::Camera& GetCamera(void) { return m_camera; };
+			ege::Camera& GetCamera(void) { return *m_camera; };
 			/**
 			 * @brief Set the curent Time Ratio (default 1)
 			 */
