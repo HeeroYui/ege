@@ -236,3 +236,24 @@ void ege::Environement::GetOrderedElementForDisplay(etk::Vector<ege::Environemen
 		}
 	}
 }
+
+
+void ege::Environement::GenerateInteraction(ege::ElementInteraction& _event)
+{
+	// inform the element that an element has been removed ==> this permit to keep pointer on elements ...
+	for (int32_t iii=0; iii<m_listElementGame.Size() ; iii++) {
+		if (NULL == m_listElementGame[iii]) {
+			continue;
+		}
+		_event.ApplyEvent(*m_listElementGame[iii]);
+		/*
+		vec3 destPosition = m_listElementGame[iii]->GetPosition();
+		float dist = btDistance(sourcePosition, destPosition);
+		if (dist==0 || dist>decreasePower) {
+			continue;
+		}
+		float inpact = (decreasePower-dist)/decreasePower * power;
+		g_listElementGame[iii]->SetFireOn(groupIdSource, type, -inpact, sourcePosition);
+		*/
+	}
+}

@@ -35,25 +35,13 @@ const char * const ege::Scene::eventPlayTimeChange = "event-scene-play-time-chan
 const char * const ege::Scene::eventKillEnemy = "event-scene-kill-ennemy";
 
 
-#define  WALK_FLAG_FORWARD  (1<<0)
-#define  WALK_FLAG_BACK     (1<<1)
-#define  WALK_FLAG_LEFT     (1<<2)
-#define  WALK_FLAG_RIGHT    (1<<3)
-#define  WALK_FLAG_CAUTION  (1<<4)
 
-ege::Scene::Scene(btDefaultCollisionConfiguration* _collisionConfiguration,
-                  btCollisionDispatcher* _dispatcher,
-                  btBroadphaseInterface* _broadphase,
-                  btConstraintSolver* _solver,
-                  btDynamicsWorld* _dynamicsWorld,
-                  ege::Camera* _camera) :
+ege::Scene::Scene(bool _setAutoBullet, bool _setAutoCamera) :
 	m_gameTime(0),
 	m_angleView(M_PI/3.0),
-	m_finger_DoubleTouch(false),
 	m_dynamicsWorld(NULL),
 	m_camera(NULL),
 	m_isRunning(true),
-	m_walk(0),
 	m_debugMode(false),
 	m_debugDrawing(NULL)
 {
@@ -66,6 +54,20 @@ ege::Scene::Scene(btDefaultCollisionConfiguration* _collisionConfiguration,
 	ewol::resource::Keep(m_debugDrawing);
 	
 	m_ratioTime = 1.0f;
+	if (_setAutoBullet==true) {
+		SetBulletConfig();
+	}
+	if (_setAutoCamera==true) {
+		SetCamera();
+	}
+}
+
+void ege::Scene::SetBulletConfig(btDefaultCollisionConfiguration* _collisionConfiguration,
+                                 btCollisionDispatcher* _dispatcher,
+                                 btBroadphaseInterface* _broadphase,
+                                 btConstraintSolver* _solver,
+                                 btDynamicsWorld* _dynamicsWorld)
+{
 	if (NULL != _collisionConfiguration) {
 		m_collisionConfiguration = _collisionConfiguration;
 	} else {
@@ -100,6 +102,10 @@ ege::Scene::Scene(btDefaultCollisionConfiguration* _collisionConfiguration,
 	
 	m_env.SetDynamicWorld(m_dynamicsWorld);
 	
+}
+
+void ege::Scene::SetCamera(ege::Camera* _camera)
+{
 	if (NULL != _camera) {
 		m_camera = _camera;
 	} else {
@@ -108,7 +114,6 @@ ege::Scene::Scene(btDefaultCollisionConfiguration* _collisionConfiguration,
 		m_camera->SetEye(vec3(0,0,0));
 	}
 }
-
 
 ege::Scene::~Scene(void)
 {
@@ -242,18 +247,9 @@ btRigidBody& btActionInterface::getFixedBody()
 	return s_fixed;
 }
 
-#define  WALK_FLAG_FORWARD  (1<<0)
-#define  WALK_FLAG_BACK     (1<<1)
-#define  WALK_FLAG_LEFT     (1<<2)
-#define  WALK_FLAG_RIGHT    (1<<3)
-#define  WALK_FLAG_CAUTION  (1<<4)
-
-static const float l_walkRatio = 15;
-static const float l_walkLateralRatio = 15;
 
 void ege::Scene::PeriodicCall(const ewol::EventTime& _event)
 {
-
 	float curentDelta=_event.GetDeltaCall();
 	// small hack to change speed ...
 	if (m_ratioTime != 1) {
@@ -274,8 +270,9 @@ void ege::Scene::PeriodicCall(const ewol::EventTime& _event)
 	//EWOL_DEBUG("Time: m_lastCallTime=" << m_lastCallTime << " deltaTime=" << deltaTime);
 	
 	// update camera positions:
-	m_camera->PeriodicCall(curentDelta);
-	
+	if (NULL != m_camera) {
+		m_camera->PeriodicCall(curentDelta);
+	}
 	//EGE_DEBUG("stepSimulation (start)");
 	///step the simulation
 	if (m_dynamicsWorld) {
@@ -306,48 +303,6 @@ void ege::Scene::PeriodicCall(const ewol::EventTime& _event)
 		}
 	}
 	MarkToRedraw();
-	if (m_walk!=0) {
-		float walkValue = 0;
-		if(    (m_walk&WALK_FLAG_FORWARD)!=0
-		    && (m_walk&WALK_FLAG_BACK)!=0) {
-			// request back and forward in the same time ... this is really bad ....
-			walkValue = 0;
-		} else if ( (m_walk&WALK_FLAG_FORWARD)!=0) {
-			walkValue = 1;
-		} else if ( (m_walk&WALK_FLAG_BACK)!=0) {
-			walkValue = -1;
-		}
-		if (walkValue!=0) {
-			float angleZ = m_camera->GetAngleZ();
-			vec3 offsetPosition( cosf(angleZ-M_PI/2.0)*walkValue,
-			                    -sinf(angleZ-M_PI/2.0)*walkValue,
-			                    0);
-			//EWOL_DEBUG("Walk : " << ((int32_t)(angles.z/M_PI*180+180)%360-180) << " ==> " << angles);
-			// walk is 6 km/h
-			vec3 pos = m_camera->GetEye() + offsetPosition*l_walkRatio*curentDelta;
-			m_camera->SetEye(pos);
-		}
-		walkValue=0;
-		if(    (m_walk&WALK_FLAG_LEFT)!=0
-		    && (m_walk&WALK_FLAG_RIGHT)!=0) {
-			// request left and right in the same time ... this is really bad ....
-			walkValue=0;
-		} else if ( (m_walk&WALK_FLAG_LEFT)!=0) {
-			walkValue = 1;
-		} else if ( (m_walk&WALK_FLAG_RIGHT)!=0) {
-			walkValue = -1;
-		}
-		if (walkValue != 0) {
-			float angleZ = m_camera->GetAngleZ();
-			vec3 offsetPosition( cosf(angleZ)*walkValue,
-			                    -sinf(angleZ)*walkValue,
-			                    0);
-			//EWOL_DEBUG("Walk : " << ((int32_t)(angles.z/M_PI*180+180)%360-180) << " ==> " << angles);
-			// lateral walk is 4 km/h
-			vec3 pos = m_camera->GetEye() + offsetPosition*l_walkLateralRatio*curentDelta;
-			m_camera->SetEye(pos);
-		}
-	}
 }
 
 #define GAME_Z_NEAR  (1)
@@ -428,265 +383,5 @@ vec3 ege::Scene::ConvertScreenPositionInMapPosition(const vec2& posScreen)
 	return m_camera->projectOnZGround(CalculateDeltaAngle(posScreen));
 }
 
-bool ege::Scene::OnEventInput(const ewol::EventInput& _event)
-{
-	//EWOL_DEBUG("Input event : " << _event);
-	vec2 relPos = RelativePosition(_event.GetPos());
-	/*
-	 *    *             
-	 *    |\            
-	 *    | \           
-	 *    |  \          
-	 *    |   \         
-	 *    |    \        
-	 *    |     \       
-	 *    *------*      
-	 *        \ \       
-	 *         \ \      
-	 *          \ \     
-	 *           *-*    
-	 */
-	if (_event.GetType() == ewol::keyEvent::typeMouse) {
-		if (0 != _event.GetId()) {
-			KeepFocus();
-		}
-		//EGE_DEBUG("Move mouse at position = " << relPos << " ==> " << curentCreatingPosition );
-		if (1 == _event.GetId()) {
-			
-		} else if (2 == _event.GetId()) {
-			// center button : change the angle the camara
-			if (ewol::keyEvent::statusMove == _event.GetStatus()) {
-				vec2 tmppPos = relPos-m_centerButtonStartPos;
-				tmppPos *= M_PI/(360.0f*6);
-				m_camera->SetAngleZ(m_camera->GetAngleZ()- tmppPos.x());
-				m_camera->SetAngleTeta(m_camera->GetAngleTeta()-tmppPos.y());
-			}
-			// update register position ...
-			m_centerButtonStartPos = relPos;
-		} else if (3 == _event.GetId()) {
-			// center button : change the angle the camara
-			if (ewol::keyEvent::statusMove == _event.GetStatus()) {
-				vec3 nextPosition = ConvertScreenPositionInMapPosition(relPos);
-				vec3 tmppPos = nextPosition-m_finger_StartPosMoving;
-				vec3 oldposition = m_camera->GetEye();
-				// update the camera positions:
-				oldposition.setX(oldposition.x() - tmppPos.x());
-				oldposition.setY(oldposition.y() - tmppPos.y());
-				// set the new position
-				m_camera->SetEye(oldposition);
-			}
-			// update register position ...
-			m_leftButtonStartPos = relPos;
-			m_finger_StartPosMoving = ConvertScreenPositionInMapPosition(relPos);
-		} else if (4 == _event.GetId()) {
-			if (ewol::keyEvent::statusSingle == _event.GetStatus()) {
-				// scrool input
-				float cameraDistance = m_camera->GetDistance()-3;
-				EGE_DEBUG("New camera distance : " << etk_avg(10, cameraDistance, 100));
-				m_camera->SetDistance(etk_avg(10, cameraDistance, 100));
-			}
-		} else if (5 == _event.GetId()) {
-			if (ewol::keyEvent::statusSingle == _event.GetStatus()) {
-				// scrool output
-				float cameraDistance = m_camera->GetDistance()+3;
-				EGE_DEBUG("New camera distance : " << etk_avg(10, cameraDistance, 100));
-				m_camera->SetDistance(etk_avg(10, cameraDistance, 100));
-			}
-		}
-	/*
-	 *                         
-	 *     ---                 
-	 *    /   \                
-	 *    |   |                
-	 *    |   |                
-	 *    |   |                
-	 *    |   |                
-	 *    |   | ---  ---  ---  
-	 *    |   |/   \/   \/   \ 
-	 *    |                  | 
-	 *   /|                  | 
-	 *  / |                  | 
-	 *  |                    | 
-	 *  |                    | 
-	 *  |                    | 
-	 *   \                  /  
-	 *    \                /   
-	 *     \              /    
-	 *      \            /     
-	 */
-	} else if (_event.GetType() == ewol::keyEvent::typeFinger) {
-		KeepFocus();
-		if (1 == _event.GetId()) {
-			if (m_finger_DoubleTouch==false) {
-				
-			} else {
-				if (ewol::keyEvent::statusMove == _event.GetStatus()) {
-					m_finger_1Position = relPos;
-					if (m_finger_2Position.x() > -10000) {
-						vec2 distance = m_finger_1Position-m_finger_2Position;
-						float realDistance = distance.length();
-						float fingerAngle = acosf(etk_avg(-1.0f, (distance.x()/realDistance), 1.0f) );
-						if (distance.y()<0){
-							fingerAngle *=-1;
-						}
-						realDistance /= 2.0f;
-						if (m_finger_oldDistance>=0) {
-							float distanceDelta = m_finger_oldDistance-realDistance;
-							m_camera->SetDistance(etk_avg(10,m_camera->GetDistance()+distanceDelta/3.0f,100));
-							float angleDelta = m_finger_oldAngle - fingerAngle;
-							m_camera->SetAngleZ(m_camera->GetAngleZ()+angleDelta);
-						}
-						m_finger_oldDistance = realDistance;
-						m_finger_oldAngle = fingerAngle;
-					}
-				}
-			}
-			m_finger_StartPosMoving = ConvertScreenPositionInMapPosition(relPos);
-			if (ewol::keyEvent::statusUp == _event.GetStatus()) {
-				m_finger_DoubleTouch = false;
-			}
-		} else if (2 == _event.GetId()) {
-			if (ewol::keyEvent::statusDown == _event.GetStatus()) {
-				m_finger_DoubleTouch = true;
-				m_finger_1Position = vec2(-500000,-500000);
-				m_finger_2Position = vec2(-500000,-500000);
-				m_finger_oldDistance = -1;
-				m_finger_oldAngle = 0;
-			} else if (ewol::keyEvent::statusMove == _event.GetStatus()) {
-				m_finger_2Position = relPos;
-				if (m_finger_1Position.x() > -10000) {
-					vec2 distance = m_finger_1Position-m_finger_2Position;
-					float realDistance = distance.length();
-					float fingerAngle = acosf(etk_avg(-1.0f, (distance.x()/realDistance), 1.0f) );
-					if (distance.y()<0){
-						fingerAngle *=-1;
-					}
-					realDistance /= 2.0f;
-					if (m_finger_oldDistance>=0) {
-						float distanceDelta = m_finger_oldDistance-realDistance;
-						m_camera->SetDistance(etk_avg(10,m_camera->GetDistance()+distanceDelta/3.0f,100));
-						float angleDelta = m_finger_oldAngle - fingerAngle;
-						m_camera->SetAngleZ(m_camera->GetAngleZ()+angleDelta);
-					}
-					m_finger_oldDistance = realDistance;
-					m_finger_oldAngle = fingerAngle;
-				}
-			} else if (ewol::keyEvent::statusUp == _event.GetStatus()) {
-				m_finger_DoubleTouch = false;
-			}
-		}
-	}
-	
-	return false;
-}
-
-
-bool ege::Scene::OnEventEntry(const ewol::EventEntry& _event)
-{
-	if (_event.GetType() == ewol::keyEvent::keyboardChar) {
-		EWOL_DEBUG("Entry enevnt : " << _event );
-		
-		if(    _event.GetChar() == 'z'
-		    || _event.GetChar() == 'Z') {
-			if (_event.GetStatus() == ewol::keyEvent::statusDown) {
-				m_walk |= WALK_FLAG_FORWARD;
-			}
-			if (_event.GetStatus() == ewol::keyEvent::statusUp) {
-				if ((m_walk&WALK_FLAG_FORWARD) != 0) {
-					m_walk -= WALK_FLAG_FORWARD;
-				}
-			}
-		}
-		if(    _event.GetChar() == 's'
-		    || _event.GetChar() == 'S') {
-			if (_event.GetStatus() == ewol::keyEvent::statusDown) {
-				m_walk |= WALK_FLAG_BACK;
-			}
-			if (_event.GetStatus() == ewol::keyEvent::statusUp) {
-				if ((m_walk&WALK_FLAG_BACK) != 0) {
-					m_walk -= WALK_FLAG_BACK;
-				}
-			}
-		}
-		if(    _event.GetChar() == 'q'
-		    || _event.GetChar() == 'Q') {
-			if (_event.GetStatus() == ewol::keyEvent::statusDown) {
-				m_walk |= WALK_FLAG_LEFT;
-			}
-			if (_event.GetStatus() == ewol::keyEvent::statusUp) {
-				if ((m_walk&WALK_FLAG_LEFT) != 0) {
-					m_walk -= WALK_FLAG_LEFT;
-				}
-			}
-		}
-		if(    _event.GetChar() == 'd'
-		    || _event.GetChar() == 'D') {
-			if (_event.GetStatus() == ewol::keyEvent::statusDown) {
-				m_walk |= WALK_FLAG_RIGHT;
-			}
-			if (_event.GetStatus() == ewol::keyEvent::statusUp) {
-				if ((m_walk&WALK_FLAG_RIGHT) != 0) {
-					m_walk -= WALK_FLAG_RIGHT;
-				}
-			}
-		}
-		EWOL_DEBUG("m_walk=" << m_walk);
-		return false;
-	}
-	// Move event ...
-	if (_event.GetType() == ewol::keyEvent::keyboardUp) {
-		if (_event.GetStatus() == ewol::keyEvent::statusDown) {
-			m_walk |= WALK_FLAG_FORWARD;
-		}
-		if (_event.GetStatus() == ewol::keyEvent::statusUp) {
-			if ((m_walk&WALK_FLAG_FORWARD) != 0) {
-				m_walk -= WALK_FLAG_FORWARD;
-			}
-		}
-	}
-	if (_event.GetType() == ewol::keyEvent::keyboardDown) {
-		if (_event.GetStatus() == ewol::keyEvent::statusDown) {
-			m_walk |= WALK_FLAG_BACK;
-		}
-		if (_event.GetStatus() == ewol::keyEvent::statusUp) {
-			if ((m_walk&WALK_FLAG_BACK) != 0) {
-				m_walk -= WALK_FLAG_BACK;
-			}
-		}
-	}
-	if (_event.GetType() == ewol::keyEvent::keyboardLeft) {
-		if (_event.GetStatus() == ewol::keyEvent::statusDown) {
-			m_walk |= WALK_FLAG_LEFT;
-		}
-		if (_event.GetStatus() == ewol::keyEvent::statusUp) {
-			if ((m_walk&WALK_FLAG_LEFT) != 0) {
-				m_walk -= WALK_FLAG_LEFT;
-			}
-		}
-	}
-	if (_event.GetType() == ewol::keyEvent::keyboardRight) {
-		if (_event.GetStatus() == ewol::keyEvent::statusDown) {
-			m_walk |= WALK_FLAG_RIGHT;
-		}
-		if (_event.GetStatus() == ewol::keyEvent::statusUp) {
-			if ((m_walk&WALK_FLAG_RIGHT) != 0) {
-				m_walk -= WALK_FLAG_RIGHT;
-			}
-		}
-	}
-	EWOL_DEBUG("m_walk=" << m_walk);
-	return false;
-}
-
-
-void ege::Scene::OnGetFocus(void)
-{
-	
-}
-
-void ege::Scene::OnLostFocus(void)
-{
-	
-}
 
 

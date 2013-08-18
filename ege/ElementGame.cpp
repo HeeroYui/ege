@@ -277,7 +277,76 @@ static void DrawShape(const btCollisionShape* _shape,
 		}
 		case CONVEX_HULL_SHAPE_PROXYTYPE: {
 			// Convex Hull collision shape ...
-			EGE_DEBUG("            Draw (06): CYLINDER_SHAPE_PROXYTYPE");
+			EGE_DEBUG("            Draw (06): CONVEX_HULL_SHAPE_PROXYTYPE");
+			if (_shape->isConvex()) {
+					EGE_DEBUG("                shape->isConvex()");
+					const btConvexPolyhedron* poly = _shape->isPolyhedral() ? ((btPolyhedralConvexShape*) _shape)->getConvexPolyhedron() : 0;
+					if (NULL!=poly) {
+						EGE_DEBUG("                      have poly");
+						/*
+						glBegin(GL_TRIANGLES);
+						for (int32_t iii=0 ; iii<poly->m_faces.size() ; iii++) {
+							btVector3 centroid(0,0,0);
+							int numVerts = poly->m_faces[iii].m_indices.size();
+							if (numVerts>2) {
+								btVector3 v1 = poly->m_vertices[poly->m_faces[iii].m_indices[0]];
+								for (int32_t vvv=0;vvv<poly->m_faces[iii].m_indices.size()-2;vvv++) {
+									btVector3 v2 = poly->m_vertices[poly->m_faces[iii].m_indices[vvv+1]];
+									btVector3 v3 = poly->m_vertices[poly->m_faces[iii].m_indices[vvv+2]];
+									btVector3 normal = (v3-v1).cross(v2-v1);
+									normal.normalize ();
+									
+									glNormal3f(normal.getX(),normal.getY(),normal.getZ());
+									glVertex3f (v1.x(), v1.y(), v1.z());
+									glVertex3f (v2.x(), v2.y(), v2.z());
+									glVertex3f (v3.x(), v3.y(), v3.z());
+									
+								}
+							}
+						}
+						glEnd();
+						*/
+					} else {
+						// TODO : Set it back ...
+						/*
+						ShapeCache*	sc=cache((btConvexShape*)_shape);
+						//glutSolidCube(1.0);
+						btShapeHull* hull = &sc->m_shapehull;
+						if (hull->numTriangles () > 0) {
+							int index = 0;
+							const unsigned int* idx = hull->getIndexPointer();
+							const btVector3* vtx = hull->getVertexPointer();
+							glBegin (GL_TRIANGLES);
+							for (int i = 0; i < hull->numTriangles(); i++) {
+								int i1 = index++;
+								int i2 = index++;
+								int i3 = index++;
+								btAssert(i1 < hull->numIndices() &&
+								         i2 < hull->numIndices() &&
+								         i3 < hull->numIndices());
+								int index1 = idx[i1];
+								int index2 = idx[i2];
+								int index3 = idx[i3];
+								btAssert(index1 < hull->numVertices() &&
+								         index2 < hull->numVertices() &&
+								         index3 < hull->numVertices());
+								btVector3 v1 = vtx[index1];
+								btVector3 v2 = vtx[index2];
+								btVector3 v3 = vtx[index3];
+								btVector3 normal = (v3-v1).cross(v2-v1);
+								normal.normalize();
+								glNormal3f(normal.getX(),normal.getY(),normal.getZ());
+								glVertex3f (v1.x(), v1.y(), v1.z());
+								glVertex3f (v2.x(), v2.y(), v2.z());
+								glVertex3f (v3.x(), v3.y(), v3.z());
+							}
+							glEnd ();
+						}
+						*/
+					}
+				} else {
+					EGE_DEBUG("                !!! shape is NOT Convex() !!!");
+				}
 			break;
 		}
 		case COMPOUND_SHAPE_PROXYTYPE: {
@@ -339,24 +408,32 @@ void ege::ElementGame::DrawDebug(ewol::Colored3DObject* _draw, const ege::Camera
 
 void ege::ElementGame::DynamicEnable(void)
 {
-	if (false == m_elementInPhysicsSystem) {
-		if(NULL!=m_body) {
-			m_env.GetDynamicWorld()->addRigidBody(m_body);
-		}
-		m_elementInPhysicsSystem = true;
+	if (true == m_elementInPhysicsSystem) {
+		return;
 	}
+	if(NULL!=m_body) {
+		m_env.GetDynamicWorld()->addRigidBody(m_body);
+	}
+	if(NULL!=m_IA) {
+		m_env.GetDynamicWorld()->addAction(m_IA);
+	}
+	m_elementInPhysicsSystem = true;
 }
 
 void ege::ElementGame::DynamicDisable(void)
 {
-	if (true == m_elementInPhysicsSystem) {
-		if(NULL!=m_body) {
-			// Unlink element from the engine
-			m_env.GetDynamicWorld()->removeRigidBody(m_body);
-			m_env.GetDynamicWorld()->removeCollisionObject(m_body);
-		}
-		m_elementInPhysicsSystem = false;
+	if (false == m_elementInPhysicsSystem) {
+		return;
 	}
+	if(NULL!=m_IA) {
+		m_env.GetDynamicWorld()->removeAction(m_IA);
+	}
+	if(NULL!=m_body) {
+		// Unlink element from the engine
+		m_env.GetDynamicWorld()->removeRigidBody(m_body);
+		m_env.GetDynamicWorld()->removeCollisionObject(m_body);
+	}
+	m_elementInPhysicsSystem = false;
 }
 
 void ege::ElementGame::IAEnable(void)
@@ -365,13 +442,14 @@ void ege::ElementGame::IAEnable(void)
 		// IA already started ...
 		return;
 	}
-	DynamicEnable();
 	m_IA = new localIA(*this);
 	if (NULL == m_IA) {
 		EGE_ERROR("Can not start the IA ==> allocation error");
 		return;
 	}
-	m_env.GetDynamicWorld()->addAction(m_IA);
+	if (true == m_elementInPhysicsSystem) {
+		m_env.GetDynamicWorld()->addAction(m_IA);
+	}
 }
 
 void ege::ElementGame::IADisable(void)
@@ -380,7 +458,9 @@ void ege::ElementGame::IADisable(void)
 		// IA already stopped ...
 		return;
 	}
-	m_env.GetDynamicWorld()->removeAction(m_IA);
+	if (true == m_elementInPhysicsSystem) {
+		m_env.GetDynamicWorld()->removeAction(m_IA);
+	}
 	// Remove IA :
 	delete(m_IA);
 	m_IA = NULL;

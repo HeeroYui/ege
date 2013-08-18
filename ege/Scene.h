@@ -46,28 +46,21 @@ namespace ege {
 			 * @brief Constructor of the widget classes
 			 * @return (no execption generated (not managed in embended platform))
 			 */
-			Scene(btDefaultCollisionConfiguration* _collisionConfiguration=NULL,
-			      btCollisionDispatcher* _dispatcher=NULL,
-			      btBroadphaseInterface* _broadphase=NULL,
-			      btConstraintSolver* _solver=NULL,
-			      btDynamicsWorld* _dynamicsWorld=NULL,
-			      ege::Camera* _camera=NULL);
+			Scene(bool _setAutoBullet=true, bool _setAutoCamera=true);
 			/**
 			 * @brief Destructor of the widget classes
 			 */
 			virtual ~Scene(void);
+			void SetBulletConfig(btDefaultCollisionConfiguration* _collisionConfiguration=NULL,
+			                     btCollisionDispatcher* _dispatcher=NULL,
+			                     btBroadphaseInterface* _broadphase=NULL,
+			                     btConstraintSolver* _solver=NULL,
+			                     btDynamicsWorld* _dynamicsWorld=NULL);
+			void SetCamera(ege::Camera* _camera=NULL);
 		private:
 			float m_gameTime; //!< time of the game running
 		protected:
 			float m_angleView;
-			vec2 m_centerButtonStartPos;
-			vec2 m_leftButtonStartPos;
-			vec3 m_finger_StartPosMoving;
-			bool m_finger_DoubleTouch;
-			vec2 m_finger_1Position;
-			vec2 m_finger_2Position;
-			float m_finger_oldDistance;
-			float m_finger_oldAngle;
 			///this is the most important class
 			btDefaultCollisionConfiguration* m_collisionConfiguration;
 			btCollisionDispatcher* m_dispatcher;
@@ -76,11 +69,9 @@ namespace ege {
 			btDynamicsWorld* m_dynamicsWorld;
 		// camera section
 			ege::Camera* m_camera; //!< Display point of view.
-			vec3 m_cameraMovePointStart; //!< Position where the mouse start to move
 		// Other elements
 			bool m_isRunning; //!< the display is running (not in pause)
 			float m_ratioTime; //!< Ratio time for the speed of the game ...
-			uint32_t m_walk; //!< Wolk properties
 			// Note : This is only for temporary elements : on the display
 			etk::Vector<ege::Environement::ResultNearestElement> m_displayElementOrdered;
 		public:
@@ -136,10 +127,6 @@ namespace ege {
 			virtual void SystemDraw(const ewol::DrawProperty& _displayProp);
 			virtual void OnRegenerateDisplay(void);
 			virtual void PeriodicCall(const ewol::EventTime& _event);
-			virtual bool OnEventInput(const ewol::EventInput& _event);
-			virtual bool OnEventEntry(const ewol::EventEntry& _event);
-			virtual void OnGetFocus(void);
-			virtual void OnLostFocus(void);
 	};
 };
 

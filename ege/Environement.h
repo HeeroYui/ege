@@ -21,6 +21,35 @@ namespace ege {
 	class Environement;
 	typedef ege::ElementGame* (*createElement_tf)(ege::Environement& _env, const etk::UString& _description);
 	
+	class ElementInteraction
+	{
+		protected:
+			int32_t m_type;
+		public:
+			int32_t GetType(void) { return m_type; };
+		protected:
+			int32_t m_groupSource;
+		public:
+			int32_t GetSourceGroup(void) { return m_groupSource; };
+		protected:
+			etk::Vector<int32_t> m_groupDestination;
+		public:
+			const etk::Vector<int32_t>& GetDestinationGroup(void) { return m_groupDestination; };
+			void AddGroupDestination(int32_t _id) { m_groupDestination.PushBack(_id); };
+		protected:
+			vec3 m_positionSource;
+		public:
+			const vec3& GetSourcePosition(void) { return m_positionSource; };
+		public:
+			ElementInteraction(int32_t _type, int32_t _groupSource, const vec3& _pos) : 
+				m_type(_type),
+				m_groupSource(_groupSource),
+				m_positionSource(_pos)
+			{ };
+		public:
+			virtual void ApplyEvent(ege::ElementGame& _element) { };
+	};
+	
 	class Environement
 	{
 		private:
@@ -94,6 +123,11 @@ namespace ege {
 			 * @param[in] _direction Camera direction of the view.
 			 */
 			void GetOrderedElementForDisplay(etk::Vector<ege::Environement::ResultNearestElement>& _resultList, const vec3& _position, const vec3& _direction);
+			/**
+			 * @brief Generate an event on all the sub element of the game ==> usefull for explosion, or lazer fire ...
+			 * @param[in] _event event that might be apply ...
+			 */
+			void GenerateInteraction(ege::ElementInteraction& _event);
 	};
 };
 
