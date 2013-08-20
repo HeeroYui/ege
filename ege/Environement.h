@@ -15,11 +15,15 @@ class btDynamicsWorld;
 
 #include <etk/Vector.h>
 #include <etk/math/Vector3D.h>
+#include <ejson/ejson.h>
+#include <exml/exml.h>
 
 namespace ege {
 	class ElementGame;
 	class Environement;
-	typedef ege::ElementGame* (*createElement_tf)(ege::Environement& _env, const etk::UString& _description);
+	typedef ege::ElementGame* (*createElement_string_tf)(ege::Environement& _env, const etk::UString& _description);
+	typedef ege::ElementGame* (*createElement_ejson_tf)(ege::Environement& _env, const ejson::Value* _value);
+	typedef ege::ElementGame* (*createElement_exml_tf)(ege::Environement& _env, const exml::Node* _node);
 	
 	class ElementInteraction
 	{
@@ -64,7 +68,9 @@ namespace ege {
 			 * @param[in] _type Type of the element.
 			 * @param[in] _creator Function pointer that reference the element creating.
 			 */
-			static void AddCreator(const etk::UString& _type, ege::createElement_tf _creator);
+			static void AddCreator(const etk::UString& _type, ege::createElement_string_tf _creator);
+			static void AddCreator(const etk::UString& _type, ege::createElement_ejson_tf _creator);
+			static void AddCreator(const etk::UString& _type, ege::createElement_exml_tf _creator);
 			/**
 			 * @brief Create an element on the curent scene.
 			 * @param[in] _type Type of the element that might be created.
@@ -73,7 +79,12 @@ namespace ege {
 			 * @return NULL if an error occured OR the pointer on the element and it is already added on the system.
 			 * @note Pointer is return in case of setting properties on it...
 			 */
+			ege::ElementGame* CreateElement(const etk::UString& _type, bool _autoAddElement=true);
 			ege::ElementGame* CreateElement(const etk::UString& _type, const etk::UString& _description, bool _autoAddElement=true);
+			ege::ElementGame* CreateElement(const etk::UString& _type, const ejson::Value* _value, bool _autoAddElement=true);
+			ege::ElementGame* CreateElement(const etk::UString& _type, const exml::Node* _node, bool _autoAddElement=true);
+		protected:
+			ege::ElementGame* CreateElement(const etk::UString& _type, const etk::UString* _description, const ejson::Value* _value, const exml::Node* _node, bool _autoAddElement);
 		public:
 			class ResultNearestElement
 			{

@@ -111,35 +111,113 @@ void ege::Environement::GetElementNearestFixed(const vec3& _sourcePosition,
 	}
 }
 
-static etk::Hash<ege::createElement_tf>& GetHachTableCreating(void)
+class CallBackCreator
 {
-	static etk::Hash<ege::createElement_tf> s_table;
+	public:
+		ege::createElement_string_tf m_string;
+		ege::createElement_ejson_tf m_ejson;
+		ege::createElement_exml_tf m_exml;
+		CallBackCreator(void) : m_string(NULL), m_ejson(NULL), m_exml(NULL) {};
+};
+
+static etk::Hash<CallBackCreator>& GetHachTableCreating(void)
+{
+	static etk::Hash<CallBackCreator> s_table;
 	return s_table;
 }
 
 
-void ege::Environement::AddCreator(const etk::UString& _type, ege::createElement_tf _creator)
+void ege::Environement::AddCreator(const etk::UString& _type, ege::createElement_string_tf _creator)
 {
 	if (NULL == _creator) {
 		EGE_ERROR("Try to add an empty CREATOR ...");
 		return;
 	}
-	GetHachTableCreating().Add(_type, _creator);
+	if (GetHachTableCreating().Exist(_type)==true) {
+		GetHachTableCreating()[_type].m_string = _creator;
+		return;
+	}
+	CallBackCreator tmpp;
+	tmpp.m_string = _creator;
+	GetHachTableCreating().Add(_type, tmpp);
 }
 
-ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, const etk::UString& _description, bool _autoAddElement)
+void ege::Environement::AddCreator(const etk::UString& _type, ege::createElement_ejson_tf _creator)
+{
+	if (NULL == _creator) {
+		EGE_ERROR("Try to add an empty CREATOR ...");
+		return;
+	}
+	if (GetHachTableCreating().Exist(_type)==true) {
+		GetHachTableCreating()[_type].m_ejson = _creator;
+		return;
+	}
+	CallBackCreator tmpp;
+	tmpp.m_ejson = _creator;
+	GetHachTableCreating().Add(_type, tmpp);
+}
+
+void ege::Environement::AddCreator(const etk::UString& _type, ege::createElement_exml_tf _creator)
+{
+	if (NULL == _creator) {
+		EGE_ERROR("Try to add an empty CREATOR ...");
+		return;
+	}
+	if (GetHachTableCreating().Exist(_type)==true) {
+		GetHachTableCreating()[_type].m_exml = _creator;
+		return;
+	}
+	CallBackCreator tmpp;
+	tmpp.m_exml = _creator;
+	GetHachTableCreating().Add(_type, tmpp);
+}
+
+ege::ElementGame* ege::Environement::CreateElement(
+	const etk::UString& _type,
+	const etk::UString* _description,
+	const ejson::Value* _value,
+	const exml::Node* _node,
+	bool _autoAddElement)
 {
 	if (false==GetHachTableCreating().Exist(_type)) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return NULL;
 	}
-	ege::createElement_tf pointerFunction = GetHachTableCreating()[_type];
-	if (NULL == pointerFunction) {
-		EGE_ERROR("NULL pointer ==> internal error... '" << _type << "'");
-		// internal error
-		return NULL;
+	CallBackCreator tmpp = GetHachTableCreating()[_type];
+	ege::ElementGame* tmpElement = NULL;
+	if (NULL != _value) {
+		if (NULL == tmpp.m_ejson) {
+			EGE_ERROR("ejson NULL pointer creator ==> internal error... '" << _type << "'");
+			// internal error
+			return NULL;
+		}
+		tmpElement = tmpp.m_ejson(*this, _value);
+	} else if (NULL != _node) {
+		if (NULL == tmpp.m_exml) {
+			EGE_ERROR("exml NULL pointer creator ==> internal error... '" << _type << "'");
+			// internal error
+			return NULL;
+		}
+		tmpElement = tmpp.m_exml(*this, _node);
+	} else if (NULL != _description) {
+		if (NULL == tmpp.m_string) {
+			EGE_ERROR("string NULL pointer creator  ==> internal error... '" << _type << "'");
+			// internal error
+			return NULL;
+		}
+		tmpElement = tmpp.m_string(*this, *_description);
+	} else {
+		if (NULL != tmpp.m_ejson) {
+			tmpElement = tmpp.m_ejson(*this, NULL);
+		} else if (NULL != tmpp.m_exml) {
+			tmpElement = tmpp.m_exml(*this, NULL);
+		} else if (NULL != tmpp.m_string) {
+			tmpElement = tmpp.m_string(*this, "");
+		} else {
+			EGE_ERROR("No callback availlable !!! '" << _type << "'");
+			return NULL;
+		}
 	}
-	ege::ElementGame* tmpElement = pointerFunction(*this, _description);
 	if (NULL == tmpElement) {
 		EGE_ERROR("Sub creator han an error when creating element : '" << _type << "'");
 		return NULL;
@@ -148,6 +226,25 @@ ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, co
 		AddElementGame(tmpElement);
 	}
 	return tmpElement;
+}
+ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, bool _autoAddElement)
+{
+	return CreateElement(_type, NULL, NULL, NULL, _autoAddElement);
+}
+
+ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, const etk::UString& _description, bool _autoAddElement)
+{
+	return CreateElement(_type, &_description, NULL, NULL, _autoAddElement);
+}
+
+ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, const ejson::Value* _value, bool _autoAddElement)
+{
+	return CreateElement(_type, NULL, _value, NULL, _autoAddElement);
+}
+
+ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, const exml::Node* _node, bool _autoAddElement)
+{
+	return CreateElement(_type, NULL, NULL, _node, _autoAddElement);
 }
 
 
