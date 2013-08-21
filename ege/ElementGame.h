@@ -32,6 +32,8 @@ namespace ege
 {
 	class ElementGame
 	{
+		private:
+			static void FunctionFreeShape(void* _pointer);
 		protected:
 			ege::Environement& m_env;
 		protected:
@@ -58,15 +60,46 @@ namespace ege
 			 * @return The requested Unique ID.
 			 */
 			inline uint32_t GetUID(void) const { return m_uID; };
-		protected:
+		private:
 			ewol::Mesh* m_mesh; //!< Mesh of the Element (can be NULL)
 			btCollisionShape* m_shape; //!< shape of the element (set a copy here to have the debug display of it)
 		public:
 			/**
 			 * @brief Select a mesh with a specific name.
 			 * @param[in] _meshFileName Filename of the Mesh.
+			 * @note Automaticly load the shape if it is specify in the mesh file
+			 * @return true if no error occured
 			 */
-			void LoadMesh(const etk::UString& _meshFileName);
+			bool LoadMesh(const etk::UString& _meshFileName);
+			/**
+			 * @brief Set the the Mesh properties.
+			 * @param[in] _mesh The mesh pointer. (NULL to force the mesh remove ...)
+			 * @note : this remove the shape and the mesh properties.
+			 * @return true if no error occured
+			 */
+			bool SetMesh(ewol::Mesh* _mesh);
+			/**
+			 * @brief Set the shape properties.
+			 * @param[in] _shape The shape pointer.
+			 * @note : this remove the shape properties.
+			 * @return true if no error occured
+			 */
+			bool SetShape(btCollisionShape* _shape);
+			/**
+			 * @brief Get a pointer on the Mesh file.
+			 * @return the mesh pointer.
+			 */
+			inline ewol::Mesh* GetMesh(void) { return m_mesh; };
+			/**
+			 * @brief Get a pointer on the bullet collision shape.
+			 * @return the collision pointer.
+			 */
+			inline btCollisionShape* GetShape(void) { return m_shape; };
+		private:
+			/**
+			 * @brief Remove the curent selected shape.
+			 */
+			void RemoveShape(void);
 		protected:
 			float m_life; //!< Current life of the object
 			float m_lifeMax; //!< Maximum possible life of the element

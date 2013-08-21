@@ -12,6 +12,7 @@ def Create(target):
 		'ege/AudioElement.cpp',
 		'ege/AudioEngine.cpp',
 		'ege/Camera.cpp',
+		'ege/CollisionShapeCreator.cpp',
 		'ege/ElementGame.cpp',
 		'ege/Particule.cpp',
 		'ege/ParticuleEngine.cpp',

@@ -22,8 +22,8 @@ namespace ege {
 	class ElementGame;
 	class Environement;
 	typedef ege::ElementGame* (*createElement_string_tf)(ege::Environement& _env, const etk::UString& _description);
-	typedef ege::ElementGame* (*createElement_ejson_tf)(ege::Environement& _env, const ejson::Value* _value);
-	typedef ege::ElementGame* (*createElement_exml_tf)(ege::Environement& _env, const exml::Node* _node);
+	typedef ege::ElementGame* (*createElement_ejson_tf)(ege::Environement& _env, ejson::Value* _value);
+	typedef ege::ElementGame* (*createElement_exml_tf)(ege::Environement& _env, exml::Node* _node);
 	
 	class ElementInteraction
 	{
@@ -81,10 +81,10 @@ namespace ege {
 			 */
 			ege::ElementGame* CreateElement(const etk::UString& _type, bool _autoAddElement=true);
 			ege::ElementGame* CreateElement(const etk::UString& _type, const etk::UString& _description, bool _autoAddElement=true);
-			ege::ElementGame* CreateElement(const etk::UString& _type, const ejson::Value* _value, bool _autoAddElement=true);
-			ege::ElementGame* CreateElement(const etk::UString& _type, const exml::Node* _node, bool _autoAddElement=true);
+			ege::ElementGame* CreateElement(const etk::UString& _type, ejson::Value* _value, bool _autoAddElement=true);
+			ege::ElementGame* CreateElement(const etk::UString& _type, exml::Node* _node, bool _autoAddElement=true);
 		protected:
-			ege::ElementGame* CreateElement(const etk::UString& _type, const etk::UString* _description, const ejson::Value* _value, const exml::Node* _node, bool _autoAddElement);
+			ege::ElementGame* CreateElement(const etk::UString& _type, const etk::UString* _description, ejson::Value* _value, exml::Node* _node, bool _autoAddElement);
 		public:
 			class ResultNearestElement
 			{

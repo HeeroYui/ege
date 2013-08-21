@@ -24,6 +24,8 @@
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/CollisionDispatch/btCollisionObject.h>
 
+#include <ege/CollisionShapeCreator.h>
+
 #undef __class__
 #define __class__	"ElementGame"
 
@@ -37,6 +39,8 @@ const etk::UString& ege::ElementGame::GetType(void) const
 ege::ElementGame::ElementGame(ege::Environement& _env) :
 	m_env(_env),
 	m_body(NULL),
+	m_uID(0),
+	m_mesh(NULL),
 	m_shape(NULL),
 	m_life(100),
 	m_lifeMax(100),
@@ -58,6 +62,7 @@ ege::ElementGame::~ElementGame(void)
 	IADisable();
 	// same ...
 	DynamicDisable();
+	RemoveShape();
 	if (NULL != m_mesh) {
 		// release the mesh
 		ewol::resource::Release(m_mesh);
@@ -66,11 +71,75 @@ ege::ElementGame::~ElementGame(void)
 		delete(m_body);
 		m_body = NULL;
 	}
-	if (NULL != m_shape) {
+	EGE_DEBUG("Destroy element : uId=" << m_uID);
+}
+
+void ege::ElementGame::RemoveShape(void)
+{
+	// no shape
+	if (NULL == m_shape) {
+		return;
+	}
+	// need to chek if the shape is the same as the mesh shape ...
+	if (m_mesh == NULL) {
+		// no mesh ==> standalone shape
 		delete(m_shape);
 		m_shape=NULL;
+		return;
 	}
-	EGE_DEBUG("Destroy element : uId=" << m_uID);
+	if (m_shape != m_mesh->GetShape()) {
+		delete(m_shape);
+		m_shape=NULL;
+		return;
+	}
+	// otherwise : the shape is auto remove by the resources when no more needed ...
+}
+
+void ege::ElementGame::FunctionFreeShape(void* _pointer)
+{
+	if (NULL==_pointer) {
+		return;
+	}
+	delete(static_cast<btCollisionShape*>(_pointer));
+}
+
+bool ege::ElementGame::LoadMesh(const etk::UString& _meshFileName)
+{
+	ewol::Mesh* tmpMesh=NULL;
+	ewol::resource::Keep(_meshFileName, tmpMesh);
+	if(NULL==tmpMesh) {
+		EGE_ERROR("can not load the resources : " << _meshFileName);
+		return false;
+	}
+	return SetMesh(tmpMesh);
+}
+
+bool ege::ElementGame::SetMesh(ewol::Mesh* _mesh)
+{
+	if (NULL!=m_mesh) {
+		RemoveShape();
+		ewol::resource::Release(m_mesh);
+	}
+	m_mesh = _mesh;
+	// auto load the shape :
+	if (NULL==m_mesh) {
+		return true;
+	}
+	if (NULL != m_mesh->GetShape()) {
+		m_shape = static_cast<btCollisionShape*>(m_mesh->GetShape());
+		return true;
+	}
+	m_mesh->SetShape(ege::collision::CreateShape(m_mesh));
+	m_mesh->SetFreeShapeFunction(&FunctionFreeShape);
+	m_shape = static_cast<btCollisionShape*>(m_mesh->GetShape());
+	return true;
+}
+
+bool ege::ElementGame::SetShape(btCollisionShape* _shape)
+{
+	RemoveShape();
+	m_shape = _shape;
+	return true;
 }
 
 

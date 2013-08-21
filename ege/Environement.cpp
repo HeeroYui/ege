@@ -175,8 +175,8 @@ void ege::Environement::AddCreator(const etk::UString& _type, ege::createElement
 ege::ElementGame* ege::Environement::CreateElement(
 	const etk::UString& _type,
 	const etk::UString* _description,
-	const ejson::Value* _value,
-	const exml::Node* _node,
+	ejson::Value* _value,
+	exml::Node* _node,
 	bool _autoAddElement)
 {
 	if (false==GetHachTableCreating().Exist(_type)) {
@@ -237,12 +237,12 @@ ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, co
 	return CreateElement(_type, &_description, NULL, NULL, _autoAddElement);
 }
 
-ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, const ejson::Value* _value, bool _autoAddElement)
+ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, ejson::Value* _value, bool _autoAddElement)
 {
 	return CreateElement(_type, NULL, _value, NULL, _autoAddElement);
 }
 
-ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, const exml::Node* _node, bool _autoAddElement)
+ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, exml::Node* _node, bool _autoAddElement)
 {
 	return CreateElement(_type, NULL, NULL, _node, _autoAddElement);
 }
