@@ -125,7 +125,7 @@ namespace ege
 			 * @brief Draw the curent element (can have multiple display)
 			 * @param[in] pass Id of the current pass : [0..?]
 			 */
-			virtual void Draw(int32_t _pass=0) { };
+			virtual void Draw(int32_t _pass=0);
 			
 			/**
 			 * @brief Draw the current life of the element

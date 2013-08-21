@@ -58,6 +58,18 @@ ege::ElementGame::~ElementGame(void)
 	IADisable();
 	// same ...
 	DynamicDisable();
+	if (NULL != m_mesh) {
+		// release the mesh
+		ewol::resource::Release(m_mesh);
+	}
+	if (NULL != m_body) {
+		delete(m_body);
+		m_body = NULL;
+	}
+	if (NULL != m_shape) {
+		delete(m_shape);
+		m_shape=NULL;
+	}
 	EGE_DEBUG("Destroy element : uId=" << m_uID);
 }
 
@@ -405,6 +417,25 @@ void ege::ElementGame::DrawDebug(ewol::Colored3DObject* _draw, const ege::Camera
 	                  * etk::matScale(vec3(0.05,0.05,0.05)));
 }
 
+void ege::ElementGame::Draw(int32_t _pass)
+{
+	if (false == m_elementInPhysicsSystem) {
+		return;
+	}
+	if (_pass==0) {
+		if(    NULL != m_body
+		    && NULL != m_mesh
+		    && m_body->getMotionState() ) {
+			btScalar mmm[16];
+			btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
+			myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(mmm);
+			
+			mat4 transformationMatrix(mmm);
+			transformationMatrix.Transpose();
+			m_mesh->Draw(transformationMatrix);
+		}
+	}
+}
 
 void ege::ElementGame::DynamicEnable(void)
 {
