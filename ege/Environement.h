@@ -21,9 +21,7 @@ class btDynamicsWorld;
 namespace ege {
 	class ElementGame;
 	class Environement;
-	typedef ege::ElementGame* (*createElement_string_tf)(ege::Environement& _env, const etk::UString& _description);
-	typedef ege::ElementGame* (*createElement_ejson_tf)(ege::Environement& _env, ejson::Value* _value);
-	typedef ege::ElementGame* (*createElement_exml_tf)(ege::Environement& _env, exml::Node* _node);
+	typedef ege::ElementGame* (*createElement_tf)(ege::Environement& _env);
 	
 	class ElementInteraction
 	{
@@ -68,9 +66,7 @@ namespace ege {
 			 * @param[in] _type Type of the element.
 			 * @param[in] _creator Function pointer that reference the element creating.
 			 */
-			static void AddCreator(const etk::UString& _type, ege::createElement_string_tf _creator);
-			static void AddCreator(const etk::UString& _type, ege::createElement_ejson_tf _creator);
-			static void AddCreator(const etk::UString& _type, ege::createElement_exml_tf _creator);
+			static void AddCreator(const etk::UString& _type, ege::createElement_tf _creator);
 			/**
 			 * @brief Create an element on the curent scene.
 			 * @param[in] _type Type of the element that might be created.
@@ -83,8 +79,6 @@ namespace ege {
 			ege::ElementGame* CreateElement(const etk::UString& _type, const etk::UString& _description, bool _autoAddElement=true);
 			ege::ElementGame* CreateElement(const etk::UString& _type, ejson::Value* _value, bool _autoAddElement=true);
 			ege::ElementGame* CreateElement(const etk::UString& _type, exml::Node* _node, bool _autoAddElement=true);
-		protected:
-			ege::ElementGame* CreateElement(const etk::UString& _type, const etk::UString* _description, ejson::Value* _value, exml::Node* _node, bool _autoAddElement);
 		public:
 			class ResultNearestElement
 			{

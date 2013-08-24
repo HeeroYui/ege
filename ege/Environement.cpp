@@ -111,115 +111,47 @@ void ege::Environement::GetElementNearestFixed(const vec3& _sourcePosition,
 	}
 }
 
-class CallBackCreator
-{
-	public:
-		ege::createElement_string_tf m_string;
-		ege::createElement_ejson_tf m_ejson;
-		ege::createElement_exml_tf m_exml;
-		CallBackCreator(void) : m_string(NULL), m_ejson(NULL), m_exml(NULL) {};
-};
 
-static etk::Hash<CallBackCreator>& GetHachTableCreating(void)
+static etk::Hash<ege::createElement_tf>& GetHachTableCreating(void)
 {
-	static etk::Hash<CallBackCreator> s_table;
+	static etk::Hash<ege::createElement_tf> s_table;
 	return s_table;
 }
 
 
-void ege::Environement::AddCreator(const etk::UString& _type, ege::createElement_string_tf _creator)
+void ege::Environement::AddCreator(const etk::UString& _type, ege::createElement_tf _creator)
 {
 	if (NULL == _creator) {
 		EGE_ERROR("Try to add an empty CREATOR ...");
 		return;
 	}
 	if (GetHachTableCreating().Exist(_type)==true) {
-		GetHachTableCreating()[_type].m_string = _creator;
+		GetHachTableCreating()[_type] = _creator;
 		return;
 	}
-	CallBackCreator tmpp;
-	tmpp.m_string = _creator;
-	GetHachTableCreating().Add(_type, tmpp);
+	GetHachTableCreating().Add(_type, _creator);
 }
 
-void ege::Environement::AddCreator(const etk::UString& _type, ege::createElement_ejson_tf _creator)
-{
-	if (NULL == _creator) {
-		EGE_ERROR("Try to add an empty CREATOR ...");
-		return;
-	}
-	if (GetHachTableCreating().Exist(_type)==true) {
-		GetHachTableCreating()[_type].m_ejson = _creator;
-		return;
-	}
-	CallBackCreator tmpp;
-	tmpp.m_ejson = _creator;
-	GetHachTableCreating().Add(_type, tmpp);
-}
-
-void ege::Environement::AddCreator(const etk::UString& _type, ege::createElement_exml_tf _creator)
-{
-	if (NULL == _creator) {
-		EGE_ERROR("Try to add an empty CREATOR ...");
-		return;
-	}
-	if (GetHachTableCreating().Exist(_type)==true) {
-		GetHachTableCreating()[_type].m_exml = _creator;
-		return;
-	}
-	CallBackCreator tmpp;
-	tmpp.m_exml = _creator;
-	GetHachTableCreating().Add(_type, tmpp);
-}
-
-ege::ElementGame* ege::Environement::CreateElement(
-	const etk::UString& _type,
-	const etk::UString* _description,
-	ejson::Value* _value,
-	exml::Node* _node,
-	bool _autoAddElement)
+ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, bool _autoAddElement)
 {
 	if (false==GetHachTableCreating().Exist(_type)) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return NULL;
 	}
-	CallBackCreator tmpp = GetHachTableCreating()[_type];
-	ege::ElementGame* tmpElement = NULL;
-	if (NULL != _value) {
-		if (NULL == tmpp.m_ejson) {
-			EGE_ERROR("ejson NULL pointer creator ==> internal error... '" << _type << "'");
-			// internal error
-			return NULL;
-		}
-		tmpElement = tmpp.m_ejson(*this, _value);
-	} else if (NULL != _node) {
-		if (NULL == tmpp.m_exml) {
-			EGE_ERROR("exml NULL pointer creator ==> internal error... '" << _type << "'");
-			// internal error
-			return NULL;
-		}
-		tmpElement = tmpp.m_exml(*this, _node);
-	} else if (NULL != _description) {
-		if (NULL == tmpp.m_string) {
-			EGE_ERROR("string NULL pointer creator  ==> internal error... '" << _type << "'");
-			// internal error
-			return NULL;
-		}
-		tmpElement = tmpp.m_string(*this, *_description);
-	} else {
-		if (NULL != tmpp.m_ejson) {
-			tmpElement = tmpp.m_ejson(*this, NULL);
-		} else if (NULL != tmpp.m_exml) {
-			tmpElement = tmpp.m_exml(*this, NULL);
-		} else if (NULL != tmpp.m_string) {
-			tmpElement = tmpp.m_string(*this, "");
-		} else {
-			EGE_ERROR("No callback availlable !!! '" << _type << "'");
-			return NULL;
-		}
+	ege::createElement_tf creatorPointer = GetHachTableCreating()[_type];
+	if (NULL == creatorPointer) {
+		EGE_ERROR("NULL pointer creator ==> internal error... '" << _type << "'");
+		return NULL;
 	}
+	ege::ElementGame* tmpElement = creatorPointer(*this);
 	if (NULL == tmpElement) {
-		EGE_ERROR("Sub creator han an error when creating element : '" << _type << "'");
+		EGE_ERROR("allocation error '" << _type << "'");
+		return NULL;
+	}
+	if (false==tmpElement->Init("")) {
+		EGE_ERROR("Init error ... '" << _type << "'");
+		// remove created element ...
+		delete(tmpElement);
 		return NULL;
 	}
 	if (_autoAddElement==true) {
@@ -227,24 +159,89 @@ ege::ElementGame* ege::Environement::CreateElement(
 	}
 	return tmpElement;
 }
-ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, bool _autoAddElement)
-{
-	return CreateElement(_type, NULL, NULL, NULL, _autoAddElement);
-}
 
 ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, const etk::UString& _description, bool _autoAddElement)
 {
-	return CreateElement(_type, &_description, NULL, NULL, _autoAddElement);
+	if (false==GetHachTableCreating().Exist(_type)) {
+		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
+		return NULL;
+	}
+	ege::createElement_tf creatorPointer = GetHachTableCreating()[_type];
+	if (NULL == creatorPointer) {
+		EGE_ERROR("NULL pointer creator ==> internal error... '" << _type << "'");
+		return NULL;
+	}
+	ege::ElementGame* tmpElement = creatorPointer(*this);
+	if (NULL == tmpElement) {
+		EGE_ERROR("allocation error '" << _type << "'");
+		return NULL;
+	}
+	if (false==tmpElement->Init(_description)) {
+		EGE_ERROR("Init error ... '" << _type << "'");
+		// remove created element ...
+		delete(tmpElement);
+		return NULL;
+	}
+	if (_autoAddElement==true) {
+		AddElementGame(tmpElement);
+	}
+	return tmpElement;
 }
 
 ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, ejson::Value* _value, bool _autoAddElement)
 {
-	return CreateElement(_type, NULL, _value, NULL, _autoAddElement);
+	if (false==GetHachTableCreating().Exist(_type)) {
+		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
+		return NULL;
+	}
+	ege::createElement_tf creatorPointer = GetHachTableCreating()[_type];
+	if (NULL == creatorPointer) {
+		EGE_ERROR("NULL pointer creator ==> internal error... '" << _type << "'");
+		return NULL;
+	}
+	ege::ElementGame* tmpElement = creatorPointer(*this);
+	if (NULL == tmpElement) {
+		EGE_ERROR("allocation error '" << _type << "'");
+		return NULL;
+	}
+	if (false==tmpElement->Init(_value)) {
+		EGE_ERROR("Init error ... '" << _type << "'");
+		// remove created element ...
+		delete(tmpElement);
+		return NULL;
+	}
+	if (_autoAddElement==true) {
+		AddElementGame(tmpElement);
+	}
+	return tmpElement;
 }
 
 ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, exml::Node* _node, bool _autoAddElement)
 {
-	return CreateElement(_type, NULL, NULL, _node, _autoAddElement);
+	if (false==GetHachTableCreating().Exist(_type)) {
+		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
+		return NULL;
+	}
+	ege::createElement_tf creatorPointer = GetHachTableCreating()[_type];
+	if (NULL == creatorPointer) {
+		EGE_ERROR("NULL pointer creator ==> internal error... '" << _type << "'");
+		return NULL;
+	}
+	ege::ElementGame* tmpElement = creatorPointer(*this);
+	if (NULL == tmpElement) {
+		EGE_ERROR("allocation error '" << _type << "'");
+		return NULL;
+	}
+	if (false==tmpElement->Init(_node)) {
+		EGE_ERROR("Init error ... '" << _type << "'");
+		// remove created element ...
+		delete(tmpElement);
+		return NULL;
+	}
+	if (_autoAddElement==true) {
+		AddElementGame(tmpElement);
+	}
+	return tmpElement;
 }
 
 
@@ -280,6 +277,7 @@ void ege::Environement::RmElementGame(ege::ElementGame* _removeElement)
 	for (int32_t iii=0; iii<m_listElementGame.Size() ; iii++) {
 		if (_removeElement == m_listElementGame[iii]) {
 			m_listElementGame[iii]->DynamicDisable();
+			m_listElementGame[iii]->UnInit();
 			delete(m_listElementGame[iii]);
 			m_listElementGame[iii] = NULL;
 		}
