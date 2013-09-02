@@ -17,7 +17,7 @@
 #include <ege/Camera.h>
 #include <ewol/widget/Widget.h>
 #include <ewol/renderer/openGL.h>
-#include <ewol/renderer/ResourceManager.h>
+#include <ewol/resources/ResourceManager.h>
 #include <ege/ElementGame.h>
 #include <ewol/Dimension.h>
 

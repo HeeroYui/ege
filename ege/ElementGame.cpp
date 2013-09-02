@@ -10,7 +10,7 @@
 #include <ege/debug.h>
 #include <ege/ElementGame.h>
 #include <ege/Environement.h>
-#include <ewol/renderer/ResourceManager.h>
+#include <ewol/resources/ResourceManager.h>
 #include <BulletDynamics/Dynamics/btRigidBody.h>
 #include <LinearMath/btDefaultMotionState.h>
 #include <BulletDynamics/Dynamics/btDynamicsWorld.h>
@@ -53,6 +53,7 @@ ege::ElementGame::ElementGame(ege::Environement& _env) :
 	static uint32_t unique=0;
 	m_uID = unique;
 	EGE_DEBUG("Create element : uId=" << m_uID);
+	m_debugText.SetFontSize(12);
 	unique++;
 }
 
@@ -462,7 +463,6 @@ static void DrawShape(const btCollisionShape* _shape,
 void ege::ElementGame::DrawDebug(ewol::Colored3DObject* _draw, const ege::Camera& _camera)
 {
 	m_debugText.Clear();
-	m_debugText.SetFontSize(12);
 	m_debugText.SetColor(0x00FF00FF);
 	m_debugText.SetPos(vec3(-20,32,0));
 	m_debugText.Print(GetType());

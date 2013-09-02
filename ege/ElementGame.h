@@ -16,7 +16,7 @@
 #include <ewol/debug.h>
 #include <ewol/widget/Widget.h>
 #include <ewol/renderer/openGL.h>
-#include <ewol/renderer/ResourceManager.h>
+#include <ewol/resources/ResourceManager.h>
 #include <ege/Camera.h>
 #include <ewol/compositing/Text.h>
 #include <ege/Environement.h>

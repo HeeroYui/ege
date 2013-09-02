@@ -13,13 +13,13 @@
 #include <BulletCollision/CollisionShapes/btConvexPolyhedron.h>
 #include <BulletCollision/CollisionShapes/btShapeHull.h>
 #include <BulletCollision/CollisionDispatch/btCollisionObject.h>
-#include <ewol/renderer/resources/physicsShape/PhysicsShape.h>
-#include <ewol/renderer/resources/physicsShape/PhysicsBox.h>
-#include <ewol/renderer/resources/physicsShape/PhysicsCapsule.h>
-#include <ewol/renderer/resources/physicsShape/PhysicsCone.h>
-#include <ewol/renderer/resources/physicsShape/PhysicsConvexHull.h>
-#include <ewol/renderer/resources/physicsShape/PhysicsCylinder.h>
-#include <ewol/renderer/resources/physicsShape/PhysicsSphere.h>
+#include <ewol/physicsShape/PhysicsShape.h>
+#include <ewol/physicsShape/PhysicsBox.h>
+#include <ewol/physicsShape/PhysicsCapsule.h>
+#include <ewol/physicsShape/PhysicsCone.h>
+#include <ewol/physicsShape/PhysicsConvexHull.h>
+#include <ewol/physicsShape/PhysicsCylinder.h>
+#include <ewol/physicsShape/PhysicsSphere.h>
 
 // Documentetion of bullet library :
 // http://bulletphysics.org/mediawiki-1.5.8/index.php/Collision_Shapes

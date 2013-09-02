@@ -11,7 +11,7 @@
 #define __EGE_COLLISION_SHAPE_CREATOR_H__
 
 #include <etk/types.h>
-#include <ewol/renderer/resources/Mesh.h>
+#include <ewol/resources/Mesh.h>
 #include <BulletCollision/CollisionShapes/btCollisionShape.h>
 
 namespace ege {
