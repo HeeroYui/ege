@@ -132,7 +132,7 @@ void ege::Environement::AddCreator(const etk::UString& _type, ege::createElement
 	GetHachTableCreating().Add(_type, _creator);
 }
 
-ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, bool _autoAddElement)
+ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, bool _autoAddElement, ege::property_te _property, void* _value)
 {
 	if (false==GetHachTableCreating().Exist(_type)) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
@@ -148,7 +148,7 @@ ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, bo
 		EGE_ERROR("allocation error '" << _type << "'");
 		return NULL;
 	}
-	if (false==tmpElement->Init("")) {
+	if (false==tmpElement->Init(_property, _value)) {
 		EGE_ERROR("Init error ... '" << _type << "'");
 		// remove created element ...
 		delete(tmpElement);
@@ -160,88 +160,19 @@ ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, bo
 	return tmpElement;
 }
 
-ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, const etk::UString& _description, bool _autoAddElement)
+ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, etk::UString& _description, bool _autoAddElement)
 {
-	if (false==GetHachTableCreating().Exist(_type)) {
-		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
-		return NULL;
-	}
-	ege::createElement_tf creatorPointer = GetHachTableCreating()[_type];
-	if (NULL == creatorPointer) {
-		EGE_ERROR("NULL pointer creator ==> internal error... '" << _type << "'");
-		return NULL;
-	}
-	ege::ElementGame* tmpElement = creatorPointer(*this);
-	if (NULL == tmpElement) {
-		EGE_ERROR("allocation error '" << _type << "'");
-		return NULL;
-	}
-	if (false==tmpElement->Init(_description)) {
-		EGE_ERROR("Init error ... '" << _type << "'");
-		// remove created element ...
-		delete(tmpElement);
-		return NULL;
-	}
-	if (_autoAddElement==true) {
-		AddElementGame(tmpElement);
-	}
-	return tmpElement;
+	return CreateElement(_type, _autoAddElement, ege::typeString, static_cast<void*>(&_description));
 }
 
 ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, ejson::Value* _value, bool _autoAddElement)
 {
-	if (false==GetHachTableCreating().Exist(_type)) {
-		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
-		return NULL;
-	}
-	ege::createElement_tf creatorPointer = GetHachTableCreating()[_type];
-	if (NULL == creatorPointer) {
-		EGE_ERROR("NULL pointer creator ==> internal error... '" << _type << "'");
-		return NULL;
-	}
-	ege::ElementGame* tmpElement = creatorPointer(*this);
-	if (NULL == tmpElement) {
-		EGE_ERROR("allocation error '" << _type << "'");
-		return NULL;
-	}
-	if (false==tmpElement->Init(_value)) {
-		EGE_ERROR("Init error ... '" << _type << "'");
-		// remove created element ...
-		delete(tmpElement);
-		return NULL;
-	}
-	if (_autoAddElement==true) {
-		AddElementGame(tmpElement);
-	}
-	return tmpElement;
+	return CreateElement(_type, _autoAddElement, ege::typeJson, static_cast<void*>(_value));
 }
 
 ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, exml::Node* _node, bool _autoAddElement)
 {
-	if (false==GetHachTableCreating().Exist(_type)) {
-		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
-		return NULL;
-	}
-	ege::createElement_tf creatorPointer = GetHachTableCreating()[_type];
-	if (NULL == creatorPointer) {
-		EGE_ERROR("NULL pointer creator ==> internal error... '" << _type << "'");
-		return NULL;
-	}
-	ege::ElementGame* tmpElement = creatorPointer(*this);
-	if (NULL == tmpElement) {
-		EGE_ERROR("allocation error '" << _type << "'");
-		return NULL;
-	}
-	if (false==tmpElement->Init(_node)) {
-		EGE_ERROR("Init error ... '" << _type << "'");
-		// remove created element ...
-		delete(tmpElement);
-		return NULL;
-	}
-	if (_autoAddElement==true) {
-		AddElementGame(tmpElement);
-	}
-	return tmpElement;
+	return CreateElement(_type, _autoAddElement, ege::typeXml, static_cast<void*>(_node));
 }
 
 

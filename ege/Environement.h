@@ -19,6 +19,14 @@ class btDynamicsWorld;
 #include <exml/exml.h>
 
 namespace ege {
+	typedef enum {
+		typeNone, //!< no element property
+		typeString, //!< type element static_cast<etk::UString*>(xxxxxxx)
+		typeJson, //!< type element static_cast<ejson::Value*>(xxxxxxx)
+		typeXml, //!< type element static_cast<exml::Node*>(xxxxxxx)
+		typeUser1, //!< user type 1
+		typeUser2 //!< User type 2
+	} property_te;
 	class ElementGame;
 	class Environement;
 	typedef ege::ElementGame* (*createElement_tf)(ege::Environement& _env);
@@ -75,8 +83,8 @@ namespace ege {
 			 * @return NULL if an error occured OR the pointer on the element and it is already added on the system.
 			 * @note Pointer is return in case of setting properties on it...
 			 */
-			ege::ElementGame* CreateElement(const etk::UString& _type, bool _autoAddElement=true);
-			ege::ElementGame* CreateElement(const etk::UString& _type, const etk::UString& _description, bool _autoAddElement=true);
+			ege::ElementGame* CreateElement(const etk::UString& _type, bool _autoAddElement=true, ege::property_te _property=ege::typeNone, void* _value=NULL);
+			ege::ElementGame* CreateElement(const etk::UString& _type, etk::UString& _description, bool _autoAddElement=true);
 			ege::ElementGame* CreateElement(const etk::UString& _type, ejson::Value* _value, bool _autoAddElement=true);
 			ege::ElementGame* CreateElement(const etk::UString& _type, exml::Node* _node, bool _autoAddElement=true);
 		public:

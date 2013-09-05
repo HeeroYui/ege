@@ -55,26 +55,11 @@ namespace ege
 			virtual const etk::UString& GetType(void) const;
 			/**
 			 * @brief Init the element with the defined properties
-			 * @param[in] _description String properties that the element know how to parse it... 
-			 * @note : When the useer reques no parameter ==> if will call this one.
-			 * @note : In a game developpement the user choice a transmission mode (string, json or xml) and use only one ...
+			 * @param[in] _property Type of the next element
+			 * @param[in] _value pointer on the value type
 			 * @return true, the element is corectly initialized.
 			 */
-			virtual bool Init(const etk::UString& _description) { return false; };
-			/**
-			 * @brief Init the element with the defined properties
-			 * @param[in] _value json properties that the element know how to parse it...
-			 * @note : in a game developpement the user choice a transmission mode (string, json or xml) and use only one ...
-			 * @return true, the element is corectly initialized.
-			 */
-			virtual bool Init(ejson::Value* _value) { return false; };
-			/**
-			 * @brief Init the element with the defined properties
-			 * @param[in] _node xml properties that the element know how to parse it...
-			 * @note : in a game developpement the user choice a transmission mode (string, json or xml) and use only one ...
-			 * @return true, the element is corectly initialized.
-			 */
-			virtual bool Init(exml::Node* _value) { return false; };
+			virtual bool Init(property_te _property, void* _value) { return false; };
 			virtual bool UnInit(void) { return true; };
 		private:
 			uint32_t m_uID; //!< This is a reference on a basic element ID
