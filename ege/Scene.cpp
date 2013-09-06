@@ -51,7 +51,7 @@ ege::Scene::Scene(bool _setAutoBullet, bool _setAutoCamera) :
 	AddEventId(eventPlayTimeChange);
 	AddEventId(eventKillEnemy);
 	
-	ewol::resource::Keep(m_debugDrawing);
+	m_debugDrawing = ewol::Colored3DObject::Keep();
 	
 	m_ratioTime = 1.0f;
 	if (_setAutoBullet==true) {
@@ -117,7 +117,7 @@ void ege::Scene::SetCamera(ege::Camera* _camera)
 
 ege::Scene::~Scene(void)
 {
-	ewol::resource::Release(m_debugDrawing);
+	ewol::Colored3DObject::Release(m_debugDrawing);
 /*
 	ewol::resource::Release(m_directDrawObject);
 	//cleanup in the reverse order of creation/initialization

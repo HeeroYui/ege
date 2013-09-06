@@ -64,10 +64,7 @@ ege::ElementGame::~ElementGame(void)
 	// same ...
 	DynamicDisable();
 	RemoveShape();
-	if (NULL != m_mesh) {
-		// release the mesh
-		ewol::resource::Release(m_mesh);
-	}
+	ewol::Mesh::Release(m_mesh);
 	if (NULL != m_body) {
 		delete(m_body);
 		m_body = NULL;
@@ -107,7 +104,7 @@ void ege::ElementGame::FunctionFreeShape(void* _pointer)
 bool ege::ElementGame::LoadMesh(const etk::UString& _meshFileName)
 {
 	ewol::Mesh* tmpMesh=NULL;
-	ewol::resource::Keep(_meshFileName, tmpMesh);
+	tmpMesh = ewol::Mesh::Keep(_meshFileName);
 	if(NULL==tmpMesh) {
 		EGE_ERROR("can not load the resources : " << _meshFileName);
 		return false;
@@ -119,7 +116,7 @@ bool ege::ElementGame::SetMesh(ewol::Mesh* _mesh)
 {
 	if (NULL!=m_mesh) {
 		RemoveShape();
-		ewol::resource::Release(m_mesh);
+		ewol::Mesh::Release(m_mesh);
 	}
 	m_mesh = _mesh;
 	// auto load the shape :
