@@ -10,7 +10,13 @@
 #define __EGE_PARTICULE_ENGINE_H__
 
 namespace ege {
-	
+	class PariculeEngine
+	{
+		public:
+			PariculeEngine(ege::Environement& _env);
+			~PariculeEngine(void);
+			Keep(
+	};
 };
 
 #endif
