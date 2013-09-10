@@ -9,19 +9,27 @@
 #ifndef __EGE_PARTICULE_H__
 #define __EGE_PARTICULE_H__
 
+#include <etk/UString.h>
+#include <ege/Environement.h>
+
+
 namespace ege {
+	/**
+	 * @brief The particule class is an element with no control, when it will be created,
+	 *        it does not have any control, for example smoke or reactor generation ...
+	 *        or explosion particule ...
+	 */
 	class Particule
 	{
 		private:
 			etk::UString m_name; //!< name of the particule
-			bool m_standalone; //!< if true, no control of the particule...
 		public:
 			/**
 			 * @brief Constructor.
 			 * @param[in] _name Name of the particule.
 			 * @param[in] _standalone The particule are created and have there own life (no dynamic control)
 			 */
-			Particule(const etk::UString& _name, bool _standalone) : m_name(_name) { };
+			Particule(ege::Environement& _env, const etk::UString& _name) : m_name(_name) { };
 			/**
 			 * @brief Destructor.
 			 */
@@ -32,15 +40,15 @@ namespace ege {
 			 */
 			const etk::UString& GetName(void) { return m_name; };
 			/**
-			 * @brief Get the standalone status.
-			 * @return true if standalone
-			 */
-			bool GetStandalone(void) { return m_standalone; };
-			/**
 			 * @brief Update the paticule properties
 			 * @param[in] _delta Delta time from the previous call
 			 */
 			virtual void Update(float _delta) { };
+			/**
+			 * @brief Draw the current particule
+			 */
+			virtual void Draw(void) { };
+			
 		// note : For multiple instance only (standalone==false)
 			/**
 			 *
