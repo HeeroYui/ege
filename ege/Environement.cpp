@@ -283,3 +283,10 @@ void ege::Environement::GenerateInteraction(ege::ElementInteraction& _event)
 		*/
 	}
 }
+
+ege::Environement::Environement(void) :
+	m_dynamicsWorld(NULL),
+	m_particuleEngine(*this)
+{
+	// nothing to do ...
+}

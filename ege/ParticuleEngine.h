@@ -6,21 +6,32 @@
  * @license BSD v3 (see license file)
  */
 
+#include <ege/Environement.h>
+
 #ifndef __EGE_PARTICULE_ENGINE_H__
 #define __EGE_PARTICULE_ENGINE_H__
 
+namespace ege {
+	class ParticuleEngine;
+};
+
 #include <etk/UString.h>
+#include <etk/Vector.h>
 #include <ege/Particule.h>
-#include <ege/Environement.h>
 
 namespace ege {
-	class PariculeEngine
+	class ParticuleEngine
 	{
+		private:
+			ege::Environement& m_env;
 		public:
-			PariculeEngine(ege::Environement& _env); // note : Need the engine to register has an dynamic element ... (the first ...)
-			~PariculeEngine(void);
-			Particule* LocalKeep(const etk::UString& _name);
-			void LocalRelease(Particule* _particule);
+			ParticuleEngine(ege::Environement& _env); // note : Need the engine to register has an dynamic element ... (the first ...)
+			~ParticuleEngine(void);
+		private:
+			etk::Vector<Particule*> m_particuleList;
+		public:
+			void Clear(void);
+			void Add(Particule* _particule, const char* _particuleType);
 			void Update(float _deltaTime);
 			void Draw(void);
 	};

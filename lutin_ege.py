@@ -16,6 +16,7 @@ def Create(target):
 		'ege/ElementGame.cpp',
 		'ege/Particule.cpp',
 		'ege/ParticuleEngine.cpp',
+		'ege/ParticuleSimple.cpp',
 		'ege/Scene.cpp',
 		'ege/Environement.cpp'
 		])

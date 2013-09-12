@@ -9,6 +9,11 @@
 #ifndef __EGE_ENVIRONEMENT_H__
 #define __EGE_ENVIRONEMENT_H__
 
+namespace ege {
+	class Environement;
+	class ElementInteraction;
+};
+
 #include <etk/UString.h>
 #include <BulletDynamics/Dynamics/btActionInterface.h>
 class btDynamicsWorld;
@@ -17,6 +22,7 @@ class btDynamicsWorld;
 #include <etk/math/Vector3D.h>
 #include <ejson/ejson.h>
 #include <exml/exml.h>
+#include <ege/ParticuleEngine.h>
 
 namespace ege {
 	typedef enum {
@@ -66,7 +72,7 @@ namespace ege {
 			btDynamicsWorld* m_dynamicsWorld; //!< curent system world description
 			etk::Vector<ege::ElementGame*> m_listElementGame; //!< List of all element added in the Game
 		public:
-			Environement(void) : m_dynamicsWorld(NULL) { };
+			Environement(void);
 			virtual ~Environement(void) { };
 		public:
 			/**
@@ -141,6 +147,14 @@ namespace ege {
 			 * @param[in] _event event that might be apply ...
 			 */
 			void GenerateInteraction(ege::ElementInteraction& _event);
+		private:
+			ege::ParticuleEngine m_particuleEngine; //!< Particule engine properties
+		public:
+			/**
+			 * @brief Get the particule engine reference.
+			 * @return The requested reference on the engine
+			 */
+			ege::ParticuleEngine& GetParticuleEngine(void) { return m_particuleEngine; };
 	};
 };
 

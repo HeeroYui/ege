@@ -9,6 +9,10 @@
 #ifndef __EGE_PARTICULE_H__
 #define __EGE_PARTICULE_H__
 
+namespace ege {
+	class Particule;
+};
+
 #include <etk/UString.h>
 #include <ege/Environement.h>
 
@@ -22,23 +26,25 @@ namespace ege {
 	class Particule
 	{
 		private:
-			etk::UString m_name; //!< name of the particule
+			ege::ParticuleEngine& m_particuleEngine;
 		public:
 			/**
 			 * @brief Constructor.
-			 * @param[in] _name Name of the particule.
-			 * @param[in] _standalone The particule are created and have there own life (no dynamic control)
+			 * @param[in] _env reference on the envorionement ...
 			 */
-			Particule(ege::Environement& _env, const etk::UString& _name) : m_name(_name) { };
+			Particule(ege::ParticuleEngine& _particuleEngine, const char* _particuleType);
 			/**
 			 * @brief Destructor.
 			 */
-			~Particule(void) { };
+			virtual ~Particule(void) { };
 			/**
-			 * @brief Get the particule type name.
-			 * @return the particule name.
+			 * @brief Init the particule
 			 */
-			const etk::UString& GetName(void) { return m_name; };
+			virtual void Init(void) { };
+			/**
+			 * @brief Un-init the particule
+			 */
+			virtual void UnInit(void) { };
 			/**
 			 * @brief Update the paticule properties
 			 * @param[in] _delta Delta time from the previous call
@@ -48,19 +54,12 @@ namespace ege {
 			 * @brief Draw the current particule
 			 */
 			virtual void Draw(void) { };
-			
-		// note : For multiple instance only (standalone==false)
 			/**
-			 *
+			 * @brief Check if the element might be removed
+			 * @return true : The element might be removed
+			 * @return false : The element might be keeped
 			 */
-			/*
-			virtual int32_t Add(void) { return -1; };
-			virtual void SetLife(int32_t _id, float _life);
-			virtual void SetLevel(int32_t _id, float _level);
-			virtual void SetPosition(int32_t _id, const vec3& _pos);
-			virtual void SetAngleSpeed(int32_t _id, const vec4& _angle);
-			virtual void SetMoveSpeed(int32_t _id, const vec3& _speed);
-			*/
+			virtual bool NeedRemove(void) { return false; };
 	};
 };
 
