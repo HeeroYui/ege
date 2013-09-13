@@ -228,7 +228,9 @@ void ege::Scene::OnDraw(void)
 			}
 		#endif
 	}
-	m_env.GetParticuleEngine().Draw();
+	if (NULL!=m_camera) {
+		m_env.GetParticuleEngine().Draw(*m_camera);
+	}
 	#ifdef SCENE_DISPLAY_SPEED
 		float localTime = (float)(ewol::GetTime() - g_startTime) / 1000.0f;
 		if (localTime>1) {

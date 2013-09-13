@@ -46,11 +46,14 @@ namespace ege {
 			virtual bool NeedRemove(void);
 			virtual void Init(void);
 		protected:
+			float m_lifeFull;
 			float m_life;
 			float m_level;
 			vec3 m_pos;
 			vec4 m_angle;
 			vec3 m_speed;
+			vec3 m_scale;
+			vec3 m_scaleExpand;
 		public:
 			/**
 			 *
@@ -60,6 +63,8 @@ namespace ege {
 			virtual void SetPosition(const vec3& _pos);
 			virtual void SetAngleSpeed(const vec4& _angle);
 			virtual void SetMoveSpeed(const vec3& _speed);
+			virtual void SetScale(const vec3& _scale);
+			virtual void SetScaleExpend(const vec3& _scaleExpand);
 	};
 };
 

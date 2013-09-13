@@ -15,6 +15,7 @@ namespace ege {
 
 #include <etk/UString.h>
 #include <ege/Environement.h>
+#include <ege/Camera.h>
 
 
 namespace ege {
@@ -31,9 +32,10 @@ namespace ege {
 		public:
 			/**
 			 * @brief Constructor.
-			 * @param[in] _env reference on the envorionement ...
+			 * @param[in] _particuleEngine reference on the particule engine ...
+			 * @param[in] _particuleType Type of the particule (Set NULL if you did not want to use the respowner ...)
 			 */
-			Particule(ege::ParticuleEngine& _particuleEngine, const char* _particuleType);
+			Particule(ege::ParticuleEngine& _particuleEngine, const char* _particuleType = NULL);
 			/**
 			 * @brief Destructor.
 			 */
@@ -54,13 +56,18 @@ namespace ege {
 			/**
 			 * @brief Draw the current particule
 			 */
-			virtual void Draw(void) { };
+			virtual void Draw(const ege::Camera& _camera) { };
 			/**
 			 * @brief Check if the element might be removed
 			 * @return true : The element might be removed
 			 * @return false : The element might be keeped
 			 */
 			virtual bool NeedRemove(void) { return false; };
+			/**
+			 * @brief Get the type of the particule
+			 * @return Type of the current particule
+			 */
+			const char* GetParticuleType(void) { return m_particuleType; };
 	};
 };
 
