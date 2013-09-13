@@ -10,6 +10,9 @@
 #include <ege/Camera.h>
 #include <ege/debug.h>
 
+#undef __class__
+#define __class__	"Camera"
+
 void ege::Camera::Update(void)
 {
 	// Note the view axes of the basic camera is (0,0,-1)

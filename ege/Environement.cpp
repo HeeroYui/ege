@@ -11,6 +11,8 @@
 #include <ege/ElementGame.h>
 
 
+#undef __class__
+#define __class__	"Environement"
 
 
 ege::ElementGame* ege::Environement::GetElementNearest(ege::ElementGame* _sourceRequest, float& _distance)

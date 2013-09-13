@@ -45,12 +45,13 @@ namespace ege {
 			//virtual void Draw(void) { };
 			virtual bool NeedRemove(void);
 			virtual void Init(void);
-		private:
+		protected:
 			float m_life;
 			float m_level;
 			vec3 m_pos;
 			vec4 m_angle;
 			vec3 m_speed;
+		public:
 			/**
 			 *
 			 */

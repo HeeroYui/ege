@@ -31,7 +31,7 @@ namespace ege {
 			etk::Vector<Particule*> m_particuleList;
 		public:
 			void Clear(void);
-			void Add(Particule* _particule, const char* _particuleType);
+			void Add(Particule* _particule);
 			void Update(float _deltaTime);
 			void Draw(void);
 	};

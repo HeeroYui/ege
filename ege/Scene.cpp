@@ -228,6 +228,7 @@ void ege::Scene::OnDraw(void)
 			}
 		#endif
 	}
+	m_env.GetParticuleEngine().Draw();
 	#ifdef SCENE_DISPLAY_SPEED
 		float localTime = (float)(ewol::GetTime() - g_startTime) / 1000.0f;
 		if (localTime>1) {
@@ -280,6 +281,7 @@ void ege::Scene::PeriodicCall(const ewol::EventTime& _event)
 		//optional but useful: debug drawing
 		m_dynamicsWorld->debugDrawWorld();
 	}
+	m_env.GetParticuleEngine().Update(curentDelta);
 	// Remove all element that requested it ...
 	{
 		int32_t numberEnnemyKilled=0;

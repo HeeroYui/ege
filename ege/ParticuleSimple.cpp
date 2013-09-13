@@ -10,6 +10,8 @@
 #include <ege/ParticuleSimple.h>
 
 
+#undef __class__
+#define __class__	"ParticuleSimple"
 
 ege::ParticuleSimple::ParticuleSimple(ege::ParticuleEngine& _particuleEngine, const char* _particuleType) :
 	Particule(_particuleEngine, _particuleType)

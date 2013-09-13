@@ -24,6 +24,9 @@
 // Documentetion of bullet library :
 // http://bulletphysics.org/mediawiki-1.5.8/index.php/Collision_Shapes
 
+#undef __class__
+#define __class__	"CollisionShapeCreator"
+
 btCollisionShape* ege::collision::CreateShape(const ewol::Mesh* _mesh)
 {
 	if (NULL == _mesh) {

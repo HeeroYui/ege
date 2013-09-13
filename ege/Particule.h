@@ -27,6 +27,7 @@ namespace ege {
 	{
 		private:
 			ege::ParticuleEngine& m_particuleEngine;
+			const char* m_particuleType;
 		public:
 			/**
 			 * @brief Constructor.

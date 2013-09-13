@@ -9,6 +9,9 @@
 #include <ege/debug.h>
 #include <ege/ParticuleEngine.h>
 
+#undef __class__
+#define __class__	"ParticuleEngine"
+
 ege::ParticuleEngine::ParticuleEngine(ege::Environement& _env) :
 	m_env(_env)
 {
@@ -20,7 +23,7 @@ ege::ParticuleEngine::~ParticuleEngine(void)
 	
 }
 
-void ege::ParticuleEngine::Add(Particule* _particule, const char* _particuleType)
+void ege::ParticuleEngine::Add(Particule* _particule)
 {
 	if (_particule==NULL) {
 		EGE_ERROR("Try to add particule NULL");
@@ -34,7 +37,7 @@ void ege::ParticuleEngine::Add(Particule* _particule, const char* _particuleType
 		return;
 	}
 	// Just add it at the end ...
-	m_particuleList.PushBack();
+	m_particuleList.PushBack(_particule);
 }
 
 void ege::ParticuleEngine::Update(float _deltaTime)
