@@ -26,7 +26,7 @@ void ege::ParticuleSimple::Init(void)
 	m_life = m_lifeFull;
 	m_level = 0;
 	m_pos = vec3(0,0,0);
-	m_angle = vec4(0,0,0,0);
+	m_angle = 0;
 	m_speed = vec3(0,0,0);
 	m_scale = vec3(1,1,1);
 	m_scaleExpand = vec3(0,0,0);
@@ -62,7 +62,7 @@ void ege::ParticuleSimple::SetPosition(const vec3& _pos)
 	m_pos = _pos;
 }
 
-void ege::ParticuleSimple::SetAngleSpeed(const vec4& _angle)
+void ege::ParticuleSimple::SetAngle(float _angle)
 {
 	m_angle = _angle;
 }

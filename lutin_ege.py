@@ -18,8 +18,11 @@ def Create(target):
 		'ege/ParticuleEngine.cpp',
 		'ege/ParticuleSimple.cpp',
 		'ege/Scene.cpp',
-		'ege/Environement.cpp'
+		'ege/Environement.cpp',
+		'ege/resource/ParticuleMesh.cpp'
 		])
+	
+	myModule.CopyFolder('data/ParticuleMesh.*','')
 	
 	# name of the dependency
 	myModule.AddModuleDepend(['ewol', 'bullet'])
