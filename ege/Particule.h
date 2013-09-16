@@ -26,7 +26,7 @@ namespace ege {
 	 */
 	class Particule
 	{
-		private:
+		protected:
 			ege::ParticuleEngine& m_particuleEngine;
 			const char* m_particuleType;
 		public:
@@ -68,6 +68,10 @@ namespace ege {
 			 * @return Type of the current particule
 			 */
 			const char* GetParticuleType(void) { return m_particuleType; };
+			/**
+			 * @brief When the particule arrive to his end of life, this function is called.
+			 */
+			virtual void OnEnd(void) {};
 	};
 };
 

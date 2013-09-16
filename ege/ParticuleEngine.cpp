@@ -93,6 +93,7 @@ void ege::ParticuleEngine::Update(float _deltaTime)
 			continue;
 		}
 		if (m_particuleList[iii]->NeedRemove()) {
+			m_particuleList[iii]->OnEnd();
 			if (m_particuleList[iii]->GetParticuleType()==NULL) {
 				// Real remove particule ...
 				delete (m_particuleList[iii]);

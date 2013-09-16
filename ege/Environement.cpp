@@ -209,6 +209,7 @@ void ege::Environement::RmElementGame(ege::ElementGame* _removeElement)
 	// ream remove on the element :
 	for (int32_t iii=0; iii<m_listElementGame.Size() ; iii++) {
 		if (_removeElement == m_listElementGame[iii]) {
+			m_listElementGame[iii]->OnDestroy();
 			m_listElementGame[iii]->DynamicDisable();
 			m_listElementGame[iii]->UnInit();
 			delete(m_listElementGame[iii]);

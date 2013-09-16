@@ -287,6 +287,10 @@ namespace ege
 			 * @param[in] step : step of time in s
 			 */
 			virtual void IAAction(float _step) { };
+			/**
+			 * @brief, call when the element is removed (call only one time
+			 */
+			virtual void OnDestroy(void) {};
 	};
 };
 
