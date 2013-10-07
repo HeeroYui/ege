@@ -25,46 +25,46 @@ namespace ege {
 		private:
 			ege::Environement& m_env;
 		public:
-			ParticuleEngine(ege::Environement& _env); // note : Need the engine to register has an dynamic element ... (the first ...)
+			ParticuleEngine(ege::Environement& _env); // note : need the engine to register has an dynamic element ... (the first ...)
 			~ParticuleEngine(void);
 		private:
 			etk::Vector<Particule*> m_particuleList; //!< all particule created and active
 			etk::Vector<Particule*> m_particuleRemoved; //!< removed particule
 		public:
 			/**
-			 * @brief Clear the particule engine
+			 * @brief clear the particule engine
 			 */
-			void Clear(void);
+			void clear(void);
 			/**
-			 * @brief Add a particule in the engine (internal acces only)
+			 * @brief add a particule in the engine (internal acces only)
 			 * @param[in] _particule Pointer on the particule to add
 			 */
-			void Add(Particule* _particule);
+			void add(Particule* _particule);
 		private:
 			/**
-			 * @brief Add a particule in the removed section ==> this not delete the particule, but just set it in an other list
+			 * @brief add a particule in the removed section  == > this not delete the particule, but just set it in an other list
 			 * @param[in] _particule Pointer on the particule to add
 			 */
-			void AddRemoved(Particule* _particule);
+			void addRemoved(Particule* _particule);
 		public:
 			/**
-			 * @brief Update particule properties
+			 * @brief update particule properties
 			 * @param[in] _deltaTime delta time to process
 			 */
-			void Update(float _deltaTime);
+			void update(float _deltaTime);
 			/**
-			 * @brief Draw all the active Particule
+			 * @brief draw all the active Particule
 			 * @param[in] _camera Reference on the current camera
 			 */
-			void Draw(const ege::Camera& _camera);
+			void draw(const ege::Camera& _camera);
 			/**
-			 * @brief Get a particue with his type, we get particule that has been already removed, otherwise, you will create new
+			 * @brief get a particue with his type, we get particule that has been already removed, otherwise, you will create new
 			 * @param[in] _particuleType Particule type, this chek only the pointer not the data.
 			 * @return NULL, the particule has not been removed from the created pool
-			 * @return The pointer on the requested element (an Init has been done).
+			 * @return The pointer on the requested element (an init has been done).
 			 * @note If you did not want to use respawn set type at NULL.
 			 */
-			Particule* Respown(const char* _particuleType);
+			Particule* respown(const char* _particuleType);
 			
 	};
 };

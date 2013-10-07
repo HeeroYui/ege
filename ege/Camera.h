@@ -26,13 +26,13 @@ namespace ege
 			float m_distance;
 			mat4 m_matrix; //!< transformation matrix.
 			/**
-			 * @brief Update the matrix property
+			 * @brief update the matrix property
 			 */
-			void Update(void);
+			void update(void);
 			// these element is calculated when we get the mattrix:
 			vec3 m_calculatedOrigin;
 			vec3 m_calculatedViewVector;
-			float m_offsetFactor; //!< this variable is used to move the camera to the top position of the system ==> automaticly
+			float m_offsetFactor; //!< this variable is used to move the camera to the top position of the system  == > automaticly
 			bool m_forceViewTop;
 		public:
 			/**
@@ -44,56 +44,56 @@ namespace ege
 			 */
 			Camera(vec3 _eye=vec3(0,0,0), float _angleZ=0, float _angleTeta=0, float _distance=10);
 			/**
-			 * @brief Set the position of the camera.
+			 * @brief set the position of the camera.
 			 * @param[in] pos Position of the camera.
 			 */
-			void SetEye(vec3 _eye);
+			void setEye(vec3 _eye);
 			/**
-			 * @brief Get the curent Camera Eye position.
+			 * @brief get the curent Camera Eye position.
 			 * @return the current position.
 			 */
-			const vec3& GetEye(void) const { return m_eye; };
+			const vec3& getEye(void) const { return m_eye; };
 			/**
-			 * @brief Get the curent Camera origin position.
+			 * @brief get the curent Camera origin position.
 			 * @return the current position.
 			 */
-			const vec3& GetOrigin(void) const { return m_calculatedOrigin; };
-			const vec3& GetViewVector(void) const { return m_calculatedViewVector; };
+			const vec3& getOrigin(void) const { return m_calculatedOrigin; };
+			const vec3& getViewVector(void) const { return m_calculatedViewVector; };
 			/**
-			 * @brief Set the angle on the camera
+			 * @brief set the angle on the camera
 			 * @param[in] _angleZ Rotation angle in Z
 			 */
-			void SetAngleZ(float _angleZ);
+			void setAngleZ(float _angleZ);
 			/**
-			 * @brief Get the curent Camera angles.
+			 * @brief get the curent Camera angles.
 			 * @return the current angles Z.
 			 */
-			float GetAngleZ(void) const { return m_angleZ; };
+			float getAngleZ(void) const { return m_angleZ; };
 			/**
-			 * @brief Set the angle on the camera
+			 * @brief set the angle on the camera
 			 * @param[in] _angleTeta Rotation angle in Teta
 			 */
-			void SetAngleTeta(float _angleTeta);
+			void setAngleTeta(float _angleTeta);
 			/**
-			 * @brief Get the curent Camera angles.
+			 * @brief get the curent Camera angles.
 			 * @return the current angles Teta.
 			 */
-			float GetAngleTeta(void) const { return m_angleTeta; };
+			float getAngleTeta(void) const { return m_angleTeta; };
 			/**
-			 * @brief Set the angle on the camera
+			 * @brief set the angle on the camera
 			 * @param[in] _distance Distance to the eye
 			 */
-			void SetDistance(float _distance);
+			void setDistance(float _distance);
 			/**
-			 * @brief Get the curent Camera angles.
+			 * @brief get the curent Camera angles.
 			 * @return the current distance to the eye.
 			 */
-			float GetDistance(void) const { return m_distance; };
+			float getDistance(void) const { return m_distance; };
 			/**
-			 * @brief Get the transformation matix for the camera.
+			 * @brief get the transformation matix for the camera.
 			 * @return the current transformation matrix
 			 */
-			const mat4& GetMatrix(void) const { return m_matrix; };
+			const mat4& getMatrix(void) const { return m_matrix; };
 			
 			
 			vec3 projectOnZGround(const vec2& _cameraDeltaAngle, float _zValue=0.0f);
@@ -102,12 +102,12 @@ namespace ege
 			 * @brief It is really needed to call the camera periodicly for performing automatic movement
 			 * @param[in] step step time of moving
 			 */
-			void PeriodicCall(float step);
+			void periodicCall(float step);
 			/**
-			 * @brief change camera mode of view ==> force to the top view
+			 * @brief change camera mode of view  == > force to the top view
 			 * @param[in] _newState The new state of this mode...
 			 */
-			void SetForcingViewTop(bool _newState) { m_forceViewTop = _newState; };
+			void setForcingViewTop(bool _newState) { m_forceViewTop = _newState; };
 	};
 };
 

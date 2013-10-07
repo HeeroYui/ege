@@ -16,11 +16,11 @@
 ege::ParticuleSimple::ParticuleSimple(ege::ParticuleEngine& _particuleEngine, const char* _particuleType) :
 	Particule(_particuleEngine, _particuleType)
 {
-	Init();
+	init();
 }
 
 
-void ege::ParticuleSimple::Init(void)
+void ege::ParticuleSimple::init(void)
 {
 	m_lifeFull = 3;
 	m_life = m_lifeFull;
@@ -32,13 +32,13 @@ void ege::ParticuleSimple::Init(void)
 	m_scaleExpand = vec3(0,0,0);
 }
 
-bool ege::ParticuleSimple::NeedRemove(void)
+bool ege::ParticuleSimple::needRemove(void)
 {
 	return m_life<0.0f;
 }
 
 
-void ege::ParticuleSimple::Update(float _delta)
+void ege::ParticuleSimple::update(float _delta)
 {
 	//EGE_DEBUG("Life : " << m_life << "-" << _delta);
 	m_life -= _delta;
@@ -46,38 +46,38 @@ void ege::ParticuleSimple::Update(float _delta)
 	m_scale += m_scaleExpand*_delta;
 }
 
-void ege::ParticuleSimple::SetLife(float _life)
+void ege::ParticuleSimple::setLife(float _life)
 {
 	m_lifeFull = _life;
 	m_life = m_lifeFull;
 }
 
-void ege::ParticuleSimple::SetLevel(float _level)
+void ege::ParticuleSimple::setLevel(float _level)
 {
 	m_level = _level;
 }
 
-void ege::ParticuleSimple::SetPosition(const vec3& _pos)
+void ege::ParticuleSimple::setPosition(const vec3& _pos)
 {
 	m_pos = _pos;
 }
 
-void ege::ParticuleSimple::SetAngle(float _angle)
+void ege::ParticuleSimple::setAngle(float _angle)
 {
 	m_angle = _angle;
 }
 
-void ege::ParticuleSimple::SetMoveSpeed(const vec3& _speed)
+void ege::ParticuleSimple::setMoveSpeed(const vec3& _speed)
 {
 	m_speed = _speed;
 }
 
-void ege::ParticuleSimple::SetScale(const vec3& _scale)
+void ege::ParticuleSimple::setScale(const vec3& _scale)
 {
 	m_scale = _scale;
 }
 
-void ege::ParticuleSimple::SetScaleExpend(const vec3& _scaleExpand)
+void ege::ParticuleSimple::setScaleExpend(const vec3& _scaleExpand)
 {
 	m_scaleExpand=_scaleExpand;
 }

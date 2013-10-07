@@ -13,18 +13,18 @@
 #undef __class__
 #define __class__	"Camera"
 
-void ege::Camera::Update(void)
+void ege::Camera::update(void)
 {
 	// Note the view axes of the basic camera is (0,0,-1)
 	// clean matrix :
-	m_matrix.Identity();
+	m_matrix.identity();
 	// move the world from the camera distance
-	m_matrix.Translate(vec3(0,0,-m_distance));
+	m_matrix.translate(vec3(0,0,-m_distance));
 	// teta represent the angle from the ground to the axes then 90-teta represent the angle to apply (inverted for the world)
-	m_matrix.Rotate(vec3(1,0,0), -((M_PI/2.0f-m_angleTeta)*m_offsetFactor) );
-	m_matrix.Rotate(vec3(0,0,1), -m_angleZ );
+	m_matrix.rotate(vec3(1,0,0), -((M_PI/2.0f-m_angleTeta)*m_offsetFactor) );
+	m_matrix.rotate(vec3(0,0,1), -m_angleZ );
 	// move the camera to the end point of view
-	m_matrix.Translate(-m_eye);
+	m_matrix.translate(-m_eye);
 	#if 1
 		m_calculatedViewVector = vec3(0,0,-1);
 		m_calculatedViewVector = m_calculatedViewVector.rotate(vec3(1,0,0), -((M_PI/2.0f-m_angleTeta)*m_offsetFactor) );
@@ -74,14 +74,14 @@ ege::Camera::Camera(vec3 _eye, float _angleZ, float _angleTeta, float _distance)
 	m_offsetFactor(1.0f),
 	m_forceViewTop(false)
 {
-	SetEye(_eye);
-	SetAngleZ(_angleZ);
-	SetDistance(_distance);
-	SetAngleTeta(_angleTeta);
-	Update();
+	setEye(_eye);
+	setAngleZ(_angleZ);
+	setDistance(_distance);
+	setAngleTeta(_angleTeta);
+	update();
 }
 
-void ege::Camera::SetEye(vec3 _eye)
+void ege::Camera::setEye(vec3 _eye)
 {
 	m_eye = _eye;
 	if (m_eye.x() < -1000) {
@@ -102,49 +102,49 @@ void ege::Camera::SetEye(vec3 _eye)
 	if (m_eye.z() > 10) {
 		m_eye.setZ(10);
 	}
-	Update();
+	update();
 }
 
-void ege::Camera::SetAngleZ(float _angleZ)
+void ege::Camera::setAngleZ(float _angleZ)
 {
-	if (_angleZ==NAN) {
+	if (_angleZ == NAN) {
 		EGE_CRITICAL("try to set NAN value for the angle ...");
-	} else if (_angleZ==INFINITY) {
+	} else if (_angleZ == INFINITY) {
 		EGE_CRITICAL("try to set INFINITY value for the angle ...");
 	} else {
 		m_angleZ = _angleZ;
 	}
-	Update();
+	update();
 }
 
-void ege::Camera::SetAngleTeta(float _angleTeta)
+void ege::Camera::setAngleTeta(float _angleTeta)
 {
 	m_angleTeta = etk_avg(M_PI/10.0f, _angleTeta, M_PI/2.0f);
-	Update();
+	update();
 }
 
-void ege::Camera::SetDistance(float _distance)
+void ege::Camera::setDistance(float _distance)
 {
 	m_distance = etk_avg(5, _distance, 150);
-	Update();
+	update();
 }
 
 const float localFactor = 2.0;
 
-void ege::Camera::PeriodicCall(float _step)
+void ege::Camera::periodicCall(float _step)
 {
 	//Note we need to view to the top in 500ms
-	if (true==m_forceViewTop) {
+	if (true == m_forceViewTop) {
 		if (0.0f != m_offsetFactor) {
 			m_offsetFactor -= _step*localFactor;
 			m_offsetFactor = etk_avg(0,m_offsetFactor,1);
-			Update();
+			update();
 		}
 	} else {
 		if (1.0f != m_offsetFactor) {
 			m_offsetFactor += _step*localFactor;
 			m_offsetFactor = etk_avg(0,m_offsetFactor,1);
-			Update();
+			update();
 		}
 	}
 }

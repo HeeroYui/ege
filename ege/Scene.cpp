@@ -45,24 +45,24 @@ ege::Scene::Scene(bool _setAutoBullet, bool _setAutoCamera) :
 	m_debugMode(false),
 	m_debugDrawing(NULL)
 {
-	SetKeyboardRepeate(false);
-	SetCanHaveFocus(true);
-	PeriodicCallEnable();
-	AddEventId(eventPlayTimeChange);
-	AddEventId(eventKillEnemy);
+	setKeyboardRepeate(false);
+	setCanHaveFocus(true);
+	periodicCallEnable();
+	addEventId(eventPlayTimeChange);
+	addEventId(eventKillEnemy);
 	
-	m_debugDrawing = ewol::Colored3DObject::Keep();
+	m_debugDrawing = ewol::Colored3DObject::keep();
 	
 	m_ratioTime = 1.0f;
-	if (_setAutoBullet==true) {
-		SetBulletConfig();
+	if (_setAutoBullet == true) {
+		setBulletConfig();
 	}
-	if (_setAutoCamera==true) {
-		SetCamera();
+	if (_setAutoCamera == true) {
+		setCamera();
 	}
 }
 
-void ege::Scene::SetBulletConfig(btDefaultCollisionConfiguration* _collisionConfiguration,
+void ege::Scene::setBulletConfig(btDefaultCollisionConfiguration* _collisionConfiguration,
                                  btCollisionDispatcher* _dispatcher,
                                  btBroadphaseInterface* _broadphase,
                                  btConstraintSolver* _solver,
@@ -100,29 +100,29 @@ void ege::Scene::SetBulletConfig(btDefaultCollisionConfiguration* _collisionConf
 		m_dynamicsWorld->setGravity(btVector3(0,0,0));
 	}
 	
-	m_env.SetDynamicWorld(m_dynamicsWorld);
+	m_env.setDynamicWorld(m_dynamicsWorld);
 	
 }
 
-void ege::Scene::SetCamera(ege::Camera* _camera)
+void ege::Scene::setCamera(ege::Camera* _camera)
 {
 	if (NULL != _camera) {
 		m_camera = _camera;
 	} else {
 		m_camera = new ege::Camera(vec3(0,0,0), 0, DEG_TO_RAD(45) ,50);
 		// SET THE STATION ..
-		m_camera->SetEye(vec3(0,0,0));
+		m_camera->setEye(vec3(0,0,0));
 	}
 }
 
 ege::Scene::~Scene(void)
 {
-	ewol::Colored3DObject::Release(m_debugDrawing);
+	ewol::Colored3DObject::release(m_debugDrawing);
 /*
-	ewol::resource::Release(m_directDrawObject);
+	ewol::resource::release(m_directDrawObject);
 	//cleanup in the reverse order of creation/initialization
 	//remove the rigidbodies from the dynamics world and delete them
-	for (int32_t iii=m_dynamicsWorld->getNumCollisionObjects()-1; iii>=0 ;iii--) {
+	for (int32_t iii=m_dynamicsWorld->getNumCollisionObjects()-1; iii >= 0 ;iii--) {
 		btCollisionObject* obj = m_dynamicsWorld->getCollisionObjectArray()[iii];
 		btRigidBody* body = btRigidBody::upcast(obj);
 		if (body && body->getMotionState()) {
@@ -141,35 +141,35 @@ ege::Scene::~Scene(void)
 }
 
 
-void ege::Scene::OnRegenerateDisplay(void)
+void ege::Scene::onRegenerateDisplay(void)
 {
-	if (true == NeedRedraw()) {
+	if (true == needRedraw()) {
 		
 	}
 }
 
 
-void ege::Scene::Pause(void)
+void ege::Scene::pause(void)
 {
-	EGE_DEBUG("Set Pause");
+	EGE_DEBUG("Set pause");
 	m_isRunning = false;
 }
 
 
-void ege::Scene::Resume(void)
+void ege::Scene::resume(void)
 {
-	EGE_DEBUG("Set Resume");
+	EGE_DEBUG("Set resume");
 	m_isRunning = true;
 }
 
 
-void ege::Scene::PauseToggle(void)
+void ege::Scene::pauseToggle(void)
 {
-	if(true==m_isRunning) {
-		EGE_DEBUG("Set Toggle: Pause");
+	if(true == m_isRunning) {
+		EGE_DEBUG("Set Toggle: pause");
 		m_isRunning=false;
 	} else {
-		EGE_DEBUG("Set Toggle: Resume");
+		EGE_DEBUG("Set Toggle: resume");
 		m_isRunning=true;
 	}
 }
@@ -185,54 +185,54 @@ void ege::Scene::PauseToggle(void)
 #define NUMBER_OF_SUB_PASS  (0)
 
 
-void ege::Scene::OnDraw(void)
+void ege::Scene::onDraw(void)
 {
 	#ifdef SCENE_DISPLAY_SPEED
 		g_counterNbTimeDisplay++;
-		g_startTime = ewol::GetTime();
+		g_startTime = ewol::getTime();
 	#endif
 	//EGE_DEBUG("Draw (start)");
 	mat4 tmpMatrix;
 	if (m_dynamicsWorld) {
-		m_env.GetOrderedElementForDisplay(m_displayElementOrdered, m_camera->GetOrigin(), m_camera->GetViewVector());
-		//EGE_DEBUG("DRAW : " << m_displayElementOrdered.Size() << " elements");
+		m_env.getOrderedElementForDisplay(m_displayElementOrdered, m_camera->getOrigin(), m_camera->getViewVector());
+		//EGE_DEBUG("DRAW : " << m_displayElementOrdered.size() << " elements");
 		
-		// TODO : Remove this ==> no more needed ==> checked in the Generate the list of the element ordered
-		for (int32_t iii=0; iii<m_displayElementOrdered.Size(); iii++) {
-			m_displayElementOrdered[iii].element->PreCalculationDraw(*m_camera);
+		// TODO : remove this  == > no more needed ==> checked in the generate the list of the element ordered
+		for (int32_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
+			m_displayElementOrdered[iii].element->preCalculationDraw(*m_camera);
 		}
 		// note :  the first pass is done at the reverse way to prevent multiple display od the same point in the screen 
 		//         (and we remember that the first pass is to display all the non transparent elements)
 		#if 0
 			// note : We keep this one for the test only ...
-			for (int32_t iii=0; iii<m_displayElementOrdered.Size(); iii++) {
+			for (int32_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
 		#else
-			for (int32_t iii=m_displayElementOrdered.Size()-1; iii>=0; iii--) {
+			for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
 		#endif
-			m_displayElementOrdered[iii].element->Draw(0);
+			m_displayElementOrdered[iii].element->draw(0);
 		}
 		// for the other pass the user can draw transparent elements ...
-		for (int32_t pass=1; pass<=NUMBER_OF_SUB_PASS+1; pass++) {
-			for (int32_t iii=0; iii<m_displayElementOrdered.Size(); iii++) {
-				m_displayElementOrdered[iii].element->Draw(pass);
+		for (int32_t pass=1; pass <= NUMBER_OF_SUB_PASS+1; pass++) {
+			for (int32_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
+				m_displayElementOrdered[iii].element->draw(pass);
 			}
 		}
-		for (int32_t iii=0; iii<m_displayElementOrdered.Size(); iii++) {
-			m_displayElementOrdered[iii].element->DrawLife(m_debugDrawing, *m_camera);
+		for (int32_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
+			m_displayElementOrdered[iii].element->drawLife(m_debugDrawing, *m_camera);
 		}
 		#ifdef DEBUG
 			if (true == m_debugMode) {
-				for (int32_t iii=0; iii<m_displayElementOrdered.Size(); iii++) {
-					m_displayElementOrdered[iii].element->DrawDebug(m_debugDrawing, *m_camera);
+				for (int32_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
+					m_displayElementOrdered[iii].element->drawDebug(m_debugDrawing, *m_camera);
 				}
 			}
 		#endif
 	}
 	if (NULL!=m_camera) {
-		m_env.GetParticuleEngine().Draw(*m_camera);
+		m_env.getParticuleEngine().draw(*m_camera);
 	}
 	#ifdef SCENE_DISPLAY_SPEED
-		float localTime = (float)(ewol::GetTime() - g_startTime) / 1000.0f;
+		float localTime = (float)(ewol::getTime() - g_startTime) / 1000.0f;
 		if (localTime>1) {
 			EWOL_ERROR("      scene : " << localTime << "ms " << g_counterNbTimeDisplay);
 		} else {
@@ -251,30 +251,30 @@ btRigidBody& btActionInterface::getFixedBody()
 }
 
 
-void ege::Scene::PeriodicCall(const ewol::EventTime& _event)
+void ege::Scene::periodicCall(const ewol::EventTime& _event)
 {
-	float curentDelta=_event.GetDeltaCall();
+	float curentDelta=_event.getDeltaCall();
 	// small hack to change speed ...
 	if (m_ratioTime != 1) {
 		curentDelta *= m_ratioTime;
 	}
 	// check if the processing is availlable
 	if (false == m_isRunning) {
-		MarkToRedraw();
+		markToRedraw();
 		return;
 	}
 	// update game time:
 	int32_t lastGameTime = m_gameTime;
 	m_gameTime += curentDelta;
 	if (lastGameTime != (int32_t)m_gameTime) {
-		GenerateEventId(eventPlayTimeChange, m_gameTime);
+		generateEventId(eventPlayTimeChange, m_gameTime);
 	}
 	
 	//EWOL_DEBUG("Time: m_lastCallTime=" << m_lastCallTime << " deltaTime=" << deltaTime);
 	
 	// update camera positions:
 	if (NULL != m_camera) {
-		m_camera->PeriodicCall(curentDelta);
+		m_camera->periodicCall(curentDelta);
 	}
 	//EGE_DEBUG("stepSimulation (start)");
 	///step the simulation
@@ -283,30 +283,30 @@ void ege::Scene::PeriodicCall(const ewol::EventTime& _event)
 		//optional but useful: debug drawing
 		m_dynamicsWorld->debugDrawWorld();
 	}
-	m_env.GetParticuleEngine().Update(curentDelta);
-	// Remove all element that requested it ...
+	m_env.getParticuleEngine().update(curentDelta);
+	// remove all element that requested it ...
 	{
 		int32_t numberEnnemyKilled=0;
 		int32_t victoryPoint=0;
-		etk::Vector<ege::ElementGame*>& elementList = m_env.GetElementGame();
-		for (int32_t iii=elementList.Size()-1; iii>=0; --iii) {
+		etk::Vector<ege::ElementGame*>& elementList = m_env.getElementGame();
+		for (int32_t iii=elementList.size()-1; iii >= 0; --iii) {
 			if(NULL != elementList[iii]) {
-				if (true == elementList[iii]->NeedToRemove()) {
-					if (elementList[iii]->GetGroup() > 1) {
+				if (true == elementList[iii]->needToRemove()) {
+					if (elementList[iii]->getGroup() > 1) {
 						numberEnnemyKilled++;
 						victoryPoint++;
 					}
-					EGE_DEBUG("[" << elementList[iii]->GetUID() << "] element Removing ... " << elementList[iii]->GetType());
+					EGE_DEBUG("[" << elementList[iii]->getUID() << "] element Removing ... " << elementList[iii]->getType());
 					m_env.RmElementGame(elementList[iii]);
 				}
 			}
 		}
 		
 		if (0 != numberEnnemyKilled) {
-			GenerateEventId(eventKillEnemy, numberEnnemyKilled);
+			generateEventId(eventKillEnemy, numberEnnemyKilled);
 		}
 	}
-	MarkToRedraw();
+	markToRedraw();
 }
 
 #define GAME_Z_NEAR  (1)
@@ -314,57 +314,57 @@ void ege::Scene::PeriodicCall(const ewol::EventTime& _event)
 
 //#define SCENE_BRUT_PERFO_TEST
 
-void ege::Scene::SystemDraw(const ewol::DrawProperty& _displayProp)
+void ege::Scene::systemDraw(const ewol::drawProperty& _displayProp)
 {
 #ifdef SCENE_BRUT_PERFO_TEST
-int64_t tmp___startTime0 = ewol::GetTime();
+int64_t tmp___startTime0 = ewol::getTime();
 #endif
-	ewol::openGL::Push();
-	// here we invert the reference of the standard OpenGl view because the reference in the common display is Top left and not buttom left
+	ewol::openGL::push();
+	// here we invert the reference of the standard openGl view because the reference in the common display is Top left and not buttom left
 	glViewport( m_origin.x(),
 	            m_origin.y(),
 	            m_size.x(),
 	            m_size.y());
 #ifdef SCENE_BRUT_PERFO_TEST
-float tmp___localTime0 = (float)(ewol::GetTime() - tmp___startTime0) / 1000.0f;
+float tmp___localTime0 = (float)(ewol::getTime() - tmp___startTime0) / 1000.0f;
 EWOL_DEBUG("      SCENE000  : " << tmp___localTime0 << "ms ");
-int64_t tmp___startTime1 = ewol::GetTime();
+int64_t tmp___startTime1 = ewol::getTime();
 #endif
 	float ratio = m_size.x() / m_size.y();
 	//EWOL_INFO("ratio : " << ratio);
 	mat4 tmpProjection = etk::matPerspective(m_angleView, ratio, GAME_Z_NEAR, GAME_Z_FAR);
 #ifdef SCENE_BRUT_PERFO_TEST
-float tmp___localTime1 = (float)(ewol::GetTime() - tmp___startTime1) / 1000.0f;
+float tmp___localTime1 = (float)(ewol::getTime() - tmp___startTime1) / 1000.0f;
 EWOL_DEBUG("      SCENE111  : " << tmp___localTime1 << "ms ");
-int64_t tmp___startTime2 = ewol::GetTime();
+int64_t tmp___startTime2 = ewol::getTime();
 #endif
-	ewol::openGL::SetCameraMatrix(m_camera->GetMatrix());
-	//mat4 tmpMat = tmpProjection * m_camera->GetMatrix();
+	ewol::openGL::setCameraMatrix(m_camera->getMatrix());
+	//mat4 tmpMat = tmpProjection * m_camera->getMatrix();
 	// set internal matrix system :
-	//ewol::openGL::SetMatrix(tmpMat);
-	ewol::openGL::SetMatrix(tmpProjection);
+	//ewol::openGL::setMatrix(tmpMat);
+	ewol::openGL::setMatrix(tmpProjection);
 #ifdef SCENE_BRUT_PERFO_TEST
-float tmp___localTime2 = (float)(ewol::GetTime() - tmp___startTime2) / 1000.0f;
+float tmp___localTime2 = (float)(ewol::getTime() - tmp___startTime2) / 1000.0f;
 EWOL_DEBUG("      SCENE222  : " << tmp___localTime2 << "ms ");
 #endif
 	
 #ifdef SCENE_BRUT_PERFO_TEST
-int64_t tmp___startTime3 = ewol::GetTime();
+int64_t tmp___startTime3 = ewol::getTime();
 #endif
-	OnDraw();
+	onDraw();
 #ifdef SCENE_BRUT_PERFO_TEST
-float tmp___localTime3 = (float)(ewol::GetTime() - tmp___startTime3) / 1000.0f;
+float tmp___localTime3 = (float)(ewol::getTime() - tmp___startTime3) / 1000.0f;
 EWOL_DEBUG("      SCENE333  : " << tmp___localTime3 << "ms ");
-int64_t tmp___startTime4 = ewol::GetTime();
+int64_t tmp___startTime4 = ewol::getTime();
 #endif
-	ewol::openGL::Pop();
+	ewol::openGL::pop();
 #ifdef SCENE_BRUT_PERFO_TEST
-float tmp___localTime4 = (float)(ewol::GetTime() - tmp___startTime4) / 1000.0f;
+float tmp___localTime4 = (float)(ewol::getTime() - tmp___startTime4) / 1000.0f;
 EWOL_DEBUG("      SCENE444  : " << tmp___localTime4 << "ms ");
 #endif
 }
 
-vec2 ege::Scene::CalculateDeltaAngle(const vec2& posScreen)
+vec2 ege::Scene::calculateDeltaAngle(const vec2& posScreen)
 {
 	double ratio = m_size.x() / m_size.y();
 	vec2 pos = vec2(m_size.x()/-2.0, m_size.y()/-2.0) + posScreen;
@@ -382,9 +382,9 @@ vec2 ege::Scene::CalculateDeltaAngle(const vec2& posScreen)
 	            angleY);
 }
 
-vec3 ege::Scene::ConvertScreenPositionInMapPosition(const vec2& posScreen)
+vec3 ege::Scene::convertScreenPositionInMapPosition(const vec2& posScreen)
 {
-	return m_camera->projectOnZGround(CalculateDeltaAngle(posScreen));
+	return m_camera->projectOnZGround(calculateDeltaAngle(posScreen));
 }
 
 

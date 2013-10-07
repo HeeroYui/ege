@@ -43,20 +43,20 @@ namespace ege {
 		protected:
 			int32_t m_type;
 		public:
-			int32_t GetType(void) { return m_type; };
+			int32_t getType(void) { return m_type; };
 		protected:
 			int32_t m_groupSource;
 		public:
-			int32_t GetSourceGroup(void) { return m_groupSource; };
+			int32_t getSourceGroup(void) { return m_groupSource; };
 		protected:
 			etk::Vector<int32_t> m_groupDestination;
 		public:
-			const etk::Vector<int32_t>& GetDestinationGroup(void) { return m_groupDestination; };
-			void AddGroupDestination(int32_t _id) { m_groupDestination.PushBack(_id); };
+			const etk::Vector<int32_t>& getDestinationGroup(void) { return m_groupDestination; };
+			void addGroupDestination(int32_t _id) { m_groupDestination.pushBack(_id); };
 		protected:
 			vec3 m_positionSource;
 		public:
-			const vec3& GetSourcePosition(void) { return m_positionSource; };
+			const vec3& getSourcePosition(void) { return m_positionSource; };
 		public:
 			ElementInteraction(int32_t _type, int32_t _groupSource, const vec3& _pos) : 
 				m_type(_type),
@@ -64,7 +64,7 @@ namespace ege {
 				m_positionSource(_pos)
 			{ };
 		public:
-			virtual void ApplyEvent(ege::ElementGame& _element) { };
+			virtual void applyEvent(ege::ElementGame& _element) { };
 	};
 	
 	class Environement
@@ -77,16 +77,16 @@ namespace ege {
 			virtual ~Environement(void) { };
 		public:
 			/**
-			 * @brief Add a creator element system
+			 * @brief add a creator element system
 			 * @param[in] _type Type of the element.
 			 * @param[in] _creator Function pointer that reference the element creating.
 			 */
-			static void AddCreator(const etk::UString& _type, ege::createElement_tf _creator);
+			static void addCreator(const etk::UString& _type, ege::createElement_tf _creator);
 			/**
 			 * @brief Create an element on the curent scene.
 			 * @param[in] _type Type of the element that might be created.
 			 * @param[in] _description String that describe the content of the element properties.
-			 * @param[in] _autoAddElement this permit to add the element if it is created ==> no more action ...
+			 * @param[in] _autoAddElement this permit to add the element if it is created  == > no more action ...
 			 * @return NULL if an error occured OR the pointer on the element and it is already added on the system.
 			 * @note Pointer is return in case of setting properties on it...
 			 */
@@ -102,60 +102,60 @@ namespace ege {
 					float dist;
 			};
 			/**
-			 * @brief Set the curent world
+			 * @brief set the curent world
 			 * @param[in] _newWorld Pointer on the current world
 			 */
-			void SetDynamicWorld(btDynamicsWorld* _newWorld) { m_dynamicsWorld=_newWorld; };
+			void setDynamicWorld(btDynamicsWorld* _newWorld) { m_dynamicsWorld=_newWorld; };
 			/**
-			 * @brief Get the curent world
+			 * @brief get the curent world
 			 * @return pointer on the current world
 			 */
-			btDynamicsWorld* GetDynamicWorld(void) { return m_dynamicsWorld; };
+			btDynamicsWorld* getDynamicWorld(void) { return m_dynamicsWorld; };
 			/**
-			 * @breif Get a reference on the curent list of element games
+			 * @breif get a reference on the curent list of element games
 			 * @return all element list
 			 */
-			etk::Vector<ege::ElementGame*>& GetElementGame(void) { return m_listElementGame; };
+			etk::Vector<ege::ElementGame*>& getElementGame(void) { return m_listElementGame; };
 			/**
-			 * @brief Get the nearest Element
+			 * @brief get the nearest Element
 			 * @param[in] _sourceRequest Pointer on the element that request this.
-			 * @param[in] _distance Maximum distance search ==> return the element distance
+			 * @param[in] _distance Maximum distance search  == > return the element distance
 			 * @return Pointer on the neares element OR NULL
 			 */
-			ege::ElementGame* GetElementNearest(ege::ElementGame* _sourceRequest, float& _distance);
+			ege::ElementGame* getElementNearest(ege::ElementGame* _sourceRequest, float& _distance);
 			
-			void GetElementNearest(const vec3& _sourcePosition, float _distanceMax, etk::Vector<ege::Environement::ResultNearestElement>& _resultList);
-			void GetElementNearestFixed(const vec3& _sourcePosition, float _distanceMax, etk::Vector<ege::Environement::ResultNearestElement>& _resultList);
+			void getElementNearest(const vec3& _sourcePosition, float _distanceMax, etk::Vector<ege::Environement::ResultNearestElement>& _resultList);
+			void getElementNearestFixed(const vec3& _sourcePosition, float _distanceMax, etk::Vector<ege::Environement::ResultNearestElement>& _resultList);
 			/**
-			 * @brief Add an element on the list availlable.
+			 * @brief add an element on the list availlable.
 			 * @param[in] _newElement Element to add.
 			 */
-			void AddElementGame(ege::ElementGame* _newElement);
+			void addElementGame(ege::ElementGame* _newElement);
 			/**
-			 * @brief Remove an element on the list availlable.
+			 * @brief remove an element on the list availlable.
 			 * @param[in] _removeElement Element to remove.
 			 */
 			void RmElementGame(ege::ElementGame* _removeElement);
 			/**
-			 * @brief Get the element order from the nearest to the farest, and remove all element that are not in the camera angle and axes.
+			 * @brief get the element order from the nearest to the farest, and remove all element that are not in the camera angle and axes.
 			 * @param[in,out] _resultList List of the element ordered.
 			 * @param[in] _position Camera position in the space.
 			 * @param[in] _direction Camera direction of the view.
 			 */
-			void GetOrderedElementForDisplay(etk::Vector<ege::Environement::ResultNearestElement>& _resultList, const vec3& _position, const vec3& _direction);
+			void getOrderedElementForDisplay(etk::Vector<ege::Environement::ResultNearestElement>& _resultList, const vec3& _position, const vec3& _direction);
 			/**
-			 * @brief Generate an event on all the sub element of the game ==> usefull for explosion, or lazer fire ...
+			 * @brief generate an event on all the sub element of the game  == > usefull for explosion, or lazer fire ...
 			 * @param[in] _event event that might be apply ...
 			 */
-			void GenerateInteraction(ege::ElementInteraction& _event);
+			void generateInteraction(ege::ElementInteraction& _event);
 		private:
 			ege::ParticuleEngine m_particuleEngine; //!< Particule engine properties
 		public:
 			/**
-			 * @brief Get the particule engine reference.
+			 * @brief get the particule engine reference.
 			 * @return The requested reference on the engine
 			 */
-			ege::ParticuleEngine& GetParticuleEngine(void) { return m_particuleEngine; };
+			ege::ParticuleEngine& getParticuleEngine(void) { return m_particuleEngine; };
 	};
 };
 

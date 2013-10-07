@@ -16,6 +16,6 @@ ege::Particule::Particule(ege::ParticuleEngine& _particuleEngine, const char* _p
 	m_particuleEngine(_particuleEngine),
 	m_particuleType(_particuleType)
 {
-	m_particuleEngine.Add(this);
+	m_particuleEngine.add(this);
 }
 

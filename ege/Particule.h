@@ -33,7 +33,7 @@ namespace ege {
 			/**
 			 * @brief Constructor.
 			 * @param[in] _particuleEngine reference on the particule engine ...
-			 * @param[in] _particuleType Type of the particule (Set NULL if you did not want to use the respowner ...)
+			 * @param[in] _particuleType Type of the particule (set NULL if you did not want to use the respowner ...)
 			 */
 			Particule(ege::ParticuleEngine& _particuleEngine, const char* _particuleType = NULL);
 			/**
@@ -41,37 +41,37 @@ namespace ege {
 			 */
 			virtual ~Particule(void) { };
 			/**
-			 * @brief Init the particule
+			 * @brief init the particule
 			 */
-			virtual void Init(void) { };
+			virtual void init(void) { };
 			/**
 			 * @brief Un-init the particule
 			 */
 			virtual void UnInit(void) { };
 			/**
-			 * @brief Update the paticule properties
+			 * @brief update the paticule properties
 			 * @param[in] _delta Delta time from the previous call
 			 */
-			virtual void Update(float _delta) { };
+			virtual void update(float _delta) { };
 			/**
-			 * @brief Draw the current particule
+			 * @brief draw the current particule
 			 */
-			virtual void Draw(const ege::Camera& _camera) { };
+			virtual void draw(const ege::Camera& _camera) { };
 			/**
 			 * @brief Check if the element might be removed
 			 * @return true : The element might be removed
 			 * @return false : The element might be keeped
 			 */
-			virtual bool NeedRemove(void) { return false; };
+			virtual bool needRemove(void) { return false; };
 			/**
-			 * @brief Get the type of the particule
+			 * @brief get the type of the particule
 			 * @return Type of the current particule
 			 */
-			const char* GetParticuleType(void) { return m_particuleType; };
+			const char* getParticuleType(void) { return m_particuleType; };
 			/**
 			 * @brief When the particule arrive to his end of life, this function is called.
 			 */
-			virtual void OnEnd(void) {};
+			virtual void onEnd(void) {};
 	};
 };
 

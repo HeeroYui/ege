@@ -20,16 +20,16 @@ ege::ParticuleEngine::ParticuleEngine(ege::Environement& _env) :
 
 ege::ParticuleEngine::~ParticuleEngine(void)
 {
-	Clear();
+	clear();
 }
 
-void ege::ParticuleEngine::Add(Particule* _particule)
+void ege::ParticuleEngine::add(Particule* _particule)
 {
-	if (_particule==NULL) {
+	if (_particule == NULL) {
 		EGE_ERROR("Try to add particule NULL");
 		return;
 	}
-	for (esize_t iii=0; iii<m_particuleList.Size(); ++iii) {
+	for (esize_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] != NULL) {
 			continue;
 		}
@@ -37,15 +37,15 @@ void ege::ParticuleEngine::Add(Particule* _particule)
 		return;
 	}
 	// Just add it at the end ...
-	m_particuleList.PushBack(_particule);
+	m_particuleList.pushBack(_particule);
 }
 
-void ege::ParticuleEngine::AddRemoved(Particule* _particule)
+void ege::ParticuleEngine::addRemoved(Particule* _particule)
 {
-	if (_particule==NULL) {
+	if (_particule == NULL) {
 		return;
 	}
-	for (esize_t iii=0; iii<m_particuleRemoved.Size(); ++iii) {
+	for (esize_t iii=0; iii<m_particuleRemoved.size(); ++iii) {
 		if (m_particuleRemoved[iii] != NULL) {
 			continue;
 		}
@@ -53,59 +53,59 @@ void ege::ParticuleEngine::AddRemoved(Particule* _particule)
 		return;
 	}
 	// Just add it at the end ...
-	m_particuleRemoved.PushBack(_particule);
+	m_particuleRemoved.pushBack(_particule);
 }
 
-ege::Particule* ege::ParticuleEngine::Respown(const char* _particuleType)
+ege::Particule* ege::ParticuleEngine::respown(const char* _particuleType)
 {
 	if (_particuleType == NULL) {
 		return NULL;
 	}
-	for (esize_t iii=0; iii<m_particuleRemoved.Size(); ++iii) {
+	for (esize_t iii=0; iii<m_particuleRemoved.size(); ++iii) {
 		if (m_particuleRemoved[iii] == NULL) {
 			continue;
 		}
-		if (m_particuleRemoved[iii]->GetParticuleType()==_particuleType) {
-			Add(m_particuleRemoved[iii]);
+		if (m_particuleRemoved[iii]->getParticuleType() == _particuleType) {
+			add(m_particuleRemoved[iii]);
 			ege::Particule* tmpParticule = m_particuleRemoved[iii];
 			m_particuleRemoved[iii]=NULL;
-			tmpParticule->Init();
+			tmpParticule->init();
 			return tmpParticule;
 		}
 	}
 	return NULL;
 }
 
-void ege::ParticuleEngine::Update(float _deltaTime)
+void ege::ParticuleEngine::update(float _deltaTime)
 {
 	if (_deltaTime>(1.0f/60.0f)) {
 		_deltaTime = (1.0f/60.0f);
 	}
-	for (esize_t iii=0; iii<m_particuleList.Size(); ++iii) {
+	for (esize_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == NULL) {
 			continue;
 		}
-		m_particuleList[iii]->Update(_deltaTime);
+		m_particuleList[iii]->update(_deltaTime);
 	}
 	// check removing elements
-	for (esize_t iii=0; iii<m_particuleList.Size(); ++iii) {
+	for (esize_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == NULL) {
 			continue;
 		}
-		if (m_particuleList[iii]->NeedRemove()) {
-			m_particuleList[iii]->OnEnd();
-			if (m_particuleList[iii]->GetParticuleType()==NULL) {
+		if (m_particuleList[iii]->needRemove()) {
+			m_particuleList[iii]->onEnd();
+			if (m_particuleList[iii]->getParticuleType() == NULL) {
 				// Real remove particule ...
 				delete (m_particuleList[iii]);
 			} else {
-				AddRemoved(m_particuleList[iii]);
+				addRemoved(m_particuleList[iii]);
 			}
 			m_particuleList[iii] = NULL;
 		}
 	}
 	/*
 	int32_t nbParticule = 0;
-	for (esize_t iii=0; iii<m_particuleList.Size(); ++iii) {
+	for (esize_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == NULL) {
 			continue;
 		}
@@ -115,34 +115,34 @@ void ege::ParticuleEngine::Update(float _deltaTime)
 	*/
 }
 
-void ege::ParticuleEngine::Draw(const ege::Camera& _camera)
+void ege::ParticuleEngine::draw(const ege::Camera& _camera)
 {
-	for (esize_t iii=0; iii<m_particuleList.Size(); ++iii) {
+	for (esize_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == NULL) {
 			continue;
 		}
-		m_particuleList[iii]->Draw(_camera);
+		m_particuleList[iii]->draw(_camera);
 	}
 }
 
-void ege::ParticuleEngine::Clear(void)
+void ege::ParticuleEngine::clear(void)
 {
 	// clear element not removed
-	for (esize_t iii=0; iii<m_particuleList.Size(); ++iii) {
+	for (esize_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == NULL) {
 			continue;
 		}
 		delete m_particuleList[iii];
 		m_particuleList[iii] = NULL;
 	}
-	m_particuleList.Clear();
+	m_particuleList.clear();
 	// clear element that are auto-removed
-	for (esize_t iii=0; iii<m_particuleRemoved.Size(); ++iii) {
+	for (esize_t iii=0; iii<m_particuleRemoved.size(); ++iii) {
 		if (m_particuleRemoved[iii] == NULL) {
 			continue;
 		}
 		delete m_particuleRemoved[iii];
 		m_particuleRemoved[iii] = NULL;
 	}
-	m_particuleRemoved.Clear();
+	m_particuleRemoved.clear();
 }

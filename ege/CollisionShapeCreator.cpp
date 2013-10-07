@@ -32,13 +32,13 @@ btCollisionShape* ege::collision::CreateShape(const ewol::Mesh* _mesh)
 	if (NULL == _mesh) {
 		return new btEmptyShape();;
 	}
-	const etk::Vector<ewol::PhysicsShape*>& physiqueProperty = _mesh->GetPhysicalProperties();
-	if (physiqueProperty.Size()==0) {
+	const etk::Vector<ewol::PhysicsShape*>& physiqueProperty = _mesh->getPhysicalProperties();
+	if (physiqueProperty.size() == 0) {
 		return new btEmptyShape();;
 	}
 	int32_t count = 0;
-	for (int32_t iii=0; iii<physiqueProperty.Size(); iii++) {
-		if (NULL==physiqueProperty[iii]) {
+	for (int32_t iii=0; iii<physiqueProperty.size(); iii++) {
+		if (NULL == physiqueProperty[iii]) {
 			continue;
 		}
 		count++;
@@ -47,114 +47,114 @@ btCollisionShape* ege::collision::CreateShape(const ewol::Mesh* _mesh)
 	if (count>1) {
 		outputShape = new btCompoundShape();
 	}
-	for (int32_t iii=0; iii<physiqueProperty.Size(); iii++) {
-		if (NULL==physiqueProperty[iii]) {
+	for (int32_t iii=0; iii<physiqueProperty.size(); iii++) {
+		if (NULL == physiqueProperty[iii]) {
 			continue;
 		}
-		switch (physiqueProperty[iii]->GetType()) {
+		switch (physiqueProperty[iii]->getType()) {
 			case ewol::PhysicsShape::box : {
-				const ewol::PhysicsBox* tmpElement = physiqueProperty[iii]->ToBox();
-				if (NULL ==tmpElement) {
+				const ewol::PhysicsBox* tmpElement = physiqueProperty[iii]->toBox();
+				if (NULL  == tmpElement) {
 					// ERROR ...
 					continue;
 				}
-				btCollisionShape* tmpShape = new btBoxShape(tmpElement->GetSize());
+				btCollisionShape* tmpShape = new btBoxShape(tmpElement->getSize());
 				if (NULL != tmpShape) {
 					if (outputShape == NULL) {
 						return tmpShape;
 					} else {
-						vec4 qqq = tmpElement->GetQuaternion();
-						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->GetOrigin());
+						vec4 qqq = tmpElement->getQuaternion();
+						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
 						outputShape->addChildShape(localTransform, tmpShape);
 					}
 				}
 				break;
 			}
 			case ewol::PhysicsShape::cylinder : {
-				const ewol::PhysicsCylinder* tmpElement = physiqueProperty[iii]->ToCylinder();
-				if (NULL ==tmpElement) {
+				const ewol::PhysicsCylinder* tmpElement = physiqueProperty[iii]->toCylinder();
+				if (NULL  == tmpElement) {
 					// ERROR ...
 					continue;
 				}
-				btCollisionShape* tmpShape = new btCylinderShape(tmpElement->GetSize());
+				btCollisionShape* tmpShape = new btCylinderShape(tmpElement->getSize());
 				if (NULL != tmpShape) {
 					if (outputShape == NULL) {
 						return tmpShape;
 					} else {
-						vec4 qqq = tmpElement->GetQuaternion();
-						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->GetOrigin());
+						vec4 qqq = tmpElement->getQuaternion();
+						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
 						outputShape->addChildShape(localTransform, tmpShape);
 					}
 				}
 				break;
 			}
 			case ewol::PhysicsShape::capsule : {
-				const ewol::PhysicsCapsule* tmpElement = physiqueProperty[iii]->ToCapsule();
-				if (NULL ==tmpElement) {
+				const ewol::PhysicsCapsule* tmpElement = physiqueProperty[iii]->toCapsule();
+				if (NULL  == tmpElement) {
 					// ERROR ...
 					continue;
 				}
-				btCollisionShape* tmpShape = new btCapsuleShape(tmpElement->GetRadius(), tmpElement->GetHeight());
+				btCollisionShape* tmpShape = new btCapsuleShape(tmpElement->getRadius(), tmpElement->getHeight());
 				if (NULL != tmpShape) {
 					if (outputShape == NULL) {
 						return tmpShape;
 					} else {
-						vec4 qqq = tmpElement->GetQuaternion();
-						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->GetOrigin());
+						vec4 qqq = tmpElement->getQuaternion();
+						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
 						outputShape->addChildShape(localTransform, tmpShape);
 					}
 				}
 				break;
 			}
 			case ewol::PhysicsShape::cone : {
-				const ewol::PhysicsCone* tmpElement = physiqueProperty[iii]->ToCone();
-				if (NULL ==tmpElement) {
+				const ewol::PhysicsCone* tmpElement = physiqueProperty[iii]->toCone();
+				if (NULL  == tmpElement) {
 					// ERROR ...
 					continue;
 				}
-				btCollisionShape* tmpShape = new btConeShape(tmpElement->GetRadius(), tmpElement->GetHeight());
+				btCollisionShape* tmpShape = new btConeShape(tmpElement->getRadius(), tmpElement->getHeight());
 				if (NULL != tmpShape) {
 					if (outputShape == NULL) {
 						return tmpShape;
 					} else {
-						vec4 qqq = tmpElement->GetQuaternion();
-						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->GetOrigin());
+						vec4 qqq = tmpElement->getQuaternion();
+						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
 						outputShape->addChildShape(localTransform, tmpShape);
 					}
 				}
 				break;
 			}
 			case ewol::PhysicsShape::sphere : {
-				const ewol::PhysicsSphere* tmpElement = physiqueProperty[iii]->ToSphere();
-				if (NULL ==tmpElement) {
+				const ewol::PhysicsSphere* tmpElement = physiqueProperty[iii]->toSphere();
+				if (NULL  == tmpElement) {
 					// ERROR ...
 					continue;
 				}
-				btCollisionShape* tmpShape = new btSphereShape(tmpElement->GetRadius());
+				btCollisionShape* tmpShape = new btSphereShape(tmpElement->getRadius());
 				if (NULL != tmpShape) {
 					if (outputShape == NULL) {
 						return tmpShape;
 					} else {
-						vec4 qqq = tmpElement->GetQuaternion();
-						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->GetOrigin());
+						vec4 qqq = tmpElement->getQuaternion();
+						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
 						outputShape->addChildShape(localTransform, tmpShape);
 					}
 				}
 				break;
 			}
 			case ewol::PhysicsShape::convexHull : {
-				const ewol::PhysicsConvexHull* tmpElement = physiqueProperty[iii]->ToConvexHull();
-				if (NULL ==tmpElement) {
+				const ewol::PhysicsConvexHull* tmpElement = physiqueProperty[iii]->toConvexHull();
+				if (NULL  == tmpElement) {
 					// ERROR ...
 					continue;
 				}
-				btConvexHullShape* tmpShape = new btConvexHullShape(&(tmpElement->GetPointList()[0].x()), tmpElement->GetPointList().Size());
+				btConvexHullShape* tmpShape = new btConvexHullShape(&(tmpElement->getPointList()[0].x()), tmpElement->getPointList().size());
 				if (NULL != tmpShape) {
 					if (outputShape == NULL) {
 						return tmpShape;
 					} else {
-						vec4 qqq = tmpElement->GetQuaternion();
-						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->GetOrigin());
+						vec4 qqq = tmpElement->getQuaternion();
+						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
 						outputShape->addChildShape(localTransform, tmpShape);
 					}
 				}
@@ -165,7 +165,7 @@ btCollisionShape* ege::collision::CreateShape(const ewol::Mesh* _mesh)
 				break;
 		}
 	}
-	if (NULL==outputShape) {
+	if (NULL == outputShape) {
 		return new btEmptyShape();
 	}
 	return outputShape;

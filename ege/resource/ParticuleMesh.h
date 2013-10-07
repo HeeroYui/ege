@@ -23,21 +23,21 @@ namespace ege
 				ParticuleMesh(const etk::UString& _fileName, const etk::UString& _shaderName);
 				virtual ~ParticuleMesh(void);
 			public:
-				virtual const char* GetType(void) { return "ege::resource::ParticuleMesh"; };
-				virtual void Draw(mat4& _positionMatrix, const etk::Color<float>& _mainColor, bool _enableDepthTest=true, bool _enableDepthUpdate=true);
+				virtual const char* getType(void) { return "ege::resource::ParticuleMesh"; };
+				virtual void draw(mat4& _positionMatrix, const etk::Color<float>& _mainColor, bool _enableDepthTest=true, bool _enableDepthUpdate=true);
 			public:
 				/**
-				 * @brief Keep the resource pointer.
+				 * @brief keep the resource pointer.
 				 * @note Never free this pointer by your own...
 				 * @param[in] _filename Name of the ewol mesh file.
 				 * @return pointer on the resource or NULL if an error occured.
 				 */
-				static ege::resource::ParticuleMesh* Keep(const etk::UString& _meshName, const etk::UString& _shaderName="DATA:ParticuleMesh.prog");
+				static ege::resource::ParticuleMesh* keep(const etk::UString& _meshName, const etk::UString& _shaderName="DATA:ParticuleMesh.prog");
 				/**
-				 * @brief Release the keeped resources
+				 * @brief release the keeped resources
 				 * @param[in,out] reference on the object pointer
 				 */
-				static void Release(ege::resource::ParticuleMesh*& _object);
+				static void release(ege::resource::ParticuleMesh*& _object);
 		};
 	};
 };

@@ -1,4 +1,4 @@
-/**
+	/**
  * @author Edouard DUPIN
  * 
  * @copyright 2011, Edouard DUPIN, all right reserved
@@ -29,7 +29,7 @@
 #undef __class__
 #define __class__	"ElementGame"
 
-const etk::UString& ege::ElementGame::GetType(void) const
+const etk::UString& ege::ElementGame::getType(void) const
 {
 	static const etk::UString nameType("----");
 	return nameType;
@@ -53,7 +53,7 @@ ege::ElementGame::ElementGame(ege::Environement& _env) :
 	static uint32_t unique=0;
 	m_uID = unique;
 	EGE_DEBUG("Create element : uId=" << m_uID);
-	m_debugText.SetFontSize(12);
+	m_debugText.setFontSize(12);
 	unique++;
 }
 
@@ -63,8 +63,8 @@ ege::ElementGame::~ElementGame(void)
 	IADisable();
 	// same ...
 	DynamicDisable();
-	RemoveShape();
-	ewol::Mesh::Release(m_mesh);
+	removeShape();
+	ewol::Mesh::release(m_mesh);
 	if (NULL != m_body) {
 		delete(m_body);
 		m_body = NULL;
@@ -72,7 +72,7 @@ ege::ElementGame::~ElementGame(void)
 	EGE_DEBUG("Destroy element : uId=" << m_uID);
 }
 
-void ege::ElementGame::RemoveShape(void)
+void ege::ElementGame::removeShape(void)
 {
 	// no shape
 	if (NULL == m_shape) {
@@ -80,12 +80,12 @@ void ege::ElementGame::RemoveShape(void)
 	}
 	// need to chek if the shape is the same as the mesh shape ...
 	if (m_mesh == NULL) {
-		// no mesh ==> standalone shape
+		// no mesh  == > standalone shape
 		delete(m_shape);
 		m_shape=NULL;
 		return;
 	}
-	if (m_shape != m_mesh->GetShape()) {
+	if (m_shape != m_mesh->getShape()) {
 		delete(m_shape);
 		m_shape=NULL;
 		return;
@@ -95,75 +95,75 @@ void ege::ElementGame::RemoveShape(void)
 
 void ege::ElementGame::FunctionFreeShape(void* _pointer)
 {
-	if (NULL==_pointer) {
+	if (NULL == _pointer) {
 		return;
 	}
 	delete(static_cast<btCollisionShape*>(_pointer));
 }
 
-bool ege::ElementGame::LoadMesh(const etk::UString& _meshFileName)
+bool ege::ElementGame::loadMesh(const etk::UString& _meshFileName)
 {
 	ewol::Mesh* tmpMesh=NULL;
-	tmpMesh = ewol::Mesh::Keep(_meshFileName);
-	if(NULL==tmpMesh) {
+	tmpMesh = ewol::Mesh::keep(_meshFileName);
+	if(NULL == tmpMesh) {
 		EGE_ERROR("can not load the resources : " << _meshFileName);
 		return false;
 	}
-	return SetMesh(tmpMesh);
+	return setMesh(tmpMesh);
 }
 
-bool ege::ElementGame::SetMesh(ewol::Mesh* _mesh)
+bool ege::ElementGame::setMesh(ewol::Mesh* _mesh)
 {
 	if (NULL!=m_mesh) {
-		RemoveShape();
-		ewol::Mesh::Release(m_mesh);
+		removeShape();
+		ewol::Mesh::release(m_mesh);
 	}
 	m_mesh = _mesh;
 	// auto load the shape :
-	if (NULL==m_mesh) {
+	if (NULL == m_mesh) {
 		return true;
 	}
-	if (NULL != m_mesh->GetShape()) {
-		m_shape = static_cast<btCollisionShape*>(m_mesh->GetShape());
+	if (NULL != m_mesh->getShape()) {
+		m_shape = static_cast<btCollisionShape*>(m_mesh->getShape());
 		return true;
 	}
-	m_mesh->SetShape(ege::collision::CreateShape(m_mesh));
-	m_mesh->SetFreeShapeFunction(&FunctionFreeShape);
-	m_shape = static_cast<btCollisionShape*>(m_mesh->GetShape());
+	m_mesh->setShape(ege::collision::CreateShape(m_mesh));
+	m_mesh->setFreeShapeFunction(&FunctionFreeShape);
+	m_shape = static_cast<btCollisionShape*>(m_mesh->getShape());
 	return true;
 }
 
-bool ege::ElementGame::SetShape(btCollisionShape* _shape)
+bool ege::ElementGame::setShape(btCollisionShape* _shape)
 {
-	RemoveShape();
+	removeShape();
 	m_shape = _shape;
 	return true;
 }
 
 
-float ege::ElementGame::GetLifeRatio(void)
+float ege::ElementGame::getLifeRatio(void)
 {
-	if (0>=m_life) {
+	if (0 >= m_life) {
 		return 0;
 	}
 	return m_life/m_lifeMax;
 }
 
 
-void ege::ElementGame::SetFireOn(int32_t groupIdSource, int32_t type, float power, const vec3& center)
+void ege::ElementGame::setFireOn(int32_t groupIdSource, int32_t type, float power, const vec3& center)
 {
 	float previousLife = m_life;
 	m_life += power;
 	m_life = etk_avg(0, m_life, m_lifeMax);
-	if (m_life<=0) {
-		EGE_DEBUG("[" << GetUID() << "] element is killed ..." << GetType());
+	if (m_life <= 0) {
+		EGE_DEBUG("[" << getUID() << "] element is killed ..." << getType());
 	}
 	if (m_life!=previousLife) {
-		OnLifeChange();
+		onLifeChange();
 	}
 }
 
-void ege::ElementGame::SetPosition(const vec3& pos)
+void ege::ElementGame::setPosition(const vec3& pos)
 {
 	if (NULL!=m_body) {
 		btTransform transformation = m_body->getCenterOfMassTransform();
@@ -172,7 +172,7 @@ void ege::ElementGame::SetPosition(const vec3& pos)
 	}
 }
 
-const vec3& ege::ElementGame::GetPosition(void)
+const vec3& ege::ElementGame::getPosition(void)
 {
 	// this is to prevent error like segmentation fault ...
 	static vec3 emptyPosition(-1000000,-1000000,-1000000);
@@ -182,7 +182,7 @@ const vec3& ege::ElementGame::GetPosition(void)
 	return emptyPosition;
 };
 
-const vec3& ege::ElementGame::GetSpeed(void)
+const vec3& ege::ElementGame::getSpeed(void)
 {
 	// this is to prevent error like segmentation fault ...
 	static vec3 emptySpeed(0,0,0);
@@ -192,7 +192,7 @@ const vec3& ege::ElementGame::GetSpeed(void)
 	return emptySpeed;
 };
 
-const float ege::ElementGame::GetInvMass(void)
+const float ege::ElementGame::getInvMass(void)
 {
 	if (NULL!=m_body) {
 		return m_body->getInvMass();
@@ -201,7 +201,7 @@ const float ege::ElementGame::GetInvMass(void)
 };
 
 
-static void DrawSphere(ewol::Colored3DObject* _draw,
+static void drawSphere(ewol::Colored3DObject* _draw,
                        btScalar _radius,
                        int _lats,
                        int _longs,
@@ -233,16 +233,16 @@ static void DrawSphere(ewol::Colored3DObject* _draw,
 			vec3 v2 = vec3(x * zr1, y * zr1, z1);
 			vec3 v3 = vec3(x * zr0, y * zr0, z0);
 			
-			EwolVertices.PushBack(v1);
-			EwolVertices.PushBack(v2);
-			EwolVertices.PushBack(v3);
+			EwolVertices.pushBack(v1);
+			EwolVertices.pushBack(v2);
+			EwolVertices.pushBack(v3);
 			
-			EwolVertices.PushBack(v1);
-			EwolVertices.PushBack(v3);
-			EwolVertices.PushBack(v4);
+			EwolVertices.pushBack(v1);
+			EwolVertices.pushBack(v3);
+			EwolVertices.pushBack(v4);
 		}
 	}
-	_draw->Draw(EwolVertices, _tmpColor, _transformationMatrix);
+	_draw->draw(EwolVertices, _tmpColor, _transformationMatrix);
 }
 
 const float lifeBorder = 0.1f;
@@ -250,45 +250,45 @@ const float lifeHeight = 0.3f;
 const float lifeWidth = 2.0f;
 const float lifeYPos = 1.7f;
 
-void ege::ElementGame::DrawLife(ewol::Colored3DObject* _draw, const ege::Camera& _camera)
+void ege::ElementGame::drawLife(ewol::Colored3DObject* _draw, const ege::Camera& _camera)
 {
-	if (NULL==_draw) {
+	if (NULL == _draw) {
 		return;
 	}
-	float ratio = GetLifeRatio();
+	float ratio = getLifeRatio();
 	if (ratio == 1.0f) {
 		return;
 	}
-	mat4 transformationMatrix =   etk::matTranslate(GetPosition())
-	                            * etk::matRotate(vec3(0,0,1),_camera.GetAngleZ())
-	                            * etk::matRotate(vec3(1,0,0),(M_PI/2.0f-_camera.GetAngleTeta()));
+	mat4 transformationMatrix =   etk::matTranslate(getPosition())
+	                            * etk::matRotate(vec3(0,0,1),_camera.getAngleZ())
+	                            * etk::matRotate(vec3(1,0,0),(M_PI/2.0f-_camera.getAngleTeta()));
 	etk::Vector<vec3> localVertices;
-	localVertices.PushBack(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos           -lifeBorder,0));
-	localVertices.PushBack(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
-	localVertices.PushBack(vec3( lifeWidth/2.0+lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
-	localVertices.PushBack(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos           -lifeBorder,0));
-	localVertices.PushBack(vec3( lifeWidth/2.0+lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
-	localVertices.PushBack(vec3( lifeWidth/2.0+lifeBorder,lifeYPos           -lifeBorder,0));
+	localVertices.pushBack(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos           -lifeBorder,0));
+	localVertices.pushBack(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
+	localVertices.pushBack(vec3( lifeWidth/2.0+lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
+	localVertices.pushBack(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos           -lifeBorder,0));
+	localVertices.pushBack(vec3( lifeWidth/2.0+lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
+	localVertices.pushBack(vec3( lifeWidth/2.0+lifeBorder,lifeYPos           -lifeBorder,0));
 	etk::Color<float> myColor(0x0000FF99);
-	_draw->Draw(localVertices, myColor, transformationMatrix, false, false);
-	localVertices.Clear();
-	/** Bounding box ==> model shape **/
-	localVertices.PushBack(vec3(-lifeWidth/2.0                ,lifeYPos,0));
-	localVertices.PushBack(vec3(-lifeWidth/2.0                ,lifeYPos + lifeHeight,0));
-	localVertices.PushBack(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos + lifeHeight,0));
-	localVertices.PushBack(vec3(-lifeWidth/2.0                ,lifeYPos,0));
-	localVertices.PushBack(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos + lifeHeight,0));
-	localVertices.PushBack(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos,0));
+	_draw->draw(localVertices, myColor, transformationMatrix, false, false);
+	localVertices.clear();
+	/** Bounding box  == > model shape **/
+	localVertices.pushBack(vec3(-lifeWidth/2.0                ,lifeYPos,0));
+	localVertices.pushBack(vec3(-lifeWidth/2.0                ,lifeYPos + lifeHeight,0));
+	localVertices.pushBack(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos + lifeHeight,0));
+	localVertices.pushBack(vec3(-lifeWidth/2.0                ,lifeYPos,0));
+	localVertices.pushBack(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos + lifeHeight,0));
+	localVertices.pushBack(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos,0));
 	myColor =0x00FF00FF;
 	if (ratio < 0.2f) {
 		myColor = 0xFF0000FF;
 	} else if (ratio < 0.4f) {
 		myColor = 0xDA7B00FF;
 	}
-	_draw->Draw(localVertices, myColor, transformationMatrix, false, false);
+	_draw->draw(localVertices, myColor, transformationMatrix, false, false);
 }
 
-static void DrawShape(const btCollisionShape* _shape,
+static void drawShape(const btCollisionShape* _shape,
                       ewol::Colored3DObject* _draw,
                       mat4 _transformationMatrix,
                       etk::Vector<vec3> _tmpVertices)
@@ -299,20 +299,20 @@ static void DrawShape(const btCollisionShape* _shape,
 	}
 	etk::Color<float> tmpColor(1.0, 0.0, 0.0, 0.3);
 	
-	//EGE_DEBUG("        Draw (6): !btIDebugDraw::DBG_DrawWireframe");
+	//EGE_DEBUG("        draw (6): !btIDebugDraw::DBG_DrawWireframe");
 	int shapetype=_shape->getShapeType();
 	switch (shapetype) {
 		case SPHERE_SHAPE_PROXYTYPE: {
 			// Sphere collision shape ...
-			//EGE_DEBUG("            Draw (01): SPHERE_SHAPE_PROXYTYPE");
+			//EGE_DEBUG("            draw (01): SPHERE_SHAPE_PROXYTYPE");
 			const btSphereShape* sphereShape = static_cast<const btSphereShape*>(_shape);
 			float radius = sphereShape->getMargin();//radius doesn't include the margin, so draw with margin
-			DrawSphere(_draw, radius, 10, 10, _transformationMatrix, tmpColor);
+			drawSphere(_draw, radius, 10, 10, _transformationMatrix, tmpColor);
 			break;
 		}
 		case BOX_SHAPE_PROXYTYPE: {
 			// Box collision shape ...
-			//EGE_DEBUG("            Draw (02): BOX_SHAPE_PROXYTYPE");
+			//EGE_DEBUG("            draw (02): BOX_SHAPE_PROXYTYPE");
 			const btBoxShape* boxShape = static_cast<const btBoxShape*>(_shape);
 			btVector3 halfExtent = boxShape->getHalfExtentsWithMargin();
 			static int indices[36] = { 0,1,2,	3,2,1,	4,0,6,
@@ -327,36 +327,36 @@ static void DrawShape(const btCollisionShape* _shape,
 			                   vec3(-halfExtent[0],halfExtent[1],-halfExtent[2]),
 			                   vec3(halfExtent[0],-halfExtent[1],-halfExtent[2]),
 			                   vec3(-halfExtent[0],-halfExtent[1],-halfExtent[2])};
-			_tmpVertices.Clear();
+			_tmpVertices.clear();
 			for (int32_t iii=0 ; iii<36 ; iii+=3) {
 				// normal calculation :
 				//btVector3 normal = (vertices[indices[iii+2]]-vertices[indices[iii]]).cross(vertices[indices[iii+1]]-vertices[indices[iii]]);
 				//normal.normalize ();
-				_tmpVertices.PushBack(vertices[indices[iii]]);
-				_tmpVertices.PushBack(vertices[indices[iii+1]]);
-				_tmpVertices.PushBack(vertices[indices[iii+2]]);
+				_tmpVertices.pushBack(vertices[indices[iii]]);
+				_tmpVertices.pushBack(vertices[indices[iii+1]]);
+				_tmpVertices.pushBack(vertices[indices[iii+2]]);
 			}
-			_draw->Draw(_tmpVertices, tmpColor, _transformationMatrix);
+			_draw->draw(_tmpVertices, tmpColor, _transformationMatrix);
 			break;
 		}
 		case CONE_SHAPE_PROXYTYPE: {
 			// Cone collision shape ...
-			EGE_DEBUG("            Draw (03): CONE_SHAPE_PROXYTYPE");
+			EGE_DEBUG("            draw (03): CONE_SHAPE_PROXYTYPE");
 			break;
 		}
 		case CAPSULE_SHAPE_PROXYTYPE: {
 			// Capsule collision shape ...
-			EGE_DEBUG("            Draw (04): CAPSULE_SHAPE_PROXYTYPE");
+			EGE_DEBUG("            draw (04): CAPSULE_SHAPE_PROXYTYPE");
 			break;
 		}
 		case CYLINDER_SHAPE_PROXYTYPE: {
 			// Cylinder collision shape ...
-			EGE_DEBUG("            Draw (05): CYLINDER_SHAPE_PROXYTYPE");
+			EGE_DEBUG("            draw (05): CYLINDER_SHAPE_PROXYTYPE");
 			break;
 		}
 		case CONVEX_HULL_SHAPE_PROXYTYPE: {
 			// Convex Hull collision shape ...
-			EGE_DEBUG("            Draw (06): CONVEX_HULL_SHAPE_PROXYTYPE");
+			EGE_DEBUG("            draw (06): CONVEX_HULL_SHAPE_PROXYTYPE");
 			if (_shape->isConvex()) {
 					EGE_DEBUG("                shape->isConvex()");
 					const btConvexPolyhedron* poly = _shape->isPolyhedral() ? ((btPolyhedralConvexShape*) _shape)->getConvexPolyhedron() : 0;
@@ -386,7 +386,7 @@ static void DrawShape(const btCollisionShape* _shape,
 						glEnd();
 						*/
 					} else {
-						// TODO : Set it back ...
+						// TODO : set it back ...
 						/*
 						ShapeCache*	sc=cache((btConvexShape*)_shape);
 						//glutSolidCube(1.0);
@@ -430,65 +430,65 @@ static void DrawShape(const btCollisionShape* _shape,
 		}
 		case COMPOUND_SHAPE_PROXYTYPE: {
 			// Multiple sub element collision shape ...
-			//EGE_DEBUG("            Draw (07): COMPOUND_SHAPE_PROXYTYPE");
+			//EGE_DEBUG("            draw (07): COMPOUND_SHAPE_PROXYTYPE");
 			const btCompoundShape* compoundShape = static_cast<const btCompoundShape*>(_shape);
-			for (int32_t iii=compoundShape->getNumChildShapes()-1;iii>=0;iii--) {
+			for (int32_t iii=compoundShape->getNumChildShapes()-1;iii >= 0;iii--) {
 				btTransform childTrans = compoundShape->getChildTransform(iii);
 				const btCollisionShape* colShape = compoundShape->getChildShape(iii);
 				btScalar mmm[16];
 				childTrans.getOpenGLMatrix(mmm);
 				mat4 transformationMatrix(mmm);
-				transformationMatrix.Transpose();
+				transformationMatrix.transpose();
 				transformationMatrix = _transformationMatrix * transformationMatrix;
-				DrawShape(colShape, _draw, transformationMatrix, _tmpVertices);
+				drawShape(colShape, _draw, transformationMatrix, _tmpVertices);
 			}
 			break;
 		}
 		case EMPTY_SHAPE_PROXYTYPE: {
 			// No collision shape ...
-			//EGE_DEBUG("            Draw (08): EMPTY_SHAPE_PROXYTYPE");
+			//EGE_DEBUG("            draw (08): EMPTY_SHAPE_PROXYTYPE");
 			// nothing to display ...
 			break;
 		}
 		default: {
 			// must be done later ...
-			EGE_DEBUG("            Draw (09): default");
+			EGE_DEBUG("            draw (09): default");
 		}
 	}
 }
 
-void ege::ElementGame::DrawDebug(ewol::Colored3DObject* _draw, const ege::Camera& _camera)
+void ege::ElementGame::drawDebug(ewol::Colored3DObject* _draw, const ege::Camera& _camera)
 {
-	m_debugText.Clear();
-	m_debugText.SetColor(0x00FF00FF);
-	m_debugText.SetPos(vec3(-20,32,0));
-	m_debugText.Print(GetType());
-	m_debugText.SetPos(vec3(-20,20,0));
-	m_debugText.Print(etk::UString("life=(")+etk::UString(GetLifeRatio()));
-	//m_debugText.Print(etk::UString("Axe=(")+etk::UString(m_tmpAxe.x())+etk::UString(",")+etk::UString(m_tmpAxe.y())+etk::UString(",")+etk::UString(m_tmpAxe.z())+etk::UString(")"));
+	m_debugText.clear();
+	m_debugText.setColor(0x00FF00FF);
+	m_debugText.setPos(vec3(-20,32,0));
+	m_debugText.print(getType());
+	m_debugText.setPos(vec3(-20,20,0));
+	m_debugText.print(etk::UString("life=(")+etk::UString(getLifeRatio()));
+	//m_debugText.print(etk::UString("Axe=(")+etk::UString(m_tmpAxe.x())+etk::UString(",")+etk::UString(m_tmpAxe.y())+etk::UString(",")+etk::UString(m_tmpAxe.z())+etk::UString(")"));
 	btScalar mmm[16];
 	btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
 	myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(mmm);
 	
 	mat4 transformationMatrix(mmm);
-	transformationMatrix.Transpose();
+	transformationMatrix.transpose();
 	
 	// note : set the vertice here to prevent multiple allocations...
 	etk::Vector<vec3> EwolVertices;
-	DrawShape(m_shape, _draw, transformationMatrix, EwolVertices);
+	drawShape(m_shape, _draw, transformationMatrix, EwolVertices);
 	
-	m_debugText.Draw(   etk::matTranslate(GetPosition())
-	                  * etk::matRotate(vec3(0,0,1),_camera.GetAngleZ())
-	                  * etk::matRotate(vec3(1,0,0),(M_PI/2.0f-_camera.GetAngleTeta()))
+	m_debugText.draw(   etk::matTranslate(getPosition())
+	                  * etk::matRotate(vec3(0,0,1),_camera.getAngleZ())
+	                  * etk::matRotate(vec3(1,0,0),(M_PI/2.0f-_camera.getAngleTeta()))
 	                  * etk::matScale(vec3(0.05,0.05,0.05)));
 }
 
-void ege::ElementGame::Draw(int32_t _pass)
+void ege::ElementGame::draw(int32_t _pass)
 {
 	if (false == m_elementInPhysicsSystem) {
 		return;
 	}
-	if (_pass==0) {
+	if (_pass == 0) {
 		if(    NULL != m_body
 		    && NULL != m_mesh
 		    && m_body->getMotionState() ) {
@@ -497,8 +497,8 @@ void ege::ElementGame::Draw(int32_t _pass)
 			myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(mmm);
 			
 			mat4 transformationMatrix(mmm);
-			transformationMatrix.Transpose();
-			m_mesh->Draw(transformationMatrix);
+			transformationMatrix.transpose();
+			m_mesh->draw(transformationMatrix);
 		}
 	}
 }
@@ -509,10 +509,10 @@ void ege::ElementGame::DynamicEnable(void)
 		return;
 	}
 	if(NULL!=m_body) {
-		m_env.GetDynamicWorld()->addRigidBody(m_body);
+		m_env.getDynamicWorld()->addRigidBody(m_body);
 	}
 	if(NULL!=m_IA) {
-		m_env.GetDynamicWorld()->addAction(m_IA);
+		m_env.getDynamicWorld()->addAction(m_IA);
 	}
 	m_elementInPhysicsSystem = true;
 }
@@ -523,12 +523,12 @@ void ege::ElementGame::DynamicDisable(void)
 		return;
 	}
 	if(NULL!=m_IA) {
-		m_env.GetDynamicWorld()->removeAction(m_IA);
+		m_env.getDynamicWorld()->removeAction(m_IA);
 	}
 	if(NULL!=m_body) {
 		// Unlink element from the engine
-		m_env.GetDynamicWorld()->removeRigidBody(m_body);
-		m_env.GetDynamicWorld()->removeCollisionObject(m_body);
+		m_env.getDynamicWorld()->removeRigidBody(m_body);
+		m_env.getDynamicWorld()->removeCollisionObject(m_body);
 	}
 	m_elementInPhysicsSystem = false;
 }
@@ -541,11 +541,11 @@ void ege::ElementGame::IAEnable(void)
 	}
 	m_IA = new localIA(*this);
 	if (NULL == m_IA) {
-		EGE_ERROR("Can not start the IA ==> allocation error");
+		EGE_ERROR("Can not start the IA  == > allocation error");
 		return;
 	}
 	if (true == m_elementInPhysicsSystem) {
-		m_env.GetDynamicWorld()->addAction(m_IA);
+		m_env.getDynamicWorld()->addAction(m_IA);
 	}
 }
 
@@ -556,9 +556,9 @@ void ege::ElementGame::IADisable(void)
 		return;
 	}
 	if (true == m_elementInPhysicsSystem) {
-		m_env.GetDynamicWorld()->removeAction(m_IA);
+		m_env.getDynamicWorld()->removeAction(m_IA);
 	}
-	// Remove IA :
+	// remove IA :
 	delete(m_IA);
 	m_IA = NULL;
 }

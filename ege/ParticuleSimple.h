@@ -41,10 +41,10 @@ namespace ege {
 			 */
 			virtual ~ParticuleSimple(void) { };
 		public: // herited elements:
-			virtual void Update(float _delta);
-			//virtual void Draw(void) { };
-			virtual bool NeedRemove(void);
-			virtual void Init(void);
+			virtual void update(float _delta);
+			//virtual void draw(void) { };
+			virtual bool needRemove(void);
+			virtual void init(void);
 		protected:
 			float m_lifeFull;
 			float m_life;
@@ -58,13 +58,13 @@ namespace ege {
 			/**
 			 *
 			 */
-			virtual void SetLife(float _life);
-			virtual void SetLevel(float _level);
-			virtual void SetPosition(const vec3& _pos);
-			virtual void SetAngle(float _angle);
-			virtual void SetMoveSpeed(const vec3& _speed);
-			virtual void SetScale(const vec3& _scale);
-			virtual void SetScaleExpend(const vec3& _scaleExpand);
+			virtual void setLife(float _life);
+			virtual void setLevel(float _level);
+			virtual void setPosition(const vec3& _pos);
+			virtual void setAngle(float _angle);
+			virtual void setMoveSpeed(const vec3& _speed);
+			virtual void setScale(const vec3& _scale);
+			virtual void setScaleExpend(const vec3& _scaleExpand);
 	};
 };
 
