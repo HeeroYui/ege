@@ -60,9 +60,9 @@ ege::ElementGame::ElementGame(ege::Environement& _env) :
 ege::ElementGame::~ElementGame(void)
 {
 	// in every case remove IA
-	IADisable();
+	iaDisable();
 	// same ...
-	DynamicDisable();
+	dynamicDisable();
 	removeShape();
 	ewol::Mesh::release(m_mesh);
 	if (NULL != m_body) {
@@ -127,7 +127,7 @@ bool ege::ElementGame::setMesh(ewol::Mesh* _mesh)
 		m_shape = static_cast<btCollisionShape*>(m_mesh->getShape());
 		return true;
 	}
-	m_mesh->setShape(ege::collision::CreateShape(m_mesh));
+	m_mesh->setShape(ege::collision::createShape(m_mesh));
 	m_mesh->setFreeShapeFunction(&FunctionFreeShape);
 	m_shape = static_cast<btCollisionShape*>(m_mesh->getShape());
 	return true;
@@ -503,7 +503,7 @@ void ege::ElementGame::draw(int32_t _pass)
 	}
 }
 
-void ege::ElementGame::DynamicEnable(void)
+void ege::ElementGame::dynamicEnable(void)
 {
 	if (true == m_elementInPhysicsSystem) {
 		return;
@@ -517,7 +517,7 @@ void ege::ElementGame::DynamicEnable(void)
 	m_elementInPhysicsSystem = true;
 }
 
-void ege::ElementGame::DynamicDisable(void)
+void ege::ElementGame::dynamicDisable(void)
 {
 	if (false == m_elementInPhysicsSystem) {
 		return;
@@ -533,7 +533,7 @@ void ege::ElementGame::DynamicDisable(void)
 	m_elementInPhysicsSystem = false;
 }
 
-void ege::ElementGame::IAEnable(void)
+void ege::ElementGame::iaEnable(void)
 {
 	if (NULL != m_IA) {
 		// IA already started ...
@@ -549,7 +549,7 @@ void ege::ElementGame::IAEnable(void)
 	}
 }
 
-void ege::ElementGame::IADisable(void)
+void ege::ElementGame::iaDisable(void)
 {
 	if (NULL == m_IA) {
 		// IA already stopped ...

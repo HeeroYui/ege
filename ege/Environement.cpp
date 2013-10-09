@@ -134,7 +134,7 @@ void ege::Environement::addCreator(const etk::UString& _type, ege::createElement
 	getHachTableCreating().add(_type, _creator);
 }
 
-ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, bool _autoAddElement, ege::property_te _property, void* _value)
+ege::ElementGame* ege::Environement::createElement(const etk::UString& _type, bool _autoAddElement, ege::property_te _property, void* _value)
 {
 	if (false == getHachTableCreating().exist(_type)) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
@@ -162,19 +162,19 @@ ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, bo
 	return tmpElement;
 }
 
-ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, etk::UString& _description, bool _autoAddElement)
+ege::ElementGame* ege::Environement::createElement(const etk::UString& _type, etk::UString& _description, bool _autoAddElement)
 {
-	return CreateElement(_type, _autoAddElement, ege::typeString, static_cast<void*>(&_description));
+	return createElement(_type, _autoAddElement, ege::typeString, static_cast<void*>(&_description));
 }
 
-ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, ejson::Value* _value, bool _autoAddElement)
+ege::ElementGame* ege::Environement::createElement(const etk::UString& _type, ejson::Value* _value, bool _autoAddElement)
 {
-	return CreateElement(_type, _autoAddElement, ege::typeJson, static_cast<void*>(_value));
+	return createElement(_type, _autoAddElement, ege::typeJson, static_cast<void*>(_value));
 }
 
-ege::ElementGame* ege::Environement::CreateElement(const etk::UString& _type, exml::Node* _node, bool _autoAddElement)
+ege::ElementGame* ege::Environement::createElement(const etk::UString& _type, exml::Node* _node, bool _autoAddElement)
 {
-	return CreateElement(_type, _autoAddElement, ege::typeXml, static_cast<void*>(_node));
+	return createElement(_type, _autoAddElement, ege::typeXml, static_cast<void*>(_node));
 }
 
 
@@ -187,15 +187,15 @@ void ege::Environement::addElementGame(ege::ElementGame* _newElement)
 	for (int32_t iii=0; iii<m_listElementGame.size() ; iii++) {
 		if (NULL == m_listElementGame[iii]) {
 			m_listElementGame[iii] = _newElement;
-			m_listElementGame[iii]->DynamicEnable();
+			m_listElementGame[iii]->dynamicEnable();
 			return;
 		}
 	}
 	m_listElementGame.pushBack(_newElement);
-	_newElement->DynamicEnable();
+	_newElement->dynamicEnable();
 }
 
-void ege::Environement::RmElementGame(ege::ElementGame* _removeElement)
+void ege::Environement::rmElementGame(ege::ElementGame* _removeElement)
 {
 	if (NULL == _removeElement) {
 		return;
@@ -210,8 +210,8 @@ void ege::Environement::RmElementGame(ege::ElementGame* _removeElement)
 	for (int32_t iii=0; iii<m_listElementGame.size() ; iii++) {
 		if (_removeElement == m_listElementGame[iii]) {
 			m_listElementGame[iii]->onDestroy();
-			m_listElementGame[iii]->DynamicDisable();
-			m_listElementGame[iii]->UnInit();
+			m_listElementGame[iii]->dynamicDisable();
+			m_listElementGame[iii]->unInit();
 			delete(m_listElementGame[iii]);
 			m_listElementGame[iii] = NULL;
 		}

@@ -60,7 +60,7 @@ namespace ege
 			 * @return true, the element is corectly initialized.
 			 */
 			virtual bool init(property_te _property, void* _value) { return false; };
-			virtual bool UnInit(void) { return true; };
+			virtual bool unInit(void) { return true; };
 		private:
 			uint32_t m_uID; //!< This is a reference on a basic element ID
 		public:
@@ -244,11 +244,11 @@ namespace ege
 			/**
 			 * @brief set the elment in the physique engine
 			 */
-			void DynamicEnable(void);
+			void dynamicEnable(void);
 			/**
 			 * @brief remove this element from the physique engine
 			 */
-			void DynamicDisable(void);
+			void dynamicDisable(void);
 		private:
 			class localIA : public btActionInterface
 			{
@@ -269,7 +269,7 @@ namespace ege
 					// herited function
 					void updateAction(btCollisionWorld* collisionWorld, btScalar step)
 					{
-						m_element.IAAction(step);
+						m_element.iaAction(step);
 					}
 			};
 			localIA* m_IA;
@@ -277,16 +277,16 @@ namespace ege
 			/**
 			 * @brief enable periodic call Of this object for processing Artificial Intelligence
 			 */
-			void IAEnable(void);
+			void iaEnable(void);
 			/**
 			 * @brief disable periodic call Of this object for processing Artificial Intelligence
 			 */
-			void IADisable(void);
+			void iaDisable(void);
 			/**
 			 * @brief periodic call for intelligence artificial.
 			 * @param[in] step : step of time in s
 			 */
-			virtual void IAAction(float _step) { };
+			virtual void iaAction(float _step) { };
 			/**
 			 * @brief, call when the element is removed (call only one time
 			 */

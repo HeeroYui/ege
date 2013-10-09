@@ -297,7 +297,7 @@ void ege::Scene::periodicCall(const ewol::EventTime& _event)
 						victoryPoint++;
 					}
 					EGE_DEBUG("[" << elementList[iii]->getUID() << "] element Removing ... " << elementList[iii]->getType());
-					m_env.RmElementGame(elementList[iii]);
+					m_env.rmElementGame(elementList[iii]);
 				}
 			}
 		}
@@ -314,7 +314,7 @@ void ege::Scene::periodicCall(const ewol::EventTime& _event)
 
 //#define SCENE_BRUT_PERFO_TEST
 
-void ege::Scene::systemDraw(const ewol::drawProperty& _displayProp)
+void ege::Scene::systemDraw(const ewol::DrawProperty& _displayProp)
 {
 #ifdef SCENE_BRUT_PERFO_TEST
 int64_t tmp___startTime0 = ewol::getTime();

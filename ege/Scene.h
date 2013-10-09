@@ -124,7 +124,7 @@ namespace ege {
 			virtual void onDraw(void);
 		public: // Derived function
 			virtual const char * const getObjectType(void) { return "ege::Scene"; };
-			virtual void systemDraw(const ewol::drawProperty& _displayProp);
+			virtual void systemDraw(const ewol::DrawProperty& _displayProp);
 			virtual void onRegenerateDisplay(void);
 			virtual void periodicCall(const ewol::EventTime& _event);
 	};

@@ -90,10 +90,10 @@ namespace ege {
 			 * @return NULL if an error occured OR the pointer on the element and it is already added on the system.
 			 * @note Pointer is return in case of setting properties on it...
 			 */
-			ege::ElementGame* CreateElement(const etk::UString& _type, bool _autoAddElement=true, ege::property_te _property=ege::typeNone, void* _value=NULL);
-			ege::ElementGame* CreateElement(const etk::UString& _type, etk::UString& _description, bool _autoAddElement=true);
-			ege::ElementGame* CreateElement(const etk::UString& _type, ejson::Value* _value, bool _autoAddElement=true);
-			ege::ElementGame* CreateElement(const etk::UString& _type, exml::Node* _node, bool _autoAddElement=true);
+			ege::ElementGame* createElement(const etk::UString& _type, bool _autoAddElement=true, ege::property_te _property=ege::typeNone, void* _value=NULL);
+			ege::ElementGame* createElement(const etk::UString& _type, etk::UString& _description, bool _autoAddElement=true);
+			ege::ElementGame* createElement(const etk::UString& _type, ejson::Value* _value, bool _autoAddElement=true);
+			ege::ElementGame* createElement(const etk::UString& _type, exml::Node* _node, bool _autoAddElement=true);
 		public:
 			class ResultNearestElement
 			{
@@ -135,7 +135,7 @@ namespace ege {
 			 * @brief remove an element on the list availlable.
 			 * @param[in] _removeElement Element to remove.
 			 */
-			void RmElementGame(ege::ElementGame* _removeElement);
+			void rmElementGame(ege::ElementGame* _removeElement);
 			/**
 			 * @brief get the element order from the nearest to the farest, and remove all element that are not in the camera angle and axes.
 			 * @param[in,out] _resultList List of the element ordered.
