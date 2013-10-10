@@ -38,8 +38,7 @@ namespace ege {
 	class Environement;
 	typedef ege::ElementGame* (*createElement_tf)(ege::Environement& _env);
 	
-	class ElementInteraction
-	{
+	class ElementInteraction {
 		protected:
 			int32_t m_type;
 		public:
@@ -67,8 +66,7 @@ namespace ege {
 			virtual void applyEvent(ege::ElementGame& _element) { };
 	};
 	
-	class Environement
-	{
+	class Environement {
 		private:
 			btDynamicsWorld* m_dynamicsWorld; //!< curent system world description
 			etk::Vector<ege::ElementGame*> m_listElementGame; //!< List of all element added in the Game
@@ -95,8 +93,7 @@ namespace ege {
 			ege::ElementGame* createElement(const etk::UString& _type, ejson::Value* _value, bool _autoAddElement=true);
 			ege::ElementGame* createElement(const etk::UString& _type, exml::Node* _node, bool _autoAddElement=true);
 		public:
-			class ResultNearestElement
-			{
+			class ResultNearestElement {
 				public:
 					ege::ElementGame* element;
 					float dist;
@@ -105,17 +102,23 @@ namespace ege {
 			 * @brief set the curent world
 			 * @param[in] _newWorld Pointer on the current world
 			 */
-			void setDynamicWorld(btDynamicsWorld* _newWorld) { m_dynamicsWorld=_newWorld; };
+			void setDynamicWorld(btDynamicsWorld* _newWorld) {
+				m_dynamicsWorld=_newWorld;
+			};
 			/**
 			 * @brief get the curent world
 			 * @return pointer on the current world
 			 */
-			btDynamicsWorld* getDynamicWorld(void) { return m_dynamicsWorld; };
+			btDynamicsWorld* getDynamicWorld(void) {
+				return m_dynamicsWorld;
+			};
 			/**
 			 * @breif get a reference on the curent list of element games
 			 * @return all element list
 			 */
-			etk::Vector<ege::ElementGame*>& getElementGame(void) { return m_listElementGame; };
+			etk::Vector<ege::ElementGame*>& getElementGame(void) {
+				return m_listElementGame;
+			};
 			/**
 			 * @brief get the nearest Element
 			 * @param[in] _sourceRequest Pointer on the element that request this.
@@ -124,8 +127,12 @@ namespace ege {
 			 */
 			ege::ElementGame* getElementNearest(ege::ElementGame* _sourceRequest, float& _distance);
 			
-			void getElementNearest(const vec3& _sourcePosition, float _distanceMax, etk::Vector<ege::Environement::ResultNearestElement>& _resultList);
-			void getElementNearestFixed(const vec3& _sourcePosition, float _distanceMax, etk::Vector<ege::Environement::ResultNearestElement>& _resultList);
+			void getElementNearest(const vec3& _sourcePosition,
+			                       float _distanceMax,
+			                       etk::Vector<ege::Environement::ResultNearestElement>& _resultList);
+			void getElementNearestFixed(const vec3& _sourcePosition,
+			                            float _distanceMax,
+			                            etk::Vector<ege::Environement::ResultNearestElement>& _resultList);
 			/**
 			 * @brief add an element on the list availlable.
 			 * @param[in] _newElement Element to add.
@@ -155,7 +162,9 @@ namespace ege {
 			 * @brief get the particule engine reference.
 			 * @return The requested reference on the engine
 			 */
-			ege::ParticuleEngine& getParticuleEngine(void) { return m_particuleEngine; };
+			ege::ParticuleEngine& getParticuleEngine(void) {
+				return m_particuleEngine;
+			};
 	};
 };
 

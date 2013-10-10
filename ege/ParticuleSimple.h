@@ -27,8 +27,7 @@ namespace ege {
 	 *        it does not have any control, for example smoke or reactor generation ...
 	 *        or explosion particule ...
 	 */
-	class ParticuleSimple : public Particule
-	{
+	class ParticuleSimple : public Particule {
 		public:
 			/**
 			 * @brief Constructor.

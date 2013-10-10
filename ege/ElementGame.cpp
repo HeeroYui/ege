@@ -29,27 +29,25 @@
 #undef __class__
 #define __class__	"ElementGame"
 
-const etk::UString& ege::ElementGame::getType(void) const
-{
+const etk::UString& ege::ElementGame::getType(void) const {
 	static const etk::UString nameType("----");
 	return nameType;
 }
 
 
 ege::ElementGame::ElementGame(ege::Environement& _env) :
-	m_env(_env),
-	m_body(NULL),
-	m_uID(0),
-	m_mesh(NULL),
-	m_shape(NULL),
-	m_life(100),
-	m_lifeMax(100),
-	m_group(0),
-	m_fixe(true),
-	m_radius(0),
-	m_elementInPhysicsSystem(false),
-	m_IA(NULL)
-{
+  m_env(_env),
+  m_body(NULL),
+  m_uID(0),
+  m_mesh(NULL),
+  m_shape(NULL),
+  m_life(100),
+  m_lifeMax(100),
+  m_group(0),
+  m_fixe(true),
+  m_radius(0),
+  m_elementInPhysicsSystem(false),
+  m_IA(NULL) {
 	static uint32_t unique=0;
 	m_uID = unique;
 	EGE_DEBUG("Create element : uId=" << m_uID);
@@ -57,8 +55,7 @@ ege::ElementGame::ElementGame(ege::Environement& _env) :
 	unique++;
 }
 
-ege::ElementGame::~ElementGame(void)
-{
+ege::ElementGame::~ElementGame(void) {
 	// in every case remove IA
 	iaDisable();
 	// same ...
@@ -72,8 +69,7 @@ ege::ElementGame::~ElementGame(void)
 	EGE_DEBUG("Destroy element : uId=" << m_uID);
 }
 
-void ege::ElementGame::removeShape(void)
-{
+void ege::ElementGame::removeShape(void) {
 	// no shape
 	if (NULL == m_shape) {
 		return;
@@ -93,16 +89,14 @@ void ege::ElementGame::removeShape(void)
 	// otherwise : the shape is auto remove by the resources when no more needed ...
 }
 
-void ege::ElementGame::FunctionFreeShape(void* _pointer)
-{
+void ege::ElementGame::FunctionFreeShape(void* _pointer) {
 	if (NULL == _pointer) {
 		return;
 	}
 	delete(static_cast<btCollisionShape*>(_pointer));
 }
 
-bool ege::ElementGame::loadMesh(const etk::UString& _meshFileName)
-{
+bool ege::ElementGame::loadMesh(const etk::UString& _meshFileName) {
 	ewol::Mesh* tmpMesh=NULL;
 	tmpMesh = ewol::Mesh::keep(_meshFileName);
 	if(NULL == tmpMesh) {
@@ -112,8 +106,7 @@ bool ege::ElementGame::loadMesh(const etk::UString& _meshFileName)
 	return setMesh(tmpMesh);
 }
 
-bool ege::ElementGame::setMesh(ewol::Mesh* _mesh)
-{
+bool ege::ElementGame::setMesh(ewol::Mesh* _mesh) {
 	if (NULL!=m_mesh) {
 		removeShape();
 		ewol::Mesh::release(m_mesh);
@@ -133,27 +126,22 @@ bool ege::ElementGame::setMesh(ewol::Mesh* _mesh)
 	return true;
 }
 
-bool ege::ElementGame::setShape(btCollisionShape* _shape)
-{
+bool ege::ElementGame::setShape(btCollisionShape* _shape) {
 	removeShape();
 	m_shape = _shape;
 	return true;
 }
 
-
-float ege::ElementGame::getLifeRatio(void)
-{
+float ege::ElementGame::getLifeRatio(void) {
 	if (0 >= m_life) {
 		return 0;
 	}
 	return m_life/m_lifeMax;
 }
 
-
-void ege::ElementGame::setFireOn(int32_t groupIdSource, int32_t type, float power, const vec3& center)
-{
+void ege::ElementGame::setFireOn(int32_t _groupIdSource, int32_t _type, float _power, const vec3& _center) {
 	float previousLife = m_life;
-	m_life += power;
+	m_life += _power;
 	m_life = etk_avg(0, m_life, m_lifeMax);
 	if (m_life <= 0) {
 		EGE_DEBUG("[" << getUID() << "] element is killed ..." << getType());
@@ -163,17 +151,15 @@ void ege::ElementGame::setFireOn(int32_t groupIdSource, int32_t type, float powe
 	}
 }
 
-void ege::ElementGame::setPosition(const vec3& pos)
-{
+void ege::ElementGame::setPosition(const vec3& _pos) {
 	if (NULL!=m_body) {
 		btTransform transformation = m_body->getCenterOfMassTransform();
-		transformation.setOrigin(pos);
+		transformation.setOrigin(_pos);
 		m_body->setCenterOfMassTransform(transformation);
 	}
 }
 
-const vec3& ege::ElementGame::getPosition(void)
-{
+const vec3& ege::ElementGame::getPosition(void) {
 	// this is to prevent error like segmentation fault ...
 	static vec3 emptyPosition(-1000000,-1000000,-1000000);
 	if (NULL!=m_body) {
@@ -182,8 +168,7 @@ const vec3& ege::ElementGame::getPosition(void)
 	return emptyPosition;
 };
 
-const vec3& ege::ElementGame::getSpeed(void)
-{
+const vec3& ege::ElementGame::getSpeed(void) {
 	// this is to prevent error like segmentation fault ...
 	static vec3 emptySpeed(0,0,0);
 	if (NULL!=m_body) {
@@ -192,22 +177,19 @@ const vec3& ege::ElementGame::getSpeed(void)
 	return emptySpeed;
 };
 
-const float ege::ElementGame::getInvMass(void)
-{
+const float ege::ElementGame::getInvMass(void) {
 	if (NULL!=m_body) {
 		return m_body->getInvMass();
 	}
 	return 0.0000000001f;
 };
 
-
 static void drawSphere(ewol::Colored3DObject* _draw,
                        btScalar _radius,
                        int _lats,
                        int _longs,
                        mat4& _transformationMatrix,
-                       etk::Color<float>& _tmpColor)
-{
+                       etk::Color<float>& _tmpColor) {
 	int i, j;
 	etk::Vector<vec3> EwolVertices;
 	for(i = 0; i <= _lats; i++) {
@@ -250,8 +232,7 @@ const float lifeHeight = 0.3f;
 const float lifeWidth = 2.0f;
 const float lifeYPos = 1.7f;
 
-void ege::ElementGame::drawLife(ewol::Colored3DObject* _draw, const ege::Camera& _camera)
-{
+void ege::ElementGame::drawLife(ewol::Colored3DObject* _draw, const ege::Camera& _camera) {
 	if (NULL == _draw) {
 		return;
 	}
@@ -291,8 +272,7 @@ void ege::ElementGame::drawLife(ewol::Colored3DObject* _draw, const ege::Camera&
 static void drawShape(const btCollisionShape* _shape,
                       ewol::Colored3DObject* _draw,
                       mat4 _transformationMatrix,
-                      etk::Vector<vec3> _tmpVertices)
-{
+                      etk::Vector<vec3> _tmpVertices) {
 	if(    NULL == _draw
 	    || NULL == _shape) {
 		return;
@@ -457,8 +437,7 @@ static void drawShape(const btCollisionShape* _shape,
 	}
 }
 
-void ege::ElementGame::drawDebug(ewol::Colored3DObject* _draw, const ege::Camera& _camera)
-{
+void ege::ElementGame::drawDebug(ewol::Colored3DObject* _draw, const ege::Camera& _camera) {
 	m_debugText.clear();
 	m_debugText.setColor(0x00FF00FF);
 	m_debugText.setPos(vec3(-20,32,0));
@@ -483,8 +462,7 @@ void ege::ElementGame::drawDebug(ewol::Colored3DObject* _draw, const ege::Camera
 	                  * etk::matScale(vec3(0.05,0.05,0.05)));
 }
 
-void ege::ElementGame::draw(int32_t _pass)
-{
+void ege::ElementGame::draw(int32_t _pass) {
 	if (false == m_elementInPhysicsSystem) {
 		return;
 	}
@@ -503,8 +481,7 @@ void ege::ElementGame::draw(int32_t _pass)
 	}
 }
 
-void ege::ElementGame::dynamicEnable(void)
-{
+void ege::ElementGame::dynamicEnable(void) {
 	if (true == m_elementInPhysicsSystem) {
 		return;
 	}
@@ -517,8 +494,7 @@ void ege::ElementGame::dynamicEnable(void)
 	m_elementInPhysicsSystem = true;
 }
 
-void ege::ElementGame::dynamicDisable(void)
-{
+void ege::ElementGame::dynamicDisable(void) {
 	if (false == m_elementInPhysicsSystem) {
 		return;
 	}
@@ -533,8 +509,7 @@ void ege::ElementGame::dynamicDisable(void)
 	m_elementInPhysicsSystem = false;
 }
 
-void ege::ElementGame::iaEnable(void)
-{
+void ege::ElementGame::iaEnable(void) {
 	if (NULL != m_IA) {
 		// IA already started ...
 		return;
@@ -549,8 +524,7 @@ void ege::ElementGame::iaEnable(void)
 	}
 }
 
-void ege::ElementGame::iaDisable(void)
-{
+void ege::ElementGame::iaDisable(void) {
 	if (NULL == m_IA) {
 		// IA already stopped ...
 		return;

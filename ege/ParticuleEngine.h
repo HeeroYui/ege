@@ -20,8 +20,7 @@ namespace ege {
 #include <ege/Particule.h>
 
 namespace ege {
-	class ParticuleEngine
-	{
+	class ParticuleEngine {
 		private:
 			ege::Environement& m_env;
 		public:

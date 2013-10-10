@@ -10,21 +10,18 @@
 #include <ege/ParticuleEngine.h>
 
 #undef __class__
-#define __class__	"ParticuleEngine"
+#define __class__ "ParticuleEngine"
 
 ege::ParticuleEngine::ParticuleEngine(ege::Environement& _env) :
-	m_env(_env)
-{
+  m_env(_env) {
 	
 }
 
-ege::ParticuleEngine::~ParticuleEngine(void)
-{
+ege::ParticuleEngine::~ParticuleEngine(void) {
 	clear();
 }
 
-void ege::ParticuleEngine::add(Particule* _particule)
-{
+void ege::ParticuleEngine::add(Particule* _particule) {
 	if (_particule == NULL) {
 		EGE_ERROR("Try to add particule NULL");
 		return;
@@ -40,8 +37,7 @@ void ege::ParticuleEngine::add(Particule* _particule)
 	m_particuleList.pushBack(_particule);
 }
 
-void ege::ParticuleEngine::addRemoved(Particule* _particule)
-{
+void ege::ParticuleEngine::addRemoved(Particule* _particule) {
 	if (_particule == NULL) {
 		return;
 	}
@@ -56,8 +52,7 @@ void ege::ParticuleEngine::addRemoved(Particule* _particule)
 	m_particuleRemoved.pushBack(_particule);
 }
 
-ege::Particule* ege::ParticuleEngine::respown(const char* _particuleType)
-{
+ege::Particule* ege::ParticuleEngine::respown(const char* _particuleType) {
 	if (_particuleType == NULL) {
 		return NULL;
 	}
@@ -76,8 +71,7 @@ ege::Particule* ege::ParticuleEngine::respown(const char* _particuleType)
 	return NULL;
 }
 
-void ege::ParticuleEngine::update(float _deltaTime)
-{
+void ege::ParticuleEngine::update(float _deltaTime) {
 	if (_deltaTime>(1.0f/60.0f)) {
 		_deltaTime = (1.0f/60.0f);
 	}
@@ -115,8 +109,7 @@ void ege::ParticuleEngine::update(float _deltaTime)
 	*/
 }
 
-void ege::ParticuleEngine::draw(const ege::Camera& _camera)
-{
+void ege::ParticuleEngine::draw(const ege::Camera& _camera) {
 	for (esize_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == NULL) {
 			continue;
@@ -125,8 +118,7 @@ void ege::ParticuleEngine::draw(const ege::Camera& _camera)
 	}
 }
 
-void ege::ParticuleEngine::clear(void)
-{
+void ege::ParticuleEngine::clear(void) {
 	// clear element not removed
 	for (esize_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == NULL) {

@@ -28,7 +28,7 @@
 #include <BulletCollision/CollisionDispatch/btCollisionObject.h>
 
 #undef __class__
-#define __class__	"Scene"
+#define __class__ "Scene"
 
 
 const char * const ege::Scene::eventPlayTimeChange = "event-scene-play-time-change";
@@ -37,14 +37,13 @@ const char * const ege::Scene::eventKillEnemy = "event-scene-kill-ennemy";
 
 
 ege::Scene::Scene(bool _setAutoBullet, bool _setAutoCamera) :
-	m_gameTime(0),
-	m_angleView(M_PI/3.0),
-	m_dynamicsWorld(NULL),
-	m_camera(NULL),
-	m_isRunning(true),
-	m_debugMode(false),
-	m_debugDrawing(NULL)
-{
+  m_gameTime(0),
+  m_angleView(M_PI/3.0),
+  m_dynamicsWorld(NULL),
+  m_camera(NULL),
+  m_isRunning(true),
+  m_debugMode(false),
+  m_debugDrawing(NULL) {
 	setKeyboardRepeate(false);
 	setCanHaveFocus(true);
 	periodicCallEnable();
@@ -66,8 +65,7 @@ void ege::Scene::setBulletConfig(btDefaultCollisionConfiguration* _collisionConf
                                  btCollisionDispatcher* _dispatcher,
                                  btBroadphaseInterface* _broadphase,
                                  btConstraintSolver* _solver,
-                                 btDynamicsWorld* _dynamicsWorld)
-{
+                                 btDynamicsWorld* _dynamicsWorld) {
 	if (NULL != _collisionConfiguration) {
 		m_collisionConfiguration = _collisionConfiguration;
 	} else {
@@ -104,8 +102,7 @@ void ege::Scene::setBulletConfig(btDefaultCollisionConfiguration* _collisionConf
 	
 }
 
-void ege::Scene::setCamera(ege::Camera* _camera)
-{
+void ege::Scene::setCamera(ege::Camera* _camera) {
 	if (NULL != _camera) {
 		m_camera = _camera;
 	} else {
@@ -115,8 +112,7 @@ void ege::Scene::setCamera(ege::Camera* _camera)
 	}
 }
 
-ege::Scene::~Scene(void)
-{
+ege::Scene::~Scene(void) {
 	ewol::Colored3DObject::release(m_debugDrawing);
 /*
 	ewol::resource::release(m_directDrawObject);
@@ -140,31 +136,23 @@ ege::Scene::~Scene(void)
 	*/
 }
 
-
-void ege::Scene::onRegenerateDisplay(void)
-{
+void ege::Scene::onRegenerateDisplay(void) {
 	if (true == needRedraw()) {
 		
 	}
 }
 
-
-void ege::Scene::pause(void)
-{
+void ege::Scene::pause(void) {
 	EGE_DEBUG("Set pause");
 	m_isRunning = false;
 }
 
-
-void ege::Scene::resume(void)
-{
+void ege::Scene::resume(void) {
 	EGE_DEBUG("Set resume");
 	m_isRunning = true;
 }
 
-
-void ege::Scene::pauseToggle(void)
-{
+void ege::Scene::pauseToggle(void) {
 	if(true == m_isRunning) {
 		EGE_DEBUG("Set Toggle: pause");
 		m_isRunning=false;
@@ -185,8 +173,7 @@ void ege::Scene::pauseToggle(void)
 #define NUMBER_OF_SUB_PASS  (0)
 
 
-void ege::Scene::onDraw(void)
-{
+void ege::Scene::onDraw(void) {
 	#ifdef SCENE_DISPLAY_SPEED
 		g_counterNbTimeDisplay++;
 		g_startTime = ewol::getTime();
@@ -243,16 +230,13 @@ void ege::Scene::onDraw(void)
 }
 
 // I really does not know what is this ...
-btRigidBody& btActionInterface::getFixedBody()
-{
+btRigidBody& btActionInterface::getFixedBody(void) {
 	static btRigidBody s_fixed(0, 0,0);
 	s_fixed.setMassProps(btScalar(0.),btVector3(btScalar(0.),btScalar(0.),btScalar(0.)));
 	return s_fixed;
 }
 
-
-void ege::Scene::periodicCall(const ewol::EventTime& _event)
-{
+void ege::Scene::periodicCall(const ewol::EventTime& _event) {
 	float curentDelta=_event.getDeltaCall();
 	// small hack to change speed ...
 	if (m_ratioTime != 1) {
@@ -364,10 +348,9 @@ EWOL_DEBUG("      SCENE444  : " << tmp___localTime4 << "ms ");
 #endif
 }
 
-vec2 ege::Scene::calculateDeltaAngle(const vec2& posScreen)
-{
+vec2 ege::Scene::calculateDeltaAngle(const vec2& _posScreen) {
 	double ratio = m_size.x() / m_size.y();
-	vec2 pos = vec2(m_size.x()/-2.0, m_size.y()/-2.0) + posScreen;
+	vec2 pos = vec2(m_size.x()/-2.0, m_size.y()/-2.0) + _posScreen;
 	
 	double xmax = tan(m_angleView/2.0);
 	double ymax = xmax / ratio;
@@ -382,9 +365,8 @@ vec2 ege::Scene::calculateDeltaAngle(const vec2& posScreen)
 	            angleY);
 }
 
-vec3 ege::Scene::convertScreenPositionInMapPosition(const vec2& posScreen)
-{
-	return m_camera->projectOnZGround(calculateDeltaAngle(posScreen));
+vec3 ege::Scene::convertScreenPositionInMapPosition(const vec2& _posScreen) {
+	return m_camera->projectOnZGround(calculateDeltaAngle(_posScreen));
 }
 
 

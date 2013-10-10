@@ -59,8 +59,12 @@ namespace ege
 			 * @param[in] _value pointer on the value type
 			 * @return true, the element is corectly initialized.
 			 */
-			virtual bool init(property_te _property, void* _value) { return false; };
-			virtual bool unInit(void) { return true; };
+			virtual bool init(property_te _property, void* _value) {
+				return false;
+			};
+			virtual bool unInit(void) {
+				return true;
+			};
 		private:
 			uint32_t m_uID; //!< This is a reference on a basic element ID
 		public:
@@ -68,7 +72,9 @@ namespace ege
 			 * @brief get the curent Element Unique ID in the all Game.
 			 * @return The requested Unique ID.
 			 */
-			inline uint32_t getUID(void) const { return m_uID; };
+			inline uint32_t getUID(void) const {
+				return m_uID;
+			};
 		private:
 			ewol::Mesh* m_mesh; //!< Mesh of the Element (can be NULL)
 			btCollisionShape* m_shape; //!< shape of the element (set a copy here to have the debug display of it)
@@ -98,12 +104,16 @@ namespace ege
 			 * @brief get a pointer on the Mesh file.
 			 * @return the mesh pointer.
 			 */
-			inline ewol::Mesh* getMesh(void) { return m_mesh; };
+			inline ewol::Mesh* getMesh(void) {
+				return m_mesh;
+			};
 			/**
 			 * @brief get a pointer on the bullet collision shape.
 			 * @return the collision pointer.
 			 */
-			inline btCollisionShape* getShape(void) { return m_shape; };
+			inline btCollisionShape* getShape(void) {
+				return m_shape;
+			};
 		private:
 			/**
 			 * @brief remove the curent selected shape.
@@ -122,27 +132,28 @@ namespace ege
 			 * @brief Check if the element is dead.
 			 * @return true if the element does not exist anymore, false otherwise.
 			 */
-			bool isDead(void) { return (0 >= m_life)?true:false; };
+			bool isDead(void) {
+				return (0 >= m_life)?true:false;
+			};
 			/**
 			 * @brief Request if the element might be removed from the system
 			 * @return true  == > the object is removed
 			 */
-			virtual bool needToRemove(void)
-			{
+			virtual bool needToRemove(void) {
 				return isDead();
 			}
 			/**
 			 * @brief apply a fire on the element at a current power and a specific power.
-			 * @param[in] groupIdSource Source Id of the group, by default all event arrive at all group, buf some event can not be obviously apply at the ennemy like reparing ....
-			 * @param[in] type Type of event on the life propertied
-			 * @param[in] power Power of the event (can be >0 for adding life).
-			 * @param[in] center Some fire decrease in function of space distance...
+			 * @param[in] _groupIdSource Source Id of the group, by default all event arrive at all group, buf some event can not be obviously apply at the ennemy like reparing ....
+			 * @param[in] _type Type of event on the life propertied
+			 * @param[in] _power Power of the event (can be >0 for adding life).
+			 * @param[in] _center Some fire decrease in function of space distance...
 			 */
-			virtual void setFireOn(int32_t groupIdSource, int32_t type, float power, const vec3& center=vec3(0,0,0));
+			virtual void setFireOn(int32_t _groupIdSource, int32_t _type, float _power, const vec3& _center=vec3(0,0,0));
 			/**
 			 * @brief Call chan the element life change
 			 */
-			virtual void onLifeChange(void) {}
+			virtual void onLifeChange(void) { };
 		protected:
 			int32_t m_group; //!< Every element has a generic group
 		public:
@@ -150,12 +161,16 @@ namespace ege
 			 * @brief get the Group of the element.
 			 * @return The group ID
 			 */
-			inline int32_t getGroup(void) const { return m_group; };
+			inline int32_t getGroup(void) const {
+				return m_group;
+			};
 			/**
 			 * @brief set the group of the curent element
 			 * @param[in] newGroup The new Group ID of the element.
 			 */
-			inline void setGroup(int32_t _newGroup) { m_group=_newGroup; };
+			inline void setGroup(int32_t _newGroup) {
+				m_group=_newGroup;
+			};
 		
 			/**
 			 * @brief Can be call tu opdate the list of the element displayed on the scren (example : no display of the hiden triangle)
@@ -188,12 +203,14 @@ namespace ege
 			 * @brief get the theoric position. Sometimes, the element has move due to an explosion or something else, then its real position in not the one that woult it be at the end ...
 			 * @return the theoric position
 			 */
-			virtual vec3 getPositionTheoric(void) { return getPosition(); };
+			virtual vec3 getPositionTheoric(void) {
+				return getPosition();
+			};
 			/**
 			 * @brief set the current Theoric position of the element
 			 * @param[in] set the 3D position.
 			 */
-			virtual void setPositionTheoric(const vec3& _pos) { }
+			virtual void setPositionTheoric(const vec3& _pos) { };
 			/**
 			 * @brief get the current position of the element
 			 * @return the 3D position.
@@ -226,7 +243,9 @@ namespace ege
 			 * @brief get the element if it is fixed or not. if the element is fixed this is for tower, and all thing does not really move
 			 * @return true : The element is fixed.
 			 */
-			inline bool isFixed(void) { return m_fixe; };
+			inline bool isFixed(void) {
+				return m_fixe;
+			};
 		protected:
 			float m_radius; //!< Radius of the element (all element have a radius, if  == 0 ==> then ghost ...
 		public:
@@ -250,8 +269,7 @@ namespace ege
 			 */
 			void dynamicDisable(void);
 		private:
-			class localIA : public btActionInterface
-			{
+			class localIA : public btActionInterface {
 				private:
 					ege::ElementGame& m_element;
 				public:
@@ -262,15 +280,16 @@ namespace ege
 					/**
 					 * @brief Destructor
 					 */
-					virtual ~localIA(void) { };
-					
-					// herited function
-					void debugDraw(btIDebugDraw* debugDrawer) { };
-					// herited function
-					void updateAction(btCollisionWorld* collisionWorld, btScalar step)
-					{
-						m_element.iaAction(step);
-					}
+					virtual ~localIA(void) {
+						
+					};
+				public: // herited function
+					void debugDraw(btIDebugDraw* _debugDrawer) {
+						
+					};
+					void updateAction(btCollisionWorld* _collisionWorld, btScalar _step) {
+						m_element.iaAction(_step);
+					};
 			};
 			localIA* m_IA;
 		public:

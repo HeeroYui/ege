@@ -24,8 +24,7 @@ namespace ege {
 	 *        it does not have any control, for example smoke or reactor generation ...
 	 *        or explosion particule ...
 	 */
-	class Particule
-	{
+	class Particule {
 		protected:
 			ege::ParticuleEngine& m_particuleEngine;
 			const char* m_particuleType;
@@ -62,12 +61,16 @@ namespace ege {
 			 * @return true : The element might be removed
 			 * @return false : The element might be keeped
 			 */
-			virtual bool needRemove(void) { return false; };
+			virtual bool needRemove(void) {
+				return false;
+			};
 			/**
 			 * @brief get the type of the particule
 			 * @return Type of the current particule
 			 */
-			const char* getParticuleType(void) { return m_particuleType; };
+			const char* getParticuleType(void) {
+				return m_particuleType;
+			};
 			/**
 			 * @brief When the particule arrive to his end of life, this function is called.
 			 */

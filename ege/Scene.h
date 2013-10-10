@@ -94,13 +94,15 @@ namespace ege {
 			/**
 			 * @brief Toggle the debug mode  == > usefull for DEBUG only ...
 			 */
-			void debugToggle(void) { m_debugMode = m_debugMode?false:true; };
+			void debugToggle(void) {
+				m_debugMode = m_debugMode?false:true;
+			};
 		protected:
 			// Derived function
-			virtual void ScenePeriodicCall(int64_t localTime, int32_t deltaTime) { };
+			virtual void ScenePeriodicCall(int64_t _localTime, int32_t _deltaTime) { };
 		public:
-			vec2 calculateDeltaAngle(const vec2& posScreen);
-			vec3 convertScreenPositionInMapPosition(const vec2& posScreen);
+			vec2 calculateDeltaAngle(const vec2& _posScreen);
+			vec3 convertScreenPositionInMapPosition(const vec2& _posScreen);
 			/**
 			 * @brief get the current camera reference for the scene rendering
 			 */
@@ -108,17 +110,24 @@ namespace ege {
 			/**
 			 * @brief set the curent Time Ratio (default 1)
 			 */
-			void setRatioTime(float newRatio) { m_ratioTime = newRatio; };
+			void setRatioTime(float _newRatio) {
+				m_ratioTime = _newRatio;
+			};
 			
 			void renderscene(int pass);
 			void drawOpenGL(btScalar* m, 
-			                const btCollisionShape* shape,
-			                const btVector3& color,
-			                int32_t	debugMode,
-			                const btVector3& worldBoundsMin,
-			                const btVector3& worldBoundsMax);
-			void drawSphere(btScalar radius, int lats, int longs, mat4& transformationMatrix, etk::Color<float>& tmpColor);
-			void getElementAroundNewElement(vec3 sourcePosition, etk::Vector<ege::Environement::ResultNearestElement>& resultList);
+			                const btCollisionShape* _shape,
+			                const btVector3& _color,
+			                int32_t	_debugMode,
+			                const btVector3& _worldBoundsMin,
+			                const btVector3& _worldBoundsMax);
+			void drawSphere(btScalar _radius,
+			                int _lats,
+			                int _longs,
+			                mat4& _transformationMatrix,
+			                etk::Color<float>& _tmpColor);
+			void getElementAroundNewElement(vec3 _sourcePosition,
+			                                etk::Vector<ege::Environement::ResultNearestElement>& _resultList);
 			
 		protected: // Derived function
 			virtual void onDraw(void);
