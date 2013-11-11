@@ -16,7 +16,7 @@ namespace ege {
 };
 
 #include <etk/UString.h>
-#include <etk/Vector.h>
+#include <vector>
 #include <ege/Particule.h>
 
 namespace ege {
@@ -27,8 +27,8 @@ namespace ege {
 			ParticuleEngine(ege::Environement& _env); // note : need the engine to register has an dynamic element ... (the first ...)
 			~ParticuleEngine(void);
 		private:
-			etk::Vector<Particule*> m_particuleList; //!< all particule created and active
-			etk::Vector<Particule*> m_particuleRemoved; //!< removed particule
+			std::vector<Particule*> m_particuleList; //!< all particule created and active
+			std::vector<Particule*> m_particuleRemoved; //!< removed particule
 		public:
 			/**
 			 * @brief clear the particule engine

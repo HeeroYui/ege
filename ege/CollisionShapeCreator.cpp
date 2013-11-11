@@ -31,7 +31,7 @@ btCollisionShape* ege::collision::createShape(const ewol::Mesh* _mesh) {
 	if (NULL == _mesh) {
 		return new btEmptyShape();;
 	}
-	const etk::Vector<ewol::PhysicsShape*>& physiqueProperty = _mesh->getPhysicalProperties();
+	const std::vector<ewol::PhysicsShape*>& physiqueProperty = _mesh->getPhysicalProperties();
 	if (physiqueProperty.size() == 0) {
 		return new btEmptyShape();;
 	}

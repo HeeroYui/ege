@@ -29,8 +29,8 @@
 #undef __class__
 #define __class__	"ElementGame"
 
-const etk::UString& ege::ElementGame::getType(void) const {
-	static const etk::UString nameType("----");
+const std::string& ege::ElementGame::getType(void) const {
+	static const std::string nameType("----");
 	return nameType;
 }
 
@@ -96,7 +96,7 @@ void ege::ElementGame::FunctionFreeShape(void* _pointer) {
 	delete(static_cast<btCollisionShape*>(_pointer));
 }
 
-bool ege::ElementGame::loadMesh(const etk::UString& _meshFileName) {
+bool ege::ElementGame::loadMesh(const std::string& _meshFileName) {
 	ewol::Mesh* tmpMesh=NULL;
 	tmpMesh = ewol::Mesh::keep(_meshFileName);
 	if(NULL == tmpMesh) {
@@ -191,7 +191,7 @@ static void drawSphere(ewol::Colored3DObject* _draw,
                        mat4& _transformationMatrix,
                        etk::Color<float>& _tmpColor) {
 	int i, j;
-	etk::Vector<vec3> EwolVertices;
+	std::vector<vec3> EwolVertices;
 	for(i = 0; i <= _lats; i++) {
 		btScalar lat0 = SIMD_PI * (-btScalar(0.5) + (btScalar) (i - 1) / _lats);
 		btScalar z0  = _radius*sin(lat0);
@@ -215,13 +215,13 @@ static void drawSphere(ewol::Colored3DObject* _draw,
 			vec3 v2 = vec3(x * zr1, y * zr1, z1);
 			vec3 v3 = vec3(x * zr0, y * zr0, z0);
 			
-			EwolVertices.pushBack(v1);
-			EwolVertices.pushBack(v2);
-			EwolVertices.pushBack(v3);
+			EwolVertices.push_back(v1);
+			EwolVertices.push_back(v2);
+			EwolVertices.push_back(v3);
 			
-			EwolVertices.pushBack(v1);
-			EwolVertices.pushBack(v3);
-			EwolVertices.pushBack(v4);
+			EwolVertices.push_back(v1);
+			EwolVertices.push_back(v3);
+			EwolVertices.push_back(v4);
 		}
 	}
 	_draw->draw(EwolVertices, _tmpColor, _transformationMatrix);
@@ -243,23 +243,23 @@ void ege::ElementGame::drawLife(ewol::Colored3DObject* _draw, const ege::Camera&
 	mat4 transformationMatrix =   etk::matTranslate(getPosition())
 	                            * etk::matRotate(vec3(0,0,1),_camera.getAngleZ())
 	                            * etk::matRotate(vec3(1,0,0),(M_PI/2.0f-_camera.getAngleTeta()));
-	etk::Vector<vec3> localVertices;
-	localVertices.pushBack(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos           -lifeBorder,0));
-	localVertices.pushBack(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
-	localVertices.pushBack(vec3( lifeWidth/2.0+lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
-	localVertices.pushBack(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos           -lifeBorder,0));
-	localVertices.pushBack(vec3( lifeWidth/2.0+lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
-	localVertices.pushBack(vec3( lifeWidth/2.0+lifeBorder,lifeYPos           -lifeBorder,0));
+	std::vector<vec3> localVertices;
+	localVertices.push_back(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos           -lifeBorder,0));
+	localVertices.push_back(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
+	localVertices.push_back(vec3( lifeWidth/2.0+lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
+	localVertices.push_back(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos           -lifeBorder,0));
+	localVertices.push_back(vec3( lifeWidth/2.0+lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
+	localVertices.push_back(vec3( lifeWidth/2.0+lifeBorder,lifeYPos           -lifeBorder,0));
 	etk::Color<float> myColor(0x0000FF99);
 	_draw->draw(localVertices, myColor, transformationMatrix, false, false);
 	localVertices.clear();
 	/** Bounding box  == > model shape **/
-	localVertices.pushBack(vec3(-lifeWidth/2.0                ,lifeYPos,0));
-	localVertices.pushBack(vec3(-lifeWidth/2.0                ,lifeYPos + lifeHeight,0));
-	localVertices.pushBack(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos + lifeHeight,0));
-	localVertices.pushBack(vec3(-lifeWidth/2.0                ,lifeYPos,0));
-	localVertices.pushBack(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos + lifeHeight,0));
-	localVertices.pushBack(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos,0));
+	localVertices.push_back(vec3(-lifeWidth/2.0                ,lifeYPos,0));
+	localVertices.push_back(vec3(-lifeWidth/2.0                ,lifeYPos + lifeHeight,0));
+	localVertices.push_back(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos + lifeHeight,0));
+	localVertices.push_back(vec3(-lifeWidth/2.0                ,lifeYPos,0));
+	localVertices.push_back(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos + lifeHeight,0));
+	localVertices.push_back(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos,0));
 	myColor =0x00FF00FF;
 	if (ratio < 0.2f) {
 		myColor = 0xFF0000FF;
@@ -272,7 +272,7 @@ void ege::ElementGame::drawLife(ewol::Colored3DObject* _draw, const ege::Camera&
 static void drawShape(const btCollisionShape* _shape,
                       ewol::Colored3DObject* _draw,
                       mat4 _transformationMatrix,
-                      etk::Vector<vec3> _tmpVertices) {
+                      std::vector<vec3> _tmpVertices) {
 	if(    NULL == _draw
 	    || NULL == _shape) {
 		return;
@@ -312,9 +312,9 @@ static void drawShape(const btCollisionShape* _shape,
 				// normal calculation :
 				//btVector3 normal = (vertices[indices[iii+2]]-vertices[indices[iii]]).cross(vertices[indices[iii+1]]-vertices[indices[iii]]);
 				//normal.normalize ();
-				_tmpVertices.pushBack(vertices[indices[iii]]);
-				_tmpVertices.pushBack(vertices[indices[iii+1]]);
-				_tmpVertices.pushBack(vertices[indices[iii+2]]);
+				_tmpVertices.push_back(vertices[indices[iii]]);
+				_tmpVertices.push_back(vertices[indices[iii+1]]);
+				_tmpVertices.push_back(vertices[indices[iii+2]]);
 			}
 			_draw->draw(_tmpVertices, tmpColor, _transformationMatrix);
 			break;
@@ -443,8 +443,8 @@ void ege::ElementGame::drawDebug(ewol::Colored3DObject* _draw, const ege::Camera
 	m_debugText.setPos(vec3(-20,32,0));
 	m_debugText.print(getType());
 	m_debugText.setPos(vec3(-20,20,0));
-	m_debugText.print(etk::UString("life=(")+etk::UString(getLifeRatio()));
-	//m_debugText.print(etk::UString("Axe=(")+etk::UString(m_tmpAxe.x())+etk::UString(",")+etk::UString(m_tmpAxe.y())+etk::UString(",")+etk::UString(m_tmpAxe.z())+etk::UString(")"));
+	m_debugText.print(std::string("life=(")+std::string(getLifeRatio()));
+	//m_debugText.print(std::string("Axe=(")+std::string(m_tmpAxe.x())+std::string(",")+etk::UString(m_tmpAxe.y())+etk::UString(",")+etk::UString(m_tmpAxe.z())+etk::UString(")"));
 	btScalar mmm[16];
 	btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
 	myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(mmm);
@@ -453,7 +453,7 @@ void ege::ElementGame::drawDebug(ewol::Colored3DObject* _draw, const ege::Camera
 	transformationMatrix.transpose();
 	
 	// note : set the vertice here to prevent multiple allocations...
-	etk::Vector<vec3> EwolVertices;
+	std::vector<vec3> EwolVertices;
 	drawShape(m_shape, _draw, transformationMatrix, EwolVertices);
 	
 	m_debugText.draw(   etk::matTranslate(getPosition())

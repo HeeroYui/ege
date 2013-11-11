@@ -272,7 +272,7 @@ void ege::Scene::periodicCall(const ewol::EventTime& _event) {
 	{
 		int32_t numberEnnemyKilled=0;
 		int32_t victoryPoint=0;
-		etk::Vector<ege::ElementGame*>& elementList = m_env.getElementGame();
+		std::vector<ege::ElementGame*>& elementList = m_env.getElementGame();
 		for (int32_t iii=elementList.size()-1; iii >= 0; --iii) {
 			if(NULL != elementList[iii]) {
 				if (true == elementList[iii]->needToRemove()) {

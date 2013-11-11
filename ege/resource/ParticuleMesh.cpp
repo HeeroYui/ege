@@ -10,7 +10,7 @@
 #include <ege/resource/ParticuleMesh.h>
 #include <ewol/resources/ResourceManager.h>
 
-ege::resource::ParticuleMesh::ParticuleMesh(const etk::UString& _fileName, const etk::UString& _shaderName) : 
+ege::resource::ParticuleMesh::ParticuleMesh(const std::string& _fileName, const std::string& _shaderName) : 
 	ewol::Mesh(_fileName, _shaderName)
 {
 	if (m_GLprogram != NULL) {
@@ -84,15 +84,15 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 			vec3 cameraNormal = vec3(0,0,-1);
 			cameraNormal.normalized();
 			// remove face that is notin the view ...
-			etk::Vector<uint32_t> tmpIndexResult;
-			etk::Vector<ewol::Face>& tmppFaces = m_listFaces.getValue(kkk).m_faces;
-			etk::Vector<uint32_t>& tmppIndex = m_listFaces.getValue(kkk).m_index;
+			std::vector<uint32_t> tmpIndexResult;
+			std::vector<ewol::Face>& tmppFaces = m_listFaces.getValue(kkk).m_faces;
+			std::vector<uint32_t>& tmppIndex = m_listFaces.getValue(kkk).m_index;
 			if (normalModeFace == m_normalMode) {
 				for(int32_t iii=0; iii<tmppFaces.size() ; ++iii) {
 					if(btDot(mattttt * m_listFacesNormal[tmppFaces[iii].m_normal[0]], cameraNormal) >= 0.0f) {
-						tmpIndexResult.pushBack(iii*3);
-						tmpIndexResult.pushBack(iii*3+1);
-						tmpIndexResult.pushBack(iii*3+2);
+						tmpIndexResult.push_back(iii*3);
+						tmpIndexResult.push_back(iii*3+1);
+						tmpIndexResult.push_back(iii*3+2);
 					}
 				}
 			} else {
@@ -100,9 +100,9 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 					if(    (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[0]], cameraNormal) >= -0.2f)
 					    || (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[1]], cameraNormal) >= -0.2f)
 					    || (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[2]], cameraNormal) >= -0.2f) ) {
-						tmpIndexResult.pushBack(iii*3);
-						tmpIndexResult.pushBack(iii*3+1);
-						tmpIndexResult.pushBack(iii*3+2);
+						tmpIndexResult.push_back(iii*3);
+						tmpIndexResult.push_back(iii*3+1);
+						tmpIndexResult.push_back(iii*3+2);
 					}
 				}
 			}
@@ -126,7 +126,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 	glBindBuffer(GL_ARRAY_BUFFER,0);
 }
 
-ege::resource::ParticuleMesh* ege::resource::ParticuleMesh::keep(const etk::UString& _meshName, const etk::UString& _shaderName)
+ege::resource::ParticuleMesh* ege::resource::ParticuleMesh::keep(const std::string& _meshName, const std::string& _shaderName)
 {
 	ege::resource::ParticuleMesh* object = static_cast<ege::resource::ParticuleMesh*>(getManager().localKeep(_meshName));
 	if (NULL != object) {

@@ -12,7 +12,7 @@
 #include <etk/types.h>
 #include <etk/math/Vector3D.h>
 #include <etk/math/Matrix4.h>
-#include <etk/Vector.h>
+#include <vector>
 #include <ewol/debug.h>
 #include <ege/Camera.h>
 #include <ewol/widget/Widget.h>
@@ -73,7 +73,7 @@ namespace ege {
 			bool m_isRunning; //!< the display is running (not in pause)
 			float m_ratioTime; //!< Ratio time for the speed of the game ...
 			// Note : This is only for temporary elements : on the display
-			etk::Vector<ege::Environement::ResultNearestElement> m_displayElementOrdered;
+			std::vector<ege::Environement::ResultNearestElement> m_displayElementOrdered;
 		public:
 			/**
 			 * @brief set the scene in pause for a while
@@ -127,7 +127,7 @@ namespace ege {
 			                mat4& _transformationMatrix,
 			                etk::Color<float>& _tmpColor);
 			void getElementAroundNewElement(vec3 _sourcePosition,
-			                                etk::Vector<ege::Environement::ResultNearestElement>& _resultList);
+			                                std::vector<ege::Environement::ResultNearestElement>& _resultList);
 			
 		protected: // Derived function
 			virtual void onDraw(void);

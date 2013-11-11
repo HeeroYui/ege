@@ -34,7 +34,7 @@ void ege::ParticuleEngine::add(Particule* _particule) {
 		return;
 	}
 	// Just add it at the end ...
-	m_particuleList.pushBack(_particule);
+	m_particuleList.push_back(_particule);
 }
 
 void ege::ParticuleEngine::addRemoved(Particule* _particule) {
@@ -49,7 +49,7 @@ void ege::ParticuleEngine::addRemoved(Particule* _particule) {
 		return;
 	}
 	// Just add it at the end ...
-	m_particuleRemoved.pushBack(_particule);
+	m_particuleRemoved.push_back(_particule);
 }
 
 ege::Particule* ege::ParticuleEngine::respown(const char* _particuleType) {

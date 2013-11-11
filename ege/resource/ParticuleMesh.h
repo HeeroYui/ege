@@ -20,7 +20,7 @@ namespace ege
 			protected:
 				int32_t        m_GLMainColor;
 			protected:
-				ParticuleMesh(const etk::UString& _fileName, const etk::UString& _shaderName);
+				ParticuleMesh(const std::string& _fileName, const std::string& _shaderName);
 				virtual ~ParticuleMesh(void);
 			public:
 				virtual const char* getType(void) { return "ege::resource::ParticuleMesh"; };
@@ -32,7 +32,7 @@ namespace ege
 				 * @param[in] _filename Name of the ewol mesh file.
 				 * @return pointer on the resource or NULL if an error occured.
 				 */
-				static ege::resource::ParticuleMesh* keep(const etk::UString& _meshName, const etk::UString& _shaderName="DATA:ParticuleMesh.prog");
+				static ege::resource::ParticuleMesh* keep(const std::string& _meshName, const std::string& _shaderName="DATA:ParticuleMesh.prog");
 				/**
 				 * @brief release the keeped resources
 				 * @param[in,out] reference on the object pointer

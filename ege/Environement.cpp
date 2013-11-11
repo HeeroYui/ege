@@ -48,7 +48,7 @@ ege::ElementGame* ege::Environement::getElementNearest(ege::ElementGame* _source
 
 void ege::Environement::getElementNearest(const vec3& _sourcePosition,
                                           float _distanceMax,
-                                          etk::Vector<ege::Environement::ResultNearestElement>& _resultList) {
+                                          std::vector<ege::Environement::ResultNearestElement>& _resultList) {
 	_resultList.clear();
 	ege::Environement::ResultNearestElement result;
 	result.dist = 99999999999.0f;
@@ -67,14 +67,14 @@ void ege::Environement::getElementNearest(const vec3& _sourcePosition,
 		result.dist = btDistance(_sourcePosition, destPosition);
 		//EGE_DEBUG("Distance : " << _distance << " >? " << distance << " id=" << iii);
 		if (_distanceMax>result.dist) {
-			_resultList.pushBack(result);
+			_resultList.push_back(result);
 		}
 	}
 }
 
 void ege::Environement::getElementNearestFixed(const vec3& _sourcePosition,
                                                float _distanceMax,
-                                               etk::Vector<ege::Environement::ResultNearestElement>& _resultList) {
+                                               std::vector<ege::Environement::ResultNearestElement>& _resultList) {
 	_resultList.clear();
 	ege::Environement::ResultNearestElement result;
 	result.dist = 99999999999.0f;
@@ -105,7 +105,7 @@ void ege::Environement::getElementNearestFixed(const vec3& _sourcePosition,
 		}
 		// add element at the end :
 		if (jjj >= _resultList.size()) {
-			_resultList.pushBack(result);
+			_resultList.push_back(result);
 		}
 	}
 }
@@ -115,7 +115,7 @@ static etk::Hash<ege::createElement_tf>& getHachTableCreating(void) {
 	return s_table;
 }
 
-void ege::Environement::addCreator(const etk::UString& _type, ege::createElement_tf _creator) {
+void ege::Environement::addCreator(const std::string& _type, ege::createElement_tf _creator) {
 	if (NULL == _creator) {
 		EGE_ERROR("Try to add an empty CREATOR ...");
 		return;
@@ -127,7 +127,7 @@ void ege::Environement::addCreator(const etk::UString& _type, ege::createElement
 	getHachTableCreating().add(_type, _creator);
 }
 
-ege::ElementGame* ege::Environement::createElement(const etk::UString& _type, bool _autoAddElement, ege::property_te _property, void* _value) {
+ege::ElementGame* ege::Environement::createElement(const std::string& _type, bool _autoAddElement, ege::property_te _property, void* _value) {
 	if (false == getHachTableCreating().exist(_type)) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return NULL;
@@ -154,15 +154,15 @@ ege::ElementGame* ege::Environement::createElement(const etk::UString& _type, bo
 	return tmpElement;
 }
 
-ege::ElementGame* ege::Environement::createElement(const etk::UString& _type, etk::UString& _description, bool _autoAddElement) {
+ege::ElementGame* ege::Environement::createElement(const std::string& _type, std::string& _description, bool _autoAddElement) {
 	return createElement(_type, _autoAddElement, ege::typeString, static_cast<void*>(&_description));
 }
 
-ege::ElementGame* ege::Environement::createElement(const etk::UString& _type, ejson::Value* _value, bool _autoAddElement) {
+ege::ElementGame* ege::Environement::createElement(const std::string& _type, ejson::Value* _value, bool _autoAddElement) {
 	return createElement(_type, _autoAddElement, ege::typeJson, static_cast<void*>(_value));
 }
 
-ege::ElementGame* ege::Environement::createElement(const etk::UString& _type, exml::Node* _node, bool _autoAddElement) {
+ege::ElementGame* ege::Environement::createElement(const std::string& _type, exml::Node* _node, bool _autoAddElement) {
 	return createElement(_type, _autoAddElement, ege::typeXml, static_cast<void*>(_node));
 }
 
@@ -179,7 +179,7 @@ void ege::Environement::addElementGame(ege::ElementGame* _newElement) {
 			return;
 		}
 	}
-	m_listElementGame.pushBack(_newElement);
+	m_listElementGame.push_back(_newElement);
 	_newElement->dynamicEnable();
 }
 
@@ -206,7 +206,7 @@ void ege::Environement::rmElementGame(ege::ElementGame* _removeElement) {
 }
 
 
-void ege::Environement::getOrderedElementForDisplay(etk::Vector<ege::Environement::ResultNearestElement>& _resultList,
+void ege::Environement::getOrderedElementForDisplay(std::vector<ege::Environement::ResultNearestElement>& _resultList,
                                                     const vec3& _position,
                                                     const vec3& _direction) {
 	// remove all unneeded elements (old display...)
@@ -247,7 +247,7 @@ void ege::Environement::getOrderedElementForDisplay(etk::Vector<ege::Environemen
 		}
 		// add element at the end :
 		if (jjj >= _resultList.size()) {
-			_resultList.pushBack(result);
+			_resultList.push_back(result);
 		}
 	}
 }

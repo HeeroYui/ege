@@ -12,7 +12,7 @@
 #include <etk/types.h>
 #include <etk/math/Vector3D.h>
 #include <etk/math/Matrix4.h>
-#include <etk/Vector.h>
+#include <vector>
 #include <ewol/debug.h>
 #include <ewol/widget/Widget.h>
 #include <ewol/renderer/openGL.h>
@@ -52,7 +52,7 @@ namespace ege
 			 * @brief get the element Type description string.
 			 * @return A reference on the descriptive string.
 			 */
-			virtual const etk::UString& getType(void) const;
+			virtual const std::string& getType(void) const;
 			/**
 			 * @brief init the element with the defined properties
 			 * @param[in] _property Type of the next element
@@ -85,7 +85,7 @@ namespace ege
 			 * @note Automaticly load the shape if it is specify in the mesh file
 			 * @return true if no error occured
 			 */
-			bool loadMesh(const etk::UString& _meshFileName);
+			bool loadMesh(const std::string& _meshFileName);
 			/**
 			 * @brief set the the Mesh properties.
 			 * @param[in] _mesh The mesh pointer. (NULL to force the mesh remove ...)

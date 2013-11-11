@@ -19,7 +19,7 @@ namespace ege {
 #include <BulletDynamics/Dynamics/btActionInterface.h>
 class btDynamicsWorld;
 
-#include <etk/Vector.h>
+#include <vector>
 #include <etk/math/Vector3D.h>
 #include <ejson/ejson.h>
 #include <exml/exml.h>
@@ -28,7 +28,7 @@ class btDynamicsWorld;
 namespace ege {
 	typedef enum {
 		typeNone, //!< no element property
-		typeString, //!< type element static_cast<etk::UString*>(xxxxxxx)
+		typeString, //!< type element static_cast<std::string*>(xxxxxxx)
 		typeJson, //!< type element static_cast<ejson::Value*>(xxxxxxx)
 		typeXml, //!< type element static_cast<exml::Node*>(xxxxxxx)
 		typeUser1, //!< user type 1
@@ -48,10 +48,10 @@ namespace ege {
 		public:
 			int32_t getSourceGroup(void) { return m_groupSource; };
 		protected:
-			etk::Vector<int32_t> m_groupDestination;
+			std::vector<int32_t> m_groupDestination;
 		public:
-			const etk::Vector<int32_t>& getDestinationGroup(void) { return m_groupDestination; };
-			void addGroupDestination(int32_t _id) { m_groupDestination.pushBack(_id); };
+			const std::vector<int32_t>& getDestinationGroup(void) { return m_groupDestination; };
+			void addGroupDestination(int32_t _id) { m_groupDestination.push_back(_id); };
 		protected:
 			vec3 m_positionSource;
 		public:
@@ -69,7 +69,7 @@ namespace ege {
 	class Environement {
 		private:
 			btDynamicsWorld* m_dynamicsWorld; //!< curent system world description
-			etk::Vector<ege::ElementGame*> m_listElementGame; //!< List of all element added in the Game
+			std::vector<ege::ElementGame*> m_listElementGame; //!< List of all element added in the Game
 		public:
 			Environement(void);
 			virtual ~Environement(void) { };
@@ -79,7 +79,7 @@ namespace ege {
 			 * @param[in] _type Type of the element.
 			 * @param[in] _creator Function pointer that reference the element creating.
 			 */
-			static void addCreator(const etk::UString& _type, ege::createElement_tf _creator);
+			static void addCreator(const std::string& _type, ege::createElement_tf _creator);
 			/**
 			 * @brief Create an element on the curent scene.
 			 * @param[in] _type Type of the element that might be created.
@@ -88,10 +88,10 @@ namespace ege {
 			 * @return NULL if an error occured OR the pointer on the element and it is already added on the system.
 			 * @note Pointer is return in case of setting properties on it...
 			 */
-			ege::ElementGame* createElement(const etk::UString& _type, bool _autoAddElement=true, ege::property_te _property=ege::typeNone, void* _value=NULL);
-			ege::ElementGame* createElement(const etk::UString& _type, etk::UString& _description, bool _autoAddElement=true);
-			ege::ElementGame* createElement(const etk::UString& _type, ejson::Value* _value, bool _autoAddElement=true);
-			ege::ElementGame* createElement(const etk::UString& _type, exml::Node* _node, bool _autoAddElement=true);
+			ege::ElementGame* createElement(const std::string& _type, bool _autoAddElement=true, ege::property_te _property=ege::typeNone, void* _value=NULL);
+			ege::ElementGame* createElement(const std::string& _type, std::string& _description, bool _autoAddElement=true);
+			ege::ElementGame* createElement(const std::string& _type, ejson::Value* _value, bool _autoAddElement=true);
+			ege::ElementGame* createElement(const std::string& _type, exml::Node* _node, bool _autoAddElement=true);
 		public:
 			class ResultNearestElement {
 				public:
@@ -116,7 +116,7 @@ namespace ege {
 			 * @breif get a reference on the curent list of element games
 			 * @return all element list
 			 */
-			etk::Vector<ege::ElementGame*>& getElementGame(void) {
+			std::vector<ege::ElementGame*>& getElementGame(void) {
 				return m_listElementGame;
 			};
 			/**
@@ -129,10 +129,10 @@ namespace ege {
 			
 			void getElementNearest(const vec3& _sourcePosition,
 			                       float _distanceMax,
-			                       etk::Vector<ege::Environement::ResultNearestElement>& _resultList);
+			                       std::vector<ege::Environement::ResultNearestElement>& _resultList);
 			void getElementNearestFixed(const vec3& _sourcePosition,
 			                            float _distanceMax,
-			                            etk::Vector<ege::Environement::ResultNearestElement>& _resultList);
+			                            std::vector<ege::Environement::ResultNearestElement>& _resultList);
 			/**
 			 * @brief add an element on the list availlable.
 			 * @param[in] _newElement Element to add.
@@ -149,7 +149,7 @@ namespace ege {
 			 * @param[in] _position Camera position in the space.
 			 * @param[in] _direction Camera direction of the view.
 			 */
-			void getOrderedElementForDisplay(etk::Vector<ege::Environement::ResultNearestElement>& _resultList, const vec3& _position, const vec3& _direction);
+			void getOrderedElementForDisplay(std::vector<ege::Environement::ResultNearestElement>& _resultList, const vec3& _position, const vec3& _direction);
 			/**
 			 * @brief generate an event on all the sub element of the game  == > usefull for explosion, or lazer fire ...
 			 * @param[in] _event event that might be apply ...
