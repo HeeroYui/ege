@@ -443,7 +443,7 @@ void ege::ElementGame::drawDebug(ewol::Colored3DObject* _draw, const ege::Camera
 	m_debugText.setPos(vec3(-20,32,0));
 	m_debugText.print(getType());
 	m_debugText.setPos(vec3(-20,20,0));
-	m_debugText.print(std::string("life=(")+std::string(getLifeRatio()));
+	m_debugText.print("life=("+std::to_string(getLifeRatio()));
 	//m_debugText.print(std::string("Axe=(")+std::string(m_tmpAxe.x())+std::string(",")+etk::UString(m_tmpAxe.y())+etk::UString(",")+etk::UString(m_tmpAxe.z())+etk::UString(")"));
 	btScalar mmm[16];
 	btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();

@@ -99,7 +99,7 @@ void ege::Environement::getElementNearestFixed(const vec3& _sourcePosition,
 		int32_t jjj;
 		for (jjj=0; jjj<_resultList.size(); jjj++) {
 			if (_resultList[jjj].dist>result.dist) {
-				_resultList.insert(jjj, result);
+				_resultList.insert(_resultList.begin()+jjj, result);
 				break;
 			}
 		}
@@ -241,7 +241,7 @@ void ege::Environement::getOrderedElementForDisplay(std::vector<ege::Environemen
 		int32_t jjj;
 		for (jjj=0; jjj<_resultList.size(); jjj++) {
 			if (_resultList[jjj].dist>result.dist) {
-				_resultList.insert(jjj, result);
+				_resultList.insert(_resultList.begin()+jjj, result);
 				break;
 			}
 		}

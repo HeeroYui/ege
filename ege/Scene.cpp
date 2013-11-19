@@ -251,7 +251,7 @@ void ege::Scene::periodicCall(const ewol::EventTime& _event) {
 	int32_t lastGameTime = m_gameTime;
 	m_gameTime += curentDelta;
 	if (lastGameTime != (int32_t)m_gameTime) {
-		generateEventId(eventPlayTimeChange, m_gameTime);
+		generateEventId(eventPlayTimeChange, std::to_string(m_gameTime));
 	}
 	
 	//EWOL_DEBUG("Time: m_lastCallTime=" << m_lastCallTime << " deltaTime=" << deltaTime);
@@ -287,7 +287,7 @@ void ege::Scene::periodicCall(const ewol::EventTime& _event) {
 		}
 		
 		if (0 != numberEnnemyKilled) {
-			generateEventId(eventKillEnemy, numberEnnemyKilled);
+			generateEventId(eventKillEnemy, std::to_string(numberEnnemyKilled));
 		}
 	}
 	markToRedraw();
