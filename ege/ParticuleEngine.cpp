@@ -26,7 +26,7 @@ void ege::ParticuleEngine::add(Particule* _particule) {
 		EGE_ERROR("Try to add particule NULL");
 		return;
 	}
-	for (esize_t iii=0; iii<m_particuleList.size(); ++iii) {
+	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] != NULL) {
 			continue;
 		}
@@ -41,7 +41,7 @@ void ege::ParticuleEngine::addRemoved(Particule* _particule) {
 	if (_particule == NULL) {
 		return;
 	}
-	for (esize_t iii=0; iii<m_particuleRemoved.size(); ++iii) {
+	for (size_t iii=0; iii<m_particuleRemoved.size(); ++iii) {
 		if (m_particuleRemoved[iii] != NULL) {
 			continue;
 		}
@@ -56,7 +56,7 @@ ege::Particule* ege::ParticuleEngine::respown(const char* _particuleType) {
 	if (_particuleType == NULL) {
 		return NULL;
 	}
-	for (esize_t iii=0; iii<m_particuleRemoved.size(); ++iii) {
+	for (size_t iii=0; iii<m_particuleRemoved.size(); ++iii) {
 		if (m_particuleRemoved[iii] == NULL) {
 			continue;
 		}
@@ -75,14 +75,14 @@ void ege::ParticuleEngine::update(float _deltaTime) {
 	if (_deltaTime>(1.0f/60.0f)) {
 		_deltaTime = (1.0f/60.0f);
 	}
-	for (esize_t iii=0; iii<m_particuleList.size(); ++iii) {
+	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == NULL) {
 			continue;
 		}
 		m_particuleList[iii]->update(_deltaTime);
 	}
 	// check removing elements
-	for (esize_t iii=0; iii<m_particuleList.size(); ++iii) {
+	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == NULL) {
 			continue;
 		}
@@ -99,7 +99,7 @@ void ege::ParticuleEngine::update(float _deltaTime) {
 	}
 	/*
 	int32_t nbParticule = 0;
-	for (esize_t iii=0; iii<m_particuleList.size(); ++iii) {
+	for (int32_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == NULL) {
 			continue;
 		}
@@ -110,7 +110,7 @@ void ege::ParticuleEngine::update(float _deltaTime) {
 }
 
 void ege::ParticuleEngine::draw(const ege::Camera& _camera) {
-	for (esize_t iii=0; iii<m_particuleList.size(); ++iii) {
+	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == NULL) {
 			continue;
 		}
@@ -120,7 +120,7 @@ void ege::ParticuleEngine::draw(const ege::Camera& _camera) {
 
 void ege::ParticuleEngine::clear(void) {
 	// clear element not removed
-	for (esize_t iii=0; iii<m_particuleList.size(); ++iii) {
+	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == NULL) {
 			continue;
 		}
@@ -129,7 +129,7 @@ void ege::ParticuleEngine::clear(void) {
 	}
 	m_particuleList.clear();
 	// clear element that are auto-removed
-	for (esize_t iii=0; iii<m_particuleRemoved.size(); ++iii) {
+	for (size_t iii=0; iii<m_particuleRemoved.size(); ++iii) {
 		if (m_particuleRemoved[iii] == NULL) {
 			continue;
 		}

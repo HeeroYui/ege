@@ -21,7 +21,7 @@ ege::ElementGame* ege::Environement::getElementNearest(ege::ElementGame* _source
 	}
 	vec3 sourcePosition = _sourceRequest->getPosition();
 	ege::ElementGame* result = NULL;
-	for (int32_t iii=0; iii<m_listElementGame.size() ; iii++) {
+	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
 		// chack NULL  pointer
 		if (NULL == m_listElementGame[iii]) {
 			continue;
@@ -53,7 +53,7 @@ void ege::Environement::getElementNearest(const vec3& _sourcePosition,
 	ege::Environement::ResultNearestElement result;
 	result.dist = 99999999999.0f;
 	result.element = NULL;
-	for (int32_t iii=0; iii<m_listElementGame.size() ; iii++) {
+	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
 		// chack NULL  pointer
 		result.element = m_listElementGame[iii];
 		if (NULL == result.element) {
@@ -79,7 +79,7 @@ void ege::Environement::getElementNearestFixed(const vec3& _sourcePosition,
 	ege::Environement::ResultNearestElement result;
 	result.dist = 99999999999.0f;
 	result.element = NULL;
-	for (int32_t iii=0; iii<m_listElementGame.size() ; iii++) {
+	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
 		// chack NULL  pointer
 		result.element = m_listElementGame[iii];
 		if (NULL == result.element) {
@@ -96,7 +96,7 @@ void ege::Environement::getElementNearestFixed(const vec3& _sourcePosition,
 			continue;
 		}
 		// try to add the element at the best positions:
-		int32_t jjj;
+		size_t jjj;
 		for (jjj=0; jjj<_resultList.size(); jjj++) {
 			if (_resultList[jjj].dist>result.dist) {
 				_resultList.insert(_resultList.begin()+jjj, result);
@@ -172,7 +172,7 @@ void ege::Environement::addElementGame(ege::ElementGame* _newElement) {
 	if (NULL == _newElement) {
 		return;
 	}
-	for (int32_t iii=0; iii<m_listElementGame.size() ; iii++) {
+	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
 		if (NULL == m_listElementGame[iii]) {
 			m_listElementGame[iii] = _newElement;
 			m_listElementGame[iii]->dynamicEnable();
@@ -188,13 +188,13 @@ void ege::Environement::rmElementGame(ege::ElementGame* _removeElement) {
 		return;
 	}
 	// inform the element that an element has been removed  == > this permit to keep pointer on elements ...
-	for (int32_t iii=0; iii<m_listElementGame.size() ; iii++) {
+	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
 		if (NULL != m_listElementGame[iii]) {
 			m_listElementGame[iii]->elementIsRemoved(_removeElement);
 		}
 	}
 	// ream remove on the element :
-	for (int32_t iii=0; iii<m_listElementGame.size() ; iii++) {
+	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
 		if (_removeElement == m_listElementGame[iii]) {
 			m_listElementGame[iii]->onDestroy();
 			m_listElementGame[iii]->dynamicDisable();
@@ -216,7 +216,7 @@ void ege::Environement::getOrderedElementForDisplay(std::vector<ege::Environemen
 	result.dist = 99999999999.0f;
 	result.element = NULL;
 	// for all element in the game we chek if it is needed to display it ...
-	for (int32_t iii=0; iii<m_listElementGame.size() ; iii++) {
+	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
 		// chack NULL  pointer
 		if (NULL == m_listElementGame[iii]) {
 			// no pointer null are set in the output list ...
@@ -238,7 +238,7 @@ void ege::Environement::getOrderedElementForDisplay(std::vector<ege::Environemen
 			continue;
 		}
 		// try to add the element at the best positions:
-		int32_t jjj;
+		size_t jjj;
 		for (jjj=0; jjj<_resultList.size(); jjj++) {
 			if (_resultList[jjj].dist>result.dist) {
 				_resultList.insert(_resultList.begin()+jjj, result);
@@ -255,7 +255,7 @@ void ege::Environement::getOrderedElementForDisplay(std::vector<ege::Environemen
 
 void ege::Environement::generateInteraction(ege::ElementInteraction& _event) {
 	// inform the element that an element has been removed  == > this permit to keep pointer on elements ...
-	for (int32_t iii=0; iii<m_listElementGame.size() ; iii++) {
+	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
 		if (NULL == m_listElementGame[iii]) {
 			continue;
 		}

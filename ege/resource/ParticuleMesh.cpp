@@ -63,7 +63,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 	int32_t nbElementDrawTheoric = 0;
 	int32_t nbElementDraw = 0;
 	#endif
-	for (esize_t kkk=0; kkk<m_listFaces.size(); kkk++) {
+	for (int32_t kkk=0; kkk<m_listFaces.size(); kkk++) {
 		if (false == m_materials.exist(m_listFaces.getKey(kkk))) {
 			EWOL_WARNING("missing materials : '" << m_listFaces.getKey(kkk) << "'");
 			continue;
@@ -86,9 +86,9 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 			// remove face that is notin the view ...
 			std::vector<uint32_t> tmpIndexResult;
 			std::vector<ewol::Face>& tmppFaces = m_listFaces.getValue(kkk).m_faces;
-			std::vector<uint32_t>& tmppIndex = m_listFaces.getValue(kkk).m_index;
+			//std::vector<uint32_t>& tmppIndex = m_listFaces.getValue(kkk).m_index;
 			if (normalModeFace == m_normalMode) {
-				for(int32_t iii=0; iii<tmppFaces.size() ; ++iii) {
+				for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
 					if(btDot(mattttt * m_listFacesNormal[tmppFaces[iii].m_normal[0]], cameraNormal) >= 0.0f) {
 						tmpIndexResult.push_back(iii*3);
 						tmpIndexResult.push_back(iii*3+1);
@@ -96,7 +96,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 					}
 				}
 			} else {
-				for(int32_t iii=0; iii<tmppFaces.size() ; ++iii) {
+				for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
 					if(    (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[0]], cameraNormal) >= -0.2f)
 					    || (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[1]], cameraNormal) >= -0.2f)
 					    || (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[2]], cameraNormal) >= -0.2f) ) {

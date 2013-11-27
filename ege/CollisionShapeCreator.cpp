@@ -36,7 +36,7 @@ btCollisionShape* ege::collision::createShape(const ewol::Mesh* _mesh) {
 		return new btEmptyShape();;
 	}
 	int32_t count = 0;
-	for (int32_t iii=0; iii<physiqueProperty.size(); iii++) {
+	for (size_t iii=0; iii<physiqueProperty.size(); iii++) {
 		if (NULL == physiqueProperty[iii]) {
 			continue;
 		}
@@ -46,7 +46,7 @@ btCollisionShape* ege::collision::createShape(const ewol::Mesh* _mesh) {
 	if (count>1) {
 		outputShape = new btCompoundShape();
 	}
-	for (int32_t iii=0; iii<physiqueProperty.size(); iii++) {
+	for (size_t iii=0; iii<physiqueProperty.size(); iii++) {
 		if (NULL == physiqueProperty[iii]) {
 			continue;
 		}

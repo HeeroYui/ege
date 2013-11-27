@@ -185,7 +185,7 @@ void ege::Scene::onDraw(void) {
 		//EGE_DEBUG("DRAW : " << m_displayElementOrdered.size() << " elements");
 		
 		// TODO : remove this  == > no more needed ==> checked in the generate the list of the element ordered
-		for (int32_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
+		for (size_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
 			m_displayElementOrdered[iii].element->preCalculationDraw(*m_camera);
 		}
 		// note :  the first pass is done at the reverse way to prevent multiple display od the same point in the screen 
@@ -200,16 +200,16 @@ void ege::Scene::onDraw(void) {
 		}
 		// for the other pass the user can draw transparent elements ...
 		for (int32_t pass=1; pass <= NUMBER_OF_SUB_PASS+1; pass++) {
-			for (int32_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
+			for (size_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
 				m_displayElementOrdered[iii].element->draw(pass);
 			}
 		}
-		for (int32_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
+		for (size_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
 			m_displayElementOrdered[iii].element->drawLife(m_debugDrawing, *m_camera);
 		}
 		#ifdef DEBUG
 			if (true == m_debugMode) {
-				for (int32_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
+				for (size_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
 					m_displayElementOrdered[iii].element->drawDebug(m_debugDrawing, *m_camera);
 				}
 			}
