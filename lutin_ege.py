@@ -5,6 +5,8 @@ import lutinTools
 def Create(target):
 	# module name is 'edn' and type binary.
 	myModule = lutinModule.module(__file__, 'ege', 'LIBRARY')
+	# enable doculentation :
+	myModule.doc_enable()
 	
 	# add the file to compile:
 	myModule.AddSrcFile([
