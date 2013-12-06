@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>ege Library</title>
+	<link rel="stylesheet" href="base.css">
+</head>
+<body>
+	<div class="navbar navbar-fixed-top">
+		<div class="container">
+			<h1>ege Library</h1>
+				<li>ege</li>
+				<ul>
+				<li><a href="ege__Camera.html">Camera</a></li>
+				<li><a href="ege__ElementGame.html">ElementGame</a></li>
+				<li><a href="ege__ElementGame__localIA.html">ElementGame::localIA</a></li>
+				<li><a href="ege__ElementInteraction.html">ElementInteraction</a></li>
+				<li><a href="ege__Environement.html">Environement</a></li>
+				<li><a href="ege__Environement__ResultNearestElement.html">Environement::ResultNearestElement</a></li>
+				<li><a href="ege__Particule.html">Particule</a></li>
+				<li><a href="ege__ParticuleEngine.html">ParticuleEngine</a></li>
+				<li><a href="ege__ParticuleSimple.html">ParticuleSimple</a></li>
+				<li><a href="ege__Scene.html">Scene</a></li>
+				<li><a href="ege__resource__ParticuleMesh.html">resource::ParticuleMesh</a></li>
+				</ul>
+				</ul>
+		</div>
+	</div>
+	<div class="container" id="content">
+<h1>Class: ege::Environement</h1>
+<br/>
+<h2>Synopsis:</h2>
+<pre>
++                                     <a class="code-function" href="#Environement">Environement</a>                 (<span class="code-type">void</span>);<br>+                                    ~<a class="code-function" href="#Environement">Environement</a>                 (<span class="code-type">void</span>);<br>+  <span class="code-storage-keyword">static</span> <span class="code-type">void</span>                        <a class="code-function" href="#addCreator">addCreator</a>                   (<span class="code-storage-keyword">const</span> <a href="http://www.cplusplus.com/reference/string/string/" class="code-type">std::string</a> & <span class="code-argument">_type</span>,<br/>                                                                    ege::createElement_tf <span class="code-argument">_creator</span>);<br>+  <a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> *                 <a class="code-function" href="#createElement">createElement</a>                (<span class="code-storage-keyword">const</span> <a href="http://www.cplusplus.com/reference/string/string/" class="code-type">std::string</a> & <span class="code-argument">_type</span>,<br/>                                                                    <span class="code-type">bool</span> <span class="code-argument">_autoAddElement</span>,<br/>                                                                    ege::property_te <span class="code-argument">_property</span>,<br/>                                                                    <span class="code-type">void</span> * <span class="code-argument">_value</span>);<br>+  <a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> *                 <a class="code-function" href="#createElement">createElement</a>                (<span class="code-storage-keyword">const</span> <a href="http://www.cplusplus.com/reference/string/string/" class="code-type">std::string</a> & <span class="code-argument">_type</span>,<br/>                                                                    <a href="http://www.cplusplus.com/reference/string/string/" class="code-type">std::string</a> & <span class="code-argument">_description</span>,<br/>                                                                    <span class="code-type">bool</span> <span class="code-argument">_autoAddElement</span>);<br>+  <a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> *                 <a class="code-function" href="#createElement">createElement</a>                (<span class="code-storage-keyword">const</span> <a href="http://www.cplusplus.com/reference/string/string/" class="code-type">std::string</a> & <span class="code-argument">_type</span>,<br/>                                                                    <a href="http://HeeroYui.github.io/ejson//ejson__Value.html" class="code-type">ejson::Value</a> * <span class="code-argument">_value</span>,<br/>                                                                    <span class="code-type">bool</span> <span class="code-argument">_autoAddElement</span>);<br>+  <a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> *                 <a class="code-function" href="#createElement">createElement</a>                (<span class="code-storage-keyword">const</span> <a href="http://www.cplusplus.com/reference/string/string/" class="code-type">std::string</a> & <span class="code-argument">_type</span>,<br/>                                                                    <a href="http://HeeroYui.github.io/exml//exml__Node.html" class="code-type">exml::Node</a> * <span class="code-argument">_node</span>,<br/>                                                                    <span class="code-type">bool</span> <span class="code-argument">_autoAddElement</span>);<br>+  <span class="code-type">void</span>                               <a class="code-function" href="#setDynamicWorld">setDynamicWorld</a>              (btDynamicsWorld * <span class="code-argument">_newWorld</span>);<br>+  btDynamicsWorld *                  <a class="code-function" href="#getDynamicWorld">getDynamicWorld</a>              (<span class="code-type">void</span>);<br>+  std::vector<ege::ElementGame *> &  <a class="code-function" href="#getElementGame">getElementGame</a>               (<span class="code-type">void</span>);<br>+  <a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> *                 <a class="code-function" href="#getElementNearest">getElementNearest</a>            (<a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> * <span class="code-argument">_sourceRequest</span>,<br/>                                                                    <span class="code-type">float</span> & <span class="code-argument">_distance</span>);<br>+  <span class="code-type">void</span>                               <a class="code-function" href="#getElementNearest">getElementNearest</a>            (<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_sourcePosition</span>,<br/>                                                                    <span class="code-type">float</span> <span class="code-argument">_distanceMax</span>,<br/>                                                                    std::vector<ege::Environement::ResultNearestElement> & <span class="code-argument">_resultList</span>);<br>+  <span class="code-type">void</span>                               <a class="code-function" href="#getElementNearestFixed">getElementNearestFixed</a>       (<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_sourcePosition</span>,<br/>                                                                    <span class="code-type">float</span> <span class="code-argument">_distanceMax</span>,<br/>                                                                    std::vector<ege::Environement::ResultNearestElement> & <span class="code-argument">_resultList</span>);<br>+  <span class="code-type">void</span>                               <a class="code-function" href="#addElementGame">addElementGame</a>               (<a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> * <span class="code-argument">_newElement</span>);<br>+  <span class="code-type">void</span>                               <a class="code-function" href="#rmElementGame">rmElementGame</a>                (<a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> * <span class="code-argument">_removeElement</span>);<br>+  <span class="code-type">void</span>                               <a class="code-function" href="#getOrderedElementForDisplay">getOrderedElementForDisplay</a>  (std::vector<ege::Environement::ResultNearestElement> & <span class="code-argument">_resultList</span>,<br/>                                                                    <span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_position</span>,<br/>                                                                    <span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_direction</span>);<br>+  <span class="code-type">void</span>                               <a class="code-function" href="#generateInteraction">generateInteraction</a>          (<a href="ege__ElementInteraction.html" class="code-type">ege::ElementInteraction</a> & <span class="code-argument">_event</span>);<br>+  <a href="ege__ParticuleEngine.html" class="code-type">ege::ParticuleEngine</a> &             <a class="code-function" href="#getParticuleEngine">getParticuleEngine</a>           (<span class="code-type">void</span>);<br></pre>
+
+
+<h2>Detail:<h2>
+<h3>ege::<a id="Environement">Environement</a> ()</h3>
+
+<pre>
+<span class="code-function">Environement</span>(<span class="code-type">void</span>);</pre>
+<br/>
+<br/>
+
+<hr/>
+<h3>ege::~<a id="Environement">Environement</a> ()</h3>
+
+<pre>
+~<span class="code-function">Environement</span>(<span class="code-type">void</span>);</pre>
+<br/>
+<br/>
+
+<hr/>
+<h3>ege::<a id="addCreator">addCreator</a> ()</h3>
+
+<pre>
+<span class="code-storage-keyword">static</span> <span class="code-type">void</span> <span class="code-function">addCreator</span>(<span class="code-storage-keyword">const</span> <a href="http://www.cplusplus.com/reference/string/string/" class="code-type">std::string</a> & <span class="code-argument">_type</span>,
+                       ege::createElement_tf <span class="code-argument">_creator</span>);</pre>
+<br/>
+add a creator element system
+<br/><ul>
+<b>Parameter [input]:</b> <span class="code-argument">_type</span>  Type of the element.
+<br/><b>Parameter [input]:</b> <span class="code-argument">_creator</span>  Function pointer that reference the element creating.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="createElement">createElement</a> ()</h3>
+
+<pre>
+<a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> * <span class="code-function">createElement</span>(<span class="code-storage-keyword">const</span> <a href="http://www.cplusplus.com/reference/string/string/" class="code-type">std::string</a> & <span class="code-argument">_type</span>,
+                                 <span class="code-type">bool</span> <span class="code-argument">_autoAddElement</span>,
+                                 ege::property_te <span class="code-argument">_property</span>,
+                                 <span class="code-type">void</span> * <span class="code-argument">_value</span>);</pre>
+<br/>
+Create an element on the curent scene.
+<br/><b>Notes:</b> Pointer is return in case of setting properties on it...
+<br/> <ul>
+<b>Parameter [input]:</b> <span class="code-argument">_type</span>  Type of the element that might be created.
+<br/><b>Parameter [input]:</b> <span class="code-argument">_description</span>  String that describe the content of the element properties.
+<br/><b>Parameter [input]:</b> <span class="code-argument">_autoAddElement</span>  this permit to add the element if it is created  == > no more action ...
+<br/><b>Return:</b> NULL if an error occured OR the pointer on the element and it is already added on the system.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="createElement">createElement</a> ()</h3>
+
+<pre>
+<a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> * <span class="code-function">createElement</span>(<span class="code-storage-keyword">const</span> <a href="http://www.cplusplus.com/reference/string/string/" class="code-type">std::string</a> & <span class="code-argument">_type</span>,
+                                 <a href="http://www.cplusplus.com/reference/string/string/" class="code-type">std::string</a> & <span class="code-argument">_description</span>,
+                                 <span class="code-type">bool</span> <span class="code-argument">_autoAddElement</span>);</pre>
+<br/>
+<br/>
+
+<hr/>
+<h3><a id="createElement">createElement</a> ()</h3>
+
+<pre>
+<a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> * <span class="code-function">createElement</span>(<span class="code-storage-keyword">const</span> <a href="http://www.cplusplus.com/reference/string/string/" class="code-type">std::string</a> & <span class="code-argument">_type</span>,
+                                 <a href="http://HeeroYui.github.io/ejson//ejson__Value.html" class="code-type">ejson::Value</a> * <span class="code-argument">_value</span>,
+                                 <span class="code-type">bool</span> <span class="code-argument">_autoAddElement</span>);</pre>
+<br/>
+<br/>
+
+<hr/>
+<h3><a id="createElement">createElement</a> ()</h3>
+
+<pre>
+<a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> * <span class="code-function">createElement</span>(<span class="code-storage-keyword">const</span> <a href="http://www.cplusplus.com/reference/string/string/" class="code-type">std::string</a> & <span class="code-argument">_type</span>,
+                                 <a href="http://HeeroYui.github.io/exml//exml__Node.html" class="code-type">exml::Node</a> * <span class="code-argument">_node</span>,
+                                 <span class="code-type">bool</span> <span class="code-argument">_autoAddElement</span>);</pre>
+<br/>
+<br/>
+
+<hr/>
+<h3><a id="setDynamicWorld">setDynamicWorld</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">setDynamicWorld</span>(btDynamicsWorld * <span class="code-argument">_newWorld</span>);</pre>
+<br/>
+set the curent world
+<br/><ul>
+<b>Parameter [input]:</b> <span class="code-argument">_newWorld</span>  Pointer on the current world
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="getDynamicWorld">getDynamicWorld</a> ()</h3>
+
+<pre>
+btDynamicsWorld * <span class="code-function">getDynamicWorld</span>(<span class="code-type">void</span>);</pre>
+<br/>
+get the curent world
+<br/><ul>
+<b>Return:</b> pointer on the current world
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="getElementGame">getElementGame</a> ()</h3>
+
+<pre>
+std::vector<ege::ElementGame *> & <span class="code-function">getElementGame</span>(<span class="code-type">void</span>);</pre>
+<br/>
+<ul>
+<b>Return:</b> all element list
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="getElementNearest">getElementNearest</a> ()</h3>
+
+<pre>
+<a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> * <span class="code-function">getElementNearest</span>(<a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> * <span class="code-argument">_sourceRequest</span>,
+                                     <span class="code-type">float</span> & <span class="code-argument">_distance</span>);</pre>
+<br/>
+get the nearest Element
+<br/><ul>
+<b>Parameter [input]:</b> <span class="code-argument">_sourceRequest</span>  Pointer on the element that request this.
+<br/><b>Parameter [input]:</b> <span class="code-argument">_distance</span>  Maximum distance search  == > return the element distance
+<br/><b>Return:</b> Pointer on the neares element OR NULL
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="getElementNearest">getElementNearest</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">getElementNearest</span>(<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_sourcePosition</span>,
+                       <span class="code-type">float</span> <span class="code-argument">_distanceMax</span>,
+                       std::vector<ege::Environement::ResultNearestElement> & <span class="code-argument">_resultList</span>);</pre>
+<br/>
+<br/>
+
+<hr/>
+<h3><a id="getElementNearestFixed">getElementNearestFixed</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">getElementNearestFixed</span>(<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_sourcePosition</span>,
+                            <span class="code-type">float</span> <span class="code-argument">_distanceMax</span>,
+                            std::vector<ege::Environement::ResultNearestElement> & <span class="code-argument">_resultList</span>);</pre>
+<br/>
+<br/>
+
+<hr/>
+<h3><a id="addElementGame">addElementGame</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">addElementGame</span>(<a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> * <span class="code-argument">_newElement</span>);</pre>
+<br/>
+add an element on the list availlable.
+<br/><ul>
+<b>Parameter [input]:</b> <span class="code-argument">_newElement</span>  Element to add.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="rmElementGame">rmElementGame</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">rmElementGame</span>(<a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> * <span class="code-argument">_removeElement</span>);</pre>
+<br/>
+remove an element on the list availlable.
+<br/><ul>
+<b>Parameter [input]:</b> <span class="code-argument">_removeElement</span>  Element to remove.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="getOrderedElementForDisplay">getOrderedElementForDisplay</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">getOrderedElementForDisplay</span>(std::vector<ege::Environement::ResultNearestElement> & <span class="code-argument">_resultList</span>,
+                                 <span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_position</span>,
+                                 <span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_direction</span>);</pre>
+<br/>
+get the element order from the nearest to the farest, and remove all element that are not in the camera angle and axes.
+<br/><ul>
+<b>Parameter [input] [output]:</b> <span class="code-argument">_resultList</span>  List of the element ordered.
+<br/><b>Parameter [input]:</b> <span class="code-argument">_position</span>  Camera position in the space.
+<br/><b>Parameter [input]:</b> <span class="code-argument">_direction</span>  Camera direction of the view.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="generateInteraction">generateInteraction</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">generateInteraction</span>(<a href="ege__ElementInteraction.html" class="code-type">ege::ElementInteraction</a> & <span class="code-argument">_event</span>);</pre>
+<br/>
+generate an event on all the sub element of the game  == > usefull for explosion, or lazer fire ...
+<br/><ul>
+<b>Parameter [input]:</b> <span class="code-argument">_event</span>  event that might be apply ...
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="getParticuleEngine">getParticuleEngine</a> ()</h3>
+
+<pre>
+<a href="ege__ParticuleEngine.html" class="code-type">ege::ParticuleEngine</a> & <span class="code-function">getParticuleEngine</span>(<span class="code-type">void</span>);</pre>
+<br/>
+get the particule engine reference.
+<br/><ul>
+<b>Return:</b> The requested reference on the engine
+<br/></ul>
+<br/>
+
+<hr/>
+	</div>
+</body>
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>ege Library</title>
+	<link rel="stylesheet" href="base.css">
+</head>
+<body>
+	<div class="navbar navbar-fixed-top">
+		<div class="container">
+			<h1>ege Library</h1>
+				<li>ege</li>
+				<ul>
+				<li><a href="ege__Camera.html">Camera</a></li>
+				<li><a href="ege__ElementGame.html">ElementGame</a></li>
+				<li><a href="ege__ElementGame__localIA.html">ElementGame::localIA</a></li>
+				<li><a href="ege__ElementInteraction.html">ElementInteraction</a></li>
+				<li><a href="ege__Environement.html">Environement</a></li>
+				<li><a href="ege__Environement__ResultNearestElement.html">Environement::ResultNearestElement</a></li>
+				<li><a href="ege__Particule.html">Particule</a></li>
+				<li><a href="ege__ParticuleEngine.html">ParticuleEngine</a></li>
+				<li><a href="ege__ParticuleSimple.html">ParticuleSimple</a></li>
+				<li><a href="ege__Scene.html">Scene</a></li>
+				<li><a href="ege__resource__ParticuleMesh.html">resource::ParticuleMesh</a></li>
+				</ul>
+				</ul>
+		</div>
+	</div>
+	<div class="container" id="content">
+<h1>Class: ege::ElementGame</h1>
+<br/>
+<h2>Synopsis:</h2>
+<pre>
++                             <a class="code-function" href="#ElementGame">ElementGame</a>         (<a href="ege__Environement.html" class="code-type">ege::Environement</a> & <span class="code-argument">_env</span>);<br>+                            ~<a class="code-function" href="#ElementGame">ElementGame</a>         (<span class="code-type">void</span>);<br>+  <span class="code-storage-keyword">const</span> <a href="http://www.cplusplus.com/reference/string/string/" class="code-type">std::string</a> &        <a class="code-function" href="#getType">getType</a>             (<span class="code-type">void</span>);<br>+  <span class="code-type">bool</span>                       <a class="code-function" href="#init">init</a>                (property_te <span class="code-argument">_property</span>,<br/>                                                   <span class="code-type">void</span> * <span class="code-argument">_value</span>);<br>+  <span class="code-type">bool</span>                       <a class="code-function" href="#unInit">unInit</a>              (<span class="code-type">void</span>);<br>+  <span class="code-type">uint32_t</span>                   <a class="code-function" href="#getUID">getUID</a>              (<span class="code-type">void</span>);<br>+  <span class="code-type">bool</span>                       <a class="code-function" href="#loadMesh">loadMesh</a>            (<span class="code-storage-keyword">const</span> <a href="http://www.cplusplus.com/reference/string/string/" class="code-type">std::string</a> & <span class="code-argument">_meshFileName</span>);<br>+  <span class="code-type">bool</span>                       <a class="code-function" href="#setMesh">setMesh</a>             (<a href="http://HeeroYui.github.io/ewol//ewol__Mesh.html" class="code-type">ewol::Mesh</a> * <span class="code-argument">_mesh</span>);<br>+  <span class="code-type">bool</span>                       <a class="code-function" href="#setShape">setShape</a>            (btCollisionShape * <span class="code-argument">_shape</span>);<br>+  <a href="http://HeeroYui.github.io/ewol//ewol__Mesh.html" class="code-type">ewol::Mesh</a> *               <a class="code-function" href="#getMesh">getMesh</a>             (<span class="code-type">void</span>);<br>+  btCollisionShape *         <a class="code-function" href="#getShape">getShape</a>            (<span class="code-type">void</span>);<br>+  <span class="code-type">float</span>                      <a class="code-function" href="#getLifeRatio">getLifeRatio</a>        (<span class="code-type">void</span>);<br>+  <span class="code-type">bool</span>                       <a class="code-function" href="#isDead">isDead</a>              (<span class="code-type">void</span>);<br>+  <span class="code-type">bool</span>                       <a class="code-function" href="#needToRemove">needToRemove</a>        (<span class="code-type">void</span>);<br>+  <span class="code-type">void</span>                       <a class="code-function" href="#setFireOn">setFireOn</a>           (<span class="code-type">int32_t</span> <span class="code-argument">_groupIdSource</span>,<br/>                                                   <span class="code-type">int32_t</span> <span class="code-argument">_type</span>,<br/>                                                   <span class="code-type">float</span> <span class="code-argument">_power</span>,<br/>                                                   <span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_center</span>);<br>+  <span class="code-type">void</span>                       <a class="code-function" href="#onLifeChange">onLifeChange</a>        (<span class="code-type">void</span>);<br>+  <span class="code-type">int32_t</span>                    <a class="code-function" href="#getGroup">getGroup</a>            (<span class="code-type">void</span>);<br>+  <span class="code-type">void</span>                       <a class="code-function" href="#setGroup">setGroup</a>            (<span class="code-type">int32_t</span> <span class="code-argument">_newGroup</span>);<br>+  <span class="code-type">void</span>                       <a class="code-function" href="#preCalculationDraw">preCalculationDraw</a>  (<span class="code-storage-keyword">const</span> <a href="ege__Camera.html" class="code-type">ege::Camera</a> & <span class="code-argument">_camera</span>);<br>+  <span class="code-type">void</span>                       <a class="code-function" href="#draw">draw</a>                (<span class="code-type">int32_t</span> <span class="code-argument">_pass</span>);<br>+  <span class="code-type">void</span>                       <a class="code-function" href="#drawLife">drawLife</a>            (<a href="http://HeeroYui.github.io/ewol//ewol__Colored3DObject.html" class="code-type">ewol::Colored3DObject</a> * <span class="code-argument">_draw</span>,<br/>                                                   <span class="code-storage-keyword">const</span> <a href="ege__Camera.html" class="code-type">ege::Camera</a> & <span class="code-argument">_camera</span>);<br>+  <span class="code-type">void</span>                       <a class="code-function" href="#drawDebug">drawDebug</a>           (<a href="http://HeeroYui.github.io/ewol//ewol__Colored3DObject.html" class="code-type">ewol::Colored3DObject</a> * <span class="code-argument">_draw</span>,<br/>                                                   <span class="code-storage-keyword">const</span> <a href="ege__Camera.html" class="code-type">ege::Camera</a> & <span class="code-argument">_camera</span>);<br>+  vec3                       <a class="code-function" href="#getPositionTheoric">getPositionTheoric</a>  (<span class="code-type">void</span>);<br>+  <span class="code-type">void</span>                       <a class="code-function" href="#setPositionTheoric">setPositionTheoric</a>  (<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_pos</span>);<br>+  <span class="code-storage-keyword">const</span> vec3 &               <a class="code-function" href="#getPosition">getPosition</a>         (<span class="code-type">void</span>);<br>+  <span class="code-type">void</span>                       <a class="code-function" href="#setPosition">setPosition</a>         (<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_pos</span>);<br>+  <span class="code-storage-keyword">const</span> vec3 &               <a class="code-function" href="#getSpeed">getSpeed</a>            (<span class="code-type">void</span>);<br>+  <span class="code-storage-keyword">const</span> <span class="code-type">float</span>                <a class="code-function" href="#getInvMass">getInvMass</a>          (<span class="code-type">void</span>);<br>+  <span class="code-type">void</span>                       <a class="code-function" href="#elementIsRemoved">elementIsRemoved</a>    (<a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> * <span class="code-argument">_removedElement</span>);<br>+  <span class="code-type">bool</span>                       <a class="code-function" href="#isFixed">isFixed</a>             (<span class="code-type">void</span>);<br>+  <span class="code-type">float</span>                      <a class="code-function" href="#getRadius">getRadius</a>           (<span class="code-type">void</span>);<br>+  <span class="code-type">void</span>                       <a class="code-function" href="#dynamicEnable">dynamicEnable</a>       (<span class="code-type">void</span>);<br>+  <span class="code-type">void</span>                       <a class="code-function" href="#dynamicDisable">dynamicDisable</a>      (<span class="code-type">void</span>);<br>+  <span class="code-type">void</span>                       <a class="code-function" href="#iaEnable">iaEnable</a>            (<span class="code-type">void</span>);<br>+  <span class="code-type">void</span>                       <a class="code-function" href="#iaDisable">iaDisable</a>           (<span class="code-type">void</span>);<br>+  <span class="code-type">void</span>                       <a class="code-function" href="#iaAction">iaAction</a>            (<span class="code-type">float</span> <span class="code-argument">_step</span>);<br>+  <span class="code-type">void</span>                       <a class="code-function" href="#onDestroy">onDestroy</a>           (<span class="code-type">void</span>);<br>-  <span class="code-storage-keyword">static</span> <span class="code-type">void</span>                <a class="code-function" href="#FunctionFreeShape">FunctionFreeShape</a>   (<span class="code-type">void</span> * <span class="code-argument">_pointer</span>);<br>-  <span class="code-type">void</span>                       <a class="code-function" href="#removeShape">removeShape</a>         (<span class="code-type">void</span>);<br></pre>
+
+
+<h2>Detail:<h2>
+<h3>ege::<a id="ElementGame">ElementGame</a> ()</h3>
+
+<pre>
+<span class="code-function">ElementGame</span>(<a href="ege__Environement.html" class="code-type">ege::Environement</a> & <span class="code-argument">_env</span>);</pre>
+<br/>
+Constructor (when constructer is called just add element that did not change.
+The objest will be stored in a pool of element and keep a second time if needed  == > redure memory allocation,
+when needed, the system will call the init and un-init function...
+<br/><br/>
+
+<hr/>
+<h3>ege::~<a id="ElementGame">ElementGame</a> ()</h3>
+
+<pre>
+~<span class="code-function">ElementGame</span>(<span class="code-type">void</span>);</pre>
+<br/>
+Destructor
+<br/><br/>
+
+<hr/>
+<h3><a id="getType">getType</a> ()</h3>
+
+<pre>
+<span class="code-storage-keyword">const</span> <a href="http://www.cplusplus.com/reference/string/string/" class="code-type">std::string</a> & <span class="code-function">getType</span>(<span class="code-type">void</span>);</pre>
+<br/>
+get the element Type description string.
+<br/><ul>
+<b>Return:</b> A reference on the descriptive string.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="init">init</a> ()</h3>
+
+<pre>
+<span class="code-type">bool</span> <span class="code-function">init</span>(property_te <span class="code-argument">_property</span>,
+          <span class="code-type">void</span> * <span class="code-argument">_value</span>);</pre>
+<br/>
+init the element with the defined properties
+<br/><ul>
+<b>Parameter [input]:</b> <span class="code-argument">_property</span>  Type of the next element
+<br/><b>Parameter [input]:</b> <span class="code-argument">_value</span>  pointer on the value type
+<br/><b>Return:</b> true, the element is corectly initialized.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="unInit">unInit</a> ()</h3>
+
+<pre>
+<span class="code-type">bool</span> <span class="code-function">unInit</span>(<span class="code-type">void</span>);</pre>
+<br/>
+<br/>
+
+<hr/>
+<h3><a id="getUID">getUID</a> ()</h3>
+
+<pre>
+<span class="code-type">uint32_t</span> <span class="code-function">getUID</span>(<span class="code-type">void</span>);</pre>
+<br/>
+get the curent Element Unique ID in the all Game.
+<br/><ul>
+<b>Return:</b> The requested Unique ID.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="loadMesh">loadMesh</a> ()</h3>
+
+<pre>
+<span class="code-type">bool</span> <span class="code-function">loadMesh</span>(<span class="code-storage-keyword">const</span> <a href="http://www.cplusplus.com/reference/string/string/" class="code-type">std::string</a> & <span class="code-argument">_meshFileName</span>);</pre>
+<br/>
+Select a mesh with a specific name.
+<br/><b>Notes:</b> Automaticly load the shape if it is specify in the mesh file
+<br/> <ul>
+<b>Parameter [input]:</b> <span class="code-argument">_meshFileName</span>  filename of the Mesh.
+<br/><b>Return:</b> true if no error occured
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="setMesh">setMesh</a> ()</h3>
+
+<pre>
+<span class="code-type">bool</span> <span class="code-function">setMesh</span>(<a href="http://HeeroYui.github.io/ewol//ewol__Mesh.html" class="code-type">ewol::Mesh</a> * <span class="code-argument">_mesh</span>);</pre>
+<br/>
+set the the Mesh properties.
+<br/><b>Notes:</b> : this remove the shape and the mesh properties.
+<br/> <ul>
+<b>Parameter [input]:</b> <span class="code-argument">_mesh</span>  The mesh pointer. (NULL to force the mesh remove ...)
+<br/><b>Return:</b> true if no error occured
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="setShape">setShape</a> ()</h3>
+
+<pre>
+<span class="code-type">bool</span> <span class="code-function">setShape</span>(btCollisionShape * <span class="code-argument">_shape</span>);</pre>
+<br/>
+set the shape properties.
+<br/><b>Notes:</b> : this remove the shape properties.
+<br/> <ul>
+<b>Parameter [input]:</b> <span class="code-argument">_shape</span>  The shape pointer.
+<br/><b>Return:</b> true if no error occured
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="getMesh">getMesh</a> ()</h3>
+
+<pre>
+<a href="http://HeeroYui.github.io/ewol//ewol__Mesh.html" class="code-type">ewol::Mesh</a> * <span class="code-function">getMesh</span>(<span class="code-type">void</span>);</pre>
+<br/>
+get a pointer on the Mesh file.
+<br/><ul>
+<b>Return:</b> the mesh pointer.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="getShape">getShape</a> ()</h3>
+
+<pre>
+btCollisionShape * <span class="code-function">getShape</span>(<span class="code-type">void</span>);</pre>
+<br/>
+get a pointer on the bullet collision shape.
+<br/><ul>
+<b>Return:</b> the collision pointer.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="getLifeRatio">getLifeRatio</a> ()</h3>
+
+<pre>
+<span class="code-type">float</span> <span class="code-function">getLifeRatio</span>(<span class="code-type">void</span>);</pre>
+<br/>
+get the curent life ratio [0..1]
+<br/><ul>
+<b>Return:</b> The proportionnal life
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="isDead">isDead</a> ()</h3>
+
+<pre>
+<span class="code-type">bool</span> <span class="code-function">isDead</span>(<span class="code-type">void</span>);</pre>
+<br/>
+Check if the element is dead.
+<br/><ul>
+<b>Return:</b> true if the element does not exist anymore, false otherwise.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="needToRemove">needToRemove</a> ()</h3>
+
+<pre>
+<span class="code-type">bool</span> <span class="code-function">needToRemove</span>(<span class="code-type">void</span>);</pre>
+<br/>
+Request if the element might be removed from the system
+<br/><ul>
+<b>Return:</b> true  == > the object is removed
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="setFireOn">setFireOn</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">setFireOn</span>(<span class="code-type">int32_t</span> <span class="code-argument">_groupIdSource</span>,
+               <span class="code-type">int32_t</span> <span class="code-argument">_type</span>,
+               <span class="code-type">float</span> <span class="code-argument">_power</span>,
+               <span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_center</span>);</pre>
+<br/>
+apply a fire on the element at a current power and a specific power.
+<br/><ul>
+<b>Parameter [input]:</b> <span class="code-argument">_groupIdSource</span>  Source Id of the group, by default all event arrive at all group, buf some event can not be obviously apply at the ennemy like reparing ....
+<br/><b>Parameter [input]:</b> <span class="code-argument">_type</span>  Type of event on the life propertied
+<br/><b>Parameter [input]:</b> <span class="code-argument">_power</span>  Power of the event (can be >0 for adding life).
+<br/><b>Parameter [input]:</b> <span class="code-argument">_center</span>  Some fire decrease in function of space distance...
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="onLifeChange">onLifeChange</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">onLifeChange</span>(<span class="code-type">void</span>);</pre>
+<br/>
+Call chan the element life change
+<br/><br/>
+
+<hr/>
+<h3><a id="getGroup">getGroup</a> ()</h3>
+
+<pre>
+<span class="code-type">int32_t</span> <span class="code-function">getGroup</span>(<span class="code-type">void</span>);</pre>
+<br/>
+get the Group of the element.
+<br/><ul>
+<b>Return:</b> The group ID
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="setGroup">setGroup</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">setGroup</span>(<span class="code-type">int32_t</span> <span class="code-argument">_newGroup</span>);</pre>
+<br/>
+set the group of the curent element
+<br/><ul>
+<b>Parameter [input]:</b> <span class="code-argument">newGroup</span>  The new Group ID of the element.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="preCalculationDraw">preCalculationDraw</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">preCalculationDraw</span>(<span class="code-storage-keyword">const</span> <a href="ege__Camera.html" class="code-type">ege::Camera</a> & <span class="code-argument">_camera</span>);</pre>
+<br/>
+Can be call tu opdate the list of the element displayed on the scren (example : no display of the hiden triangle)
+<br/><ul>
+<b>Parameter [input]:</b> <span class="code-argument">the</span>  camera properties
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="draw">draw</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">draw</span>(<span class="code-type">int32_t</span> <span class="code-argument">_pass</span>);</pre>
+<br/>
+draw the curent element (can have multiple display)
+<br/><ul>
+<b>Parameter [input]:</b> <span class="code-argument">pass</span>  Id of the current pass : [0..?]
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="drawLife">drawLife</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">drawLife</span>(<a href="http://HeeroYui.github.io/ewol//ewol__Colored3DObject.html" class="code-type">ewol::Colored3DObject</a> * <span class="code-argument">_draw</span>,
+              <span class="code-storage-keyword">const</span> <a href="ege__Camera.html" class="code-type">ege::Camera</a> & <span class="code-argument">_camera</span>);</pre>
+<br/>
+draw the current life of the element
+<br/><br/>
+
+<hr/>
+<h3><a id="drawDebug">drawDebug</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">drawDebug</span>(<a href="http://HeeroYui.github.io/ewol//ewol__Colored3DObject.html" class="code-type">ewol::Colored3DObject</a> * <span class="code-argument">_draw</span>,
+               <span class="code-storage-keyword">const</span> <a href="ege__Camera.html" class="code-type">ege::Camera</a> & <span class="code-argument">_camera</span>);</pre>
+<br/>
+Debug display of the current element
+<br/><ul>
+<b>Parameter [input] [output]:</b> <span class="code-argument">draw</span>  Basic system to draw the debug shape and informations
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="getPositionTheoric">getPositionTheoric</a> ()</h3>
+
+<pre>
+vec3 <span class="code-function">getPositionTheoric</span>(<span class="code-type">void</span>);</pre>
+<br/>
+get the theoric position. Sometimes, the element has move due to an explosion or something else, then its real position in not the one that woult it be at the end ...
+<br/><ul>
+<b>Return:</b> the theoric position
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="setPositionTheoric">setPositionTheoric</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">setPositionTheoric</span>(<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_pos</span>);</pre>
+<br/>
+set the current Theoric position of the element
+<br/><ul>
+<b>Parameter [input]:</b> <span class="code-argument">set</span>  the 3D position.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="getPosition">getPosition</a> ()</h3>
+
+<pre>
+<span class="code-storage-keyword">const</span> vec3 & <span class="code-function">getPosition</span>(<span class="code-type">void</span>);</pre>
+<br/>
+get the current position of the element
+<br/><ul>
+<b>Return:</b> the 3D position.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="setPosition">setPosition</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">setPosition</span>(<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_pos</span>);</pre>
+<br/>
+set the current position of the element
+<br/><ul>
+<b>Parameter [input]:</b> <span class="code-argument">_pos</span>  set the 3D position.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="getSpeed">getSpeed</a> ()</h3>
+
+<pre>
+<span class="code-storage-keyword">const</span> vec3 & <span class="code-function">getSpeed</span>(<span class="code-type">void</span>);</pre>
+<br/>
+get the current speed of the element
+<br/><ul>
+<b>Return:</b> the 3D speed.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="getInvMass">getInvMass</a> ()</h3>
+
+<pre>
+<span class="code-storage-keyword">const</span> <span class="code-type">float</span> <span class="code-function">getInvMass</span>(<span class="code-type">void</span>);</pre>
+<br/>
+get the current mass of the element
+<br/><ul>
+<b>Return:</b> the mass in kG.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="elementIsRemoved">elementIsRemoved</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">elementIsRemoved</span>(<a href="ege__ElementGame.html" class="code-type">ege::ElementGame</a> * <span class="code-argument">_removedElement</span>);</pre>
+<br/>
+Event arrive when an element has been remove from the system  == > this permit to keep pointer of ennemy, and not search them every cycle ...
+<br/><ul>
+<b>Parameter [input]:</b> <span class="code-argument">_removedElement</span>  Pointer on the element removed.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="isFixed">isFixed</a> ()</h3>
+
+<pre>
+<span class="code-type">bool</span> <span class="code-function">isFixed</span>(<span class="code-type">void</span>);</pre>
+<br/>
+get the element if it is fixed or not. if the element is fixed this is for tower, and all thing does not really move
+<br/><ul>
+<b>Return:</b> true : The element is fixed.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="getRadius">getRadius</a> ()</h3>
+
+<pre>
+<span class="code-type">float</span> <span class="code-function">getRadius</span>(<span class="code-type">void</span>);</pre>
+<br/>
+get the current space needed by the element in the workspace
+<br/><ul>
+<b>Return:</b> The dimention needed.
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="dynamicEnable">dynamicEnable</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">dynamicEnable</span>(<span class="code-type">void</span>);</pre>
+<br/>
+set the elment in the physique engine
+<br/><br/>
+
+<hr/>
+<h3><a id="dynamicDisable">dynamicDisable</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">dynamicDisable</span>(<span class="code-type">void</span>);</pre>
+<br/>
+remove this element from the physique engine
+<br/><br/>
+
+<hr/>
+<h3><a id="iaEnable">iaEnable</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">iaEnable</span>(<span class="code-type">void</span>);</pre>
+<br/>
+enable periodic call Of this object for processing Artificial Intelligence
+<br/><br/>
+
+<hr/>
+<h3><a id="iaDisable">iaDisable</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">iaDisable</span>(<span class="code-type">void</span>);</pre>
+<br/>
+disable periodic call Of this object for processing Artificial Intelligence
+<br/><br/>
+
+<hr/>
+<h3><a id="iaAction">iaAction</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">iaAction</span>(<span class="code-type">float</span> <span class="code-argument">_step</span>);</pre>
+<br/>
+periodic call for intelligence artificial.
+<br/><ul>
+<b>Parameter [input]:</b> <span class="code-argument">step</span>  : step of time in s
+<br/></ul>
+<br/>
+
+<hr/>
+<h3><a id="onDestroy">onDestroy</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">onDestroy</span>(<span class="code-type">void</span>);</pre>
+<br/>
+<br/>
+
+<hr/>
+<h3>ege::<a id="FunctionFreeShape">FunctionFreeShape</a> ()</h3>
+
+<pre>
+<span class="code-storage-keyword">static</span> <span class="code-type">void</span> <span class="code-function">FunctionFreeShape</span>(<span class="code-type">void</span> * <span class="code-argument">_pointer</span>);</pre>
+<br/>
+<br/>
+
+<hr/>
+<h3><a id="removeShape">removeShape</a> ()</h3>
+
+<pre>
+<span class="code-type">void</span> <span class="code-function">removeShape</span>(<span class="code-type">void</span>);</pre>
+<br/>
+remove the curent selected shape.
+<br/><br/>
+
+<hr/>
+	</div>
+</body>
+</html>
