@@ -7,7 +7,7 @@ def Create(target):
 	myModule = lutinModule.module(__file__, 'ege', 'LIBRARY')
 	# enable doculentation :
 	myModule.doc_enable()
-	myModule.documentation.set_website("http://HeeroYui.github.io/ege/doc/doc/")
+	myModule.documentation.set_website("http://HeeroYui.github.io/ege/")
 	myModule.documentation.set_path(lutinTools.GetCurrentPath(__file__) + "/ege/")
 	myModule.documentation.set_external_link(['ewol', 'bullet'])
 	
