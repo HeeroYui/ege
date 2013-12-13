@@ -6,16 +6,19 @@
  * @license BSD v3 (see license file)
  */
 
-#ifndef __EWOL_MATERIAL_H__
-#define __EWOL_MATERIAL_H__
+#ifndef __EGE_MATERIAL_H__
+#define __EGE_MATERIAL_H__
 
 #include <etk/types.h>
 #include <etk/math/Vector3D.h>
 #include <etk/math/Vector4D.h>
-#include <ewol/resources/Program.h>
-#include <ewol/resources/Image.h>
+#include <ewol/resource/Program.h>
+#include <ewol/resource/Image.h>
 
-namespace ewol {
+namespace ege {
+	/**
+	 * @not-in-doc
+	 */
 	class MaterialGlId {
 		public:
 			// GL index
@@ -25,7 +28,7 @@ namespace ewol {
 			int32_t m_GL_shininess;
 			int32_t m_GL_texture0;
 			MaterialGlId(void);
-			void link(ewol::Program* _prog, const std::string& _baseName);
+			void link(ewol::resource::Program* _prog, const std::string& _baseName);
 	};
 	class Material {
 		private:
@@ -34,13 +37,13 @@ namespace ewol {
 			vec4 m_diffuseFactor;
 			vec4 m_specularFactor;
 			float m_shininess;
-			ewol::TextureFile* m_texture0;
+			ewol::resource::TextureFile* m_texture0;
 		public:
 			std::vector<uint32_t> m_listIndexFaces;
 		public:
 			Material(void);
 			~Material(void);
-			void draw(ewol::Program* _prog, const MaterialGlId& _glID);
+			void draw(ewol::resource::Program* _prog, const ege::MaterialGlId& _glID);
 			void setAmbientFactor(const vec4& _val) {
 				m_ambientFactor = _val;
 			}
@@ -55,11 +58,26 @@ namespace ewol {
 			}
 			void setTexture0(const std::string& _filename);
 			
-			void setImageSize(const ivec2& _newSize) { if (m_texture0 == NULL){return;} m_texture0->setImageSize(_newSize); };
+			void setImageSize(const ivec2& _newSize) {
+				if (m_texture0 == NULL){
+					return;
+				}
+				m_texture0->setImageSize(_newSize);
+			};
 			// get the reference on this image to draw nomething on it ...
-			egami::Image* get(void) { if (m_texture0 == NULL){return NULL;} return &m_texture0->get(); };
+			egami::Image* get(void) {
+				if (m_texture0 == NULL){
+					return NULL;
+				}
+				return &m_texture0->get();
+			};
 			// flush the data to send it at the openGl system
-			void flush(void) { if (m_texture0 == NULL){return;} m_texture0->flush(); };
+			void flush(void) {
+				if (m_texture0 == NULL){
+					return;
+				}
+				m_texture0->flush();
+			};
 	};
 	
 };

@@ -11,12 +11,12 @@
 
 #include <etk/types.h>
 #include <ewol/widget/Widget.h>
-#include <ewol/resources/Mesh.h>
+#include <ege/resource/Mesh.h>
 
 extern const char * const ewolEventMeshPressed;
 
 
-namespace ewol {
+namespace ege {
 	namespace widget {
 		/**
 		 * @ingroup ewolWidgetGroup
@@ -25,47 +25,47 @@ namespace ewol {
 			private:
 				// mesh name :
 				std::string m_meshName;
-				ewol::Mesh* m_object;
+				ege::resource::Mesh* m_object;
 				// mesh display properties:
 				vec3 m_position;
 				vec3 m_angle;
 				vec3 m_angleSpeed;
 				float m_cameraDistance;
 			public:
-				Mesh(const std::string& filename); // automatic considering in the appl Data older
+				Mesh(const std::string& _filename); // automatic considering in the appl Data older
 				virtual ~Mesh(void);
 			public: // Derived function
 				virtual void onRegenerateDisplay(void);
-				virtual void systemDraw(const ewol::DrawProperty& displayProp);
+				virtual void systemDraw(const ewol::DrawProperty& _displayProp);
 				virtual void onDraw(void);
-				virtual bool onEventInput(const ewol::EventInput& _event);
-				virtual void periodicCall(const ewol::EventTime& _event);
+				virtual bool onEventInput(const ewol::event::Input& _event);
+				virtual void periodicCall(const ewol::event::Time& _event);
 			public:
 				/**
 				 * @brief set a mesh name file
-				 * @param[in] filename Name of the new mesh
+				 * @param[in] _filename Name of the new mesh
 				 */
-				void setFile(const std::string& filename);
+				void setFile(const std::string& _filename);
 				/**
 				 * @brief set the mesh position
-				 * @param[in] pos The new position of the mesh
+				 * @param[in] _pos The new position of the mesh
 				 */
-				void setPosition(const vec3& pos);
+				void setPosition(const vec3& _pos);
 				/**
 				 * @brief set the mesh angle of view
-				 * @param[in] angle view angle of the mesh
+				 * @param[in] _angle view angle of the mesh
 				 */
-				void setAngle(const vec3& angle);
+				void setAngle(const vec3& _angle);
 				/**
 				 * @brief set the mesh angle speed
-				 * @param[in] spped radian speed of the mesh
+				 * @param[in] _speed Radian speed of the mesh
 				 */
-				void setAngleSpeed(const vec3& speed);
+				void setAngleSpeed(const vec3& _speed);
 				/**
 				 * @brief set the camera distance of the mesh
-				 * @param[in] dist Diatance of the mesh
+				 * @param[in] _distance Diatance of the mesh
 				 */
-				void setDistance(float distance);
+				void setDistance(float _distance);
 		};
 	};
 };

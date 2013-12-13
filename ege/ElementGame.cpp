@@ -10,7 +10,6 @@
 #include <ege/debug.h>
 #include <ege/ElementGame.h>
 #include <ege/Environement.h>
-#include <ewol/resources/ResourceManager.h>
 #include <BulletDynamics/Dynamics/btRigidBody.h>
 #include <LinearMath/btDefaultMotionState.h>
 #include <BulletDynamics/Dynamics/btDynamicsWorld.h>
@@ -61,7 +60,7 @@ ege::ElementGame::~ElementGame(void) {
 	// same ...
 	dynamicDisable();
 	removeShape();
-	ewol::Mesh::release(m_mesh);
+	ege::resource::Mesh::release(m_mesh);
 	if (NULL != m_body) {
 		delete(m_body);
 		m_body = NULL;
@@ -97,8 +96,7 @@ void ege::ElementGame::FunctionFreeShape(void* _pointer) {
 }
 
 bool ege::ElementGame::loadMesh(const std::string& _meshFileName) {
-	ewol::Mesh* tmpMesh=NULL;
-	tmpMesh = ewol::Mesh::keep(_meshFileName);
+	ege::resource::Mesh* tmpMesh = ege::resource::Mesh::keep(_meshFileName);
 	if(NULL == tmpMesh) {
 		EGE_ERROR("can not load the resources : " << _meshFileName);
 		return false;
@@ -106,10 +104,10 @@ bool ege::ElementGame::loadMesh(const std::string& _meshFileName) {
 	return setMesh(tmpMesh);
 }
 
-bool ege::ElementGame::setMesh(ewol::Mesh* _mesh) {
+bool ege::ElementGame::setMesh(ege::resource::Mesh* _mesh) {
 	if (NULL!=m_mesh) {
 		removeShape();
-		ewol::Mesh::release(m_mesh);
+		ege::resource::Mesh::release(m_mesh);
 	}
 	m_mesh = _mesh;
 	// auto load the shape :
@@ -184,7 +182,7 @@ const float ege::ElementGame::getInvMass(void) {
 	return 0.0000000001f;
 };
 
-static void drawSphere(ewol::Colored3DObject* _draw,
+static void drawSphere(ewol::resource::Colored3DObject* _draw,
                        btScalar _radius,
                        int _lats,
                        int _longs,
@@ -232,7 +230,7 @@ const float lifeHeight = 0.3f;
 const float lifeWidth = 2.0f;
 const float lifeYPos = 1.7f;
 
-void ege::ElementGame::drawLife(ewol::Colored3DObject* _draw, const ege::Camera& _camera) {
+void ege::ElementGame::drawLife(ewol::resource::Colored3DObject* _draw, const ege::Camera& _camera) {
 	if (NULL == _draw) {
 		return;
 	}
@@ -270,7 +268,7 @@ void ege::ElementGame::drawLife(ewol::Colored3DObject* _draw, const ege::Camera&
 }
 
 static void drawShape(const btCollisionShape* _shape,
-                      ewol::Colored3DObject* _draw,
+                      ewol::resource::Colored3DObject* _draw,
                       mat4 _transformationMatrix,
                       std::vector<vec3> _tmpVertices) {
 	if(    NULL == _draw
@@ -437,7 +435,7 @@ static void drawShape(const btCollisionShape* _shape,
 	}
 }
 
-void ege::ElementGame::drawDebug(ewol::Colored3DObject* _draw, const ege::Camera& _camera) {
+void ege::ElementGame::drawDebug(ewol::resource::Colored3DObject* _draw, const ege::Camera& _camera) {
 	m_debugText.clear();
 	m_debugText.setColor(0x00FF00FF);
 	m_debugText.setPos(vec3(-20,32,0));

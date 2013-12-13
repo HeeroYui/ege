@@ -11,12 +11,12 @@
 #define __EGE_COLLISION_SHAPE_CREATOR_H__
 
 #include <etk/types.h>
-#include <ewol/resources/Mesh.h>
+#include <ege/resource/Mesh.h>
 #include <BulletCollision/CollisionShapes/btCollisionShape.h>
 
 namespace ege {
 	namespace collision {
-		btCollisionShape* createShape(const ewol::Mesh* _mesh);
+		btCollisionShape* createShape(const ege::resource::Mesh* _mesh);
 	};
 };
 #endif

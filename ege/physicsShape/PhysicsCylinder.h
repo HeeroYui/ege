@@ -6,16 +6,16 @@
  * @license BSD v3 (see license file)
  */
 
-#ifndef __EWOL_PHYSICS_CYLINDER_H__
-#define __EWOL_PHYSICS_CYLINDER_H__
+#ifndef __EGE_PHYSICS_CYLINDER_H__
+#define __EGE_PHYSICS_CYLINDER_H__
 
 
 #include <etk/types.h>
-#include <ewol/physicsShape/PhysicsShape.h>
+#include <ege/physicsShape/PhysicsShape.h>
 
 
-namespace ewol {
-	class PhysicsCylinder : public ewol::PhysicsShape {
+namespace ege {
+	class PhysicsCylinder : public ege::PhysicsShape {
 		public:
 			PhysicsCylinder(void) {};
 			virtual ~PhysicsCylinder(void) {};
@@ -23,8 +23,8 @@ namespace ewol {
 			virtual bool parse(const char* _line);
 			virtual void display(void) {};
 		public:
-			virtual enum type getType(void) {
-				return ewol::PhysicsShape::cylinder;
+			virtual enum ege::PhysicsShape::type getType(void) {
+				return ege::PhysicsShape::cylinder;
 			};
 		private:
 			vec3 m_size;
@@ -33,10 +33,10 @@ namespace ewol {
 				return m_size;
 			};
 		public:
-			virtual const PhysicsCylinder* toCylinder(void) const {
+			virtual const ege::PhysicsCylinder* toCylinder(void) const {
 				return this;
 			};
-			virtual PhysicsCylinder* toCylinder(void) {
+			virtual ege::PhysicsCylinder* toCylinder(void) {
 				return this;
 			};
 	};

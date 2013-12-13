@@ -6,16 +6,16 @@
  * @license BSD v3 (see license file)
  */
 
-#ifndef __EWOL_PHYSICS_CAPSULE_H__
-#define __EWOL_PHYSICS_CAPSULE_H__
+#ifndef __EGE_PHYSICS_CAPSULE_H__
+#define __EGE_PHYSICS_CAPSULE_H__
 
 
 #include <etk/types.h>
-#include <ewol/physicsShape/PhysicsShape.h>
+#include <ege/physicsShape/PhysicsShape.h>
 
 
-namespace ewol {
-	class PhysicsCapsule : public ewol::PhysicsShape {
+namespace ege {
+	class PhysicsCapsule : public ege::PhysicsShape {
 		public:
 			PhysicsCapsule(void) {};
 			virtual ~PhysicsCapsule(void) {};
@@ -23,8 +23,8 @@ namespace ewol {
 			virtual bool parse(const char* _line);
 			virtual void display(void) {};
 		public:
-			virtual enum type getType(void) {
-				return ewol::PhysicsShape::capsule;
+			virtual enum ege::PhysicsShape::type getType(void) {
+				return ege::PhysicsShape::capsule;
 			};
 		private:
 			float m_radius;
@@ -39,10 +39,10 @@ namespace ewol {
 				return m_height;
 			};
 		public:
-			virtual const PhysicsCapsule* toCapsule(void) const {
+			virtual const ege::PhysicsCapsule* toCapsule(void) const {
 				return this;
 			};
-			virtual PhysicsCapsule* toCapsule(void) {
+			virtual ege::PhysicsCapsule* toCapsule(void) {
 				return this;
 			};
 	};

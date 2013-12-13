@@ -22,9 +22,20 @@ def Create(target):
 		'ege/Particule.cpp',
 		'ege/ParticuleEngine.cpp',
 		'ege/ParticuleSimple.cpp',
-		'ege/Scene.cpp',
+		'ege/widget/Mesh.cpp',
+		'ege/widget/Scene.cpp',
 		'ege/Environement.cpp',
-		'ege/resource/ParticuleMesh.cpp'
+		'ege/resource/Mesh.cpp',
+		'ege/resource/ParticuleMesh.cpp',
+		'ege/Light.cpp',
+		'ege/Material.cpp',
+		'ege/physicsShape/PhysicsShape.cpp',
+		'ege/physicsShape/PhysicsBox.cpp',
+		'ege/physicsShape/PhysicsCapsule.cpp',
+		'ege/physicsShape/PhysicsCone.cpp',
+		'ege/physicsShape/PhysicsConvexHull.cpp',
+		'ege/physicsShape/PhysicsCylinder.cpp',
+		'ege/physicsShape/PhysicsSphere.cpp',
 		])
 	
 	myModule.CopyFolder('data/ParticuleMesh.*','')

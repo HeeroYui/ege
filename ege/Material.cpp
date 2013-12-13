@@ -6,11 +6,11 @@
  * @license BSD v3 (see license file)
  */
 
-#include <ewol/resources/ResourceManager.h>
-#include <ewol/Material.h>
-#include <ewol/debug.h>
+#include <ewol/resource/Manager.h>
+#include <ege/Material.h>
+#include <ege/debug.h>
 
-ewol::MaterialGlId::MaterialGlId(void) :
+ege::MaterialGlId::MaterialGlId(void) :
   m_GL_ambientFactor(0),
   m_GL_diffuseFactor(0),
   m_GL_specularFactor(0),
@@ -20,7 +20,7 @@ ewol::MaterialGlId::MaterialGlId(void) :
 }
 
 
-void ewol::MaterialGlId::link(ewol::Program* _prog, const std::string& _baseName) {
+void ege::MaterialGlId::link(ewol::resource::Program* _prog, const std::string& _baseName) {
 	if (NULL == _prog) {
 		return;
 	}
@@ -31,7 +31,7 @@ void ewol::MaterialGlId::link(ewol::Program* _prog, const std::string& _baseName
 	m_GL_texture0 = _prog->getUniform("EW_texID");
 }
 
-ewol::Material::Material(void) :
+ege::Material::Material(void) :
   m_ambientFactor(1,1,1,1),
   m_diffuseFactor(0,0,0,1),
   m_specularFactor(0,0,0,1),
@@ -39,13 +39,13 @@ ewol::Material::Material(void) :
   m_texture0(NULL) {
 	// nothing to do else ...
 }
-ewol::Material::~Material(void) {
+ege::Material::~Material(void) {
 	if(NULL!=m_texture0) {
-		ewol::TextureFile::release(m_texture0);
+		ewol::resource::TextureFile::release(m_texture0);
 	}
 }
 
-void ewol::Material::draw(ewol::Program* _prog, const MaterialGlId& _glID) {
+void ege::Material::draw(ewol::resource::Program* _prog, const MaterialGlId& _glID) {
 	_prog->uniform4(_glID.m_GL_ambientFactor, m_ambientFactor);
 	_prog->uniform4(_glID.m_GL_diffuseFactor, m_diffuseFactor);
 	_prog->uniform4(_glID.m_GL_specularFactor, m_specularFactor);
@@ -55,20 +55,20 @@ void ewol::Material::draw(ewol::Program* _prog, const MaterialGlId& _glID) {
 	}
 }
 
-void ewol::Material::setTexture0(const std::string& _filename) {
+void ege::Material::setTexture0(const std::string& _filename) {
 	ivec2 tmpSize(256, 256);
 	// prevent overloard error :
-	ewol::TextureFile* tmpCopy = m_texture0;
-	m_texture0 = ewol::TextureFile::keep(_filename, tmpSize);
+	ewol::resource::TextureFile* tmpCopy = m_texture0;
+	m_texture0 = ewol::resource::TextureFile::keep(_filename, tmpSize);
 	if (NULL == m_texture0 ) {
-		EWOL_ERROR("Can not load specific texture : " << _filename);
+		EGE_ERROR("Can not load specific texture : " << _filename);
 		// retreave previous texture:
 		m_texture0 = tmpCopy;
 		return;
 	}
 	if (NULL != tmpCopy) {
 		// really release previous texture. In case of same texture loading, then we did not have reload it .. just increase and decrease index...
-		ewol::TextureFile::release(tmpCopy);
+		ewol::resource::TextureFile::release(tmpCopy);
 	}
 }
 

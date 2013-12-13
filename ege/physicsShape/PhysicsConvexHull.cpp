@@ -5,17 +5,17 @@
  * 
  * @license BSD v3 (see license file)
  */
-#include <ewol/debug.h>
-#include <ewol/physicsShape/PhysicsConvexHull.h>
+#include <ege/debug.h>
+#include <ege/physicsShape/PhysicsConvexHull.h>
 
 
 
-bool ewol::PhysicsConvexHull::parse(const char* _line) {
-	if (true ==  ewol::PhysicsShape::parse(_line)) {
+bool ege::PhysicsConvexHull::parse(const char* _line) {
+	if (true == ege::PhysicsShape::parse(_line)) {
 		return true;
 	}
 	if(0 == strncmp(_line, "points : ", 8) ) {
-		//EWOL_DEBUG("convex hull point parsing " << _line);
+		//EGE_DEBUG("convex hull point parsing " << _line);
 		char* base = (char*)(&_line[8]);
 		char* tmp= strchr(base, '|');
 		vec3 pos(0,0,0);
@@ -30,14 +30,14 @@ bool ewol::PhysicsConvexHull::parse(const char* _line) {
 		m_points.push_back(pos);
 		/*
 		for (int32_t iii=0; iii<m_points.size(); iii++) {
-			EWOL_VERBOSE("    parsed " << m_points[iii]);
+			EGE_VERBOSE("    parsed " << m_points[iii]);
 		}
 		*/
 		return true;
 	}
 	if(0 == strncmp(_line, "scale : ", 8) ) {
 		sscanf(&_line[8], "%f %f %f", &m_scale.m_floats[0], &m_scale.m_floats[1], &m_scale.m_floats[2] );
-		EWOL_VERBOSE("                scale=" << m_scale);
+		EGE_VERBOSE("                scale=" << m_scale);
 		return true;
 	}
 	return false;

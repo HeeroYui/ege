@@ -6,16 +6,16 @@
  * @license BSD v3 (see license file)
  */
 
-#ifndef __EWOL_PHYSICS_SPHERE_H__
-#define __EWOL_PHYSICS_SPHERE_H__
+#ifndef __EGE_PHYSICS_SPHERE_H__
+#define __EGE_PHYSICS_SPHERE_H__
 
 
 #include <etk/types.h>
-#include <ewol/physicsShape/PhysicsShape.h>
+#include <ege/physicsShape/PhysicsShape.h>
 
 
-namespace ewol {
-	class PhysicsSphere : public ewol::PhysicsShape {
+namespace ege {
+	class PhysicsSphere : public ege::PhysicsShape {
 		public:
 			PhysicsSphere(void) {};
 			virtual ~PhysicsSphere(void) {};
@@ -23,18 +23,20 @@ namespace ewol {
 			virtual bool parse(const char* _line);
 			virtual void display(void) {};
 		public:
-			virtual enum type getType(void) {
-				return ewol::PhysicsShape::sphere;
+			virtual enum ege::PhysicsShape::type getType(void) {
+				return ege::PhysicsShape::sphere;
 			};
 		private:
 			float m_radius; // props["radius"] = obj.scale.x
 		public:
-			float getRadius(void) const { return m_radius; };
+			float getRadius(void) const {
+				return m_radius;
+			};
 		private:
-			virtual const PhysicsSphere* toSphere(void) const {
+			virtual const ege::PhysicsSphere* toSphere(void) const {
 				return this;
 			};
-			virtual PhysicsSphere* toSphere(void) {
+			virtual ege::PhysicsSphere* toSphere(void) {
 				return this;
 			};
 	};

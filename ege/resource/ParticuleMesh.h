@@ -9,22 +9,21 @@
 #ifndef __EGE_RESOURCE_PARTICULE_MESH_H__
 #define __EGE_RESOURCE_PARTICULE_MESH_H__
 
-#include <ewol/resources/Mesh.h>
+#include <ege/resource/Mesh.h>
 
-namespace ege
-{
-	namespace resource
-	{
-		class ParticuleMesh : public ewol::Mesh
-		{
+namespace ege {
+	namespace resource {
+		class ParticuleMesh : public ege::resource::Mesh {
 			protected:
-				int32_t        m_GLMainColor;
+				int32_t m_GLMainColor;
 			protected:
 				ParticuleMesh(const std::string& _fileName, const std::string& _shaderName);
 				virtual ~ParticuleMesh(void);
 			public:
-				virtual const char* getType(void) { return "ege::resource::ParticuleMesh"; };
-				virtual void draw(mat4& _positionMatrix, const etk::Color<float>& _mainColor, bool _enableDepthTest=true, bool _enableDepthUpdate=true);
+				virtual void draw(mat4& _positionMatrix,
+				                  const etk::Color<float>& _mainColor,
+				                  bool _enableDepthTest = true,
+				                  bool _enableDepthUpdate = true);
 			public:
 				/**
 				 * @brief keep the resource pointer.

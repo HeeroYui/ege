@@ -7,12 +7,12 @@
  */
 
 #include <ege/debug.h>
-#include <ege/Scene.h>
+#include <ege/widget/Scene.h>
 
 #include <math.h>
 #include <ege/debug.h>
 #include <ewol/ewol.h>
-#include <ewol/renderer/openGL.h>
+#include <ewol/openGL/openGL.h>
 #include <etk/math/Matrix4.h>
 #include <BulletDynamics/Dynamics/btRigidBody.h>
 #include <LinearMath/btDefaultMotionState.h>
@@ -31,12 +31,12 @@
 #define __class__ "Scene"
 
 
-const char * const ege::Scene::eventPlayTimeChange = "event-scene-play-time-change";
-const char * const ege::Scene::eventKillEnemy = "event-scene-kill-ennemy";
+const char * const ege::widget::Scene::eventPlayTimeChange = "event-scene-play-time-change";
+const char * const ege::widget::Scene::eventKillEnemy = "event-scene-kill-ennemy";
 
 
 
-ege::Scene::Scene(bool _setAutoBullet, bool _setAutoCamera) :
+ege::widget::Scene::Scene(bool _setAutoBullet, bool _setAutoCamera) :
   m_gameTime(0),
   m_angleView(M_PI/3.0),
   m_dynamicsWorld(NULL),
@@ -50,7 +50,7 @@ ege::Scene::Scene(bool _setAutoBullet, bool _setAutoCamera) :
 	addEventId(eventPlayTimeChange);
 	addEventId(eventKillEnemy);
 	
-	m_debugDrawing = ewol::Colored3DObject::keep();
+	m_debugDrawing = ewol::resource::Colored3DObject::keep();
 	
 	m_ratioTime = 1.0f;
 	if (_setAutoBullet == true) {
@@ -61,7 +61,7 @@ ege::Scene::Scene(bool _setAutoBullet, bool _setAutoCamera) :
 	}
 }
 
-void ege::Scene::setBulletConfig(btDefaultCollisionConfiguration* _collisionConfiguration,
+void ege::widget::Scene::setBulletConfig(btDefaultCollisionConfiguration* _collisionConfiguration,
                                  btCollisionDispatcher* _dispatcher,
                                  btBroadphaseInterface* _broadphase,
                                  btConstraintSolver* _solver,
@@ -102,7 +102,7 @@ void ege::Scene::setBulletConfig(btDefaultCollisionConfiguration* _collisionConf
 	
 }
 
-void ege::Scene::setCamera(ege::Camera* _camera) {
+void ege::widget::Scene::setCamera(ege::Camera* _camera) {
 	if (NULL != _camera) {
 		m_camera = _camera;
 	} else {
@@ -112,8 +112,8 @@ void ege::Scene::setCamera(ege::Camera* _camera) {
 	}
 }
 
-ege::Scene::~Scene(void) {
-	ewol::Colored3DObject::release(m_debugDrawing);
+ege::widget::Scene::~Scene(void) {
+	ewol::resource::Colored3DObject::release(m_debugDrawing);
 /*
 	ewol::resource::release(m_directDrawObject);
 	//cleanup in the reverse order of creation/initialization
@@ -136,23 +136,23 @@ ege::Scene::~Scene(void) {
 	*/
 }
 
-void ege::Scene::onRegenerateDisplay(void) {
+void ege::widget::Scene::onRegenerateDisplay(void) {
 	if (true == needRedraw()) {
 		
 	}
 }
 
-void ege::Scene::pause(void) {
+void ege::widget::Scene::pause(void) {
 	EGE_DEBUG("Set pause");
 	m_isRunning = false;
 }
 
-void ege::Scene::resume(void) {
+void ege::widget::Scene::resume(void) {
 	EGE_DEBUG("Set resume");
 	m_isRunning = true;
 }
 
-void ege::Scene::pauseToggle(void) {
+void ege::widget::Scene::pauseToggle(void) {
 	if(true == m_isRunning) {
 		EGE_DEBUG("Set Toggle: pause");
 		m_isRunning=false;
@@ -173,7 +173,7 @@ void ege::Scene::pauseToggle(void) {
 #define NUMBER_OF_SUB_PASS  (0)
 
 
-void ege::Scene::onDraw(void) {
+void ege::widget::Scene::onDraw(void) {
 	#ifdef SCENE_DISPLAY_SPEED
 		g_counterNbTimeDisplay++;
 		g_startTime = ewol::getTime();
@@ -236,7 +236,7 @@ btRigidBody& btActionInterface::getFixedBody(void) {
 	return s_fixed;
 }
 
-void ege::Scene::periodicCall(const ewol::EventTime& _event) {
+void ege::widget::Scene::periodicCall(const ewol::event::Time& _event) {
 	float curentDelta=_event.getDeltaCall();
 	// small hack to change speed ...
 	if (m_ratioTime != 1) {
@@ -298,7 +298,7 @@ void ege::Scene::periodicCall(const ewol::EventTime& _event) {
 
 //#define SCENE_BRUT_PERFO_TEST
 
-void ege::Scene::systemDraw(const ewol::DrawProperty& _displayProp)
+void ege::widget::Scene::systemDraw(const ewol::DrawProperty& _displayProp)
 {
 #ifdef SCENE_BRUT_PERFO_TEST
 int64_t tmp___startTime0 = ewol::getTime();
@@ -348,7 +348,7 @@ EWOL_DEBUG("      SCENE444  : " << tmp___localTime4 << "ms ");
 #endif
 }
 
-vec2 ege::Scene::calculateDeltaAngle(const vec2& _posScreen) {
+vec2 ege::widget::Scene::calculateDeltaAngle(const vec2& _posScreen) {
 	double ratio = m_size.x() / m_size.y();
 	vec2 pos = vec2(m_size.x()/-2.0, m_size.y()/-2.0) + _posScreen;
 	
@@ -365,7 +365,7 @@ vec2 ege::Scene::calculateDeltaAngle(const vec2& _posScreen) {
 	            angleY);
 }
 
-vec3 ege::Scene::convertScreenPositionInMapPosition(const vec2& _posScreen) {
+vec3 ege::widget::Scene::convertScreenPositionInMapPosition(const vec2& _posScreen) {
 	return m_camera->projectOnZGround(calculateDeltaAngle(_posScreen));
 }
 

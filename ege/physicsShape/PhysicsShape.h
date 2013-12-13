@@ -6,8 +6,8 @@
  * @license BSD v3 (see license file)
  */
 
-#ifndef __EWOL_PHYSICS_SHAPE_H__
-#define __EWOL_PHYSICS_SHAPE_H__
+#ifndef __EGE_PHYSICS_SHAPE_H__
+#define __EGE_PHYSICS_SHAPE_H__
 
 
 #include <etk/types.h>
@@ -16,7 +16,7 @@
 #include <etk/math/Vector3D.h>
 
 
-namespace ewol {
+namespace ege {
 	class PhysicsBox;
 	class PhysicsCylinder;
 	class PhysicsCapsule;
@@ -26,7 +26,7 @@ namespace ewol {
 	
 	class PhysicsShape {
 		public:
-			static PhysicsShape* create(const std::string& _name);
+			static ege::PhysicsShape* create(const std::string& _name);
 		public:
 			enum type {
 				unknow,
@@ -38,15 +38,17 @@ namespace ewol {
 				sphere
 			};
 		public:
-			PhysicsShape(void) : m_quaternion(1,0,0,0), m_origin(0,0,0) {
+			PhysicsShape(void) :
+			  m_quaternion(1,0,0,0),
+			  m_origin(0,0,0) {
 				
 			};
 			virtual ~PhysicsShape(void) {
 				
 			};
 		public:
-			virtual enum type getType(void) {
-				return ewol::PhysicsShape::unknow;
+			virtual enum ege::PhysicsShape::type getType(void) {
+				return ege::PhysicsShape::unknow;
 			};
 			
 		public:
@@ -68,63 +70,63 @@ namespace ewol {
 			};
 		public:
 			bool isBox(void) {
-				return getType() == ewol::PhysicsShape::box;
+				return getType() == ege::PhysicsShape::box;
 			};
 			bool isCylinder(void) {
-				return getType() == ewol::PhysicsShape::cylinder;
+				return getType() == ege::PhysicsShape::cylinder;
 			};
 			bool isCapsule(void) {
-				return getType() == ewol::PhysicsShape::capsule;
+				return getType() == ege::PhysicsShape::capsule;
 			};
 			bool isCone(void) {
-				return getType() == ewol::PhysicsShape::cone;
+				return getType() == ege::PhysicsShape::cone;
 			};
 			bool isConvexHull(void) {
-				return getType() == ewol::PhysicsShape::convexHull;
+				return getType() == ege::PhysicsShape::convexHull;
 			};
 			bool isSphere(void) {
-				return getType() == ewol::PhysicsShape::sphere;
+				return getType() == ege::PhysicsShape::sphere;
 			};
 			
-			virtual const PhysicsBox* toBox(void) const {
+			virtual const ege::PhysicsBox* toBox(void) const {
 				return NULL;
 			};
-			virtual PhysicsBox* toBox(void) {
-				return NULL;
-			};
-			
-			virtual const PhysicsCylinder* toCylinder(void) const {
-				return NULL;
-			};
-			virtual PhysicsCylinder* toCylinder(void) {
+			virtual ege::PhysicsBox* toBox(void) {
 				return NULL;
 			};
 			
-			virtual const PhysicsCapsule* toCapsule(void) const {
+			virtual const ege::PhysicsCylinder* toCylinder(void) const {
 				return NULL;
 			};
-			virtual PhysicsCapsule* toCapsule(void) {
-				return NULL;
-			};
-			
-			virtual const PhysicsCone* toCone(void) const {
-				return NULL;
-			};
-			virtual PhysicsCone* toCone(void) {
+			virtual ege::PhysicsCylinder* toCylinder(void) {
 				return NULL;
 			};
 			
-			virtual const PhysicsConvexHull* toConvexHull(void) const {
+			virtual const ege::PhysicsCapsule* toCapsule(void) const {
 				return NULL;
 			};
-			virtual PhysicsConvexHull* toConvexHull(void) {
+			virtual ege::PhysicsCapsule* toCapsule(void) {
 				return NULL;
 			};
 			
-			virtual const PhysicsSphere* toSphere(void) const {
+			virtual const ege::PhysicsCone* toCone(void) const {
 				return NULL;
 			};
-			virtual PhysicsSphere* toSphere(void) {
+			virtual ege::PhysicsCone* toCone(void) {
+				return NULL;
+			};
+			
+			virtual const ege::PhysicsConvexHull* toConvexHull(void) const {
+				return NULL;
+			};
+			virtual ege::PhysicsConvexHull* toConvexHull(void) {
+				return NULL;
+			};
+			
+			virtual const ege::PhysicsSphere* toSphere(void) const {
+				return NULL;
+			};
+			virtual ege::PhysicsSphere* toSphere(void) {
 				return NULL;
 			};
 	};

@@ -6,15 +6,15 @@
  * @license BSD v3 (see license file)
  */
 
-#ifndef __EWOL_LIGHT_H__
-#define __EWOL_LIGHT_H__
+#ifndef __EGE_LIGHT_H__
+#define __EGE_LIGHT_H__
 
 #include <etk/types.h>
 #include <etk/math/Vector3D.h>
 #include <etk/math/Vector4D.h>
-#include <ewol/resources/Program.h>
+#include <ewol/resource/Program.h>
 
-namespace ewol {
+namespace ege {
 	class Light {
 		private:
 			// values
@@ -33,8 +33,8 @@ namespace ewol {
 		public:
 			Light(void);
 			~Light(void);
-			void link(ewol::Program* _prog, const std::string& _baseName);
-			void draw(ewol::Program* _prog);
+			void link(ewol::resource::Program* _prog, const std::string& _baseName);
+			void draw(ewol::resource::Program* _prog);
 			void setDirection(const vec3& val) {
 				m_direction = val;
 			}
@@ -51,9 +51,9 @@ namespace ewol {
 				m_specularColor = val;
 			}
 			
-		friend etk::CCout& operator <<(etk::CCout& _os, const ewol::Light& _obj);
+		friend etk::CCout& operator <<(etk::CCout& _os, const ege::Light& _obj);
 	};
-	etk::CCout& operator <<(etk::CCout& _os, const ewol::Light& _obj);
+	etk::CCout& operator <<(etk::CCout& _os, const ege::Light& _obj);
 };
 
 

@@ -6,22 +6,22 @@
  * @license BSD v3 (see license file)
  */
 
-#include <ewol/debug.h>
-#include <ewol/resources/Mesh.h>
-#include <ewol/resources/ResourceManager.h>
+#include <ege/debug.h>
+#include <ege/resource/Mesh.h>
+#include <ewol/resource/Manager.h>
 #include <etk/os/FSNode.h>
 
 #undef __class__
 #define __class__	"resource::Mesh"
 
-ewol::resource::Mesh::Mesh(const std::string& _fileName, const std::string& _shaderName) :
-  ewol::resource::Resource(_fileName),
+ege::resource::Mesh::Mesh(const std::string& _fileName, const std::string& _shaderName) :
+  ewol::Resource(_fileName),
   m_normalMode(normalModeNone),
   m_checkNormal(false),
   m_pointerShape(NULL),
   m_functionFreeShape(NULL) {
-	addObjectType("ewol::Mesh");
-	EWOL_VERBOSE("Load a new mesh : '" << _fileName << "'");
+	addObjectType("ewol::resource::Mesh");
+	EGE_VERBOSE("Load a new mesh : '" << _fileName << "'");
 	// get the shader resource :
 	m_GLPosition = 0;
 	
@@ -31,8 +31,8 @@ ewol::resource::Mesh::Mesh(const std::string& _fileName, const std::string& _sha
 	m_light.setDiffuseColor(vec4(1.0,1.0,1.0,1));
 	m_light.setSpecularColor(vec4(0.0,0.0,0.0,1));
 	
-	//EWOL_DEBUG(m_name << "  " << m_light);
-	m_GLprogram = ewol::Program::keep(_shaderName);
+	//EGE_DEBUG(m_name << "  " << m_light);
+	m_GLprogram = ewol::resource::Program::keep(_shaderName);
 	if (NULL != m_GLprogram ) {
 		m_GLPosition = m_GLprogram->getAttribute("EW_coord3d");
 		m_GLtexture = m_GLprogram->getAttribute("EW_texture2d");
@@ -44,28 +44,28 @@ ewol::resource::Mesh::Mesh(const std::string& _fileName, const std::string& _sha
 		m_light.link(m_GLprogram, "EW_directionalLight");
 	}
 	// this is the properties of the buffer requested : "r"/"w" + "-" + buffer type "f"=flaot "i"=integer
-	m_verticesVBO = ewol::VirtualBufferObject::keep(4);
+	m_verticesVBO = ewol::resource::VirtualBufferObject::keep(4);
 	
 	// load the curent file :
 	std::string tmpName = to_lower(_fileName);
 	// select the corect loader :
 	if (end_with(tmpName, ".obj") == true) {
 		if (loadOBJ(_fileName) == false) {
-			EWOL_ERROR("Error To load OBJ file " << tmpName );
+			EGE_ERROR("Error To load OBJ file " << tmpName );
 			return;
 		}
 	} else if (end_with(tmpName, ".emf") ) {
 		if (loadEMF(_fileName) == false) {
-			EWOL_ERROR("Error To load EMF file " << tmpName );
+			EGE_ERROR("Error To load EMF file " << tmpName );
 			return;
 		}
-		//EWOL_CRITICAL("Load a new mesh : '" << _fileName << "' (end)");
+		//EGE_CRITICAL("Load a new mesh : '" << _fileName << "' (end)");
 	} else {
 		// nothing to do  == > reqiest an enmpty mesh ==> user manage it ...
 	}
 }
 
-ewol::resource::Mesh::~Mesh(void) {
+ege::resource::Mesh::~Mesh(void) {
 	// remove dynamics dependencies :
 	ewol::resource::Program::release(m_GLprogram);
 	ewol::resource::VirtualBufferObject::release(m_verticesVBO);
@@ -77,14 +77,14 @@ ewol::resource::Mesh::~Mesh(void) {
 
 //#define DISPLAY_NB_VERTEX_DISPLAYED
 
-void ewol::resource::Mesh::draw(mat4& _positionMatrix,
+void ege::resource::Mesh::draw(mat4& _positionMatrix,
                                 bool _enableDepthTest,
                                 bool _enableDepthUpdate) {
 	if (m_GLprogram == NULL) {
-		EWOL_ERROR("No shader ...");
+		EGE_ERROR("No shader ...");
 		return;
 	}
-	//EWOL_DEBUG(m_name << "  " << m_light);
+	//EGE_DEBUG(m_name << "  " << m_light);
 	if (_enableDepthTest == true) {
 		ewol::openGL::enable(ewol::openGL::FLAG_DEPTH_TEST);
 		if (false == _enableDepthUpdate) {
@@ -93,7 +93,7 @@ void ewol::resource::Mesh::draw(mat4& _positionMatrix,
 	} else {
 		ewol::openGL::disable(ewol::openGL::FLAG_DEPTH_TEST);
 	}
-	//EWOL_DEBUG("    display " << m_coord.size() << " elements" );
+	//EGE_DEBUG("    display " << m_coord.size() << " elements" );
 	m_GLprogram->use();
 	// set Matrix : translation/positionMatrix
 	mat4 projMatrix = ewol::openGL::getMatrix();
@@ -115,7 +115,7 @@ void ewol::resource::Mesh::draw(mat4& _positionMatrix,
 	#endif
 	for (int32_t kkk=0; kkk<m_listFaces.size(); kkk++) {
 		if (false == m_materials.exist(m_listFaces.getKey(kkk))) {
-			EWOL_WARNING("missing materials : '" << m_listFaces.getKey(kkk) << "'");
+			EGE_WARNING("missing materials : '" << m_listFaces.getKey(kkk) << "'");
 			continue;
 		}
 		m_materials[m_listFaces.getKey(kkk)]->draw(m_GLprogram, m_GLMaterial);
@@ -135,7 +135,7 @@ void ewol::resource::Mesh::draw(mat4& _positionMatrix,
 			cameraNormal.normalized();
 			// remove face that is notin the view ...
 			std::vector<uint32_t> tmpIndexResult;
-			std::vector<ewol::Face>& tmppFaces = m_listFaces.getValue(kkk).m_faces;
+			std::vector<ege::Face>& tmppFaces = m_listFaces.getValue(kkk).m_faces;
 			//std::vector<uint32_t>& tmppIndex = m_listFaces.getValue(kkk).m_index;
 			if (normalModeFace == m_normalMode) {
 				for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
@@ -164,7 +164,7 @@ void ewol::resource::Mesh::draw(mat4& _positionMatrix,
 		}
 	}
 	#ifdef DISPLAY_NB_VERTEX_DISPLAYED
-		EWOL_DEBUG(((float)nbElementDraw/(float)nbElementDrawTheoric*100.0f) << "% Request draw : " << m_listFaces.size() << ":" << nbElementDraw << "/" << nbElementDrawTheoric << " elements [" << m_name << "]");
+		EGE_DEBUG(((float)nbElementDraw/(float)nbElementDrawTheoric*100.0f) << "% Request draw : " << m_listFaces.size() << ":" << nbElementDraw << "/" << nbElementDrawTheoric << " elements [" << m_name << "]");
 	#endif
 	m_GLprogram->unUse();
 	if (_enableDepthTest == true){
@@ -178,9 +178,9 @@ void ewol::resource::Mesh::draw(mat4& _positionMatrix,
 }
 
 // normal calculation of the normal face is really easy :
-void ewol::resource::Mesh::calculateNormaleFace(void) {
+void ege::resource::Mesh::calculateNormaleFace(void) {
 	m_listFacesNormal.clear();
-	if (m_normalMode != ewol::Mesh::normalModeFace) {
+	if (m_normalMode != ege::resource::Mesh::normalModeFace) {
 		std::vector<Face>& tmpFaceList = m_listFaces.getValue(0).m_faces;
 		for(size_t iii=0 ; iii<tmpFaceList.size() ; iii++) {
 			// for all case, We use only the 3 vertex for quad element, in theory 3D modeler export element in triangle if it is not a real plane.
@@ -188,13 +188,13 @@ void ewol::resource::Mesh::calculateNormaleFace(void) {
 			                      m_listVertex[tmpFaceList[iii].m_vertex[1]]-m_listVertex[tmpFaceList[iii].m_vertex[2]]);
 			m_listFacesNormal.push_back(normal.normalized());
 		}
-		m_normalMode = ewol::Mesh::normalModeFace;
+		m_normalMode = ege::resource::Mesh::normalModeFace;
 	}
 }
 
-void ewol::resource::Mesh::calculateNormaleEdge(void) {
+void ege::resource::Mesh::calculateNormaleEdge(void) {
 	m_listVertexNormal.clear();
-	if (m_normalMode != ewol::Mesh::normalModeVertex) {
+	if (m_normalMode != ege::resource::Mesh::normalModeVertex) {
 		for(size_t iii=0 ; iii<m_listVertex.size() ; iii++) {
 			std::vector<Face>& tmpFaceList = m_listFaces.getValue(0).m_faces;
 			vec3 normal(0,0,0);
@@ -213,7 +213,7 @@ void ewol::resource::Mesh::calculateNormaleEdge(void) {
 				m_listVertexNormal.push_back(normal.normalized());
 			}
 		}
-		m_normalMode = ewol::Mesh::normalModeVertex;
+		m_normalMode = ege::resource::Mesh::normalModeVertex;
 	}
 }
 
@@ -221,9 +221,9 @@ void ewol::resource::Mesh::calculateNormaleEdge(void) {
 //#define PRINT_HALF (1)
 //#define TRY_MINIMAL_VBO
 
-void ewol::resource::Mesh::generateVBO(void) {
+void ege::resource::Mesh::generateVBO(void) {
 	// calculate the normal of all faces if needed
-	if (m_normalMode == ewol::Mesh::normalModeNone) {
+	if (m_normalMode == ege::resource::Mesh::normalModeNone) {
 		// when no normal detected  == > auto generate Face normal ....
 		calculateNormaleFace();
 	}
@@ -242,7 +242,7 @@ void ewol::resource::Mesh::generateVBO(void) {
 			for(size_t indice=0 ; indice<3; indice++) {
 				vec3 position = m_listVertex[tmpFaceList.m_faces[iii].m_vertex[indice]];
 				vec3 normal;
-				if (m_normalMode == ewol::Mesh::normalModeVertex) {
+				if (m_normalMode == normalModeVertex) {
 					normal = m_listVertexNormal[tmpFaceList.m_faces[iii].m_normal[indice]];
 				} else {
 					normal = m_listFacesNormal[tmpFaceList.m_faces[iii].m_normal[indice]];
@@ -257,7 +257,7 @@ void ewol::resource::Mesh::generateVBO(void) {
 					    && m_verticesVBO->getOnBufferVec2(MESH_VBO_TEXTURE,jjj) == texturepos) {
 						vertexVBOId[indice] = jjj;
 						elementFind = true;
-						//EWOL_DEBUG("search indice : " << jjj);
+						//EGE_DEBUG("search indice : " << jjj);
 						tmpppppp += jjj;
 						// stop searching ...
 						break;
@@ -276,7 +276,7 @@ void ewol::resource::Mesh::generateVBO(void) {
 			}
 		}
 		#ifdef TRY_MINIMAL_VBO
-			EWOL_DEBUG("nb cycle ? : " << tmpppppp);
+			EGE_DEBUG("nb cycle ? : " << tmpppppp);
 		#endif
 	}
 	// update all the VBO elements ...
@@ -284,8 +284,8 @@ void ewol::resource::Mesh::generateVBO(void) {
 }
 
 
-void ewol::resource::Mesh::createViewBox(const std::string& _materialName,float _size) {
-	m_normalMode = ewol::Mesh::normalModeNone;
+void ege::resource::Mesh::createViewBox(const std::string& _materialName,float _size) {
+	m_normalMode = normalModeNone;
 	// This is the direct generation basis on the .obj system
 	/*
 			           5                       6  
@@ -377,18 +377,18 @@ void ewol::resource::Mesh::createViewBox(const std::string& _materialName,float 
 }
 
 
-bool ewol::resource::Mesh::loadOBJ(const std::string& _fileName) {
-	m_normalMode = ewol::Mesh::normalModeNone;
+bool ege::resource::Mesh::loadOBJ(const std::string& _fileName) {
+	m_normalMode = normalModeNone;
 #if 0
 	etk::FSNode fileName(_fileName);
 	// get the fileSize ...
 	int32_t size = fileName.fileSize();
 	if (size == 0 ) {
-		EWOL_ERROR("No data in the file named=\"" << fileName << "\"");
+		EGE_ERROR("No data in the file named=\"" << fileName << "\"");
 		return false;
 	}
 	if(false == fileName.fileOpenRead() ) {
-		EWOL_ERROR("Can not find the file name=\"" << fileName << "\"");
+		EGE_ERROR("Can not find the file name=\"" << fileName << "\"");
 		return false;
 	}
 	char inputDataLine[2048];
@@ -442,7 +442,7 @@ bool ewol::resource::Mesh::loadOBJ(const std::string& _fileName) {
 						                 &vertexIndex[1], &uvIndex[1],
 						                 &vertexIndex[2], &uvIndex[2] );
 						if (6 != matches){
-							EWOL_ERROR("Parsing error in the .obj files : " << fileName << " (l=" << lineID << ") in 'f' section : \"" << &inputDataLine[2] << "\" expected : %d/%d(/%d) %d/%d(/%d) %d/%d(/%d) (%d/%d(/%d)) () for option");
+							EGE_ERROR("Parsing error in the .obj files : " << fileName << " (l=" << lineID << ") in 'f' section : \"" << &inputDataLine[2] << "\" expected : %d/%d(/%d) %d/%d(/%d) %d/%d(/%d) (%d/%d(/%d)) () for option");
 							continue;
 						}
 					}
@@ -459,9 +459,9 @@ bool ewol::resource::Mesh::loadOBJ(const std::string& _fileName) {
 				                          vertexIndex[2]-1, uvIndex[2]-1));
 			}
 			/*
-			EWOL_DEBUG(" plop : " << tmpFace.m_nbElement << " ? " << m_listFaces[m_listFaces.size()-1].m_nbElement);
-			EWOL_DEBUG("      : " << tmpFace.m_vertex[0] << " ? " << m_listFaces[m_listFaces.size()-1].m_vertex[0]);
-			EWOL_DEBUG("      : " << tmpFace.m_uv[0] << " ? " << m_listFaces[m_listFaces.size()-1].m_uv[0]);
+			EGE_DEBUG(" plop : " << tmpFace.m_nbElement << " ? " << m_listFaces[m_listFaces.size()-1].m_nbElement);
+			EGE_DEBUG("      : " << tmpFace.m_vertex[0] << " ? " << m_listFaces[m_listFaces.size()-1].m_vertex[0]);
+			EGE_DEBUG("      : " << tmpFace.m_uv[0] << " ? " << m_listFaces[m_listFaces.size()-1].m_uv[0]);
 			*/
 		} else if (inputDataLine[0] == 's') {
 			// ??? : s off
@@ -513,10 +513,10 @@ int32_t countIndent(etk::FSNode& _file) {
 	int32_t nbIndent=0;
 	int32_t nbSpacesTab=0;
 	int32_t nbChar=0;
-	//EWOL_DEBUG(" start count Indent");
+	//EGE_DEBUG(" start count Indent");
 	for(char current=_file.fileGet(); current != '\0'; current=_file.fileGet()) {
 		nbChar++;
-		//EWOL_DEBUG("parse : " << current);
+		//EGE_DEBUG("parse : " << current);
 		if (current == '\t') {
 			nbSpacesTab = 0;
 			nbIndent++;
@@ -535,7 +535,7 @@ int32_t countIndent(etk::FSNode& _file) {
 			break;
 		}
 	}
-	//EWOL_DEBUG("indent : " << nbIndent);
+	//EGE_DEBUG("indent : " << nbIndent);
 	_file.fileSeek(-nbChar, etk::FSN_SEEK_CURRENT);
 	return nbIndent;
 }
@@ -570,7 +570,7 @@ char* loadNextData(char* _elementLine,
 		         && _stopColomn == true) )
 		{
 			*element = '\0';
-			//EWOL_DEBUG(" plop : '" << _elementLine << "'" );
+			//EGE_DEBUG(" plop : '" << _elementLine << "'" );
 			return _elementLine;
 		} else if(    element == _elementLine
 		           && current != '\t') {
@@ -626,18 +626,18 @@ enum emfModuleMode {
 	EMFModuleMaterial_END,
 };
 
-bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
+bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 	m_checkNormal = true;
-	m_normalMode = ewol::Mesh::normalModeNone;
+	m_normalMode = normalModeNone;
 	etk::FSNode fileName(_fileName);
 	// get the fileSize ...
 	int32_t size = fileName.fileSize();
 	if (size == 0 ) {
-		EWOL_ERROR("No data in the file named=\"" << fileName << "\"");
+		EGE_ERROR("No data in the file named=\"" << fileName << "\"");
 		return false;
 	}
 	if(false == fileName.fileOpenRead() ) {
-		EWOL_ERROR("Can not find the file name=\"" << fileName << "\"");
+		EGE_ERROR("Can not find the file name=\"" << fileName << "\"");
 		return false;
 	}
 	char inputDataLine[2048];
@@ -646,22 +646,22 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 	if(0 == strncmp(inputDataLine, "EMF(STRING)", 11)) {
 		// parse in string mode ...
 	} else if (0 == strncmp(inputDataLine, "EMF(BINARY)", 11)) {
-		EWOL_ERROR(" file binary mode is not supported now : 'EMF(BINARY)'");
+		EGE_ERROR(" file binary mode is not supported now : 'EMF(BINARY)'");
 		return false;
 	} else {
-		EWOL_ERROR(" file mode is not supported now : 'EMF(? ? ?)' = '" << inputDataLine << "'");
+		EGE_ERROR(" file mode is not supported now : 'EMF(? ? ?)' = '" << inputDataLine << "'");
 		return false;
 	}
 	enum emfModuleMode currentMode = EMFModuleNone;
-	EWOL_VERBOSE("Start parsing Mesh file : " << fileName);
+	EGE_VERBOSE("Start parsing Mesh file : " << fileName);
 	// mesh global param :
 	std::string currentMeshName = "";
 	int32_t meshFaceMaterialID = -1;
 	// material global param :
 	std::string materialName = "";
-	ewol::Material* material = NULL;
+	ege::Material* material = NULL;
 	// physical shape:
-	ewol::PhysicsShape* physics = NULL;
+	ege::PhysicsShape* physics = NULL;
 	while(1) {
 		int32_t level = countIndent(fileName);
 		if (level == 0) {
@@ -672,10 +672,10 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 			}
 			if(0 == strncmp(inputDataLine, "Mesh :", 6) ) {
 				currentMode = EMFModuleMesh;
-				EWOL_VERBOSE("Parse Mesh :");
+				EGE_VERBOSE("Parse Mesh :");
 			} else if(0 == strncmp(inputDataLine, "Materials : ", 11) ) {
 				currentMode = EMFModuleMaterial;
-				EWOL_VERBOSE("Parse Material :");
+				EGE_VERBOSE("Parse Material :");
 			} else {
 				currentMode = EMFModuleNone;
 			}
@@ -690,7 +690,7 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 					removeEndLine(inputDataLine);
 					currentMeshName = inputDataLine;
 					currentMode = EMFModuleMeshNamed;
-					EWOL_VERBOSE("    "<< currentMeshName);
+					EGE_VERBOSE("    "<< currentMeshName);
 					continue;
 				}
 				if (level == 2) {
@@ -702,24 +702,24 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 					removeEndLine(inputDataLine);
 					if(0 == strncmp(inputDataLine, "Vertex", 6) ) {
 						currentMode = EMFModuleMeshVertex;
-						EWOL_VERBOSE("        Vertex ...");
+						EGE_VERBOSE("        Vertex ...");
 					} else if(0 == strncmp(inputDataLine, "UV-mapping", 10) ) {
 						currentMode = EMFModuleMeshUVMapping;
-						EWOL_VERBOSE("        UV-mapping ...");
+						EGE_VERBOSE("        UV-mapping ...");
 					} else if(0 == strncmp(inputDataLine, "Normal(vertex)", 14) ) {
 						currentMode = EMFModuleMeshNormalVertex;
-						EWOL_VERBOSE("        Normal(vertex) ...");
+						EGE_VERBOSE("        Normal(vertex) ...");
 					} else if(0 == strncmp(inputDataLine, "Normal(face)", 12) ) {
 						currentMode = EMFModuleMeshNormalFace;
-						EWOL_VERBOSE("        Normal(face) ...");
+						EGE_VERBOSE("        Normal(face) ...");
 					} else if(0 == strncmp(inputDataLine, "Face", 4) ) {
 						currentMode = EMFModuleMeshFace;
-						EWOL_VERBOSE("        Face ...");
+						EGE_VERBOSE("        Face ...");
 					} else if(0 == strncmp(inputDataLine, "Physics", 7) ) {
 						currentMode = EMFModuleMeshPhysics;
-						EWOL_VERBOSE("        Physics ...");
+						EGE_VERBOSE("        Physics ...");
 					} else {
-						EWOL_ERROR("        Unknow mesh property '"<<inputDataLine<<"'");
+						EGE_ERROR("        Unknow mesh property '"<<inputDataLine<<"'");
 						currentMode = EMFModuleMeshNamed;
 					}
 					continue;
@@ -727,7 +727,7 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 				// level > 2
 				switch (currentMode) {
 					default:
-						EWOL_ERROR("Unknow ... "<< level);
+						EGE_ERROR("Unknow ... "<< level);
 						jumpEndLine(fileName);
 						break;
 					case EMFModuleMeshVertex: {
@@ -744,7 +744,7 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 								break;
 							}
 						}
-						EWOL_VERBOSE("            " << m_listVertex.size() << " vertex");
+						EGE_VERBOSE("            " << m_listVertex.size() << " vertex");
 						break;
 					}
 					case EMFModuleMeshUVMapping: {
@@ -761,11 +761,11 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 								break;
 							}
 						}
-						EWOL_VERBOSE("            " << m_listUV.size() << " coord");
+						EGE_VERBOSE("            " << m_listUV.size() << " coord");
 						break;
 					}
 					case EMFModuleMeshNormalVertex: {
-						m_normalMode = ewol::Mesh::normalModeVertex;
+						m_normalMode = normalModeVertex;
 						vec3 normal(0,0,0);
 						// find the vertex Normal list.
 						while (NULL != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
@@ -780,11 +780,11 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 								break;
 							}
 						}
-						EWOL_VERBOSE("            " << m_listVertexNormal.size() << " Normals");
+						EGE_VERBOSE("            " << m_listVertexNormal.size() << " Normals");
 						break;
 					}
 					case EMFModuleMeshNormalFace: {
-						m_normalMode = ewol::Mesh::normalModeFace;
+						m_normalMode = normalModeFace;
 						vec3 normal(0,0,0);
 						// find the face Normal list.
 						while (NULL != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
@@ -799,7 +799,7 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 								break;
 							}
 						}
-						EWOL_VERBOSE("            " << m_listFacesNormal.size() << " Normals");
+						EGE_VERBOSE("            " << m_listFacesNormal.size() << " Normals");
 						break;
 					}
 					case EMFModuleMeshFace:
@@ -816,7 +816,7 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 							FaceIndexing empty;
 							m_listFaces.add(inputDataLine, empty);
 							meshFaceMaterialID = m_listFaces.getId(inputDataLine);
-							EWOL_VERBOSE("            " << inputDataLine);
+							EGE_VERBOSE("            " << inputDataLine);
 						} else if (currentMode == EMFModuleMeshFaceMaterial) {
 							while (NULL != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
 								if (inputDataLine[0] == '\0') {
@@ -844,7 +844,7 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 								                                                               vertexIndex[1], uvIndex[1], normalIndex[1],
 								                                                               vertexIndex[2], uvIndex[2], normalIndex[2]));
 								/*
-								EWOL_DEBUG("face :" << vertexIndex[0] << "/" << uvIndex[0] << "/" << normalIndex[0] <<
+								EGE_DEBUG("face :" << vertexIndex[0] << "/" << uvIndex[0] << "/" << normalIndex[0] <<
 								           " " << vertexIndex[1] << "/" << uvIndex[1] << "/" << normalIndex[1] <<
 								           " " << vertexIndex[2] << "/" << uvIndex[2] << "/" << normalIndex[2]);
 								*/
@@ -854,10 +854,10 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 									break;
 								}
 							}
-							EWOL_VERBOSE("                " << m_listFaces.getValue(meshFaceMaterialID).m_faces.size() << " faces");
+							EGE_VERBOSE("                " << m_listFaces.getValue(meshFaceMaterialID).m_faces.size() << " faces");
 						} else {
 							// insert element without material ...
-							EWOL_ERROR(" try to add face without material selection ...");
+							EGE_ERROR(" try to add face without material selection ...");
 							jumpEndLine(fileName);
 						}
 						break;
@@ -869,21 +869,21 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 						}
 						removeEndLine(inputDataLine);
 						if (level == 3) {
-							physics = ewol::PhysicsShape::create(inputDataLine);
+							physics = ege::PhysicsShape::create(inputDataLine);
 							if (physics == NULL) {
-								EWOL_ERROR("Allocation error when creating physical shape ...");
+								EGE_ERROR("Allocation error when creating physical shape ...");
 								continue;
 							}
 							m_physics.push_back(physics);
-							EWOL_VERBOSE("            " << m_physics.size() << " " << inputDataLine);
+							EGE_VERBOSE("            " << m_physics.size() << " " << inputDataLine);
 							currentMode = EMFModuleMeshPhysicsNamed;
 						} else if (currentMode == EMFModuleMeshPhysicsNamed) {
 							if (physics == NULL) {
-								EWOL_ERROR("Can not parse :'" << inputDataLine << "' in physical shape ...");
+								EGE_ERROR("Can not parse :'" << inputDataLine << "' in physical shape ...");
 								continue;
 							}
 							if (false == physics->parse(inputDataLine)) {
-								EWOL_ERROR("ERROR when parsing :'" << inputDataLine << "' in physical shape ...");
+								EGE_ERROR("ERROR when parsing :'" << inputDataLine << "' in physical shape ...");
 							}
 						}
 						break;
@@ -904,20 +904,20 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 						materialName = "";
 						material = NULL;
 					}
-					material = new ewol::Material();
+					material = new ege::Material();
 					materialName = inputDataLine;
 					currentMode = EMFModuleMaterialNamed;
-					EWOL_VERBOSE("    "<< materialName);
+					EGE_VERBOSE("    "<< materialName);
 					continue;
 				}
 				// level >1
 				if (currentMode != EMFModuleMaterialNamed) {
-					EWOL_WARNING("        Unknow element ..."<< level);
+					EGE_WARNING("        Unknow element ..."<< level);
 					jumpEndLine(fileName);
 					continue;
 				}
 				if (NULL == material) {
-					EWOL_ERROR("material allocation error");
+					EGE_ERROR("material allocation error");
 					jumpEndLine(fileName);
 					continue;
 				}
@@ -925,7 +925,7 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 					float tmpVal=0;
 					sscanf(&inputDataLine[3], "%f", &tmpVal);
 					material->setShininess(tmpVal);
-					EWOL_VERBOSE("        Shininess " << tmpVal);
+					EGE_VERBOSE("        Shininess " << tmpVal);
 				} else if(0 == strncmp(inputDataLine,"Ka ",3)) {
 					float tmpVal1=0;
 					float tmpVal2=0;
@@ -933,7 +933,7 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 					sscanf(&inputDataLine[3], "%f %f %f", &tmpVal1, &tmpVal2, &tmpVal3);
 					vec4 tmp(tmpVal1, tmpVal2, tmpVal3, 1);
 					material->setAmbientFactor(tmp);
-					EWOL_VERBOSE("        AmbientFactor " << tmp);
+					EGE_VERBOSE("        AmbientFactor " << tmp);
 				} else if(0 == strncmp(inputDataLine,"Kd ",3)) {
 					float tmpVal1=0;
 					float tmpVal2=0;
@@ -941,7 +941,7 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 					sscanf(&inputDataLine[3], "%f %f %f", &tmpVal1, &tmpVal2, &tmpVal3);
 					vec4 tmp(tmpVal1, tmpVal2, tmpVal3, 1);
 					material->setDiffuseFactor(tmp);
-					EWOL_VERBOSE("        DiffuseFactor " << tmp);
+					EGE_VERBOSE("        DiffuseFactor " << tmp);
 				} else if(0 == strncmp(inputDataLine,"Ks ",3)) {
 					float tmpVal1=0;
 					float tmpVal2=0;
@@ -949,31 +949,31 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 					sscanf(&inputDataLine[3], "%f %f %f", &tmpVal1, &tmpVal2, &tmpVal3);
 					vec4 tmp(tmpVal1, tmpVal2, tmpVal3, 1);
 					material->setSpecularFactor(tmp);
-					EWOL_VERBOSE("        SpecularFactor " << tmp);
+					EGE_VERBOSE("        SpecularFactor " << tmp);
 				} else if(0 == strncmp(inputDataLine,"Ni ",3)) {
 					float tmpVal=0;
 					sscanf(&inputDataLine[3], "%f", &tmpVal);
 					// TODO : ...
-					EWOL_VERBOSE("        Ni " << tmpVal);
+					EGE_VERBOSE("        Ni " << tmpVal);
 				} else if(0 == strncmp(inputDataLine,"d ",2)) {
 					float tmpVal=0;
 					sscanf(&inputDataLine[2], "%f", &tmpVal);
 					// TODO : ...
-					EWOL_VERBOSE("        d " << tmpVal);
+					EGE_VERBOSE("        d " << tmpVal);
 				} else if(0 == strncmp(inputDataLine,"illum ",6)) {
 					int tmpVal=0;
 					sscanf(&inputDataLine[6], "%d", &tmpVal);
 					// TODO : ...
-					EWOL_VERBOSE("        illum " << tmpVal);
+					EGE_VERBOSE("        illum " << tmpVal);
 				} else if(0 == strncmp(inputDataLine,"map_Kd ",7)) {
 					material->setTexture0(fileName.getRelativeFolder() + &inputDataLine[7]);
-					EWOL_VERBOSE("        Texture " << &inputDataLine[7]);
+					EGE_VERBOSE("        Texture " << &inputDataLine[7]);
 				} else {
-					EWOL_ERROR("unknow material property ... : '" << inputDataLine << "'");
+					EGE_ERROR("unknow material property ... : '" << inputDataLine << "'");
 				}
 			} else {
 				// unknow ...
-				EWOL_WARNING("Unknow type of line  == > jump end of line ... ");
+				EGE_WARNING("Unknow type of line  == > jump end of line ... ");
 				jumpEndLine(fileName);
 			}
 		}
@@ -985,27 +985,27 @@ bool ewol::resource::Mesh::loadEMF(const std::string& _fileName) {
 		materialName = "";
 		material = NULL;
 	}
-	EWOL_VERBOSE("Stop parsing Mesh file");
+	EGE_VERBOSE("Stop parsing Mesh file");
 	
 	fileName.fileClose();
 	generateVBO();
 	return true;
 }
 
-void ewol::resource::Mesh::addMaterial(const std::string& _name, ewol::Material* _data) {
+void ege::resource::Mesh::addMaterial(const std::string& _name, ege::Material* _data) {
 	if (NULL == _data) {
-		EWOL_ERROR(" can not add material with null pointer");
+		EGE_ERROR(" can not add material with null pointer");
 		return;
 	}
 	if (_name == "") {
-		EWOL_ERROR(" can not add material with no name");
+		EGE_ERROR(" can not add material with no name");
 		return;
 	}
 	// really add the material :
 	m_materials.add(_name, _data);
 }
 
-void ewol::resource::Mesh::setShape(void* _shape) {
+void ege::resource::Mesh::setShape(void* _shape) {
 	if (m_functionFreeShape!=NULL) {
 		m_functionFreeShape(m_pointerShape);
 		m_pointerShape = NULL;
@@ -1013,26 +1013,26 @@ void ewol::resource::Mesh::setShape(void* _shape) {
 	m_pointerShape=_shape;
 }
 
-ewol::resource::Mesh* ewol::resource::Mesh::keep(const std::string& _meshName) {
-	ewol::resource::Mesh* object = static_cast<ewol::resource::Mesh*>(getManager().localKeep(_meshName));
+ege::resource::Mesh* ege::resource::Mesh::keep(const std::string& _meshName) {
+	ege::resource::Mesh* object = static_cast<ege::resource::Mesh*>(getManager().localKeep(_meshName));
 	if (NULL != object) {
 		return object;
 	}
-	EWOL_DEBUG("CREATE: Mesh: '" << _meshName << "'");
-	object = new ewol::resource::Mesh(_meshName);
+	EGE_DEBUG("CREATE: Mesh: '" << _meshName << "'");
+	object = new ege::resource::Mesh(_meshName);
 	if (NULL == object) {
-		EWOL_ERROR("allocation error of a resource : ??Mesh??" << _meshName);
+		EGE_ERROR("allocation error of a resource : ??Mesh??" << _meshName);
 		return NULL;
 	}
 	getManager().localAdd(object);
 	return object;
 }
 
-void ewol::resource::Mesh::release(ewol::Mesh*& _object) {
+void ege::resource::Mesh::release(ege::resource::Mesh*& _object) {
 	if (NULL == _object) {
 		return;
 	}
-	ewol::resource::Resource* object2 = static_cast<ewol::resource::Resource*>(_object);
+	ewol::Resource* object2 = static_cast<ewol::Resource*>(_object);
 	getManager().release(object2);
 	_object = NULL;
 }

@@ -15,8 +15,9 @@
 #include <vector>
 #include <ewol/debug.h>
 #include <ewol/widget/Widget.h>
-#include <ewol/renderer/openGL.h>
-#include <ewol/resources/ResourceManager.h>
+#include <ewol/openGL/openGL.h>
+#include <ewol/resource/Colored3DObject.h>
+#include <ege/resource/Mesh.h>
 #include <ege/Camera.h>
 #include <ewol/compositing/Text.h>
 #include <ege/Environement.h>
@@ -27,10 +28,8 @@
 
 #define ELEMENT_SCALE     (1.0f/8.0f)
 
-namespace ege
-{
-	class ElementGame
-	{
+namespace ege {
+	class ElementGame {
 		private:
 			static void FunctionFreeShape(void* _pointer);
 		protected:
@@ -76,7 +75,7 @@ namespace ege
 				return m_uID;
 			};
 		private:
-			ewol::Mesh* m_mesh; //!< Mesh of the Element (can be NULL)
+			ege::resource::Mesh* m_mesh; //!< Mesh of the Element (can be NULL)
 			btCollisionShape* m_shape; //!< shape of the element (set a copy here to have the debug display of it)
 		public:
 			/**
@@ -92,7 +91,7 @@ namespace ege
 			 * @note : this remove the shape and the mesh properties.
 			 * @return true if no error occured
 			 */
-			bool setMesh(ewol::Mesh* _mesh);
+			bool setMesh(ege::resource::Mesh* _mesh);
 			/**
 			 * @brief set the shape properties.
 			 * @param[in] _shape The shape pointer.
@@ -104,7 +103,7 @@ namespace ege
 			 * @brief get a pointer on the Mesh file.
 			 * @return the mesh pointer.
 			 */
-			inline ewol::Mesh* getMesh(void) {
+			inline ege::resource::Mesh* getMesh(void) {
 				return m_mesh;
 			};
 			/**
@@ -187,17 +186,17 @@ namespace ege
 			/**
 			 * @brief draw the current life of the element
 			 */
-			virtual void drawLife(ewol::Colored3DObject* _draw, const ege::Camera& _camera);
+			virtual void drawLife(ewol::resource::Colored3DObject* _draw, const ege::Camera& _camera);
 			
 		protected:
 			// For debug only ...
-			ewol::Text m_debugText;
+			ewol::compositing::Text m_debugText;
 		public:
 			/**
 			 * @brief Debug display of the current element
 			 * @param[in,out] draw Basic system to draw the debug shape and informations
 			 */
-			virtual void drawDebug(ewol::Colored3DObject* _draw, const ege::Camera& _camera);
+			virtual void drawDebug(ewol::resource::Colored3DObject* _draw, const ege::Camera& _camera);
 			
 			/**
 			 * @brief get the theoric position. Sometimes, the element has move due to an explosion or something else, then its real position in not the one that woult it be at the end ...

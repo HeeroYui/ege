@@ -8,10 +8,10 @@
 
 #include <ege/debug.h>
 #include <ege/resource/ParticuleMesh.h>
-#include <ewol/resources/ResourceManager.h>
+#include <ewol/resource/Manager.h>
 
 ege::resource::ParticuleMesh::ParticuleMesh(const std::string& _fileName, const std::string& _shaderName) : 
-	ewol::Mesh(_fileName, _shaderName)
+	ege::resource::Mesh(_fileName, _shaderName)
 {
 	if (m_GLprogram != NULL) {
 		m_GLMainColor = m_GLprogram->getUniform("EW_mainColor");
@@ -29,10 +29,10 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
                                         bool _enableDepthUpdate)
 {
 	if (m_GLprogram == NULL) {
-		EWOL_ERROR("No shader ...");
+		EGE_ERROR("No shader ...");
 		return;
 	}
-	//EWOL_DEBUG(m_name << "  " << m_light);
+	//EGE_DEBUG(m_name << "  " << m_light);
 	if (_enableDepthTest == true) {
 		ewol::openGL::enable(ewol::openGL::FLAG_DEPTH_TEST);
 		if (false == _enableDepthUpdate) {
@@ -41,7 +41,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 	} else {
 		ewol::openGL::disable(ewol::openGL::FLAG_DEPTH_TEST);
 	}
-	//EWOL_DEBUG("    display " << m_coord.size() << " elements" );
+	//EGE_DEBUG("    display " << m_coord.size() << " elements" );
 	m_GLprogram->use();
 	// set Matrix : translation/positionMatrix
 	mat4 projMatrix = ewol::openGL::getMatrix();
@@ -65,7 +65,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 	#endif
 	for (int32_t kkk=0; kkk<m_listFaces.size(); kkk++) {
 		if (false == m_materials.exist(m_listFaces.getKey(kkk))) {
-			EWOL_WARNING("missing materials : '" << m_listFaces.getKey(kkk) << "'");
+			EGE_WARNING("missing materials : '" << m_listFaces.getKey(kkk) << "'");
 			continue;
 		}
 		m_materials[m_listFaces.getKey(kkk)]->draw(m_GLprogram, m_GLMaterial);
@@ -85,7 +85,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 			cameraNormal.normalized();
 			// remove face that is notin the view ...
 			std::vector<uint32_t> tmpIndexResult;
-			std::vector<ewol::Face>& tmppFaces = m_listFaces.getValue(kkk).m_faces;
+			std::vector<ege::Face>& tmppFaces = m_listFaces.getValue(kkk).m_faces;
 			//std::vector<uint32_t>& tmppIndex = m_listFaces.getValue(kkk).m_index;
 			if (normalModeFace == m_normalMode) {
 				for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
@@ -114,7 +114,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 		}
 	}
 	#ifdef DISPLAY_NB_VERTEX_DISPLAYED
-		EWOL_DEBUG(((float)nbElementDraw/(float)nbElementDrawTheoric*100.0f) << "% Request draw : " << m_listFaces.size() << ":" << nbElementDraw << "/" << nbElementDrawTheoric << " elements [" << m_name << "]");
+		EGE_DEBUG(((float)nbElementDraw/(float)nbElementDrawTheoric*100.0f) << "% Request draw : " << m_listFaces.size() << ":" << nbElementDraw << "/" << nbElementDrawTheoric << " elements [" << m_name << "]");
 	#endif
 	m_GLprogram->unUse();
 	if (_enableDepthTest == true){
@@ -134,7 +134,7 @@ ege::resource::ParticuleMesh* ege::resource::ParticuleMesh::keep(const std::stri
 	}
 	object = new ege::resource::ParticuleMesh(_meshName, _shaderName);
 	if (object == NULL) {
-		EWOL_ERROR("allocation error of a resource : ??Mesh??" << _meshName);
+		EGE_ERROR("allocation error of a resource : ??Mesh??" << _meshName);
 		return NULL;
 	}
 	getManager().localAdd(object);

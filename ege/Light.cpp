@@ -6,10 +6,10 @@
  * @license BSD v3 (see license file)
  */
 
-#include <ewol/Light.h>
-#include <ewol/debug.h>
+#include <ege/Light.h>
+#include <ege/debug.h>
 
-ewol::Light::Light(void) :
+ege::Light::Light(void) :
   m_direction(0,0,0),
   m_halfplane(0,0,0),
   m_ambientColor(0,0,0,0),
@@ -23,11 +23,11 @@ ewol::Light::Light(void) :
 	// nothing to do else ...
 }
 
-ewol::Light::~Light(void) {
+ege::Light::~Light(void) {
 	
 }
 
-void ewol::Light::link(ewol::Program* _prog, const std::string& _baseName) {
+void ege::Light::link(ewol::resource::Program* _prog, const std::string& _baseName) {
 	if (NULL == _prog) {
 		return;
 	}
@@ -38,7 +38,7 @@ void ewol::Light::link(ewol::Program* _prog, const std::string& _baseName) {
 	m_GL_specularColor = _prog->getUniform(_baseName+".specularColor");
 }
 
-void ewol::Light::draw(ewol::Program* _prog) {
+void ege::Light::draw(ewol::resource::Program* _prog) {
 	_prog->uniform3(m_GL_direction, m_direction);
 	_prog->uniform3(m_GL_halfplane, m_halfplane);
 	_prog->uniform4(m_GL_ambientColor, m_ambientColor);
@@ -46,7 +46,7 @@ void ewol::Light::draw(ewol::Program* _prog) {
 	_prog->uniform4(m_GL_specularColor, m_specularColor);
 }
 
-etk::CCout& ewol::operator <<(etk::CCout& _os, const ewol::Light& _obj) {
+etk::CCout& ege::operator <<(etk::CCout& _os, const ege::Light& _obj) {
 	_os << "light:{";
 	_os << "dir=" << _obj.m_direction;
 	_os << " halfplan=" << _obj.m_halfplane;

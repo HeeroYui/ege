@@ -6,15 +6,15 @@
  * @license BSD v3 (see license file)
  */
 
-#ifndef __EWOL_PHYSICS_BOX_H__
-#define __EWOL_PHYSICS_BOX_H__
+#ifndef __EGE_PHYSICS_BOX_H__
+#define __EGE_PHYSICS_BOX_H__
 
 
 #include <etk/types.h>
-#include <ewol/physicsShape/PhysicsShape.h>
+#include <ege/physicsShape/PhysicsShape.h>
 
-namespace ewol {
-	class PhysicsBox : public ewol::PhysicsShape {
+namespace ege {
+	class PhysicsBox : public ege::PhysicsShape {
 		public:
 			PhysicsBox(void) {};
 			virtual ~PhysicsBox(void) {};
@@ -22,8 +22,8 @@ namespace ewol {
 			virtual bool parse(const char* _line);
 			virtual void display(void) {};
 		public:
-			virtual enum type getType(void) {
-				return ewol::PhysicsShape::box;
+			virtual enum ege::PhysicsShape::type getType(void) {
+				return ege::PhysicsShape::box;
 			};
 		private:
 			vec3 m_size; // Box size property in X, Y and Z
@@ -32,10 +32,10 @@ namespace ewol {
 				return m_size;
 			};
 		public:
-			virtual const PhysicsBox* toBox(void) const {
+			virtual const ege::PhysicsBox* toBox(void) const {
 				return this;
 			};
-			virtual PhysicsBox* toBox(void) {
+			virtual ege::PhysicsBox* toBox(void) {
 				return this;
 			};
 	};

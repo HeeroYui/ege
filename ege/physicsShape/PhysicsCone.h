@@ -6,16 +6,16 @@
  * @license BSD v3 (see license file)
  */
 
-#ifndef __EWOL_PHYSICS_CONE_H__
-#define __EWOL_PHYSICS_CONE_H__
+#ifndef __EGE_PHYSICS_CONE_H__
+#define __EGE_PHYSICS_CONE_H__
 
 
 #include <etk/types.h>
-#include <ewol/physicsShape/PhysicsShape.h>
+#include <ege/physicsShape/PhysicsShape.h>
 
 
-namespace ewol {
-	class PhysicsCone : public ewol::PhysicsShape {
+namespace ege {
+	class PhysicsCone : public ege::PhysicsShape {
 		public:
 			PhysicsCone(void) {};
 			virtual ~PhysicsCone(void) {};
@@ -23,8 +23,8 @@ namespace ewol {
 			virtual bool parse(const char* _line);
 			virtual void display(void) {};
 		public:
-			virtual enum type getType(void) {
-				return ewol::PhysicsShape::cone;
+			virtual enum ege::PhysicsShape::type getType(void) {
+				return ege::PhysicsShape::cone;
 			};
 		private:
 			float m_radius;
@@ -39,10 +39,10 @@ namespace ewol {
 				return m_height;
 			};
 		public:
-			virtual const PhysicsCone* toCone(void) const {
+			virtual const ege::PhysicsCone* toCone(void) const {
 				return this;
 			};
-			virtual PhysicsCone* toCone(void) {
+			virtual ege::PhysicsCone* toCone(void) {
 				return this;
 			};
 	};

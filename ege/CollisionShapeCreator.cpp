@@ -13,13 +13,13 @@
 #include <BulletCollision/CollisionShapes/btConvexPolyhedron.h>
 #include <BulletCollision/CollisionShapes/btShapeHull.h>
 #include <BulletCollision/CollisionDispatch/btCollisionObject.h>
-#include <ewol/physicsShape/PhysicsShape.h>
-#include <ewol/physicsShape/PhysicsBox.h>
-#include <ewol/physicsShape/PhysicsCapsule.h>
-#include <ewol/physicsShape/PhysicsCone.h>
-#include <ewol/physicsShape/PhysicsConvexHull.h>
-#include <ewol/physicsShape/PhysicsCylinder.h>
-#include <ewol/physicsShape/PhysicsSphere.h>
+#include <ege/physicsShape/PhysicsShape.h>
+#include <ege/physicsShape/PhysicsBox.h>
+#include <ege/physicsShape/PhysicsCapsule.h>
+#include <ege/physicsShape/PhysicsCone.h>
+#include <ege/physicsShape/PhysicsConvexHull.h>
+#include <ege/physicsShape/PhysicsCylinder.h>
+#include <ege/physicsShape/PhysicsSphere.h>
 
 // Documentetion of bullet library :
 // http://bulletphysics.org/mediawiki-1.5.8/index.php/Collision_Shapes
@@ -27,11 +27,11 @@
 #undef __class__
 #define __class__ "CollisionShapeCreator"
 
-btCollisionShape* ege::collision::createShape(const ewol::Mesh* _mesh) {
+btCollisionShape* ege::collision::createShape(const ege::resource::Mesh* _mesh) {
 	if (NULL == _mesh) {
 		return new btEmptyShape();;
 	}
-	const std::vector<ewol::PhysicsShape*>& physiqueProperty = _mesh->getPhysicalProperties();
+	const std::vector<ege::PhysicsShape*>& physiqueProperty = _mesh->getPhysicalProperties();
 	if (physiqueProperty.size() == 0) {
 		return new btEmptyShape();;
 	}
@@ -51,8 +51,8 @@ btCollisionShape* ege::collision::createShape(const ewol::Mesh* _mesh) {
 			continue;
 		}
 		switch (physiqueProperty[iii]->getType()) {
-			case ewol::PhysicsShape::box : {
-				const ewol::PhysicsBox* tmpElement = physiqueProperty[iii]->toBox();
+			case ege::PhysicsShape::box : {
+				const ege::PhysicsBox* tmpElement = physiqueProperty[iii]->toBox();
 				if (NULL  == tmpElement) {
 					// ERROR ...
 					continue;
@@ -69,8 +69,8 @@ btCollisionShape* ege::collision::createShape(const ewol::Mesh* _mesh) {
 				}
 				break;
 			}
-			case ewol::PhysicsShape::cylinder : {
-				const ewol::PhysicsCylinder* tmpElement = physiqueProperty[iii]->toCylinder();
+			case ege::PhysicsShape::cylinder : {
+				const ege::PhysicsCylinder* tmpElement = physiqueProperty[iii]->toCylinder();
 				if (NULL  == tmpElement) {
 					// ERROR ...
 					continue;
@@ -87,8 +87,8 @@ btCollisionShape* ege::collision::createShape(const ewol::Mesh* _mesh) {
 				}
 				break;
 			}
-			case ewol::PhysicsShape::capsule : {
-				const ewol::PhysicsCapsule* tmpElement = physiqueProperty[iii]->toCapsule();
+			case ege::PhysicsShape::capsule : {
+				const ege::PhysicsCapsule* tmpElement = physiqueProperty[iii]->toCapsule();
 				if (NULL  == tmpElement) {
 					// ERROR ...
 					continue;
@@ -105,8 +105,8 @@ btCollisionShape* ege::collision::createShape(const ewol::Mesh* _mesh) {
 				}
 				break;
 			}
-			case ewol::PhysicsShape::cone : {
-				const ewol::PhysicsCone* tmpElement = physiqueProperty[iii]->toCone();
+			case ege::PhysicsShape::cone : {
+				const ege::PhysicsCone* tmpElement = physiqueProperty[iii]->toCone();
 				if (NULL  == tmpElement) {
 					// ERROR ...
 					continue;
@@ -123,8 +123,8 @@ btCollisionShape* ege::collision::createShape(const ewol::Mesh* _mesh) {
 				}
 				break;
 			}
-			case ewol::PhysicsShape::sphere : {
-				const ewol::PhysicsSphere* tmpElement = physiqueProperty[iii]->toSphere();
+			case ege::PhysicsShape::sphere : {
+				const ege::PhysicsSphere* tmpElement = physiqueProperty[iii]->toSphere();
 				if (NULL  == tmpElement) {
 					// ERROR ...
 					continue;
@@ -141,8 +141,8 @@ btCollisionShape* ege::collision::createShape(const ewol::Mesh* _mesh) {
 				}
 				break;
 			}
-			case ewol::PhysicsShape::convexHull : {
-				const ewol::PhysicsConvexHull* tmpElement = physiqueProperty[iii]->toConvexHull();
+			case ege::PhysicsShape::convexHull : {
+				const ege::PhysicsConvexHull* tmpElement = physiqueProperty[iii]->toConvexHull();
 				if (NULL  == tmpElement) {
 					// ERROR ...
 					continue;
