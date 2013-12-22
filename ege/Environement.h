@@ -26,14 +26,14 @@ class btDynamicsWorld;
 #include <ege/ParticuleEngine.h>
 
 namespace ege {
-	typedef enum {
+	enum property {
 		typeNone, //!< no element property
 		typeString, //!< type element static_cast<std::string*>(xxxxxxx)
 		typeJson, //!< type element static_cast<ejson::Value*>(xxxxxxx)
 		typeXml, //!< type element static_cast<exml::Node*>(xxxxxxx)
 		typeUser1, //!< user type 1
 		typeUser2 //!< User type 2
-	} property_te;
+	};
 	class ElementGame;
 	class Environement;
 	typedef ege::ElementGame* (*createElement_tf)(ege::Environement& _env);
@@ -88,7 +88,7 @@ namespace ege {
 			 * @return NULL if an error occured OR the pointer on the element and it is already added on the system.
 			 * @note Pointer is return in case of setting properties on it...
 			 */
-			ege::ElementGame* createElement(const std::string& _type, bool _autoAddElement=true, ege::property_te _property=ege::typeNone, void* _value=NULL);
+			ege::ElementGame* createElement(const std::string& _type, bool _autoAddElement=true, enum ege::property _property=ege::typeNone, void* _value=NULL);
 			ege::ElementGame* createElement(const std::string& _type, std::string& _description, bool _autoAddElement=true);
 			ege::ElementGame* createElement(const std::string& _type, ejson::Value* _value, bool _autoAddElement=true);
 			ege::ElementGame* createElement(const std::string& _type, exml::Node* _node, bool _autoAddElement=true);

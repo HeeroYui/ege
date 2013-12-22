@@ -127,7 +127,7 @@ void ege::Environement::addCreator(const std::string& _type, ege::createElement_
 	getHachTableCreating().add(_type, _creator);
 }
 
-ege::ElementGame* ege::Environement::createElement(const std::string& _type, bool _autoAddElement, ege::property_te _property, void* _value) {
+ege::ElementGame* ege::Environement::createElement(const std::string& _type, bool _autoAddElement, enum ege::property _property, void* _value) {
 	if (false == getHachTableCreating().exist(_type)) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return NULL;
