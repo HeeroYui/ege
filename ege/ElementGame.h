@@ -58,7 +58,7 @@ namespace ege {
 			 * @param[in] _value pointer on the value type
 			 * @return true, the element is corectly initialized.
 			 */
-			virtual bool init(property_te _property, void* _value) {
+			virtual bool init(enum property _property, void* _value) {
 				return false;
 			};
 			virtual bool unInit(void) {

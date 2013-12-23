@@ -1,13 +1,17 @@
 #!/usr/bin/python
-import lutinModule
-import lutinTools
+import lutinModule as module
+import lutinTools as tools
 
-def Create(target):
+def get_desc():
+	return "EGE : Ewol Game engine (based on bullet lib)"
+
+
+def create(target):
 	# module name is 'edn' and type binary.
-	myModule = lutinModule.module(__file__, 'ege', 'LIBRARY')
+	myModule = module.Module(__file__, 'ege', 'LIBRARY')
 	
 	# add the file to compile:
-	myModule.AddSrcFile([
+	myModule.add_src_file([
 		'ege/debug.cpp',
 		'ege/AudioElement.cpp',
 		'ege/AudioEngine.cpp',
@@ -33,16 +37,16 @@ def Create(target):
 		'ege/physicsShape/PhysicsSphere.cpp',
 		])
 	
-	myModule.CopyFolder('data/ParticuleMesh.*','')
+	myModule.copy_folder('data/ParticuleMesh.*','')
 	
 	# name of the dependency
-	myModule.AddModuleDepend(['ewol', 'bullet'])
+	myModule.add_module_depend(['ewol', 'bullet'])
 	
-	myModule.CompileFlags_CC([
+	myModule.compile_flags_CC([
 		'-Wno-write-strings',
 		'-Wall'])
 	
-	myModule.AddExportPath(lutinTools.GetCurrentPath(__file__))
+	myModule.add_export_path(tools.get_current_path(__file__))
 	
 	
 	# add the currrent module at the 
