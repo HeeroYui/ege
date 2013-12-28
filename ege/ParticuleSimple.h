@@ -13,7 +13,7 @@ namespace ege {
 	class ParticuleSimple;
 };
 
-#include <etk/UString.h>
+#include <etk/types.h>
 #include <etk/math/Vector2D.h>
 #include <etk/math/Vector3D.h>
 #include <etk/math/Vector4D.h>

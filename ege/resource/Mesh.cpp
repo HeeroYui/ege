@@ -47,7 +47,7 @@ ege::resource::Mesh::Mesh(const std::string& _fileName, const std::string& _shad
 	m_verticesVBO = ewol::resource::VirtualBufferObject::keep(4);
 	
 	// load the curent file :
-	std::string tmpName = to_lower(_fileName);
+	std::string tmpName = std::tolower(_fileName);
 	// select the corect loader :
 	if (end_with(tmpName, ".obj") == true) {
 		if (loadOBJ(_fileName) == false) {

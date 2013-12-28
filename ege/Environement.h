@@ -15,7 +15,7 @@ namespace ege {
 };
 #include <ege/Camera.h>
 
-#include <etk/UString.h>
+#include <etk/types.h>
 #include <BulletDynamics/Dynamics/btActionInterface.h>
 class btDynamicsWorld;
 

@@ -13,7 +13,7 @@ namespace ege {
 	class Particule;
 };
 
-#include <etk/UString.h>
+#include <etk/types.h>
 #include <ege/Environement.h>
 #include <ege/Camera.h>
 

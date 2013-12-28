@@ -15,7 +15,7 @@ namespace ege {
 	class ParticuleEngine;
 };
 
-#include <etk/UString.h>
+#include <etk/types.h>
 #include <vector>
 #include <ege/Particule.h>
 
