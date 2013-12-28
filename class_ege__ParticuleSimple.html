@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>ege Library</title>
+	<link rel="stylesheet" href="base.css">
+	<link rel="stylesheet" href="menu.css">
+</head>
+<body>
+	<div class="navbar navbar-fixed-top">
+		<div class="container">
+			<h1><a href="index.html">ege library</a></h1>
+			<h4><a href="http://github.com/heeroyui/ege/">&nbsp;&nbsp;&nbsp;[ sources ]</a></h4>
+<h3>API:</h3>			<div id="menu">
+<ul class="niveau1">
+	<li class="sousmenu"><a href="namespace_ege.html">ege</a>
+<ul class="niveau2">
+	<li><a href="namespace_ege__collision.html">collision</a>
+	</li>
+	<li><a href="namespace_ege__widget.html">widget</a>
+	</li>
+	<li><a href="namespace_ege__resource.html">resource</a>
+	</li>
+</ul>
+	</li>
+</ul>
+			</div>
+<br/><h3>Associate libraries:</h3><div id="menu">
+<ul class="niveau1"><li><a href="../ewol/index.html">ewol</a></li>
+</ul><ul class="niveau1"><li><a href="../ejson/index.html">ejson</a></li>
+</ul><ul class="niveau1"><li><a href="../egami/index.html">egami</a></li>
+</ul><ul class="niveau1"><li><a href="../esvg/index.html">esvg</a></li>
+</ul><ul class="niveau1"><li><a href="../etk/index.html">etk</a></li>
+</ul><ul class="niveau1"><li><a href="../exml/index.html">exml</a></li>
+</ul></div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+		</div>
+	</div>
+	<div class="container" id="content">
+<h1>class: ege::ParticuleSimple</h1><hr/><h2>Description:</h2>
+The particule class is an element with no control, when it will be created,
+       it does not have any control, for example smoke or reactor generation ...
+       or explosion particule ...<br/><br/>
+<h2>Constructor and Destructor:</h2>
+<pre>
++               <a class="code-function" href="#6334">ParticuleSimple</a>  (<a class="code-type" href="class_ege__ParticuleEngine.html">ege::ParticuleEngine</a> & <span class="code-argument">_particuleEngine</span>,<br/>                                  <span class="code-storage-keyword">const</span> <span class="code-type" >char</span>* <span class="code-argument">_particuleType</span>);<br/>+ <span class="code-storage-keyword">virtual</span>       <a class="code-function" href="#6337">~ParticuleSimple</a> (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/></pre>
+<br/>
+<h2>Synopsis:</h2>
+<pre>
++ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span>  <a class="code-function" href="#6339">update</a>         (<span class="code-type" >float</span> <span class="code-argument">_delta</span>);<br/>+ <span class="code-storage-keyword">virtual</span> <span class="code-type" >bool</span>  <a class="code-function" href="#6341">needRemove</a>     (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/>+ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span>  <a class="code-function" href="#6343">init</a>           (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/>#         <span class="code-type" >float</span> <a class="code-member" href="#6345">m_lifeFull</a>;<br/>#         <span class="code-type" >float</span> <a class="code-member" href="#6346">m_life</a>;<br/>#         <span class="code-type" >float</span> <a class="code-member" href="#6347">m_level</a>;<br/>#         vec3  <a class="code-member" href="#6348">m_pos</a>;<br/>#         <span class="code-type" >float</span> <a class="code-member" href="#6349">m_angle</a>;<br/>#         vec3  <a class="code-member" href="#6350">m_speed</a>;<br/>#         vec3  <a class="code-member" href="#6351">m_scale</a>;<br/>#         vec3  <a class="code-member" href="#6352">m_scaleExpand</a>;<br/>+ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span>  <a class="code-function" href="#6353">setLife</a>        (<span class="code-type" >float</span> <span class="code-argument">_life</span>);<br/>+ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span>  <a class="code-function" href="#6355">setLevel</a>       (<span class="code-type" >float</span> <span class="code-argument">_level</span>);<br/>+ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span>  <a class="code-function" href="#6357">setPosition</a>    (<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_pos</span>);<br/>+ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span>  <a class="code-function" href="#6359">setAngle</a>       (<span class="code-type" >float</span> <span class="code-argument">_angle</span>);<br/>+ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span>  <a class="code-function" href="#6361">setMoveSpeed</a>   (<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_speed</span>);<br/>+ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span>  <a class="code-function" href="#6363">setScale</a>       (<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_scale</span>);<br/>+ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span>  <a class="code-function" href="#6365">setScaleExpend</a> (<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_scaleExpand</span>);<br/></pre>
+<br/>
+<h2>Object Hierarchy:<h2>
+<pre>
++Particule<br/>  +--> ege::ParticuleSimple<br/></pre>
+<h2>Detail:</h2>
+<a id="6334"/><a id="6337"/><h3>ParticuleSimple</h3><pre>
++  <span class="code-function">ParticuleSimple</span> (<a class="code-type" href="class_ege__ParticuleEngine.html">ege::ParticuleEngine</a> & <span class="code-argument">_particuleEngine</span>,<br/>                    <span class="code-storage-keyword">const</span> <span class="code-type" >char</span>* <span class="code-argument">_particuleType</span>);<br/></pre>
+Constructor.<br/><ul>
+<table class="parameter-list">
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_name</span> </td><td> Name of the particule.</td></tr>
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_standalone</span> </td><td> The particule are created and have there own life (no dynamic control)</td></tr>
+</table>
+</ul>
+
+<br/>
+<hr/>
+<a id="6339"/><h3>~ParticuleSimple</h3><pre>
++ <span class="code-storage-keyword">virtual</span>  <span class="code-function">~ParticuleSimple</span> (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/></pre>
+Destructor.<br/>
+<br/>
+<hr/>
+<a id="6341"/><h3>update</h3><pre>
++ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span> <span class="code-function">update</span> (<span class="code-type" >float</span> <span class="code-argument">_delta</span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6343"/><h3>needRemove</h3><pre>
++ <span class="code-storage-keyword">virtual</span> <span class="code-type" >bool</span> <span class="code-function">needRemove</span> (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6345"/><h3>init</h3><pre>
++ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span> <span class="code-function">init</span> (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6346"/><h3>m_lifeFull</h3><pre>
+# <span class="code-type" >float</span> <span class="code-member">m_lifeFull</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6347"/><h3>m_life</h3><pre>
+# <span class="code-type" >float</span> <span class="code-member">m_life</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6348"/><h3>m_level</h3><pre>
+# <span class="code-type" >float</span> <span class="code-member">m_level</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6349"/><h3>m_pos</h3><pre>
+# vec3 <span class="code-member">m_pos</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6350"/><h3>m_angle</h3><pre>
+# <span class="code-type" >float</span> <span class="code-member">m_angle</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6351"/><h3>m_speed</h3><pre>
+# vec3 <span class="code-member">m_speed</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6352"/><h3>m_scale</h3><pre>
+# vec3 <span class="code-member">m_scale</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6353"/><h3>m_scaleExpand</h3><pre>
+# vec3 <span class="code-member">m_scaleExpand</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6355"/><h3>setLife</h3><pre>
++ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span> <span class="code-function">setLife</span> (<span class="code-type" >float</span> <span class="code-argument">_life</span>);<br/></pre>
+
+		<br/>
+<br/>
+<hr/>
+<a id="6357"/><h3>setLevel</h3><pre>
++ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span> <span class="code-function">setLevel</span> (<span class="code-type" >float</span> <span class="code-argument">_level</span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6359"/><h3>setPosition</h3><pre>
++ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span> <span class="code-function">setPosition</span> (<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_pos</span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6361"/><h3>setAngle</h3><pre>
++ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span> <span class="code-function">setAngle</span> (<span class="code-type" >float</span> <span class="code-argument">_angle</span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6363"/><h3>setMoveSpeed</h3><pre>
++ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span> <span class="code-function">setMoveSpeed</span> (<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_speed</span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6365"/><h3>setScale</h3><pre>
++ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span> <span class="code-function">setScale</span> (<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_scale</span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<h3>setScaleExpend</h3><pre>
++ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span> <span class="code-function">setScaleExpend</span> (<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_scaleExpand</span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+	</div>
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-46753803-1', 'heeroyui.github.io');
+	ga('send', 'pageview');
+</script>
+</body>
+</html>

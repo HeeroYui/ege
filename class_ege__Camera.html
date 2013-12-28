@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>ege Library</title>
+	<link rel="stylesheet" href="base.css">
+	<link rel="stylesheet" href="menu.css">
+</head>
+<body>
+	<div class="navbar navbar-fixed-top">
+		<div class="container">
+			<h1><a href="index.html">ege library</a></h1>
+			<h4><a href="http://github.com/heeroyui/ege/">&nbsp;&nbsp;&nbsp;[ sources ]</a></h4>
+<h3>API:</h3>			<div id="menu">
+<ul class="niveau1">
+	<li class="sousmenu"><a href="namespace_ege.html">ege</a>
+<ul class="niveau2">
+	<li><a href="namespace_ege__collision.html">collision</a>
+	</li>
+	<li><a href="namespace_ege__widget.html">widget</a>
+	</li>
+	<li><a href="namespace_ege__resource.html">resource</a>
+	</li>
+</ul>
+	</li>
+</ul>
+			</div>
+<br/><h3>Associate libraries:</h3><div id="menu">
+<ul class="niveau1"><li><a href="../ewol/index.html">ewol</a></li>
+</ul><ul class="niveau1"><li><a href="../ejson/index.html">ejson</a></li>
+</ul><ul class="niveau1"><li><a href="../egami/index.html">egami</a></li>
+</ul><ul class="niveau1"><li><a href="../esvg/index.html">esvg</a></li>
+</ul><ul class="niveau1"><li><a href="../etk/index.html">etk</a></li>
+</ul><ul class="niveau1"><li><a href="../exml/index.html">exml</a></li>
+</ul></div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+		</div>
+	</div>
+	<div class="container" id="content">
+<h1>class: ege::Camera</h1><hr/><h2>Description:</h2>
+
+<br/><br/>
+<h2>Constructor and Destructor:</h2>
+<pre>
++              <a class="code-function" href="#6289">Camera</a>                 (<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_eye</span>,<br/>                                       <span class="code-type" >float</span> <span class="code-argument">_angleZ</span>,<br/>                                       <span class="code-type" >float</span> <span class="code-argument">_angleTeta</span>,<br/>                                       <span class="code-type" >float</span> <span class="code-argument">_distance</span>);<br/></pre>
+<br/>
+<h2>Synopsis:</h2>
+<pre>
+# mat4         <a class="code-member" href="#6285">m_matrix</a>;<br/># <span class="code-type" >float</span>        <a class="code-member" href="#6286">m_offsetFactor</a>;<br/># <span class="code-type" >void</span>         <a class="code-function" href="#6287">update</a>                 (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/># vec3         <a class="code-member" href="#6294">m_eye</a>;<br/>+ <span class="code-type" >void</span>         <a class="code-function" href="#6295">setEye</a>                 (<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_eye</span>);<br/>+ <span class="code-storage-keyword">const</span> vec3 & <a class="code-function" href="#6297">getEye</a>                 (<span class="code-type" >void</span> <span class="code-argument"></span>) <span class="code-storage-keyword">const</span>;<br/># vec3         <a class="code-member" href="#6299">m_calculatedOrigin</a>;<br/>+ <span class="code-storage-keyword">const</span> vec3 & <a class="code-function" href="#6300">getOrigin</a>              (<span class="code-type" >void</span> <span class="code-argument"></span>) <span class="code-storage-keyword">const</span>;<br/># vec3         <a class="code-member" href="#6302">m_calculatedViewVector</a>;<br/>+ <span class="code-storage-keyword">const</span> vec3 & <a class="code-function" href="#6303">getViewVector</a>          (<span class="code-type" >void</span> <span class="code-argument"></span>) <span class="code-storage-keyword">const</span>;<br/># <span class="code-type" >float</span>        <a class="code-member" href="#6305">m_angleZ</a>;<br/>+ <span class="code-type" >void</span>         <a class="code-function" href="#6306">setAngleZ</a>              (<span class="code-type" >float</span> <span class="code-argument">_angleZ</span>);<br/>+ <span class="code-type" >float</span>        <a class="code-function" href="#6308">getAngleZ</a>              (<span class="code-type" >void</span> <span class="code-argument"></span>) <span class="code-storage-keyword">const</span>;<br/># <span class="code-type" >float</span>        <a class="code-member" href="#6310">m_angleTeta</a>;<br/>+ <span class="code-type" >void</span>         <a class="code-function" href="#6311">setAngleTeta</a>           (<span class="code-type" >float</span> <span class="code-argument">_angleTeta</span>);<br/>+ <span class="code-type" >float</span>        <a class="code-function" href="#6313">getAngleTeta</a>           (<span class="code-type" >void</span> <span class="code-argument"></span>) <span class="code-storage-keyword">const</span>;<br/># <span class="code-type" >float</span>        <a class="code-member" href="#6315">m_distance</a>;<br/>+ <span class="code-type" >void</span>         <a class="code-function" href="#6316">setDistance</a>            (<span class="code-type" >float</span> <span class="code-argument">_distance</span>);<br/>+ <span class="code-type" >float</span>        <a class="code-function" href="#6318">getDistance</a>            (<span class="code-type" >void</span> <span class="code-argument"></span>) <span class="code-storage-keyword">const</span>;<br/>+ <span class="code-storage-keyword">const</span> mat4 & <a class="code-function" href="#6320">getMatrix</a>              (<span class="code-type" >void</span> <span class="code-argument"></span>) <span class="code-storage-keyword">const</span>;<br/># <span class="code-type" >bool</span>         <a class="code-member" href="#6322">m_forceViewTop</a>;<br/>+ <span class="code-type" >void</span>         <a class="code-function" href="#6323">setForcingViewTop</a>      (<span class="code-type" >bool</span> <span class="code-argument">_newState</span>);<br/>+ <span class="code-type" >void</span>         <a class="code-function" href="#6325">periodicCall</a>           (<span class="code-type" >float</span> <span class="code-argument">_step</span>);<br/>+ vec3         <a class="code-function" href="#6327">projectOnZGround</a>       (<span class="code-storage-keyword">const</span> vec2 & <span class="code-argument">_cameraDeltaAngle</span>,<br/>                                       <span class="code-type" >float</span> <span class="code-argument">_zValue</span>);<br/></pre>
+<br/>
+<h2>Detail:</h2>
+<a id="6285"/><a id="6286"/><h3>m_matrix</h3><pre>
+# mat4 <span class="code-member">m_matrix</span>;<br/></pre>
+
+transformation matrix.<br/>
+<br/>
+<hr/>
+<a id="6287"/><h3>m_offsetFactor</h3><pre>
+# <span class="code-type" >float</span> <span class="code-member">m_offsetFactor</span>;<br/></pre>
+
+this variable is used to move the camera to the top position of the system  == &gt; automaticly<br/>
+<br/>
+<hr/>
+<a id="6289"/><h3>update</h3><pre>
+# <span class="code-type" >void</span> <span class="code-function">update</span> (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/></pre>
+update the matrix property<br/>
+<br/>
+<hr/>
+<a id="6294"/><h3>Camera</h3><pre>
++  <span class="code-function">Camera</span> (<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_eye</span>,<br/>           <span class="code-type" >float</span> <span class="code-argument">_angleZ</span>,<br/>           <span class="code-type" >float</span> <span class="code-argument">_angleTeta</span>,<br/>           <span class="code-type" >float</span> <span class="code-argument">_distance</span>);<br/></pre>
+Constructor.<br/><ul>
+<table class="parameter-list">
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_eye</span> </td><td> Position of the camera destination view.</td></tr>
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_angleZ</span> </td><td> Z rotation angle.</td></tr>
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_angleTeta</span> </td><td> Angle of the camera inclinason.</td></tr>
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_distance</span> </td><td> distance to the eye point</td></tr>
+</table>
+</ul>
+
+<br/>
+<hr/>
+<a id="6295"/><h3>m_eye</h3><pre>
+# vec3 <span class="code-member">m_eye</span>;<br/></pre>
+
+position where the camera see<br/>
+<br/>
+<hr/>
+<a id="6297"/><h3>setEye</h3><pre>
++ <span class="code-type" >void</span> <span class="code-function">setEye</span> (<span class="code-storage-keyword">const</span> vec3 & <span class="code-argument">_eye</span>);<br/></pre>
+set the position of the camera.<br/><ul>
+<table class="parameter-list">
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">pos</span> </td><td> Position of the camera.</td></tr>
+</table>
+</ul>
+
+<br/>
+<hr/>
+<a id="6299"/><h3>getEye</h3><pre>
++ <span class="code-storage-keyword">const</span> vec3 & <span class="code-function">getEye</span> (<span class="code-type" >void</span> <span class="code-argument"></span>) <span class="code-storage-keyword">const</span>;<br/></pre>
+get the curent Camera Eye position.<br/><ul>
+<table class="parameter-list">
+<tr><td><b>Return: </b></td><td></td><td>the current position.</td></tr></table>
+</ul>
+
+<br/>
+<hr/>
+<a id="6300"/><h3>m_calculatedOrigin</h3><pre>
+# vec3 <span class="code-member">m_calculatedOrigin</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6302"/><h3>getOrigin</h3><pre>
++ <span class="code-storage-keyword">const</span> vec3 & <span class="code-function">getOrigin</span> (<span class="code-type" >void</span> <span class="code-argument"></span>) <span class="code-storage-keyword">const</span>;<br/></pre>
+get the curent Camera origin position.<br/><ul>
+<table class="parameter-list">
+<tr><td><b>Return: </b></td><td></td><td>the current position.</td></tr></table>
+</ul>
+
+<br/>
+<hr/>
+<a id="6303"/><h3>m_calculatedViewVector</h3><pre>
+# vec3 <span class="code-member">m_calculatedViewVector</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6305"/><h3>getViewVector</h3><pre>
++ <span class="code-storage-keyword">const</span> vec3 & <span class="code-function">getViewVector</span> (<span class="code-type" >void</span> <span class="code-argument"></span>) <span class="code-storage-keyword">const</span>;<br/></pre>
+Get the camera viewing vector.<br/><ul>
+<table class="parameter-list">
+<tr><td><b>Return: </b></td><td></td><td>the current position.</td></tr></table>
+</ul>
+
+<br/>
+<hr/>
+<a id="6306"/><h3>m_angleZ</h3><pre>
+# <span class="code-type" >float</span> <span class="code-member">m_angleZ</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6308"/><h3>setAngleZ</h3><pre>
++ <span class="code-type" >void</span> <span class="code-function">setAngleZ</span> (<span class="code-type" >float</span> <span class="code-argument">_angleZ</span>);<br/></pre>
+set the angle on the camera<br/><ul>
+<table class="parameter-list">
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_angleZ</span> </td><td> Rotation angle in Z</td></tr>
+</table>
+</ul>
+
+<br/>
+<hr/>
+<a id="6310"/><h3>getAngleZ</h3><pre>
++ <span class="code-type" >float</span> <span class="code-function">getAngleZ</span> (<span class="code-type" >void</span> <span class="code-argument"></span>) <span class="code-storage-keyword">const</span>;<br/></pre>
+get the curent Camera angles.<br/><ul>
+<table class="parameter-list">
+<tr><td><b>Return: </b></td><td></td><td>the current angles Z.</td></tr></table>
+</ul>
+
+<br/>
+<hr/>
+<a id="6311"/><h3>m_angleTeta</h3><pre>
+# <span class="code-type" >float</span> <span class="code-member">m_angleTeta</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6313"/><h3>setAngleTeta</h3><pre>
++ <span class="code-type" >void</span> <span class="code-function">setAngleTeta</span> (<span class="code-type" >float</span> <span class="code-argument">_angleTeta</span>);<br/></pre>
+set the angle on the camera<br/><ul>
+<table class="parameter-list">
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_angleTeta</span> </td><td> Rotation angle in Teta</td></tr>
+</table>
+</ul>
+
+<br/>
+<hr/>
+<a id="6315"/><h3>getAngleTeta</h3><pre>
++ <span class="code-type" >float</span> <span class="code-function">getAngleTeta</span> (<span class="code-type" >void</span> <span class="code-argument"></span>) <span class="code-storage-keyword">const</span>;<br/></pre>
+get the curent Camera angles.<br/><ul>
+<table class="parameter-list">
+<tr><td><b>Return: </b></td><td></td><td>the current angles Teta.</td></tr></table>
+</ul>
+
+<br/>
+<hr/>
+<a id="6316"/><h3>m_distance</h3><pre>
+# <span class="code-type" >float</span> <span class="code-member">m_distance</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6318"/><h3>setDistance</h3><pre>
++ <span class="code-type" >void</span> <span class="code-function">setDistance</span> (<span class="code-type" >float</span> <span class="code-argument">_distance</span>);<br/></pre>
+set the angle on the camera<br/><ul>
+<table class="parameter-list">
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_distance</span> </td><td> Distance to the eye</td></tr>
+</table>
+</ul>
+
+<br/>
+<hr/>
+<a id="6320"/><h3>getDistance</h3><pre>
++ <span class="code-type" >float</span> <span class="code-function">getDistance</span> (<span class="code-type" >void</span> <span class="code-argument"></span>) <span class="code-storage-keyword">const</span>;<br/></pre>
+get the curent Camera angles.<br/><ul>
+<table class="parameter-list">
+<tr><td><b>Return: </b></td><td></td><td>the current distance to the eye.</td></tr></table>
+</ul>
+
+<br/>
+<hr/>
+<a id="6322"/><h3>getMatrix</h3><pre>
++ <span class="code-storage-keyword">const</span> mat4 & <span class="code-function">getMatrix</span> (<span class="code-type" >void</span> <span class="code-argument"></span>) <span class="code-storage-keyword">const</span>;<br/></pre>
+get the transformation matix for the camera.<br/><ul>
+<table class="parameter-list">
+<tr><td><b>Return: </b></td><td></td><td>the current transformation matrix</td></tr></table>
+</ul>
+
+<br/>
+<hr/>
+<a id="6323"/><h3>m_forceViewTop</h3><pre>
+# <span class="code-type" >bool</span> <span class="code-member">m_forceViewTop</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6325"/><h3>setForcingViewTop</h3><pre>
++ <span class="code-type" >void</span> <span class="code-function">setForcingViewTop</span> (<span class="code-type" >bool</span> <span class="code-argument">_newState</span>);<br/></pre>
+change camera mode of view  == &gt; force to the top view<br/><ul>
+<table class="parameter-list">
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_newState</span> </td><td> The new state of this mode...</td></tr>
+</table>
+</ul>
+
+<br/>
+<hr/>
+<a id="6327"/><h3>periodicCall</h3><pre>
++ <span class="code-type" >void</span> <span class="code-function">periodicCall</span> (<span class="code-type" >float</span> <span class="code-argument">_step</span>);<br/></pre>
+It is really needed to call the camera periodicly for performing automatic movement<br/><ul>
+<table class="parameter-list">
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_step</span> </td><td> step time of moving</td></tr>
+</table>
+</ul>
+
+<br/>
+<hr/>
+<h3>projectOnZGround</h3><pre>
++ vec3 <span class="code-function">projectOnZGround</span> (<span class="code-storage-keyword">const</span> vec2 & <span class="code-argument">_cameraDeltaAngle</span>,<br/>                         <span class="code-type" >float</span> <span class="code-argument">_zValue</span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+	</div>
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-46753803-1', 'heeroyui.github.io');
+	ga('send', 'pageview');
+</script>
+</body>
+</html>

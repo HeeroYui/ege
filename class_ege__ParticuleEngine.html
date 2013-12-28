@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>ege Library</title>
+	<link rel="stylesheet" href="base.css">
+	<link rel="stylesheet" href="menu.css">
+</head>
+<body>
+	<div class="navbar navbar-fixed-top">
+		<div class="container">
+			<h1><a href="index.html">ege library</a></h1>
+			<h4><a href="http://github.com/heeroyui/ege/">&nbsp;&nbsp;&nbsp;[ sources ]</a></h4>
+<h3>API:</h3>			<div id="menu">
+<ul class="niveau1">
+	<li class="sousmenu"><a href="namespace_ege.html">ege</a>
+<ul class="niveau2">
+	<li><a href="namespace_ege__collision.html">collision</a>
+	</li>
+	<li><a href="namespace_ege__widget.html">widget</a>
+	</li>
+	<li><a href="namespace_ege__resource.html">resource</a>
+	</li>
+</ul>
+	</li>
+</ul>
+			</div>
+<br/><h3>Associate libraries:</h3><div id="menu">
+<ul class="niveau1"><li><a href="../ewol/index.html">ewol</a></li>
+</ul><ul class="niveau1"><li><a href="../ejson/index.html">ejson</a></li>
+</ul><ul class="niveau1"><li><a href="../egami/index.html">egami</a></li>
+</ul><ul class="niveau1"><li><a href="../esvg/index.html">esvg</a></li>
+</ul><ul class="niveau1"><li><a href="../etk/index.html">etk</a></li>
+</ul><ul class="niveau1"><li><a href="../exml/index.html">exml</a></li>
+</ul></div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+		</div>
+	</div>
+	<div class="container" id="content">
+<h1>class: ege::ParticuleEngine</h1><hr/><h2>Description:</h2>
+
+<br/><br/>
+<h2>Constructor and Destructor:</h2>
+<pre>
++                         <a class="code-function" href="#6239">ParticuleEngine</a>    (<a class="code-type" href="class_ege__Environement.html">ege::Environement</a> & <span class="code-argument">_env</span>);<br/>+                         <a class="code-function" href="#6241">~ParticuleEngine</a>   (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/></pre>
+<br/>
+<h2>Synopsis:</h2>
+<pre>
++ <span class="code-type" >void</span>                    <a class="code-function" href="#6245">clear</a>              (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/>+ <span class="code-type" >void</span>                    <a class="code-function" href="#6247">add</a>                (Particule* <span class="code-argument">_particule</span>);<br/>+ <span class="code-type" >void</span>                    <a class="code-function" href="#6251">update</a>             (<span class="code-type" >float</span> <span class="code-argument">_deltaTime</span>);<br/>+ <span class="code-type" >void</span>                    <a class="code-function" href="#6253">draw</a>               (<span class="code-storage-keyword">const</span> <a class="code-type" href="class_ege__Camera.html">ege::Camera</a> & <span class="code-argument">_camera</span>);<br/>+ Particule*              <a class="code-function" href="#6255">respown</a>            (<span class="code-storage-keyword">const</span> <span class="code-type" >char</span>* <span class="code-argument">_particuleType</span>);<br/></pre>
+<br/>
+<h2>Detail:</h2>
+<a id="6239"/><a id="6241"/><h3>ParticuleEngine</h3><pre>
++  <span class="code-function">ParticuleEngine</span> (<a class="code-type" href="class_ege__Environement.html">ege::Environement</a> & <span class="code-argument">_env</span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6245"/><h3>~ParticuleEngine</h3><pre>
++  <span class="code-function">~ParticuleEngine</span> (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6247"/><h3>clear</h3><pre>
++ <span class="code-type" >void</span> <span class="code-function">clear</span> (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/></pre>
+clear the particule engine<br/>
+<br/>
+<hr/>
+<a id="6251"/><h3>add</h3><pre>
++ <span class="code-type" >void</span> <span class="code-function">add</span> (Particule* <span class="code-argument">_particule</span>);<br/></pre>
+add a particule in the engine (internal acces only)<br/><ul>
+<table class="parameter-list">
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_particule</span> </td><td> Pointer on the particule to add</td></tr>
+</table>
+</ul>
+
+<br/>
+<hr/>
+<a id="6253"/><h3>update</h3><pre>
++ <span class="code-type" >void</span> <span class="code-function">update</span> (<span class="code-type" >float</span> <span class="code-argument">_deltaTime</span>);<br/></pre>
+update particule properties<br/><ul>
+<table class="parameter-list">
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_deltaTime</span> </td><td> delta time to process</td></tr>
+</table>
+</ul>
+
+<br/>
+<hr/>
+<a id="6255"/><h3>draw</h3><pre>
++ <span class="code-type" >void</span> <span class="code-function">draw</span> (<span class="code-storage-keyword">const</span> <a class="code-type" href="class_ege__Camera.html">ege::Camera</a> & <span class="code-argument">_camera</span>);<br/></pre>
+draw all the active Particule<br/><ul>
+<table class="parameter-list">
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_camera</span> </td><td> Reference on the current camera</td></tr>
+</table>
+</ul>
+
+<br/>
+<hr/>
+<h3>respown</h3><pre>
++ Particule* <span class="code-function">respown</span> (<span class="code-storage-keyword">const</span> <span class="code-type" >char</span>* <span class="code-argument">_particuleType</span>);<br/></pre>
+get a particue with his type, we get particule that has been already removed, otherwise, you will create new<br/><b>Note:</b> If you did not want to use respawn set type at NULL.<br/> <ul>
+<table class="parameter-list">
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_particuleType</span> </td><td> Particule type, this chek only the pointer not the data.</td></tr>
+<tr><td><b>Return: </b></td><td></td><td>NULL, the particule has not been removed from the created pool&lt;br/&gt;The pointer on the requested element (an init has been done).</td></tr></table>
+</ul>
+
+<br/>
+<hr/>
+	</div>
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-46753803-1', 'heeroyui.github.io');
+	ga('send', 'pageview');
+</script>
+</body>
+</html>

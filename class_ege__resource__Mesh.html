@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>ege Library</title>
+	<link rel="stylesheet" href="base.css">
+	<link rel="stylesheet" href="menu.css">
+</head>
+<body>
+	<div class="navbar navbar-fixed-top">
+		<div class="container">
+			<h1><a href="index.html">ege library</a></h1>
+			<h4><a href="http://github.com/heeroyui/ege/">&nbsp;&nbsp;&nbsp;[ sources ]</a></h4>
+<h3>API:</h3>			<div id="menu">
+<ul class="niveau1">
+	<li class="sousmenu"><a href="namespace_ege.html">ege</a>
+<ul class="niveau2">
+	<li><a href="namespace_ege__collision.html">collision</a>
+	</li>
+	<li><a href="namespace_ege__widget.html">widget</a>
+	</li>
+	<li><a href="namespace_ege__resource.html">resource</a>
+	</li>
+</ul>
+	</li>
+</ul>
+			</div>
+<br/><h3>Associate libraries:</h3><div id="menu">
+<ul class="niveau1"><li><a href="../ewol/index.html">ewol</a></li>
+</ul><ul class="niveau1"><li><a href="../ejson/index.html">ejson</a></li>
+</ul><ul class="niveau1"><li><a href="../egami/index.html">egami</a></li>
+</ul><ul class="niveau1"><li><a href="../esvg/index.html">esvg</a></li>
+</ul><ul class="niveau1"><li><a href="../etk/index.html">etk</a></li>
+</ul><ul class="niveau1"><li><a href="../exml/index.html">exml</a></li>
+</ul></div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+		</div>
+	</div>
+	<div class="container" id="content">
+<h1>class: ege::resource::Mesh</h1><hr/><h2>Description:</h2>
+
+<br/><br/>
+<h2>Constructor and Destructor:</h2>
+<pre>
+#                                                 <a class="code-function" href="#7007">Mesh</a>                  (<span class="code-storage-keyword">const</span> <a class="code-type" href="http://www.cplusplus.com/reference/string/string/">std::string</a> & <span class="code-argument">_fileName</span>,<br/>                                                                         <span class="code-storage-keyword">const</span> <a class="code-type" href="http://www.cplusplus.com/reference/string/string/">std::string</a> & <span class="code-argument">_shaderName</span>);<br/># <span class="code-storage-keyword">virtual</span>                                         <a class="code-function" href="#7010">~Mesh</a>                 (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/></pre>
+<br/>
+<h2>Synopsis:</h2>
+<pre>
+#         <span class="code-type" >bool</span>                                    <a class="code-member" href="#6988">m_checkNormal</a>;<br/>#         <a class="code-type" href="class_ewol__resource__Program.html">ewol::resource::Program</a>*                <a class="code-member" href="#6989">m_GLprogram</a>;<br/>#         <span class="code-type" >int32_t</span>                                 <a class="code-member" href="#6990">m_GLPosition</a>;<br/>#         <span class="code-type" >int32_t</span>                                 <a class="code-member" href="#6991">m_GLMatrix</a>;<br/>#         <span class="code-type" >int32_t</span>                                 <a class="code-member" href="#6992">m_GLMatrixPosition</a>;<br/>#         <span class="code-type" >int32_t</span>                                 <a class="code-member" href="#6993">m_GLNormal</a>;<br/>#         <span class="code-type" >int32_t</span>                                 <a class="code-member" href="#6994">m_GLtexture</a>;<br/>#         <span class="code-type" >int32_t</span>                                 <a class="code-member" href="#6995">m_bufferOfset</a>;<br/>#         <span class="code-type" >int32_t</span>                                 <a class="code-member" href="#6996">m_numberOfElments</a>;<br/>#         MaterialGlId                            <a class="code-member" href="#6997">m_GLMaterial</a>;<br/>#         <a class="code-type" href="class_ege__Light.html">ege::Light</a>                              <a class="code-member" href="#6998">m_light</a>;<br/>#         <a class="code-type" href="http://www.cplusplus.com/reference/vector/vector/">std::vector</a>&lt;vec3&gt;                       <a class="code-member" href="#6999">m_listVertex</a>;<br/>#         <a class="code-type" href="http://www.cplusplus.com/reference/vector/vector/">std::vector</a>&lt;vec2&gt;                       <a class="code-member" href="#7000">m_listUV</a>;<br/>#         <a class="code-type" href="http://www.cplusplus.com/reference/vector/vector/">std::vector</a>&lt;vec3&gt;                       <a class="code-member" href="#7001">m_listFacesNormal</a>;<br/>#         <a class="code-type" href="http://www.cplusplus.com/reference/vector/vector/">std::vector</a>&lt;vec3&gt;                       <a class="code-member" href="#7002">m_listVertexNormal</a>;<br/>#         <a class="code-type" href="class_etk__Hash.html">etk::Hash</a>&lt;FaceIndexing&gt;                 <a class="code-member" href="#7003">m_listFaces</a>;<br/>#         <a class="code-type" href="class_etk__Hash.html">etk::Hash</a>&lt;ege::Material*&gt;               <a class="code-member" href="#7004">m_materials</a>;<br/>#         <a class="code-type" href="http://www.cplusplus.com/reference/vector/vector/">std::vector</a>&lt;ege::PhysicsShape*&gt;         <a class="code-member" href="#7005">m_physics</a>;<br/>#         <a class="code-type" href="class_ewol__resource__VirtualBufferObject.html">ewol::resource::VirtualBufferObject</a>*    <a class="code-member" href="#7006">m_verticesVBO</a>;<br/>+ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span>                                    <a class="code-function" href="#7012">draw</a>                  (mat4 & <span class="code-argument">_positionMatrix</span>,<br/>                                                                         <span class="code-type" >bool</span> <span class="code-argument">_enableDepthTest</span>,<br/>                                                                         <span class="code-type" >bool</span> <span class="code-argument">_enableDepthUpdate</span>);<br/>+ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span>                                    <a class="code-function" href="#7016">draw</a>                  (mat4 & <span class="code-argument">_positionMatrix</span>,<br/>                                                                         <span class="code-storage-keyword">const</span> <a class="code-type" href="class_etk__Color.html">etk::Color</a>&lt;float&gt; & <span class="code-argument">_mainColor</span>,<br/>                                                                         <span class="code-type" >bool</span> <span class="code-argument">_enableDepthTest</span>,<br/>                                                                         <span class="code-type" >bool</span> <span class="code-argument">_enableDepthUpdate</span>);<br/>+         <span class="code-type" >void</span>                                    <a class="code-function" href="#7021">generateVBO</a>           (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/>+         <span class="code-type" >void</span>                                    <a class="code-function" href="#7027">createViewBox</a>         (<span class="code-storage-keyword">const</span> <a class="code-type" href="http://www.cplusplus.com/reference/string/string/">std::string</a> & <span class="code-argument">_materialName</span>,<br/>                                                                         <span class="code-type" >float</span> <span class="code-argument">_size</span>);<br/>+         <span class="code-type" >void</span>                                    <a class="code-function" href="#7034">addMaterial</a>           (<span class="code-storage-keyword">const</span> <a class="code-type" href="http://www.cplusplus.com/reference/string/string/">std::string</a> & <span class="code-argument">_name</span>,<br/>                                                                         <a class="code-type" href="class_ege__Material.html">ege::Material</a>* <span class="code-argument">_data</span>);<br/>+         <span class="code-type" >void</span>                                    <a class="code-function" href="#7037">setCheckNormal</a>        (<span class="code-type" >bool</span> <span class="code-argument">_status</span>);<br/>+         <span class="code-type" >bool</span>                                    <a class="code-function" href="#7039">getCheckNormal</a>        (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/>+         <span class="code-storage-keyword">const</span> <a class="code-type" href="http://www.cplusplus.com/reference/vector/vector/">std::vector</a>&lt;ege::PhysicsShape*&gt; & <a class="code-function" href="#7041">getPhysicalProperties</a> (<span class="code-type" >void</span> <span class="code-argument"></span>) <span class="code-storage-keyword">const</span>;<br/>+         <span class="code-type" >void</span>                                    <a class="code-function" href="#7044">setShape</a>              (<span class="code-type" >void</span>* <span class="code-argument">_shape</span>);<br/>+         <span class="code-type" >void</span>*                                   <a class="code-function" href="#7046">getShape</a>              (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/>+         <span class="code-type" >void</span>                                    <a class="code-function" href="#7050">setFreeShapeFunction</a>  (void(*_functionFreeShape)(void*_pointer <span class="code-argument">)</span>);<br/>+         <a class="code-type" href="class_ege__resource__Mesh.html">ege::resource::Mesh</a>*                    <a class="code-function" href="#7052">keep</a>                  (<span class="code-storage-keyword">const</span> <a class="code-type" href="http://www.cplusplus.com/reference/string/string/">std::string</a> & <span class="code-argument">_meshname</span>);<br/>+         <span class="code-type" >void</span>                                    <a class="code-function" href="#7054">release</a>               (<a class="code-type" href="class_ege__resource__Mesh.html">ege::resource::Mesh</a>* & <span class="code-argument">_object</span>);<br/></pre>
+<br/>
+<h2>Object Hierarchy:<h2>
+<pre>
++<a href="../ewol/class_ewol__Object.html">ewol::Object</a><br/>  +--> +<a href="../ewol/class_ewol__Resource.html">ewol::Resource</a><br/>         +--> ege::resource::Mesh<br/>                +--> <a href="class_ege__resource__ParticuleMesh.html">ege::resource::ParticuleMesh</a><br/></pre>
+<h2>Detail:</h2>
+<a id="6988"/><a id="6989"/><h3>m_checkNormal</h3><pre>
+# <span class="code-type" >bool</span> <span class="code-member">m_checkNormal</span>;<br/></pre>
+
+when enable, this check the normal of the mesh before sending it at the 3d card<br/>
+<br/>
+<hr/>
+<a id="6990"/><h3>m_GLprogram</h3><pre>
+# <a class="code-type" href="class_ewol__resource__Program.html">ewol::resource::Program</a>* <span class="code-member">m_GLprogram</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6991"/><h3>m_GLPosition</h3><pre>
+# <span class="code-type" >int32_t</span> <span class="code-member">m_GLPosition</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6992"/><h3>m_GLMatrix</h3><pre>
+# <span class="code-type" >int32_t</span> <span class="code-member">m_GLMatrix</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6993"/><h3>m_GLMatrixPosition</h3><pre>
+# <span class="code-type" >int32_t</span> <span class="code-member">m_GLMatrixPosition</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6994"/><h3>m_GLNormal</h3><pre>
+# <span class="code-type" >int32_t</span> <span class="code-member">m_GLNormal</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6995"/><h3>m_GLtexture</h3><pre>
+# <span class="code-type" >int32_t</span> <span class="code-member">m_GLtexture</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6996"/><h3>m_bufferOfset</h3><pre>
+# <span class="code-type" >int32_t</span> <span class="code-member">m_bufferOfset</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6997"/><h3>m_numberOfElments</h3><pre>
+# <span class="code-type" >int32_t</span> <span class="code-member">m_numberOfElments</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6998"/><h3>m_GLMaterial</h3><pre>
+# MaterialGlId <span class="code-member">m_GLMaterial</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="6999"/><h3>m_light</h3><pre>
+# <a class="code-type" href="class_ege__Light.html">ege::Light</a> <span class="code-member">m_light</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="7000"/><h3>m_listVertex</h3><pre>
+# <a class="code-type" href="http://www.cplusplus.com/reference/vector/vector/">std::vector</a>&lt;vec3&gt; <span class="code-member">m_listVertex</span>;<br/></pre>
+
+List of all vertex in the element<br/>
+<br/>
+<hr/>
+<a id="7001"/><h3>m_listUV</h3><pre>
+# <a class="code-type" href="http://www.cplusplus.com/reference/vector/vector/">std::vector</a>&lt;vec2&gt; <span class="code-member">m_listUV</span>;<br/></pre>
+
+List of all UV point in the mesh (for the specify texture)<br/>
+<br/>
+<hr/>
+<a id="7002"/><h3>m_listFacesNormal</h3><pre>
+# <a class="code-type" href="http://www.cplusplus.com/reference/vector/vector/">std::vector</a>&lt;vec3&gt; <span class="code-member">m_listFacesNormal</span>;<br/></pre>
+
+List of all Face normal, when calculated<br/>
+<br/>
+<hr/>
+<a id="7003"/><h3>m_listVertexNormal</h3><pre>
+# <a class="code-type" href="http://www.cplusplus.com/reference/vector/vector/">std::vector</a>&lt;vec3&gt; <span class="code-member">m_listVertexNormal</span>;<br/></pre>
+
+List of all Face normal, when calculated<br/>
+<br/>
+<hr/>
+<a id="7004"/><h3>m_listFaces</h3><pre>
+# <a class="code-type" href="class_etk__Hash.html">etk::Hash</a>&lt;FaceIndexing&gt; <span class="code-member">m_listFaces</span>;<br/></pre>
+
+List of all Face for the mesh<br/>
+<br/>
+<hr/>
+<a id="7005"/><h3>m_materials</h3><pre>
+# <a class="code-type" href="class_etk__Hash.html">etk::Hash</a>&lt;ege::Material*&gt; <span class="code-member">m_materials</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="7006"/><h3>m_physics</h3><pre>
+# <a class="code-type" href="http://www.cplusplus.com/reference/vector/vector/">std::vector</a>&lt;ege::PhysicsShape*&gt; <span class="code-member">m_physics</span>;<br/></pre>
+
+collision shape module ... (independent of bullet lib)<br/>
+<br/>
+<hr/>
+<a id="7007"/><h3>m_verticesVBO</h3><pre>
+# <a class="code-type" href="class_ewol__resource__VirtualBufferObject.html">ewol::resource::VirtualBufferObject</a>* <span class="code-member">m_verticesVBO</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="7010"/><h3>Mesh</h3><pre>
+#  <span class="code-function">Mesh</span> (<span class="code-storage-keyword">const</span> <a class="code-type" href="http://www.cplusplus.com/reference/string/string/">std::string</a> & <span class="code-argument">_fileName</span>,<br/>         <span class="code-storage-keyword">const</span> <a class="code-type" href="http://www.cplusplus.com/reference/string/string/">std::string</a> & <span class="code-argument">_shaderName</span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="7012"/><h3>~Mesh</h3><pre>
+# <span class="code-storage-keyword">virtual</span>  <span class="code-function">~Mesh</span> (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="7016"/><h3>draw</h3><pre>
++ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span> <span class="code-function">draw</span> (mat4 & <span class="code-argument">_positionMatrix</span>,<br/>                     <span class="code-type" >bool</span> <span class="code-argument">_enableDepthTest</span>,<br/>                     <span class="code-type" >bool</span> <span class="code-argument">_enableDepthUpdate</span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="7021"/><h3>draw</h3><pre>
++ <span class="code-storage-keyword">virtual</span> <span class="code-type" >void</span> <span class="code-function">draw</span> (mat4 & <span class="code-argument">_positionMatrix</span>,<br/>                     <span class="code-storage-keyword">const</span> <a class="code-type" href="class_etk__Color.html">etk::Color</a>&lt;float&gt; & <span class="code-argument">_mainColor</span>,<br/>                     <span class="code-type" >bool</span> <span class="code-argument">_enableDepthTest</span>,<br/>                     <span class="code-type" >bool</span> <span class="code-argument">_enableDepthUpdate</span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="7027"/><h3>generateVBO</h3><pre>
++ <span class="code-type" >void</span> <span class="code-function">generateVBO</span> (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="7034"/><h3>createViewBox</h3><pre>
++ <span class="code-type" >void</span> <span class="code-function">createViewBox</span> (<span class="code-storage-keyword">const</span> <a class="code-type" href="http://www.cplusplus.com/reference/string/string/">std::string</a> & <span class="code-argument">_materialName</span>,<br/>                      <span class="code-type" >float</span> <span class="code-argument">_size</span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="7037"/><h3>addMaterial</h3><pre>
++ <span class="code-type" >void</span> <span class="code-function">addMaterial</span> (<span class="code-storage-keyword">const</span> <a class="code-type" href="http://www.cplusplus.com/reference/string/string/">std::string</a> & <span class="code-argument">_name</span>,<br/>                    <a class="code-type" href="class_ege__Material.html">ege::Material</a>* <span class="code-argument">_data</span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="7039"/><h3>setCheckNormal</h3><pre>
++ <span class="code-type" >void</span> <span class="code-function">setCheckNormal</span> (<span class="code-type" >bool</span> <span class="code-argument">_status</span>);<br/></pre>
+set the check of normal position befor sending it to the openGl card<br/><ul>
+<table class="parameter-list">
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_status</span> </td><td> New state.</td></tr>
+</table>
+</ul>
+
+<br/>
+<hr/>
+<a id="7041"/><h3>getCheckNormal</h3><pre>
++ <span class="code-type" >bool</span> <span class="code-function">getCheckNormal</span> (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/></pre>
+get the check value of normal position befor sending it to the openGl card<br/><ul>
+<table class="parameter-list">
+<tr><td><b>Return: </b></td><td></td><td>get the chcking stus of normal or not</td></tr></table>
+</ul>
+
+<br/>
+<hr/>
+<a id="7044"/><h3>getPhysicalProperties</h3><pre>
++ <span class="code-storage-keyword">const</span> <a class="code-type" href="http://www.cplusplus.com/reference/vector/vector/">std::vector</a>&lt;ege::PhysicsShape*&gt; & <span class="code-function">getPhysicalProperties</span> (<span class="code-type" >void</span> <span class="code-argument"></span>) <span class="code-storage-keyword">const</span>;<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="7046"/><h3>setShape</h3><pre>
++ <span class="code-type" >void</span> <span class="code-function">setShape</span> (<span class="code-type" >void</span>* <span class="code-argument">_shape</span>);<br/></pre>
+set the shape pointer (no type  == &gt; user might know it ...)<br/><ul>
+<table class="parameter-list">
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_shape</span> </td><td> The new shape (this remove the previous one)</td></tr>
+</table>
+</ul>
+
+<br/>
+<hr/>
+<a id="7050"/><h3>getShape</h3><pre>
++ <span class="code-type" >void</span>* <span class="code-function">getShape</span> (<span class="code-type" >void</span> <span class="code-argument"></span>);<br/></pre>
+get the pointer on the shame (no type)<br/><ul>
+<table class="parameter-list">
+<tr><td><b>Return: </b></td><td></td><td>Pointer on shape.</td></tr></table>
+</ul>
+
+<br/>
+<hr/>
+<a id="7052"/><h3>setFreeShapeFunction</h3><pre>
++ <span class="code-type" >void</span> <span class="code-function">setFreeShapeFunction</span> (void(*_functionFreeShape)(void*_pointer <span class="code-argument">)</span>);<br/></pre>
+
+<br/>
+<br/>
+<hr/>
+<a id="7054"/><h3>keep</h3><pre>
++ <a class="code-type" href="class_ege__resource__Mesh.html">ege::resource::Mesh</a>* <span class="code-function">keep</span> (<span class="code-storage-keyword">const</span> <a class="code-type" href="http://www.cplusplus.com/reference/string/string/">std::string</a> & <span class="code-argument">_meshname</span>);<br/></pre>
+keep the resource pointer.<br/><b>Note:</b> Never free this pointer by your own...<br/> <ul>
+<table class="parameter-list">
+<td><b>Parameter [input]:</b></td><td><span class="code-argument">_filename</span> </td><td> Name of the ewol mesh file.</td></tr>
+<tr><td><b>Return: </b></td><td></td><td>pointer on the resource or NULL if an error occured.</td></tr></table>
+</ul>
+
+<br/>
+<hr/>
+<h3>release</h3><pre>
++ <span class="code-type" >void</span> <span class="code-function">release</span> (<a class="code-type" href="class_ege__resource__Mesh.html">ege::resource::Mesh</a>* & <span class="code-argument">_object</span>);<br/></pre>
+release the keeped resources<br/><ul>
+<table class="parameter-list">
+<td><b>Parameter [input] [output]:</b></td><td><span class="code-argument">reference</span> </td><td> on the object pointer</td></tr>
+</table>
+</ul>
+
+<br/>
+<hr/>
+	</div>
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-46753803-1', 'heeroyui.github.io');
+	ga('send', 'pageview');
+</script>
+</body>
+</html>
