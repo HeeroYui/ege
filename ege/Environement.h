@@ -50,12 +50,18 @@ namespace ege {
 		protected:
 			std::vector<int32_t> m_groupDestination;
 		public:
-			const std::vector<int32_t>& getDestinationGroup(void) { return m_groupDestination; };
-			void addGroupDestination(int32_t _id) { m_groupDestination.push_back(_id); };
+			const std::vector<int32_t>& getDestinationGroup(void) {
+				return m_groupDestination;
+			};
+			void addGroupDestination(int32_t _id) {
+				m_groupDestination.push_back(_id);
+			};
 		protected:
 			vec3 m_positionSource;
 		public:
-			const vec3& getSourcePosition(void) { return m_positionSource; };
+			const vec3& getSourcePosition(void) {
+				return m_positionSource;
+			};
 		public:
 			ElementInteraction(int32_t _type, int32_t _groupSource, const vec3& _pos) : 
 				m_type(_type),

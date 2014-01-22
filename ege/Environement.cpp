@@ -120,11 +120,9 @@ void ege::Environement::addCreator(const std::string& _type, ege::createElement_
 		EGE_ERROR("Try to add an empty CREATOR ...");
 		return;
 	}
-	if (getHachTableCreating().exist(_type) == true) {
-		getHachTableCreating()[_type] = _creator;
-		return;
-	}
+	EGE_DEBUG("Add creator: " << _type);
 	getHachTableCreating().add(_type, _creator);
+	EGE_DEBUG("Add creator: " << _type << " (done)");
 }
 
 ege::ElementGame* ege::Environement::createElement(const std::string& _type, bool _autoAddElement, enum ege::property _property, void* _value) {

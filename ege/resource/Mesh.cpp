@@ -836,10 +836,10 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 								normalIndex[0] = 0;
 								normalIndex[1] = 0;
 								normalIndex[2] = 0;
-								scanf(inputDataLine, "%d/%d/%d %d/%d/%d %d/%d/%d",
-								      &vertexIndex[0], &uvIndex[0], &normalIndex[0],
-								      &vertexIndex[1], &uvIndex[1], &normalIndex[1],
-								      &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
+								sscanf(inputDataLine, "%d/%d/%d %d/%d/%d %d/%d/%d",
+								       &vertexIndex[0], &uvIndex[0], &normalIndex[0],
+								       &vertexIndex[1], &uvIndex[1], &normalIndex[1],
+								       &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
 								m_listFaces.getValue(meshFaceMaterialID).m_faces.push_back(Face(vertexIndex[0], uvIndex[0], normalIndex[0],
 								                                                               vertexIndex[1], uvIndex[1], normalIndex[1],
 								                                                               vertexIndex[2], uvIndex[2], normalIndex[2]));
