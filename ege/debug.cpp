@@ -8,7 +8,8 @@
 
 #include <ege/debug.h>
 
-const char * egeLibName = "ege      ";
-
-
+int32_t ege::getLogId(void) {
+	static int32_t g_val = etk::log::registerInstance("ege");
+	return g_val;
+}
 

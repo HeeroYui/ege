@@ -51,9 +51,9 @@ namespace ege {
 				m_specularColor = val;
 			}
 			
-		friend etk::CCout& operator <<(etk::CCout& _os, const ege::Light& _obj);
+		friend std::ostream& operator <<(std::ostream& _os, const ege::Light& _obj);
 	};
-	etk::CCout& operator <<(etk::CCout& _os, const ege::Light& _obj);
+	std::ostream& operator <<(std::ostream& _os, const ege::Light& _obj);
 };
 
 
