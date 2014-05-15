@@ -10,7 +10,7 @@
 #include <ege/Material.h>
 #include <ege/debug.h>
 
-ege::MaterialGlId::MaterialGlId(void) :
+ege::MaterialGlId::MaterialGlId() :
   m_GL_ambientFactor(0),
   m_GL_diffuseFactor(0),
   m_GL_specularFactor(0),
@@ -31,7 +31,7 @@ void ege::MaterialGlId::link(ewol::resource::Program* _prog, const std::string& 
 	m_GL_texture0 = _prog->getUniform("EW_texID");
 }
 
-ege::Material::Material(void) :
+ege::Material::Material() :
   m_ambientFactor(1,1,1,1),
   m_diffuseFactor(0,0,0,1),
   m_specularFactor(0,0,0,1),
@@ -39,7 +39,7 @@ ege::Material::Material(void) :
   m_texture0(NULL) {
 	// nothing to do else ...
 }
-ege::Material::~Material(void) {
+ege::Material::~Material() {
 	if(NULL!=m_texture0) {
 		ewol::resource::TextureFile::release(m_texture0);
 	}

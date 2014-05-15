@@ -25,7 +25,7 @@ namespace ege {
 			ege::Environement& m_env;
 		public:
 			ParticuleEngine(ege::Environement& _env); // note : need the engine to register has an dynamic element ... (the first ...)
-			~ParticuleEngine(void);
+			~ParticuleEngine();
 		private:
 			std::vector<Particule*> m_particuleList; //!< all particule created and active
 			std::vector<Particule*> m_particuleRemoved; //!< removed particule
@@ -33,7 +33,7 @@ namespace ege {
 			/**
 			 * @brief clear the particule engine
 			 */
-			void clear(void);
+			void clear();
 			/**
 			 * @brief add a particule in the engine (internal acces only)
 			 * @param[in] _particule Pointer on the particule to add

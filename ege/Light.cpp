@@ -9,7 +9,7 @@
 #include <ege/Light.h>
 #include <ege/debug.h>
 
-ege::Light::Light(void) :
+ege::Light::Light() :
   m_direction(0,0,0),
   m_halfplane(0,0,0),
   m_ambientColor(0,0,0,0),
@@ -23,7 +23,7 @@ ege::Light::Light(void) :
 	// nothing to do else ...
 }
 
-ege::Light::~Light(void) {
+ege::Light::~Light() {
 	
 }
 

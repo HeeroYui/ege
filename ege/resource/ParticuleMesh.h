@@ -18,7 +18,7 @@ namespace ege {
 				int32_t m_GLMainColor;
 			protected:
 				ParticuleMesh(const std::string& _fileName, const std::string& _shaderName);
-				virtual ~ParticuleMesh(void);
+				virtual ~ParticuleMesh();
 			public:
 				virtual void draw(mat4& _positionMatrix,
 				                  const etk::Color<float>& _mainColor,

@@ -31,8 +31,8 @@ namespace ege {
 			int32_t m_GL_diffuseColor;
 			int32_t m_GL_specularColor;
 		public:
-			Light(void);
-			~Light(void);
+			Light();
+			~Light();
 			void link(ewol::resource::Program* _prog, const std::string& _baseName);
 			void draw(ewol::resource::Program* _prog);
 			void setDirection(const vec3& val) {

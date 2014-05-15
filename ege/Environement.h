@@ -42,15 +42,15 @@ namespace ege {
 		protected:
 			int32_t m_type;
 		public:
-			int32_t getType(void) { return m_type; };
+			int32_t getType() { return m_type; };
 		protected:
 			int32_t m_groupSource;
 		public:
-			int32_t getSourceGroup(void) { return m_groupSource; };
+			int32_t getSourceGroup() { return m_groupSource; };
 		protected:
 			std::vector<int32_t> m_groupDestination;
 		public:
-			const std::vector<int32_t>& getDestinationGroup(void) {
+			const std::vector<int32_t>& getDestinationGroup() {
 				return m_groupDestination;
 			};
 			void addGroupDestination(int32_t _id) {
@@ -59,7 +59,7 @@ namespace ege {
 		protected:
 			vec3 m_positionSource;
 		public:
-			const vec3& getSourcePosition(void) {
+			const vec3& getSourcePosition() {
 				return m_positionSource;
 			};
 		public:
@@ -77,8 +77,8 @@ namespace ege {
 			btDynamicsWorld* m_dynamicsWorld; //!< curent system world description
 			std::vector<ege::ElementGame*> m_listElementGame; //!< List of all element added in the Game
 		public:
-			Environement(void);
-			virtual ~Environement(void) { };
+			Environement();
+			virtual ~Environement() { };
 		public:
 			/**
 			 * @brief add a creator element system
@@ -115,14 +115,14 @@ namespace ege {
 			 * @brief get the curent world
 			 * @return pointer on the current world
 			 */
-			btDynamicsWorld* getDynamicWorld(void) {
+			btDynamicsWorld* getDynamicWorld() {
 				return m_dynamicsWorld;
 			};
 			/**
 			 * @breif get a reference on the curent list of element games
 			 * @return all element list
 			 */
-			std::vector<ege::ElementGame*>& getElementGame(void) {
+			std::vector<ege::ElementGame*>& getElementGame() {
 				return m_listElementGame;
 			};
 			/**
@@ -168,7 +168,7 @@ namespace ege {
 			 * @brief get the particule engine reference.
 			 * @return The requested reference on the engine
 			 */
-			ege::ParticuleEngine& getParticuleEngine(void) {
+			ege::ParticuleEngine& getParticuleEngine() {
 				return m_particuleEngine;
 			};
 	};

@@ -16,26 +16,26 @@
 namespace ege {
 	class PhysicsBox : public ege::PhysicsShape {
 		public:
-			PhysicsBox(void) {};
-			virtual ~PhysicsBox(void) {};
+			PhysicsBox() {};
+			virtual ~PhysicsBox() {};
 		public:
 			virtual bool parse(const char* _line);
-			virtual void display(void) {};
+			virtual void display() {};
 		public:
-			virtual enum ege::PhysicsShape::type getType(void) {
+			virtual enum ege::PhysicsShape::type getType() {
 				return ege::PhysicsShape::box;
 			};
 		private:
 			vec3 m_size; // Box size property in X, Y and Z
 		public:
-			const vec3& getSize(void) const {
+			const vec3& getSize() const {
 				return m_size;
 			};
 		public:
-			virtual const ege::PhysicsBox* toBox(void) const {
+			virtual const ege::PhysicsBox* toBox() const {
 				return this;
 			};
-			virtual ege::PhysicsBox* toBox(void) {
+			virtual ege::PhysicsBox* toBox() {
 				return this;
 			};
 	};

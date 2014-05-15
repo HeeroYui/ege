@@ -112,7 +112,7 @@ void ege::widget::Scene::setCamera(ege::Camera* _camera) {
 	}
 }
 
-ege::widget::Scene::~Scene(void) {
+ege::widget::Scene::~Scene() {
 	ewol::resource::Colored3DObject::release(m_debugDrawing);
 /*
 	ewol::resource::release(m_directDrawObject);
@@ -136,23 +136,23 @@ ege::widget::Scene::~Scene(void) {
 	*/
 }
 
-void ege::widget::Scene::onRegenerateDisplay(void) {
+void ege::widget::Scene::onRegenerateDisplay() {
 	if (true == needRedraw()) {
 		
 	}
 }
 
-void ege::widget::Scene::pause(void) {
+void ege::widget::Scene::pause() {
 	EGE_DEBUG("Set pause");
 	m_isRunning = false;
 }
 
-void ege::widget::Scene::resume(void) {
+void ege::widget::Scene::resume() {
 	EGE_DEBUG("Set resume");
 	m_isRunning = true;
 }
 
-void ege::widget::Scene::pauseToggle(void) {
+void ege::widget::Scene::pauseToggle() {
 	if(true == m_isRunning) {
 		EGE_DEBUG("Set Toggle: pause");
 		m_isRunning=false;
@@ -173,7 +173,7 @@ void ege::widget::Scene::pauseToggle(void) {
 #define NUMBER_OF_SUB_PASS  (0)
 
 
-void ege::widget::Scene::onDraw(void) {
+void ege::widget::Scene::onDraw() {
 	#ifdef SCENE_DISPLAY_SPEED
 		g_counterNbTimeDisplay++;
 		g_startTime = ewol::getTime();
@@ -230,7 +230,7 @@ void ege::widget::Scene::onDraw(void) {
 }
 
 // I really does not know what is this ...
-btRigidBody& btActionInterface::getFixedBody(void) {
+btRigidBody& btActionInterface::getFixedBody() {
 	static btRigidBody s_fixed(0, 0,0);
 	s_fixed.setMassProps(btScalar(0.),btVector3(btScalar(0.),btScalar(0.),btScalar(0.)));
 	return s_fixed;

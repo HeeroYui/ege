@@ -13,7 +13,7 @@
 #undef __class__
 #define __class__ "Camera"
 
-void ege::Camera::update(void) {
+void ege::Camera::update() {
 	// Note the view axes of the basic camera is (0,0,-1)
 	// clean matrix :
 	m_matrix.identity();

@@ -25,7 +25,7 @@ namespace ege
 			/**
 			 * @brief update the matrix property
 			 */
-			void update(void);
+			void update();
 		public:
 			/**
 			 * @brief Constructor.
@@ -47,7 +47,7 @@ namespace ege
 			 * @brief get the curent Camera Eye position.
 			 * @return the current position.
 			 */
-			const vec3& getEye(void) const {
+			const vec3& getEye() const {
 				return m_eye;
 			};
 		protected:
@@ -57,7 +57,7 @@ namespace ege
 			 * @brief get the curent Camera origin position.
 			 * @return the current position.
 			 */
-			const vec3& getOrigin(void) const {
+			const vec3& getOrigin() const {
 				return m_calculatedOrigin;
 			};
 		protected:
@@ -67,7 +67,7 @@ namespace ege
 			 * @brief Get the camera viewing vector.
 			 * @return the current position.
 			 */
-			const vec3& getViewVector(void) const {
+			const vec3& getViewVector() const {
 				return m_calculatedViewVector;
 			};
 		protected:
@@ -82,7 +82,7 @@ namespace ege
 			 * @brief get the curent Camera angles.
 			 * @return the current angles Z.
 			 */
-			float getAngleZ(void) const {
+			float getAngleZ() const {
 				return m_angleZ;
 			};
 		protected:
@@ -97,7 +97,7 @@ namespace ege
 			 * @brief get the curent Camera angles.
 			 * @return the current angles Teta.
 			 */
-			float getAngleTeta(void) const {
+			float getAngleTeta() const {
 				return m_angleTeta;
 			};
 		protected:
@@ -112,14 +112,14 @@ namespace ege
 			 * @brief get the curent Camera angles.
 			 * @return the current distance to the eye.
 			 */
-			float getDistance(void) const {
+			float getDistance() const {
 				return m_distance;
 			};
 			/**
 			 * @brief get the transformation matix for the camera.
 			 * @return the current transformation matrix
 			 */
-			const mat4& getMatrix(void) const {
+			const mat4& getMatrix() const {
 				return m_matrix;
 			};
 		protected:

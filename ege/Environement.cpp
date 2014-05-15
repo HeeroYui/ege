@@ -110,7 +110,7 @@ void ege::Environement::getElementNearestFixed(const vec3& _sourcePosition,
 	}
 }
 
-static etk::Hash<ege::createElement_tf>& getHachTableCreating(void) {
+static etk::Hash<ege::createElement_tf>& getHachTableCreating() {
 	static etk::Hash<ege::createElement_tf> s_table;
 	return s_table;
 }
@@ -270,7 +270,7 @@ void ege::Environement::generateInteraction(ege::ElementInteraction& _event) {
 	}
 }
 
-ege::Environement::Environement(void) :
+ege::Environement::Environement() :
   m_dynamicsWorld(NULL),
   m_particuleEngine(*this) {
 	// nothing to do ...

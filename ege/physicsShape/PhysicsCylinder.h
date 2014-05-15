@@ -17,26 +17,26 @@
 namespace ege {
 	class PhysicsCylinder : public ege::PhysicsShape {
 		public:
-			PhysicsCylinder(void) {};
-			virtual ~PhysicsCylinder(void) {};
+			PhysicsCylinder() {};
+			virtual ~PhysicsCylinder() {};
 		public:
 			virtual bool parse(const char* _line);
-			virtual void display(void) {};
+			virtual void display() {};
 		public:
-			virtual enum ege::PhysicsShape::type getType(void) {
+			virtual enum ege::PhysicsShape::type getType() {
 				return ege::PhysicsShape::cylinder;
 			};
 		private:
 			vec3 m_size;
 		public:
-			vec3 getSize(void) const {
+			vec3 getSize() const {
 				return m_size;
 			};
 		public:
-			virtual const ege::PhysicsCylinder* toCylinder(void) const {
+			virtual const ege::PhysicsCylinder* toCylinder() const {
 				return this;
 			};
-			virtual ege::PhysicsCylinder* toCylinder(void) {
+			virtual ege::PhysicsCylinder* toCylinder() {
 				return this;
 			};
 	};

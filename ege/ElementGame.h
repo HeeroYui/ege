@@ -46,12 +46,12 @@ namespace ege {
 			/**
 			 * @brief Destructor
 			 */
-			virtual ~ElementGame(void);
+			virtual ~ElementGame();
 			/**
 			 * @brief get the element Type description string.
 			 * @return A reference on the descriptive string.
 			 */
-			virtual const std::string& getType(void) const;
+			virtual const std::string& getType() const;
 			/**
 			 * @brief init the element with the defined properties
 			 * @param[in] _property Type of the next element
@@ -61,7 +61,7 @@ namespace ege {
 			virtual bool init(enum property _property, void* _value) {
 				return false;
 			};
-			virtual bool unInit(void) {
+			virtual bool unInit() {
 				return true;
 			};
 		private:
@@ -71,7 +71,7 @@ namespace ege {
 			 * @brief get the curent Element Unique ID in the all Game.
 			 * @return The requested Unique ID.
 			 */
-			inline uint32_t getUID(void) const {
+			inline uint32_t getUID() const {
 				return m_uID;
 			};
 		private:
@@ -103,21 +103,21 @@ namespace ege {
 			 * @brief get a pointer on the Mesh file.
 			 * @return the mesh pointer.
 			 */
-			inline ege::resource::Mesh* getMesh(void) {
+			inline ege::resource::Mesh* getMesh() {
 				return m_mesh;
 			};
 			/**
 			 * @brief get a pointer on the bullet collision shape.
 			 * @return the collision pointer.
 			 */
-			inline btCollisionShape* getShape(void) {
+			inline btCollisionShape* getShape() {
 				return m_shape;
 			};
 		private:
 			/**
 			 * @brief remove the curent selected shape.
 			 */
-			void removeShape(void);
+			void removeShape();
 		protected:
 			float m_life; //!< Current life of the object
 			float m_lifeMax; //!< Maximum possible life of the element
@@ -126,19 +126,19 @@ namespace ege {
 			 * @brief get the curent life ratio [0..1]
 			 * @return The proportionnal life
 			 */
-			float getLifeRatio(void);
+			float getLifeRatio();
 			/**
 			 * @brief Check if the element is dead.
 			 * @return true if the element does not exist anymore, false otherwise.
 			 */
-			bool isDead(void) {
+			bool isDead() {
 				return (0 >= m_life)?true:false;
 			};
 			/**
 			 * @brief Request if the element might be removed from the system
 			 * @return true  == > the object is removed
 			 */
-			virtual bool needToRemove(void) {
+			virtual bool needToRemove() {
 				return isDead();
 			}
 			/**
@@ -152,7 +152,7 @@ namespace ege {
 			/**
 			 * @brief Call chan the element life change
 			 */
-			virtual void onLifeChange(void) { };
+			virtual void onLifeChange() { };
 		protected:
 			int32_t m_group; //!< Every element has a generic group
 		public:
@@ -160,7 +160,7 @@ namespace ege {
 			 * @brief get the Group of the element.
 			 * @return The group ID
 			 */
-			inline int32_t getGroup(void) const {
+			inline int32_t getGroup() const {
 				return m_group;
 			};
 			/**
@@ -202,7 +202,7 @@ namespace ege {
 			 * @brief get the theoric position. Sometimes, the element has move due to an explosion or something else, then its real position in not the one that woult it be at the end ...
 			 * @return the theoric position
 			 */
-			virtual vec3 getPositionTheoric(void) {
+			virtual vec3 getPositionTheoric() {
 				return getPosition();
 			};
 			/**
@@ -214,7 +214,7 @@ namespace ege {
 			 * @brief get the current position of the element
 			 * @return the 3D position.
 			 */
-			const vec3& getPosition(void);
+			const vec3& getPosition();
 			/**
 			 * @brief set the current position of the element
 			 * @param[in] _pos set the 3D position.
@@ -224,12 +224,12 @@ namespace ege {
 			 * @brief get the current speed of the element
 			 * @return the 3D speed.
 			 */
-			const vec3& getSpeed(void);
+			const vec3& getSpeed();
 			/**
 			 * @brief get the current mass of the element
 			 * @return the mass in kG.
 			 */
-			const float getInvMass(void);
+			const float getInvMass();
 			/**
 			 * @brief Event arrive when an element has been remove from the system  == > this permit to keep pointer of ennemy, and not search them every cycle ...
 			 * @param[in] _removedElement Pointer on the element removed.
@@ -242,7 +242,7 @@ namespace ege {
 			 * @brief get the element if it is fixed or not. if the element is fixed this is for tower, and all thing does not really move
 			 * @return true : The element is fixed.
 			 */
-			inline bool isFixed(void) {
+			inline bool isFixed() {
 				return m_fixe;
 			};
 		protected:
@@ -252,7 +252,7 @@ namespace ege {
 			 * @brief get the current space needed by the element in the workspace
 			 * @return The dimention needed.
 			 */
-			inline float getRadius(void)
+			inline float getRadius()
 			{
 				return m_radius;
 			};
@@ -262,11 +262,11 @@ namespace ege {
 			/**
 			 * @brief set the elment in the physique engine
 			 */
-			void dynamicEnable(void);
+			void dynamicEnable();
 			/**
 			 * @brief remove this element from the physique engine
 			 */
-			void dynamicDisable(void);
+			void dynamicDisable();
 		private:
 			class localIA : public btActionInterface {
 				private:
@@ -279,7 +279,7 @@ namespace ege {
 					/**
 					 * @brief Destructor
 					 */
-					virtual ~localIA(void) {
+					virtual ~localIA() {
 						
 					};
 				public: // herited function
@@ -295,11 +295,11 @@ namespace ege {
 			/**
 			 * @brief enable periodic call Of this object for processing Artificial Intelligence
 			 */
-			void iaEnable(void);
+			void iaEnable();
 			/**
 			 * @brief disable periodic call Of this object for processing Artificial Intelligence
 			 */
-			void iaDisable(void);
+			void iaDisable();
 			/**
 			 * @brief periodic call for intelligence artificial.
 			 * @param[in] step : step of time in s
@@ -308,7 +308,7 @@ namespace ege {
 			/**
 			 * @brief, call when the element is removed (call only one time
 			 */
-			virtual void onDestroy(void) {};
+			virtual void onDestroy() {};
 	};
 };
 

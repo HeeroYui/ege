@@ -38,12 +38,12 @@ namespace ege {
 			/**
 			 * @brief Destructor.
 			 */
-			virtual ~ParticuleSimple(void) { };
+			virtual ~ParticuleSimple() { };
 		public: // herited elements:
 			virtual void update(float _delta);
-			//virtual void draw(void) { };
-			virtual bool needRemove(void);
-			virtual void init(void);
+			//virtual void draw() { };
+			virtual bool needRemove();
+			virtual void init();
 		protected:
 			float m_lifeFull;
 			float m_life;

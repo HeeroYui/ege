@@ -38,11 +38,11 @@ ege::widget::Mesh::Mesh(const std::string& _filename) :
 	}
 }
 
-ege::widget::Mesh::~Mesh(void) {
+ege::widget::Mesh::~Mesh() {
 	ege::resource::Mesh::release(m_object);
 }
 
-void ege::widget::Mesh::onDraw(void) {
+void ege::widget::Mesh::onDraw() {
 	mat4 transformationMatrix =   etk::matTranslate(vec3(0,0,-m_cameraDistance))
 	                            * etk::matTranslate(m_position)
 	                            * etk::matRotate(vec3(1,0,0),m_angle.x())
@@ -72,7 +72,7 @@ void ege::widget::Mesh::systemDraw(const ewol::DrawProperty& _displayProp) {
 	ewol::openGL::pop();
 }
 
-void ege::widget::Mesh::onRegenerateDisplay(void) {
+void ege::widget::Mesh::onRegenerateDisplay() {
 	if (true == needRedraw()) {
 		
 	}

@@ -28,7 +28,7 @@
 #undef __class__
 #define __class__	"ElementGame"
 
-const std::string& ege::ElementGame::getType(void) const {
+const std::string& ege::ElementGame::getType() const {
 	static const std::string nameType("----");
 	return nameType;
 }
@@ -54,7 +54,7 @@ ege::ElementGame::ElementGame(ege::Environement& _env) :
 	unique++;
 }
 
-ege::ElementGame::~ElementGame(void) {
+ege::ElementGame::~ElementGame() {
 	// in every case remove IA
 	iaDisable();
 	// same ...
@@ -68,7 +68,7 @@ ege::ElementGame::~ElementGame(void) {
 	EGE_DEBUG("Destroy element : uId=" << m_uID);
 }
 
-void ege::ElementGame::removeShape(void) {
+void ege::ElementGame::removeShape() {
 	// no shape
 	if (NULL == m_shape) {
 		return;
@@ -130,7 +130,7 @@ bool ege::ElementGame::setShape(btCollisionShape* _shape) {
 	return true;
 }
 
-float ege::ElementGame::getLifeRatio(void) {
+float ege::ElementGame::getLifeRatio() {
 	if (0 >= m_life) {
 		return 0;
 	}
@@ -157,7 +157,7 @@ void ege::ElementGame::setPosition(const vec3& _pos) {
 	}
 }
 
-const vec3& ege::ElementGame::getPosition(void) {
+const vec3& ege::ElementGame::getPosition() {
 	// this is to prevent error like segmentation fault ...
 	static vec3 emptyPosition(-1000000,-1000000,-1000000);
 	if (NULL!=m_body) {
@@ -166,7 +166,7 @@ const vec3& ege::ElementGame::getPosition(void) {
 	return emptyPosition;
 };
 
-const vec3& ege::ElementGame::getSpeed(void) {
+const vec3& ege::ElementGame::getSpeed() {
 	// this is to prevent error like segmentation fault ...
 	static vec3 emptySpeed(0,0,0);
 	if (NULL!=m_body) {
@@ -175,7 +175,7 @@ const vec3& ege::ElementGame::getSpeed(void) {
 	return emptySpeed;
 };
 
-const float ege::ElementGame::getInvMass(void) {
+const float ege::ElementGame::getInvMass() {
 	if (NULL!=m_body) {
 		return m_body->getInvMass();
 	}
@@ -479,7 +479,7 @@ void ege::ElementGame::draw(int32_t _pass) {
 	}
 }
 
-void ege::ElementGame::dynamicEnable(void) {
+void ege::ElementGame::dynamicEnable() {
 	if (true == m_elementInPhysicsSystem) {
 		return;
 	}
@@ -492,7 +492,7 @@ void ege::ElementGame::dynamicEnable(void) {
 	m_elementInPhysicsSystem = true;
 }
 
-void ege::ElementGame::dynamicDisable(void) {
+void ege::ElementGame::dynamicDisable() {
 	if (false == m_elementInPhysicsSystem) {
 		return;
 	}
@@ -507,7 +507,7 @@ void ege::ElementGame::dynamicDisable(void) {
 	m_elementInPhysicsSystem = false;
 }
 
-void ege::ElementGame::iaEnable(void) {
+void ege::ElementGame::iaEnable() {
 	if (NULL != m_IA) {
 		// IA already started ...
 		return;
@@ -522,7 +522,7 @@ void ege::ElementGame::iaEnable(void) {
 	}
 }
 
-void ege::ElementGame::iaDisable(void) {
+void ege::ElementGame::iaDisable() {
 	if (NULL == m_IA) {
 		// IA already stopped ...
 		return;

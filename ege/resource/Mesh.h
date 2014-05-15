@@ -40,7 +40,7 @@ namespace ege {
 			int32_t m_uv[3];
 			int32_t m_normal[3];
 		public:
-			Face(void) {};
+			Face() {};
 			Face(int32_t v1, int32_t t1,
 			     int32_t v2, int32_t t2,
 			     int32_t v3, int32_t t3) {
@@ -113,7 +113,7 @@ namespace ege {
 				ewol::resource::VirtualBufferObject* m_verticesVBO;
 			protected:
 				Mesh(const std::string& _fileName, const std::string& _shaderName="DATA:textured3D2.prog");
-				virtual ~Mesh(void);
+				virtual ~Mesh();
 			public:
 				virtual void draw(mat4& _positionMatrix, bool _enableDepthTest=true, bool _enableDepthUpdate=true);
 				virtual void draw(mat4& _positionMatrix,
@@ -122,10 +122,10 @@ namespace ege {
 				                  bool _enableDepthUpdate = true) {
 					draw(_positionMatrix, _enableDepthTest, _enableDepthUpdate);
 				}
-				void generateVBO(void);
+				void generateVBO();
 			private:
-				void calculateNormaleFace(void);
-				void calculateNormaleEdge(void);
+				void calculateNormaleFace();
+				void calculateNormaleEdge();
 			public :
 				void createViewBox(const std::string& _materialName,float _size=1.0);
 			private:
@@ -145,10 +145,10 @@ namespace ege {
 				 * @brief get the check value of normal position befor sending it to the openGl card
 				 * @return get the chcking stus of normal or not
 				 */
-				bool getCheckNormal(void) {
+				bool getCheckNormal() {
 					return m_checkNormal;
 				};
-				const std::vector<ege::PhysicsShape*>& getPhysicalProperties(void) const {
+				const std::vector<ege::PhysicsShape*>& getPhysicalProperties() const {
 					return m_physics;
 				};
 			private:
@@ -163,7 +163,7 @@ namespace ege {
 				 * @brief get the pointer on the shame (no type)
 				 * @return Pointer on shape.
 				 */
-				void* getShape(void) {
+				void* getShape() {
 					return m_pointerShape;
 				};
 			private:

@@ -50,7 +50,7 @@ namespace ege {
 				/**
 				 * @brief Destructor of the widget classes
 				 */
-				virtual ~Scene(void);
+				virtual ~Scene();
 				void setBulletConfig(btDefaultCollisionConfiguration* _collisionConfiguration=NULL,
 				                     btCollisionDispatcher* _dispatcher=NULL,
 				                     btBroadphaseInterface* _broadphase=NULL,
@@ -78,15 +78,15 @@ namespace ege {
 				/**
 				 * @brief set the scene in pause for a while
 				 */
-				void pause(void);
+				void pause();
 				/**
 				 * @brief resume the scene activity
 				 */
-				void resume(void);
+				void resume();
 				/**
 				 * @brief Toggle between pause and running
 				 */
-				void pauseToggle(void);
+				void pauseToggle();
 			protected:
 				bool m_debugMode;
 				ewol::resource::Colored3DObject* m_debugDrawing;  //!< for the debug draw elements
@@ -94,7 +94,7 @@ namespace ege {
 				/**
 				 * @brief Toggle the debug mode  == > usefull for DEBUG only ...
 				 */
-				void debugToggle(void) {
+				void debugToggle() {
 					m_debugMode = m_debugMode?false:true;
 				};
 			protected:
@@ -106,7 +106,7 @@ namespace ege {
 				/**
 				 * @brief get the current camera reference for the scene rendering
 				 */
-				ege::Camera& getCamera(void) {
+				ege::Camera& getCamera() {
 					return *m_camera;
 				};
 				/**
@@ -132,10 +132,10 @@ namespace ege {
 				                                std::vector<ege::Environement::ResultNearestElement>& _resultList);
 				
 			protected: // Derived function
-				virtual void onDraw(void);
+				virtual void onDraw();
 			public: // Derived function
 				virtual void systemDraw(const ewol::DrawProperty& _displayProp);
-				virtual void onRegenerateDisplay(void);
+				virtual void onRegenerateDisplay();
 				virtual void periodicCall(const ewol::event::Time& _event);
 		};
 	};

@@ -65,7 +65,7 @@ ege::resource::Mesh::Mesh(const std::string& _fileName, const std::string& _shad
 	}
 }
 
-ege::resource::Mesh::~Mesh(void) {
+ege::resource::Mesh::~Mesh() {
 	// remove dynamics dependencies :
 	ewol::resource::Program::release(m_GLprogram);
 	ewol::resource::VirtualBufferObject::release(m_verticesVBO);
@@ -178,7 +178,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 }
 
 // normal calculation of the normal face is really easy :
-void ege::resource::Mesh::calculateNormaleFace(void) {
+void ege::resource::Mesh::calculateNormaleFace() {
 	m_listFacesNormal.clear();
 	if (m_normalMode != ege::resource::Mesh::normalModeFace) {
 		std::vector<Face>& tmpFaceList = m_listFaces.getValue(0).m_faces;
@@ -192,7 +192,7 @@ void ege::resource::Mesh::calculateNormaleFace(void) {
 	}
 }
 
-void ege::resource::Mesh::calculateNormaleEdge(void) {
+void ege::resource::Mesh::calculateNormaleEdge() {
 	m_listVertexNormal.clear();
 	if (m_normalMode != ege::resource::Mesh::normalModeVertex) {
 		for(size_t iii=0 ; iii<m_listVertex.size() ; iii++) {
@@ -221,7 +221,7 @@ void ege::resource::Mesh::calculateNormaleEdge(void) {
 //#define PRINT_HALF (1)
 //#define TRY_MINIMAL_VBO
 
-void ege::resource::Mesh::generateVBO(void) {
+void ege::resource::Mesh::generateVBO() {
 	// calculate the normal of all faces if needed
 	if (m_normalMode == ege::resource::Mesh::normalModeNone) {
 		// when no normal detected  == > auto generate Face normal ....

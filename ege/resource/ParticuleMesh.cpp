@@ -18,7 +18,7 @@ ege::resource::ParticuleMesh::ParticuleMesh(const std::string& _fileName, const 
 	}
 }
 
-ege::resource::ParticuleMesh::~ParticuleMesh(void)
+ege::resource::ParticuleMesh::~ParticuleMesh()
 {
 	
 }

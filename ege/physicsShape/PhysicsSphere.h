@@ -17,26 +17,26 @@
 namespace ege {
 	class PhysicsSphere : public ege::PhysicsShape {
 		public:
-			PhysicsSphere(void) {};
-			virtual ~PhysicsSphere(void) {};
+			PhysicsSphere() {};
+			virtual ~PhysicsSphere() {};
 		public:
 			virtual bool parse(const char* _line);
-			virtual void display(void) {};
+			virtual void display() {};
 		public:
-			virtual enum ege::PhysicsShape::type getType(void) {
+			virtual enum ege::PhysicsShape::type getType() {
 				return ege::PhysicsShape::sphere;
 			};
 		private:
 			float m_radius; // props["radius"] = obj.scale.x
 		public:
-			float getRadius(void) const {
+			float getRadius() const {
 				return m_radius;
 			};
 		private:
-			virtual const ege::PhysicsSphere* toSphere(void) const {
+			virtual const ege::PhysicsSphere* toSphere() const {
 				return this;
 			};
-			virtual ege::PhysicsSphere* toSphere(void) {
+			virtual ege::PhysicsSphere* toSphere() {
 				return this;
 			};
 	};

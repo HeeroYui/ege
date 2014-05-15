@@ -17,32 +17,32 @@
 namespace ege {
 	class PhysicsCapsule : public ege::PhysicsShape {
 		public:
-			PhysicsCapsule(void) {};
-			virtual ~PhysicsCapsule(void) {};
+			PhysicsCapsule() {};
+			virtual ~PhysicsCapsule() {};
 		public:
 			virtual bool parse(const char* _line);
-			virtual void display(void) {};
+			virtual void display() {};
 		public:
-			virtual enum ege::PhysicsShape::type getType(void) {
+			virtual enum ege::PhysicsShape::type getType() {
 				return ege::PhysicsShape::capsule;
 			};
 		private:
 			float m_radius;
 		public:
-			float getRadius(void) const {
+			float getRadius() const {
 				return m_radius;
 			};
 		private:
 			float m_height;
 		public:
-			float getHeight(void) const {
+			float getHeight() const {
 				return m_height;
 			};
 		public:
-			virtual const ege::PhysicsCapsule* toCapsule(void) const {
+			virtual const ege::PhysicsCapsule* toCapsule() const {
 				return this;
 			};
-			virtual ege::PhysicsCapsule* toCapsule(void) {
+			virtual ege::PhysicsCapsule* toCapsule() {
 				return this;
 			};
 	};

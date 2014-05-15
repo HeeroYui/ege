@@ -18,7 +18,7 @@ ege::ParticuleSimple::ParticuleSimple(ege::ParticuleEngine& _particuleEngine, co
 }
 
 
-void ege::ParticuleSimple::init(void) {
+void ege::ParticuleSimple::init() {
 	m_lifeFull = 3;
 	m_life = m_lifeFull;
 	m_level = 0;
@@ -29,7 +29,7 @@ void ege::ParticuleSimple::init(void) {
 	m_scaleExpand = vec3(0,0,0);
 }
 
-bool ege::ParticuleSimple::needRemove(void) {
+bool ege::ParticuleSimple::needRemove() {
 	return m_life<0.0f;
 }
 

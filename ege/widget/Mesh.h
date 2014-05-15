@@ -33,11 +33,11 @@ namespace ege {
 				float m_cameraDistance;
 			public:
 				Mesh(const std::string& _filename); // automatic considering in the appl Data older
-				virtual ~Mesh(void);
+				virtual ~Mesh();
 			public: // Derived function
-				virtual void onRegenerateDisplay(void);
+				virtual void onRegenerateDisplay();
 				virtual void systemDraw(const ewol::DrawProperty& _displayProp);
-				virtual void onDraw(void);
+				virtual void onDraw();
 				virtual bool onEventInput(const ewol::event::Input& _event);
 				virtual void periodicCall(const ewol::event::Time& _event);
 			public:

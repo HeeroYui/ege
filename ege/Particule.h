@@ -38,15 +38,15 @@ namespace ege {
 			/**
 			 * @brief Destructor.
 			 */
-			virtual ~Particule(void) { };
+			virtual ~Particule() { };
 			/**
 			 * @brief init the particule
 			 */
-			virtual void init(void) { };
+			virtual void init() { };
 			/**
 			 * @brief Un-init the particule
 			 */
-			virtual void UnInit(void) { };
+			virtual void UnInit() { };
 			/**
 			 * @brief update the paticule properties
 			 * @param[in] _delta Delta time from the previous call
@@ -61,20 +61,20 @@ namespace ege {
 			 * @return true : The element might be removed
 			 * @return false : The element might be keeped
 			 */
-			virtual bool needRemove(void) {
+			virtual bool needRemove() {
 				return false;
 			};
 			/**
 			 * @brief get the type of the particule
 			 * @return Type of the current particule
 			 */
-			const char* getParticuleType(void) {
+			const char* getParticuleType() {
 				return m_particuleType;
 			};
 			/**
 			 * @brief When the particule arrive to his end of life, this function is called.
 			 */
-			virtual void onEnd(void) {};
+			virtual void onEnd() {};
 	};
 };
 

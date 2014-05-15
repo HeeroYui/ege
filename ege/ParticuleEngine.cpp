@@ -17,7 +17,7 @@ ege::ParticuleEngine::ParticuleEngine(ege::Environement& _env) :
 	
 }
 
-ege::ParticuleEngine::~ParticuleEngine(void) {
+ege::ParticuleEngine::~ParticuleEngine() {
 	clear();
 }
 
@@ -118,7 +118,7 @@ void ege::ParticuleEngine::draw(const ege::Camera& _camera) {
 	}
 }
 
-void ege::ParticuleEngine::clear(void) {
+void ege::ParticuleEngine::clear() {
 	// clear element not removed
 	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == NULL) {
