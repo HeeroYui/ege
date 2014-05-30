@@ -75,7 +75,7 @@ namespace ege {
 				return m_uID;
 			};
 		private:
-			ege::resource::Mesh* m_mesh; //!< Mesh of the Element (can be NULL)
+			ewol::object::Shared<ege::resource::Mesh> m_mesh; //!< Mesh of the Element (can be nullptr)
 			btCollisionShape* m_shape; //!< shape of the element (set a copy here to have the debug display of it)
 		public:
 			/**
@@ -87,11 +87,11 @@ namespace ege {
 			bool loadMesh(const std::string& _meshFileName);
 			/**
 			 * @brief set the the Mesh properties.
-			 * @param[in] _mesh The mesh pointer. (NULL to force the mesh remove ...)
+			 * @param[in] _mesh The mesh pointer. (nullptr to force the mesh remove ...)
 			 * @note : this remove the shape and the mesh properties.
 			 * @return true if no error occured
 			 */
-			bool setMesh(ege::resource::Mesh* _mesh);
+			bool setMesh(const ewol::object::Shared<ege::resource::Mesh>& _mesh);
 			/**
 			 * @brief set the shape properties.
 			 * @param[in] _shape The shape pointer.
@@ -103,7 +103,7 @@ namespace ege {
 			 * @brief get a pointer on the Mesh file.
 			 * @return the mesh pointer.
 			 */
-			inline ege::resource::Mesh* getMesh() {
+			inline const ewol::object::Shared<ege::resource::Mesh>& getMesh() {
 				return m_mesh;
 			};
 			/**
@@ -186,7 +186,7 @@ namespace ege {
 			/**
 			 * @brief draw the current life of the element
 			 */
-			virtual void drawLife(ewol::resource::Colored3DObject* _draw, const ege::Camera& _camera);
+			virtual void drawLife(const ewol::object::Shared<ewol::resource::Colored3DObject>& _draw, const ege::Camera& _camera);
 			
 		protected:
 			// For debug only ...
@@ -196,7 +196,7 @@ namespace ege {
 			 * @brief Debug display of the current element
 			 * @param[in,out] draw Basic system to draw the debug shape and informations
 			 */
-			virtual void drawDebug(ewol::resource::Colored3DObject* _draw, const ege::Camera& _camera);
+			virtual void drawDebug(const ewol::object::Shared<ewol::resource::Colored3DObject>& _draw, const ege::Camera& _camera);
 			
 			/**
 			 * @brief get the theoric position. Sometimes, the element has move due to an explosion or something else, then its real position in not the one that woult it be at the end ...

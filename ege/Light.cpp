@@ -27,8 +27,8 @@ ege::Light::~Light() {
 	
 }
 
-void ege::Light::link(ewol::resource::Program* _prog, const std::string& _baseName) {
-	if (NULL == _prog) {
+void ege::Light::link(const ewol::object::Shared<ewol::resource::Program>& _prog, const std::string& _baseName) {
+	if (nullptr == _prog) {
 		return;
 	}
 	m_GL_direction = _prog->getUniform(_baseName+".direction");
@@ -38,7 +38,7 @@ void ege::Light::link(ewol::resource::Program* _prog, const std::string& _baseNa
 	m_GL_specularColor = _prog->getUniform(_baseName+".specularColor");
 }
 
-void ege::Light::draw(ewol::resource::Program* _prog) {
+void ege::Light::draw(const ewol::object::Shared<ewol::resource::Program>& _prog) {
 	_prog->uniform3(m_GL_direction, m_direction);
 	_prog->uniform3(m_GL_halfplane, m_halfplane);
 	_prog->uniform4(m_GL_ambientColor, m_ambientColor);

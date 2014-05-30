@@ -89,45 +89,45 @@ namespace ege {
 			};
 			
 			virtual const ege::PhysicsBox* toBox() const {
-				return NULL;
+				return nullptr;
 			};
 			virtual ege::PhysicsBox* toBox() {
-				return NULL;
+				return nullptr;
 			};
 			
 			virtual const ege::PhysicsCylinder* toCylinder() const {
-				return NULL;
+				return nullptr;
 			};
 			virtual ege::PhysicsCylinder* toCylinder() {
-				return NULL;
+				return nullptr;
 			};
 			
 			virtual const ege::PhysicsCapsule* toCapsule() const {
-				return NULL;
+				return nullptr;
 			};
 			virtual ege::PhysicsCapsule* toCapsule() {
-				return NULL;
+				return nullptr;
 			};
 			
 			virtual const ege::PhysicsCone* toCone() const {
-				return NULL;
+				return nullptr;
 			};
 			virtual ege::PhysicsCone* toCone() {
-				return NULL;
+				return nullptr;
 			};
 			
 			virtual const ege::PhysicsConvexHull* toConvexHull() const {
-				return NULL;
+				return nullptr;
 			};
 			virtual ege::PhysicsConvexHull* toConvexHull() {
-				return NULL;
+				return nullptr;
 			};
 			
 			virtual const ege::PhysicsSphere* toSphere() const {
-				return NULL;
+				return nullptr;
 			};
 			virtual ege::PhysicsSphere* toSphere() {
-				return NULL;
+				return nullptr;
 			};
 	};
 };

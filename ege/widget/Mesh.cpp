@@ -21,7 +21,6 @@ extern const char * const ewolEventMeshPressed    = "ewol-mesh-Pressed";
 
 ege::widget::Mesh::Mesh(const std::string& _filename) :
   m_meshName(_filename),
-  m_object(NULL),
   m_position(0,0,0),
   m_angle(0,0,0),
   m_angleSpeed(0,0,0),
@@ -32,14 +31,14 @@ ege::widget::Mesh::Mesh(const std::string& _filename) :
 	setMouseLimit(1);
 	if (_filename!="") {
 		m_object = ege::resource::Mesh::keep(m_meshName);
-		if (NULL == m_object) {
+		if (nullptr == m_object) {
 			EGE_ERROR("Can not load the resource : \"" << m_meshName << "\"");
 		}
 	}
 }
 
 ege::widget::Mesh::~Mesh() {
-	ege::resource::Mesh::release(m_object);
+	
 }
 
 void ege::widget::Mesh::onDraw() {
@@ -48,7 +47,7 @@ void ege::widget::Mesh::onDraw() {
 	                            * etk::matRotate(vec3(1,0,0),m_angle.x())
 	                            * etk::matRotate(vec3(0,1,0),m_angle.y())
 	                            * etk::matRotate(vec3(0,0,1),m_angle.z());
-	if (NULL != m_object) {
+	if (nullptr != m_object) {
 		m_object->draw(transformationMatrix);
 	}
 }
@@ -97,10 +96,9 @@ bool ege::widget::Mesh::onEventInput(const ewol::event::Input& _event) {
 void ege::widget::Mesh::setFile(const std::string& _filename) {
 	if(    _filename!=""
 	    && m_meshName != _filename ) {
-		ege::resource::Mesh::release(m_object);
 		m_meshName = _filename;
 		m_object = ege::resource::Mesh::keep(m_meshName);
-		if (NULL == m_object) {
+		if (nullptr == m_object) {
 			EGE_ERROR("Can not load the resource : \"" << m_meshName << "\"");
 		}
 	}
@@ -127,8 +125,7 @@ void ege::widget::Mesh::setAngleSpeed(const vec3& _speed) {
 	markToRedraw();
 }
 
-void ege::widget::Mesh::setDistance(float _distance)
-{
+void ege::widget::Mesh::setDistance(float _distance) {
 	m_cameraDistance = _distance;
 	markToRedraw();
 }

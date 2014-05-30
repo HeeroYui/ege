@@ -25,7 +25,7 @@ namespace ege {
 			private:
 				// mesh name :
 				std::string m_meshName;
-				ege::resource::Mesh* m_object;
+				ewol::object::Shared<ege::resource::Mesh> m_object;
 				// mesh display properties:
 				vec3 m_position;
 				vec3 m_angle;

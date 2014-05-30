@@ -91,10 +91,10 @@ namespace ege {
 			 * @param[in] _type Type of the element that might be created.
 			 * @param[in] _description String that describe the content of the element properties.
 			 * @param[in] _autoAddElement this permit to add the element if it is created  == > no more action ...
-			 * @return NULL if an error occured OR the pointer on the element and it is already added on the system.
+			 * @return nullptr if an error occured OR the pointer on the element and it is already added on the system.
 			 * @note Pointer is return in case of setting properties on it...
 			 */
-			ege::ElementGame* createElement(const std::string& _type, bool _autoAddElement=true, enum ege::property _property=ege::typeNone, void* _value=NULL);
+			ege::ElementGame* createElement(const std::string& _type, bool _autoAddElement=true, enum ege::property _property=ege::typeNone, void* _value=nullptr);
 			ege::ElementGame* createElement(const std::string& _type, std::string& _description, bool _autoAddElement=true);
 			ege::ElementGame* createElement(const std::string& _type, ejson::Value* _value, bool _autoAddElement=true);
 			ege::ElementGame* createElement(const std::string& _type, exml::Node* _node, bool _autoAddElement=true);
@@ -129,7 +129,7 @@ namespace ege {
 			 * @brief get the nearest Element
 			 * @param[in] _sourceRequest Pointer on the element that request this.
 			 * @param[in] _distance Maximum distance search  == > return the element distance
-			 * @return Pointer on the neares element OR NULL
+			 * @return Pointer on the neares element OR nullptr
 			 */
 			ege::ElementGame* getElementNearest(ege::ElementGame* _sourceRequest, float& _distance);
 			

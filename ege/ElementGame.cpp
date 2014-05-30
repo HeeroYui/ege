@@ -36,17 +36,17 @@ const std::string& ege::ElementGame::getType() const {
 
 ege::ElementGame::ElementGame(ege::Environement& _env) :
   m_env(_env),
-  m_body(NULL),
+  m_body(nullptr),
   m_uID(0),
-  m_mesh(NULL),
-  m_shape(NULL),
+  m_mesh(nullptr),
+  m_shape(nullptr),
   m_life(100),
   m_lifeMax(100),
   m_group(0),
   m_fixe(true),
   m_radius(0),
   m_elementInPhysicsSystem(false),
-  m_IA(NULL) {
+  m_IA(nullptr) {
 	static uint32_t unique=0;
 	m_uID = unique;
 	EGE_DEBUG("Create element : uId=" << m_uID);
@@ -60,61 +60,60 @@ ege::ElementGame::~ElementGame() {
 	// same ...
 	dynamicDisable();
 	removeShape();
-	ege::resource::Mesh::release(m_mesh);
-	if (NULL != m_body) {
+	if (nullptr != m_body) {
 		delete(m_body);
-		m_body = NULL;
+		m_body = nullptr;
 	}
 	EGE_DEBUG("Destroy element : uId=" << m_uID);
 }
 
 void ege::ElementGame::removeShape() {
 	// no shape
-	if (NULL == m_shape) {
+	if (nullptr == m_shape) {
 		return;
 	}
 	// need to chek if the shape is the same as the mesh shape ...
-	if (m_mesh == NULL) {
+	if (m_mesh == nullptr) {
 		// no mesh  == > standalone shape
 		delete(m_shape);
-		m_shape=NULL;
+		m_shape=nullptr;
 		return;
 	}
 	if (m_shape != m_mesh->getShape()) {
 		delete(m_shape);
-		m_shape=NULL;
+		m_shape=nullptr;
 		return;
 	}
 	// otherwise : the shape is auto remove by the resources when no more needed ...
 }
 
 void ege::ElementGame::FunctionFreeShape(void* _pointer) {
-	if (NULL == _pointer) {
+	if (nullptr == _pointer) {
 		return;
 	}
 	delete(static_cast<btCollisionShape*>(_pointer));
 }
 
 bool ege::ElementGame::loadMesh(const std::string& _meshFileName) {
-	ege::resource::Mesh* tmpMesh = ege::resource::Mesh::keep(_meshFileName);
-	if(NULL == tmpMesh) {
+	ewol::object::Shared<ege::resource::Mesh> tmpMesh = ege::resource::Mesh::keep(_meshFileName);
+	if(nullptr == tmpMesh) {
 		EGE_ERROR("can not load the resources : " << _meshFileName);
 		return false;
 	}
 	return setMesh(tmpMesh);
 }
 
-bool ege::ElementGame::setMesh(ege::resource::Mesh* _mesh) {
-	if (NULL!=m_mesh) {
+bool ege::ElementGame::setMesh(const ewol::object::Shared<ege::resource::Mesh>& _mesh) {
+	if (nullptr!=m_mesh) {
 		removeShape();
-		ege::resource::Mesh::release(m_mesh);
+		m_mesh.reset();
 	}
 	m_mesh = _mesh;
 	// auto load the shape :
-	if (NULL == m_mesh) {
+	if (m_mesh == nullptr) {
 		return true;
 	}
-	if (NULL != m_mesh->getShape()) {
+	if (m_mesh->getShape() != nullptr) {
 		m_shape = static_cast<btCollisionShape*>(m_mesh->getShape());
 		return true;
 	}
@@ -150,7 +149,7 @@ void ege::ElementGame::setFireOn(int32_t _groupIdSource, int32_t _type, float _p
 }
 
 void ege::ElementGame::setPosition(const vec3& _pos) {
-	if (NULL!=m_body) {
+	if (nullptr!=m_body) {
 		btTransform transformation = m_body->getCenterOfMassTransform();
 		transformation.setOrigin(_pos);
 		m_body->setCenterOfMassTransform(transformation);
@@ -160,7 +159,7 @@ void ege::ElementGame::setPosition(const vec3& _pos) {
 const vec3& ege::ElementGame::getPosition() {
 	// this is to prevent error like segmentation fault ...
 	static vec3 emptyPosition(-1000000,-1000000,-1000000);
-	if (NULL!=m_body) {
+	if (nullptr!=m_body) {
 		return m_body->getCenterOfMassPosition();
 	}
 	return emptyPosition;
@@ -169,20 +168,20 @@ const vec3& ege::ElementGame::getPosition() {
 const vec3& ege::ElementGame::getSpeed() {
 	// this is to prevent error like segmentation fault ...
 	static vec3 emptySpeed(0,0,0);
-	if (NULL!=m_body) {
+	if (nullptr!=m_body) {
 		return m_body->getLinearVelocity();
 	}
 	return emptySpeed;
 };
 
 const float ege::ElementGame::getInvMass() {
-	if (NULL!=m_body) {
+	if (nullptr!=m_body) {
 		return m_body->getInvMass();
 	}
 	return 0.0000000001f;
 };
 
-static void drawSphere(ewol::resource::Colored3DObject* _draw,
+static void drawSphere(const ewol::object::Shared<ewol::resource::Colored3DObject>& _draw,
                        btScalar _radius,
                        int _lats,
                        int _longs,
@@ -230,8 +229,8 @@ const float lifeHeight = 0.3f;
 const float lifeWidth = 2.0f;
 const float lifeYPos = 1.7f;
 
-void ege::ElementGame::drawLife(ewol::resource::Colored3DObject* _draw, const ege::Camera& _camera) {
-	if (NULL == _draw) {
+void ege::ElementGame::drawLife(const ewol::object::Shared<ewol::resource::Colored3DObject>& _draw, const ege::Camera& _camera) {
+	if (nullptr == _draw) {
 		return;
 	}
 	float ratio = getLifeRatio();
@@ -268,11 +267,11 @@ void ege::ElementGame::drawLife(ewol::resource::Colored3DObject* _draw, const eg
 }
 
 static void drawShape(const btCollisionShape* _shape,
-                      ewol::resource::Colored3DObject* _draw,
+                      const ewol::object::Shared<ewol::resource::Colored3DObject>& _draw,
                       mat4 _transformationMatrix,
                       std::vector<vec3> _tmpVertices) {
-	if(    NULL == _draw
-	    || NULL == _shape) {
+	if(    nullptr == _draw
+	    || nullptr == _shape) {
 		return;
 	}
 	etk::Color<float> tmpColor(1.0, 0.0, 0.0, 0.3);
@@ -338,7 +337,7 @@ static void drawShape(const btCollisionShape* _shape,
 			if (_shape->isConvex()) {
 					EGE_DEBUG("                shape->isConvex()");
 					const btConvexPolyhedron* poly = _shape->isPolyhedral() ? ((btPolyhedralConvexShape*) _shape)->getConvexPolyhedron() : 0;
-					if (NULL!=poly) {
+					if (nullptr!=poly) {
 						EGE_DEBUG("                      have poly");
 						/*
 						glBegin(GL_TRIANGLES);
@@ -435,7 +434,7 @@ static void drawShape(const btCollisionShape* _shape,
 	}
 }
 
-void ege::ElementGame::drawDebug(ewol::resource::Colored3DObject* _draw, const ege::Camera& _camera) {
+void ege::ElementGame::drawDebug(const ewol::object::Shared<ewol::resource::Colored3DObject>& _draw, const ege::Camera& _camera) {
 	m_debugText.clear();
 	m_debugText.setColor(0x00FF00FF);
 	m_debugText.setPos(vec3(-20,32,0));
@@ -465,8 +464,8 @@ void ege::ElementGame::draw(int32_t _pass) {
 		return;
 	}
 	if (_pass == 0) {
-		if(    NULL != m_body
-		    && NULL != m_mesh
+		if(    nullptr != m_body
+		    && nullptr != m_mesh
 		    && m_body->getMotionState() ) {
 			btScalar mmm[16];
 			btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
@@ -483,10 +482,10 @@ void ege::ElementGame::dynamicEnable() {
 	if (true == m_elementInPhysicsSystem) {
 		return;
 	}
-	if(NULL!=m_body) {
+	if(nullptr!=m_body) {
 		m_env.getDynamicWorld()->addRigidBody(m_body);
 	}
-	if(NULL!=m_IA) {
+	if(nullptr!=m_IA) {
 		m_env.getDynamicWorld()->addAction(m_IA);
 	}
 	m_elementInPhysicsSystem = true;
@@ -496,10 +495,10 @@ void ege::ElementGame::dynamicDisable() {
 	if (false == m_elementInPhysicsSystem) {
 		return;
 	}
-	if(NULL!=m_IA) {
+	if(nullptr!=m_IA) {
 		m_env.getDynamicWorld()->removeAction(m_IA);
 	}
-	if(NULL!=m_body) {
+	if(nullptr!=m_body) {
 		// Unlink element from the engine
 		m_env.getDynamicWorld()->removeRigidBody(m_body);
 		m_env.getDynamicWorld()->removeCollisionObject(m_body);
@@ -508,12 +507,12 @@ void ege::ElementGame::dynamicDisable() {
 }
 
 void ege::ElementGame::iaEnable() {
-	if (NULL != m_IA) {
+	if (nullptr != m_IA) {
 		// IA already started ...
 		return;
 	}
 	m_IA = new localIA(*this);
-	if (NULL == m_IA) {
+	if (nullptr == m_IA) {
 		EGE_ERROR("Can not start the IA  == > allocation error");
 		return;
 	}
@@ -523,7 +522,7 @@ void ege::ElementGame::iaEnable() {
 }
 
 void ege::ElementGame::iaDisable() {
-	if (NULL == m_IA) {
+	if (nullptr == m_IA) {
 		// IA already stopped ...
 		return;
 	}
@@ -532,7 +531,7 @@ void ege::ElementGame::iaDisable() {
 	}
 	// remove IA :
 	delete(m_IA);
-	m_IA = NULL;
+	m_IA = nullptr;
 }
 
 

@@ -16,7 +16,7 @@
 
 
 ege::PhysicsShape* ege::PhysicsShape::create(const std::string& _name) {
-	ege::PhysicsShape* tmpp = NULL;
+	ege::PhysicsShape* tmpp = nullptr;
 	std::string name = std::tolower(_name);
 	if (name == "box") {
 		tmpp = new ege::PhysicsBox();
@@ -32,9 +32,9 @@ ege::PhysicsShape* ege::PhysicsShape::create(const std::string& _name) {
 		tmpp = new ege::PhysicsConvexHull();
 	} else {
 		EGE_ERROR("Create an unknow element : '" << _name << "' availlable : [BOX,SPHERE,CONE,CYLINDER,CAPSULE,CONVEXHULL]");
-		return NULL;
+		return nullptr;
 	}
-	if (tmpp == NULL) {
+	if (tmpp == nullptr) {
 		EGE_ERROR("Allocation error for physical element : '" << _name << "'");
 	}
 	return tmpp;

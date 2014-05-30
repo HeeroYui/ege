@@ -33,8 +33,8 @@ namespace ege {
 		public:
 			Light();
 			~Light();
-			void link(ewol::resource::Program* _prog, const std::string& _baseName);
-			void draw(ewol::resource::Program* _prog);
+			void link(const ewol::object::Shared<ewol::resource::Program>& _prog, const std::string& _baseName);
+			void draw(const ewol::object::Shared<ewol::resource::Program>& _prog);
 			void setDirection(const vec3& val) {
 				m_direction = val;
 			}

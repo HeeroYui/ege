@@ -18,8 +18,8 @@ ege::resource::Mesh::Mesh(const std::string& _fileName, const std::string& _shad
   ewol::Resource(_fileName),
   m_normalMode(normalModeNone),
   m_checkNormal(false),
-  m_pointerShape(NULL),
-  m_functionFreeShape(NULL) {
+  m_pointerShape(nullptr),
+  m_functionFreeShape(nullptr) {
 	addObjectType("ewol::resource::Mesh");
 	EGE_VERBOSE("Load a new mesh : '" << _fileName << "'");
 	// get the shader resource :
@@ -33,7 +33,7 @@ ege::resource::Mesh::Mesh(const std::string& _fileName, const std::string& _shad
 	
 	//EGE_DEBUG(m_name << "  " << m_light);
 	m_GLprogram = ewol::resource::Program::keep(_shaderName);
-	if (NULL != m_GLprogram ) {
+	if (m_GLprogram != nullptr) {
 		m_GLPosition = m_GLprogram->getAttribute("EW_coord3d");
 		m_GLtexture = m_GLprogram->getAttribute("EW_texture2d");
 		m_GLNormal = m_GLprogram->getAttribute("EW_normal");
@@ -67,11 +67,9 @@ ege::resource::Mesh::Mesh(const std::string& _fileName, const std::string& _shad
 
 ege::resource::Mesh::~Mesh() {
 	// remove dynamics dependencies :
-	ewol::resource::Program::release(m_GLprogram);
-	ewol::resource::VirtualBufferObject::release(m_verticesVBO);
-	if (m_functionFreeShape!=NULL) {
+	if (m_functionFreeShape!=nullptr) {
 		m_functionFreeShape(m_pointerShape);
-		m_pointerShape = NULL;
+		m_pointerShape = nullptr;
 	}
 }
 
@@ -80,7 +78,7 @@ ege::resource::Mesh::~Mesh() {
 void ege::resource::Mesh::draw(mat4& _positionMatrix,
                                 bool _enableDepthTest,
                                 bool _enableDepthUpdate) {
-	if (m_GLprogram == NULL) {
+	if (m_GLprogram == nullptr) {
 		EGE_ERROR("No shader ...");
 		return;
 	}
@@ -394,7 +392,7 @@ bool ege::resource::Mesh::loadOBJ(const std::string& _fileName) {
 	char inputDataLine[2048];
 	
 	int32_t lineID = 0;
-	while (NULL != fileName.fileGets(inputDataLine, 2048) )
+	while (nullptr != fileName.fileGets(inputDataLine, 2048) )
 	{
 		lineID++;
 		if (inputDataLine[0] == 'v') {
@@ -552,7 +550,7 @@ char* loadNextData(char* _elementLine,
 	/*
 	if (m_zipReadingOffset >= m_zipContent->size()) {
 		element[0] = '\0';
-		return NULL;
+		return nullptr;
 	}
 	*/
 	char current = _file.fileGet();
@@ -585,12 +583,12 @@ char* loadNextData(char* _elementLine,
 		current = _file.fileGet();
 	}
 	if (outSize == 0) {
-		return NULL;
+		return nullptr;
 	} else {
 		// send last line
 		return _elementLine;
 	}
-	return NULL;
+	return nullptr;
 }
 
 void removeEndLine(char* _val) {
@@ -659,14 +657,14 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 	int32_t meshFaceMaterialID = -1;
 	// material global param :
 	std::string materialName = "";
-	ege::Material* material = NULL;
+	ege::Material* material = nullptr;
 	// physical shape:
-	ege::PhysicsShape* physics = NULL;
+	ege::PhysicsShape* physics = nullptr;
 	while(1) {
 		int32_t level = countIndent(fileName);
 		if (level == 0) {
 			// new section ...
-			if (NULL == loadNextData(inputDataLine, 2048, fileName)) {
+			if (nullptr == loadNextData(inputDataLine, 2048, fileName)) {
 				// reach end of file ...
 				break;
 			}
@@ -683,7 +681,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 			if (currentMode >= EMFModuleMesh && currentMode <= EMFModuleMesh_END) {
 				if (level == 1) {
 					//Find mesh name ...
-					if (NULL == loadNextData(inputDataLine, 2048, fileName, true)) {
+					if (nullptr == loadNextData(inputDataLine, 2048, fileName, true)) {
 						// reach end of file ...
 						break;
 					}
@@ -695,7 +693,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 				}
 				if (level == 2) {
 					// In the mesh level 2 the line size must not exced 2048
-					if (NULL == loadNextData(inputDataLine, 2048, fileName, true)) {
+					if (nullptr == loadNextData(inputDataLine, 2048, fileName, true)) {
 						// reach end of file ...
 						break;
 					}
@@ -732,7 +730,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 						break;
 					case EMFModuleMeshVertex: {
 						vec3 vertex(0,0,0);
-						while (NULL != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
+						while (nullptr != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
 							if (inputDataLine[0] == '\0') {
 								break;
 							}
@@ -749,7 +747,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 					}
 					case EMFModuleMeshUVMapping: {
 						vec2 uvMap(0,0);
-						while (NULL != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
+						while (nullptr != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
 							if (inputDataLine[0] == '\0') {
 								break;
 							}
@@ -768,7 +766,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 						m_normalMode = normalModeVertex;
 						vec3 normal(0,0,0);
 						// find the vertex Normal list.
-						while (NULL != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
+						while (nullptr != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
 							if (inputDataLine[0] == '\0') {
 								break;
 							}
@@ -787,7 +785,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 						m_normalMode = normalModeFace;
 						vec3 normal(0,0,0);
 						// find the face Normal list.
-						while (NULL != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
+						while (nullptr != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
 							if (inputDataLine[0] == '\0') {
 								break;
 							}
@@ -806,7 +804,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 					case EMFModuleMeshFaceMaterial:
 						if (level == 3) {
 							//Find mesh name ...
-							if (NULL == loadNextData(inputDataLine, 2048, fileName, true)) {
+							if (nullptr == loadNextData(inputDataLine, 2048, fileName, true)) {
 								// reach end of file ...
 								break;
 							}
@@ -818,7 +816,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 							meshFaceMaterialID = m_listFaces.getId(inputDataLine);
 							EGE_VERBOSE("            " << inputDataLine);
 						} else if (currentMode == EMFModuleMeshFaceMaterial) {
-							while (NULL != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
+							while (nullptr != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
 								if (inputDataLine[0] == '\0') {
 									// end of line
 									break;
@@ -863,14 +861,14 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 						break;
 					case EMFModuleMeshPhysics:
 					case EMFModuleMeshPhysicsNamed:
-						if (NULL == loadNextData(inputDataLine, 2048, fileName, true, false, false)) {
+						if (nullptr == loadNextData(inputDataLine, 2048, fileName, true, false, false)) {
 							// reach end of file ...
 							break;
 						}
 						removeEndLine(inputDataLine);
 						if (level == 3) {
 							physics = ege::PhysicsShape::create(inputDataLine);
-							if (physics == NULL) {
+							if (physics == nullptr) {
 								EGE_ERROR("Allocation error when creating physical shape ...");
 								continue;
 							}
@@ -878,7 +876,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 							EGE_VERBOSE("            " << m_physics.size() << " " << inputDataLine);
 							currentMode = EMFModuleMeshPhysicsNamed;
 						} else if (currentMode == EMFModuleMeshPhysicsNamed) {
-							if (physics == NULL) {
+							if (physics == nullptr) {
 								EGE_ERROR("Can not parse :'" << inputDataLine << "' in physical shape ...");
 								continue;
 							}
@@ -891,7 +889,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 				continue;
 			} else if (currentMode >= EMFModuleMaterial && currentMode <= EMFModuleMaterial_END) {
 				// all material element is stored on 1 line (size < 2048)
-				if (NULL == loadNextData(inputDataLine, 2048, fileName, true)) {
+				if (nullptr == loadNextData(inputDataLine, 2048, fileName, true)) {
 					// reach end of file ...
 					break;
 				}
@@ -899,10 +897,10 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 				if (level == 1) {
 					// add previous material :
 					if(    materialName != ""
-					    && material!=NULL) {
+					    && material!=nullptr) {
 						m_materials.add(materialName, material);
 						materialName = "";
-						material = NULL;
+						material = nullptr;
 					}
 					material = new ege::Material();
 					materialName = inputDataLine;
@@ -916,7 +914,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 					jumpEndLine(fileName);
 					continue;
 				}
-				if (NULL == material) {
+				if (nullptr == material) {
 					EGE_ERROR("material allocation error");
 					jumpEndLine(fileName);
 					continue;
@@ -980,10 +978,10 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 	}
 	// add last material ...
 	if(    materialName != ""
-	    && material!=NULL) {
+	    && material!=nullptr) {
 		m_materials.add(materialName, material);
 		materialName = "";
-		material = NULL;
+		material = nullptr;
 	}
 	EGE_VERBOSE("Stop parsing Mesh file");
 	
@@ -993,7 +991,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 }
 
 void ege::resource::Mesh::addMaterial(const std::string& _name, ege::Material* _data) {
-	if (NULL == _data) {
+	if (nullptr == _data) {
 		EGE_ERROR(" can not add material with null pointer");
 		return;
 	}
@@ -1006,33 +1004,24 @@ void ege::resource::Mesh::addMaterial(const std::string& _name, ege::Material* _
 }
 
 void ege::resource::Mesh::setShape(void* _shape) {
-	if (m_functionFreeShape!=NULL) {
+	if (m_functionFreeShape!=nullptr) {
 		m_functionFreeShape(m_pointerShape);
-		m_pointerShape = NULL;
+		m_pointerShape = nullptr;
 	}
 	m_pointerShape=_shape;
 }
 
-ege::resource::Mesh* ege::resource::Mesh::keep(const std::string& _meshName) {
-	ege::resource::Mesh* object = static_cast<ege::resource::Mesh*>(getManager().localKeep(_meshName));
-	if (NULL != object) {
+ewol::object::Shared<ege::resource::Mesh> ege::resource::Mesh::keep(const std::string& _meshName) {
+	ewol::object::Shared<ege::resource::Mesh> object = ewol::dynamic_pointer_cast<ege::resource::Mesh>(getManager().localKeep(_meshName));
+	if (object != nullptr) {
 		return object;
 	}
 	EGE_DEBUG("CREATE: Mesh: '" << _meshName << "'");
-	object = new ege::resource::Mesh(_meshName);
-	if (NULL == object) {
+	object = ewol::object::makeShared(new ege::resource::Mesh(_meshName));
+	if (object == nullptr) {
 		EGE_ERROR("allocation error of a resource : ??Mesh??" << _meshName);
-		return NULL;
+		return nullptr;
 	}
 	getManager().localAdd(object);
 	return object;
-}
-
-void ege::resource::Mesh::release(ege::resource::Mesh*& _object) {
-	if (NULL == _object) {
-		return;
-	}
-	ewol::Resource* object2 = static_cast<ewol::Resource*>(_object);
-	getManager().release(object2);
-	_object = NULL;
 }

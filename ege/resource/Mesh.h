@@ -91,7 +91,7 @@ namespace ege {
 				enum normalMode m_normalMode; // select the normal mode of display
 				bool m_checkNormal; //!< when enable, this check the normal of the mesh before sending it at the 3d card
 			protected:
-				ewol::resource::Program* m_GLprogram;
+				ewol::object::Shared<ewol::resource::Program> m_GLprogram;
 				int32_t m_GLPosition;
 				int32_t m_GLMatrix;
 				int32_t m_GLMatrixPosition;
@@ -110,8 +110,8 @@ namespace ege {
 				etk::Hash<ege::Material*> m_materials;
 				std::vector<ege::PhysicsShape*> m_physics; //!< collision shape module ... (independent of bullet lib)
 			protected:
-				ewol::resource::VirtualBufferObject* m_verticesVBO;
-			protected:
+				ewol::object::Shared<ewol::resource::VirtualBufferObject> m_verticesVBO;
+			public:
 				Mesh(const std::string& _fileName, const std::string& _shaderName="DATA:textured3D2.prog");
 				virtual ~Mesh();
 			public:
@@ -177,14 +177,9 @@ namespace ege {
 				 * @brief keep the resource pointer.
 				 * @note Never free this pointer by your own...
 				 * @param[in] _filename Name of the ewol mesh file.
-				 * @return pointer on the resource or NULL if an error occured.
+				 * @return pointer on the resource or nullptr if an error occured.
 				 */
-				static ege::resource::Mesh* keep(const std::string& _meshname);
-				/**
-				 * @brief release the keeped resources
-				 * @param[in,out] reference on the object pointer
-				 */
-				static void release(ege::resource::Mesh*& _object);
+				static ewol::object::Shared<ege::resource::Mesh> keep(const std::string& _meshname);
 		};
 	};
 };

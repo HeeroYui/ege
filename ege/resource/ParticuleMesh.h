@@ -16,7 +16,7 @@ namespace ege {
 		class ParticuleMesh : public ege::resource::Mesh {
 			protected:
 				int32_t m_GLMainColor;
-			protected:
+			public:
 				ParticuleMesh(const std::string& _fileName, const std::string& _shaderName);
 				virtual ~ParticuleMesh();
 			public:
@@ -29,14 +29,9 @@ namespace ege {
 				 * @brief keep the resource pointer.
 				 * @note Never free this pointer by your own...
 				 * @param[in] _filename Name of the ewol mesh file.
-				 * @return pointer on the resource or NULL if an error occured.
+				 * @return pointer on the resource or nullptr if an error occured.
 				 */
-				static ege::resource::ParticuleMesh* keep(const std::string& _meshName, const std::string& _shaderName="DATA:ParticuleMesh.prog");
-				/**
-				 * @brief release the keeped resources
-				 * @param[in,out] reference on the object pointer
-				 */
-				static void release(ege::resource::ParticuleMesh*& _object);
+				static ewol::object::Shared<ege::resource::ParticuleMesh> keep(const std::string& _meshName, const std::string& _shaderName="DATA:ParticuleMesh.prog");
 		};
 	};
 };

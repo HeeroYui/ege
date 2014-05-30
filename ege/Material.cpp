@@ -20,8 +20,8 @@ ege::MaterialGlId::MaterialGlId() :
 }
 
 
-void ege::MaterialGlId::link(ewol::resource::Program* _prog, const std::string& _baseName) {
-	if (NULL == _prog) {
+void ege::MaterialGlId::link(const ewol::object::Shared<ewol::resource::Program>& _prog, const std::string& _baseName) {
+	if (nullptr == _prog) {
 		return;
 	}
 	m_GL_ambientFactor = _prog->getUniform(_baseName+".ambientFactor");
@@ -36,21 +36,19 @@ ege::Material::Material() :
   m_diffuseFactor(0,0,0,1),
   m_specularFactor(0,0,0,1),
   m_shininess(1),
-  m_texture0(NULL) {
+  m_texture0(nullptr) {
 	// nothing to do else ...
 }
 ege::Material::~Material() {
-	if(NULL!=m_texture0) {
-		ewol::resource::TextureFile::release(m_texture0);
-	}
+	
 }
 
-void ege::Material::draw(ewol::resource::Program* _prog, const MaterialGlId& _glID) {
+void ege::Material::draw(const ewol::object::Shared<ewol::resource::Program>& _prog, const MaterialGlId& _glID) {
 	_prog->uniform4(_glID.m_GL_ambientFactor, m_ambientFactor);
 	_prog->uniform4(_glID.m_GL_diffuseFactor, m_diffuseFactor);
 	_prog->uniform4(_glID.m_GL_specularFactor, m_specularFactor);
 	_prog->uniform1f(_glID.m_GL_shininess, m_shininess);
-	if (NULL != m_texture0) {
+	if (nullptr != m_texture0) {
 		_prog->setTexture0(_glID.m_GL_texture0, m_texture0->getId());
 	}
 }
@@ -58,17 +56,13 @@ void ege::Material::draw(ewol::resource::Program* _prog, const MaterialGlId& _gl
 void ege::Material::setTexture0(const std::string& _filename) {
 	ivec2 tmpSize(256, 256);
 	// prevent overloard error :
-	ewol::resource::TextureFile* tmpCopy = m_texture0;
+	ewol::object::Shared<ewol::resource::TextureFile> tmpCopy = m_texture0;
 	m_texture0 = ewol::resource::TextureFile::keep(_filename, tmpSize);
-	if (NULL == m_texture0 ) {
+	if (m_texture0 == nullptr) {
 		EGE_ERROR("Can not load specific texture : " << _filename);
 		// retreave previous texture:
 		m_texture0 = tmpCopy;
 		return;
-	}
-	if (NULL != tmpCopy) {
-		// really release previous texture. In case of same texture loading, then we did not have reload it .. just increase and decrease index...
-		ewol::resource::TextureFile::release(tmpCopy);
 	}
 }
 

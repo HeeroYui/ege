@@ -39,11 +39,12 @@ const char * const ege::widget::Scene::eventKillEnemy = "event-scene-kill-ennemy
 ege::widget::Scene::Scene(bool _setAutoBullet, bool _setAutoCamera) :
   m_gameTime(0),
   m_angleView(M_PI/3.0),
-  m_dynamicsWorld(NULL),
-  m_camera(NULL),
+  m_dynamicsWorld(nullptr),
+  m_camera(nullptr),
   m_isRunning(true),
   m_debugMode(false),
-  m_debugDrawing(NULL) {
+  m_debugDrawing(nullptr) {
+	addObjectType("ege::widget::Scene");
 	setKeyboardRepeate(false);
 	setCanHaveFocus(true);
 	periodicCallEnable();
@@ -66,31 +67,31 @@ void ege::widget::Scene::setBulletConfig(btDefaultCollisionConfiguration* _colli
                                  btBroadphaseInterface* _broadphase,
                                  btConstraintSolver* _solver,
                                  btDynamicsWorld* _dynamicsWorld) {
-	if (NULL != _collisionConfiguration) {
+	if (nullptr != _collisionConfiguration) {
 		m_collisionConfiguration = _collisionConfiguration;
 	} else {
 		m_collisionConfiguration = new btDefaultCollisionConfiguration();
 	}
 	///use the default collision dispatcher.
-	if (NULL != _dispatcher) {
+	if (nullptr != _dispatcher) {
 		m_dispatcher = _dispatcher;
 	} else {
 		m_dispatcher = new btCollisionDispatcher(m_collisionConfiguration);
 	}
-	if (NULL != _broadphase) {
+	if (nullptr != _broadphase) {
 		m_broadphase = _broadphase;
 	} else {
 		m_broadphase = new btDbvtBroadphase();
 	}
 	
 	///the default constraint solver.
-	if (NULL != _solver) {
+	if (nullptr != _solver) {
 		m_solver = _solver;
 	} else {
 		m_solver = new btSequentialImpulseConstraintSolver();
 	}
 	
-	if (NULL != _dynamicsWorld) {
+	if (nullptr != _dynamicsWorld) {
 		m_dynamicsWorld = _dynamicsWorld;
 	} else {
 		m_dynamicsWorld = new btDiscreteDynamicsWorld(m_dispatcher,m_broadphase,m_solver,m_collisionConfiguration);
@@ -103,7 +104,7 @@ void ege::widget::Scene::setBulletConfig(btDefaultCollisionConfiguration* _colli
 }
 
 void ege::widget::Scene::setCamera(ege::Camera* _camera) {
-	if (NULL != _camera) {
+	if (nullptr != _camera) {
 		m_camera = _camera;
 	} else {
 		m_camera = new ege::Camera(vec3(0,0,0), 0, DEG_TO_RAD(45) ,50);
@@ -113,7 +114,7 @@ void ege::widget::Scene::setCamera(ege::Camera* _camera) {
 }
 
 ege::widget::Scene::~Scene() {
-	ewol::resource::Colored3DObject::release(m_debugDrawing);
+	
 /*
 	ewol::resource::release(m_directDrawObject);
 	//cleanup in the reverse order of creation/initialization
@@ -215,7 +216,7 @@ void ege::widget::Scene::onDraw() {
 			}
 		#endif
 	}
-	if (NULL!=m_camera) {
+	if (nullptr!=m_camera) {
 		m_env.getParticuleEngine().draw(*m_camera);
 	}
 	#ifdef SCENE_DISPLAY_SPEED
@@ -257,7 +258,7 @@ void ege::widget::Scene::periodicCall(const ewol::event::Time& _event) {
 	//EWOL_DEBUG("Time: m_lastCallTime=" << m_lastCallTime << " deltaTime=" << deltaTime);
 	
 	// update camera positions:
-	if (NULL != m_camera) {
+	if (nullptr != m_camera) {
 		m_camera->periodicCall(curentDelta);
 	}
 	//EGE_DEBUG("stepSimulation (start)");
@@ -274,7 +275,7 @@ void ege::widget::Scene::periodicCall(const ewol::event::Time& _event) {
 		int32_t victoryPoint=0;
 		std::vector<ege::ElementGame*>& elementList = m_env.getElementGame();
 		for (int32_t iii=elementList.size()-1; iii >= 0; --iii) {
-			if(NULL != elementList[iii]) {
+			if(nullptr != elementList[iii]) {
 				if (true == elementList[iii]->needToRemove()) {
 					if (elementList[iii]->getGroup() > 1) {
 						numberEnnemyKilled++;

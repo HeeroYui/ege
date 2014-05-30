@@ -51,12 +51,12 @@ namespace ege {
 				 * @brief Destructor of the widget classes
 				 */
 				virtual ~Scene();
-				void setBulletConfig(btDefaultCollisionConfiguration* _collisionConfiguration=NULL,
-				                     btCollisionDispatcher* _dispatcher=NULL,
-				                     btBroadphaseInterface* _broadphase=NULL,
-				                     btConstraintSolver* _solver=NULL,
-				                     btDynamicsWorld* _dynamicsWorld=NULL);
-				void setCamera(ege::Camera* _camera=NULL);
+				void setBulletConfig(btDefaultCollisionConfiguration* _collisionConfiguration=nullptr,
+				                     btCollisionDispatcher* _dispatcher=nullptr,
+				                     btBroadphaseInterface* _broadphase=nullptr,
+				                     btConstraintSolver* _solver=nullptr,
+				                     btDynamicsWorld* _dynamicsWorld=nullptr);
+				void setCamera(ege::Camera* _camera=nullptr);
 			private:
 				float m_gameTime; //!< time of the game running
 			protected:
@@ -89,7 +89,7 @@ namespace ege {
 				void pauseToggle();
 			protected:
 				bool m_debugMode;
-				ewol::resource::Colored3DObject* m_debugDrawing;  //!< for the debug draw elements
+				ewol::object::Shared<ewol::resource::Colored3DObject> m_debugDrawing;  //!< for the debug draw elements
 			public:
 				/**
 				 * @brief Toggle the debug mode  == > usefull for DEBUG only ...

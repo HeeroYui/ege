@@ -13,7 +13,7 @@
 ege::resource::ParticuleMesh::ParticuleMesh(const std::string& _fileName, const std::string& _shaderName) : 
 	ege::resource::Mesh(_fileName, _shaderName)
 {
-	if (m_GLprogram != NULL) {
+	if (m_GLprogram != nullptr) {
 		m_GLMainColor = m_GLprogram->getUniform("EW_mainColor");
 	}
 }
@@ -28,7 +28,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
                                         bool _enableDepthTest,
                                         bool _enableDepthUpdate)
 {
-	if (m_GLprogram == NULL) {
+	if (m_GLprogram == nullptr) {
 		EGE_ERROR("No shader ...");
 		return;
 	}
@@ -126,27 +126,18 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 	glBindBuffer(GL_ARRAY_BUFFER,0);
 }
 
-ege::resource::ParticuleMesh* ege::resource::ParticuleMesh::keep(const std::string& _meshName, const std::string& _shaderName)
+ewol::object::Shared<ege::resource::ParticuleMesh> ege::resource::ParticuleMesh::keep(const std::string& _meshName, const std::string& _shaderName)
 {
-	ege::resource::ParticuleMesh* object = static_cast<ege::resource::ParticuleMesh*>(getManager().localKeep(_meshName));
-	if (NULL != object) {
+	ewol::object::Shared<ege::resource::ParticuleMesh> object = ewol::dynamic_pointer_cast<ege::resource::ParticuleMesh>(getManager().localKeep(_meshName));
+	if (object != nullptr) {
 		return object;
 	}
-	object = new ege::resource::ParticuleMesh(_meshName, _shaderName);
-	if (object == NULL) {
+	object = ewol::object::makeShared(new ege::resource::ParticuleMesh(_meshName, _shaderName));
+	if (object == nullptr) {
 		EGE_ERROR("allocation error of a resource : ??Mesh??" << _meshName);
-		return NULL;
+		return nullptr;
 	}
 	getManager().localAdd(object);
 	return object;
 }
 
-void ege::resource::ParticuleMesh::release(ege::resource::ParticuleMesh*& _object)
-{
-	if (_object == NULL) {
-		return;
-	}
-	ewol::Resource* object2 = static_cast<ewol::Resource*>(_object);
-	getManager().release(object2);
-	_object = NULL;
-}

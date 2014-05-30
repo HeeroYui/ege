@@ -27,8 +27,8 @@
 #undef __class__
 #define __class__ "CollisionShapeCreator"
 
-btCollisionShape* ege::collision::createShape(const ege::resource::Mesh* _mesh) {
-	if (NULL == _mesh) {
+btCollisionShape* ege::collision::createShape(const ewol::object::Shared<ege::resource::Mesh>& _mesh) {
+	if (nullptr == _mesh) {
 		return new btEmptyShape();;
 	}
 	const std::vector<ege::PhysicsShape*>& physiqueProperty = _mesh->getPhysicalProperties();
@@ -37,29 +37,29 @@ btCollisionShape* ege::collision::createShape(const ege::resource::Mesh* _mesh) 
 	}
 	int32_t count = 0;
 	for (size_t iii=0; iii<physiqueProperty.size(); iii++) {
-		if (NULL == physiqueProperty[iii]) {
+		if (nullptr == physiqueProperty[iii]) {
 			continue;
 		}
 		count++;
 	}
-	btCompoundShape* outputShape = NULL;
+	btCompoundShape* outputShape = nullptr;
 	if (count>1) {
 		outputShape = new btCompoundShape();
 	}
 	for (size_t iii=0; iii<physiqueProperty.size(); iii++) {
-		if (NULL == physiqueProperty[iii]) {
+		if (nullptr == physiqueProperty[iii]) {
 			continue;
 		}
 		switch (physiqueProperty[iii]->getType()) {
 			case ege::PhysicsShape::box : {
 				const ege::PhysicsBox* tmpElement = physiqueProperty[iii]->toBox();
-				if (NULL  == tmpElement) {
+				if (nullptr  == tmpElement) {
 					// ERROR ...
 					continue;
 				}
 				btCollisionShape* tmpShape = new btBoxShape(tmpElement->getSize());
-				if (NULL != tmpShape) {
-					if (outputShape == NULL) {
+				if (nullptr != tmpShape) {
+					if (outputShape == nullptr) {
 						return tmpShape;
 					} else {
 						vec4 qqq = tmpElement->getQuaternion();
@@ -71,13 +71,13 @@ btCollisionShape* ege::collision::createShape(const ege::resource::Mesh* _mesh) 
 			}
 			case ege::PhysicsShape::cylinder : {
 				const ege::PhysicsCylinder* tmpElement = physiqueProperty[iii]->toCylinder();
-				if (NULL  == tmpElement) {
+				if (nullptr  == tmpElement) {
 					// ERROR ...
 					continue;
 				}
 				btCollisionShape* tmpShape = new btCylinderShape(tmpElement->getSize());
-				if (NULL != tmpShape) {
-					if (outputShape == NULL) {
+				if (nullptr != tmpShape) {
+					if (outputShape == nullptr) {
 						return tmpShape;
 					} else {
 						vec4 qqq = tmpElement->getQuaternion();
@@ -89,13 +89,13 @@ btCollisionShape* ege::collision::createShape(const ege::resource::Mesh* _mesh) 
 			}
 			case ege::PhysicsShape::capsule : {
 				const ege::PhysicsCapsule* tmpElement = physiqueProperty[iii]->toCapsule();
-				if (NULL  == tmpElement) {
+				if (nullptr  == tmpElement) {
 					// ERROR ...
 					continue;
 				}
 				btCollisionShape* tmpShape = new btCapsuleShape(tmpElement->getRadius(), tmpElement->getHeight());
-				if (NULL != tmpShape) {
-					if (outputShape == NULL) {
+				if (nullptr != tmpShape) {
+					if (outputShape == nullptr) {
 						return tmpShape;
 					} else {
 						vec4 qqq = tmpElement->getQuaternion();
@@ -107,13 +107,13 @@ btCollisionShape* ege::collision::createShape(const ege::resource::Mesh* _mesh) 
 			}
 			case ege::PhysicsShape::cone : {
 				const ege::PhysicsCone* tmpElement = physiqueProperty[iii]->toCone();
-				if (NULL  == tmpElement) {
+				if (nullptr  == tmpElement) {
 					// ERROR ...
 					continue;
 				}
 				btCollisionShape* tmpShape = new btConeShape(tmpElement->getRadius(), tmpElement->getHeight());
-				if (NULL != tmpShape) {
-					if (outputShape == NULL) {
+				if (nullptr != tmpShape) {
+					if (outputShape == nullptr) {
 						return tmpShape;
 					} else {
 						vec4 qqq = tmpElement->getQuaternion();
@@ -125,13 +125,13 @@ btCollisionShape* ege::collision::createShape(const ege::resource::Mesh* _mesh) 
 			}
 			case ege::PhysicsShape::sphere : {
 				const ege::PhysicsSphere* tmpElement = physiqueProperty[iii]->toSphere();
-				if (NULL  == tmpElement) {
+				if (nullptr  == tmpElement) {
 					// ERROR ...
 					continue;
 				}
 				btCollisionShape* tmpShape = new btSphereShape(tmpElement->getRadius());
-				if (NULL != tmpShape) {
-					if (outputShape == NULL) {
+				if (nullptr != tmpShape) {
+					if (outputShape == nullptr) {
 						return tmpShape;
 					} else {
 						vec4 qqq = tmpElement->getQuaternion();
@@ -143,13 +143,13 @@ btCollisionShape* ege::collision::createShape(const ege::resource::Mesh* _mesh) 
 			}
 			case ege::PhysicsShape::convexHull : {
 				const ege::PhysicsConvexHull* tmpElement = physiqueProperty[iii]->toConvexHull();
-				if (NULL  == tmpElement) {
+				if (nullptr  == tmpElement) {
 					// ERROR ...
 					continue;
 				}
 				btConvexHullShape* tmpShape = new btConvexHullShape(&(tmpElement->getPointList()[0].x()), tmpElement->getPointList().size());
-				if (NULL != tmpShape) {
-					if (outputShape == NULL) {
+				if (nullptr != tmpShape) {
+					if (outputShape == nullptr) {
 						return tmpShape;
 					} else {
 						vec4 qqq = tmpElement->getQuaternion();
@@ -164,7 +164,7 @@ btCollisionShape* ege::collision::createShape(const ege::resource::Mesh* _mesh) 
 				break;
 		}
 	}
-	if (NULL == outputShape) {
+	if (nullptr == outputShape) {
 		return new btEmptyShape();
 	}
 	return outputShape;

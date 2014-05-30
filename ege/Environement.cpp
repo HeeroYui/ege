@@ -16,14 +16,14 @@
 
 
 ege::ElementGame* ege::Environement::getElementNearest(ege::ElementGame* _sourceRequest, float& _distance) {
-	if (NULL == _sourceRequest) {
-		return NULL;
+	if (nullptr == _sourceRequest) {
+		return nullptr;
 	}
 	vec3 sourcePosition = _sourceRequest->getPosition();
-	ege::ElementGame* result = NULL;
+	ege::ElementGame* result = nullptr;
 	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
-		// chack NULL  pointer
-		if (NULL == m_listElementGame[iii]) {
+		// chack nullptr  pointer
+		if (nullptr == m_listElementGame[iii]) {
 			continue;
 		}
 		if (m_listElementGame[iii]->getGroup() <= 0) {
@@ -52,11 +52,11 @@ void ege::Environement::getElementNearest(const vec3& _sourcePosition,
 	_resultList.clear();
 	ege::Environement::ResultNearestElement result;
 	result.dist = 99999999999.0f;
-	result.element = NULL;
+	result.element = nullptr;
 	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
-		// chack NULL  pointer
+		// chack nullptr  pointer
 		result.element = m_listElementGame[iii];
-		if (NULL == result.element) {
+		if (nullptr == result.element) {
 			continue;
 		}
 		// check distance ...
@@ -78,11 +78,11 @@ void ege::Environement::getElementNearestFixed(const vec3& _sourcePosition,
 	_resultList.clear();
 	ege::Environement::ResultNearestElement result;
 	result.dist = 99999999999.0f;
-	result.element = NULL;
+	result.element = nullptr;
 	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
-		// chack NULL  pointer
+		// chack nullptr  pointer
 		result.element = m_listElementGame[iii];
-		if (NULL == result.element) {
+		if (nullptr == result.element) {
 			continue;
 		}
 		if (false == result.element->isFixed()) {
@@ -116,7 +116,7 @@ static etk::Hash<ege::createElement_tf>& getHachTableCreating() {
 }
 
 void ege::Environement::addCreator(const std::string& _type, ege::createElement_tf _creator) {
-	if (NULL == _creator) {
+	if (nullptr == _creator) {
 		EGE_ERROR("Try to add an empty CREATOR ...");
 		return;
 	}
@@ -128,23 +128,23 @@ void ege::Environement::addCreator(const std::string& _type, ege::createElement_
 ege::ElementGame* ege::Environement::createElement(const std::string& _type, bool _autoAddElement, enum ege::property _property, void* _value) {
 	if (false == getHachTableCreating().exist(_type)) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
-		return NULL;
+		return nullptr;
 	}
 	ege::createElement_tf creatorPointer = getHachTableCreating()[_type];
-	if (NULL == creatorPointer) {
-		EGE_ERROR("NULL pointer creator  == > internal error... '" << _type << "'");
-		return NULL;
+	if (nullptr == creatorPointer) {
+		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
+		return nullptr;
 	}
 	ege::ElementGame* tmpElement = creatorPointer(*this);
-	if (NULL == tmpElement) {
+	if (nullptr == tmpElement) {
 		EGE_ERROR("allocation error '" << _type << "'");
-		return NULL;
+		return nullptr;
 	}
 	if (false == tmpElement->init(_property, _value)) {
 		EGE_ERROR("Init error ... '" << _type << "'");
 		// remove created element ...
 		delete(tmpElement);
-		return NULL;
+		return nullptr;
 	}
 	if (_autoAddElement == true) {
 		addElementGame(tmpElement);
@@ -167,11 +167,11 @@ ege::ElementGame* ege::Environement::createElement(const std::string& _type, exm
 
 void ege::Environement::addElementGame(ege::ElementGame* _newElement) {
 	// prevent memory allocation and un allocation ...
-	if (NULL == _newElement) {
+	if (nullptr == _newElement) {
 		return;
 	}
 	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
-		if (NULL == m_listElementGame[iii]) {
+		if (nullptr == m_listElementGame[iii]) {
 			m_listElementGame[iii] = _newElement;
 			m_listElementGame[iii]->dynamicEnable();
 			return;
@@ -182,12 +182,12 @@ void ege::Environement::addElementGame(ege::ElementGame* _newElement) {
 }
 
 void ege::Environement::rmElementGame(ege::ElementGame* _removeElement) {
-	if (NULL == _removeElement) {
+	if (nullptr == _removeElement) {
 		return;
 	}
 	// inform the element that an element has been removed  == > this permit to keep pointer on elements ...
 	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
-		if (NULL != m_listElementGame[iii]) {
+		if (nullptr != m_listElementGame[iii]) {
 			m_listElementGame[iii]->elementIsRemoved(_removeElement);
 		}
 	}
@@ -198,7 +198,7 @@ void ege::Environement::rmElementGame(ege::ElementGame* _removeElement) {
 			m_listElementGame[iii]->dynamicDisable();
 			m_listElementGame[iii]->unInit();
 			delete(m_listElementGame[iii]);
-			m_listElementGame[iii] = NULL;
+			m_listElementGame[iii] = nullptr;
 		}
 	}
 }
@@ -212,11 +212,11 @@ void ege::Environement::getOrderedElementForDisplay(std::vector<ege::Environemen
 	// basic element result
 	ege::Environement::ResultNearestElement result;
 	result.dist = 99999999999.0f;
-	result.element = NULL;
+	result.element = nullptr;
 	// for all element in the game we chek if it is needed to display it ...
 	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
-		// chack NULL  pointer
-		if (NULL == m_listElementGame[iii]) {
+		// chack nullptr  pointer
+		if (nullptr == m_listElementGame[iii]) {
 			// no pointer null are set in the output list ...
 			continue;
 		}
@@ -254,7 +254,7 @@ void ege::Environement::getOrderedElementForDisplay(std::vector<ege::Environemen
 void ege::Environement::generateInteraction(ege::ElementInteraction& _event) {
 	// inform the element that an element has been removed  == > this permit to keep pointer on elements ...
 	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
-		if (NULL == m_listElementGame[iii]) {
+		if (nullptr == m_listElementGame[iii]) {
 			continue;
 		}
 		_event.applyEvent(*m_listElementGame[iii]);
@@ -271,7 +271,7 @@ void ege::Environement::generateInteraction(ege::ElementInteraction& _event) {
 }
 
 ege::Environement::Environement() :
-  m_dynamicsWorld(NULL),
+  m_dynamicsWorld(nullptr),
   m_particuleEngine(*this) {
 	// nothing to do ...
 }

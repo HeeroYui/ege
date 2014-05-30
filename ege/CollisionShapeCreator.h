@@ -16,7 +16,7 @@
 
 namespace ege {
 	namespace collision {
-		btCollisionShape* createShape(const ege::resource::Mesh* _mesh);
+		btCollisionShape* createShape(const ewol::object::Shared<ege::resource::Mesh>& _mesh);
 	};
 };
 #endif
