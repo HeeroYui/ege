@@ -37,8 +37,11 @@ namespace ege {
 	namespace widget {
 		class Scene : public ewol::Widget {
 			public:
+				// extern event
 				static const char * const eventPlayTimeChange;
 				static const char * const eventKillEnemy;
+				// configurations:
+				static const char * const configStatus;
 			protected:
 				ege::Environement m_env;
 			public:
@@ -133,6 +136,8 @@ namespace ege {
 				
 			protected: // Derived function
 				virtual void onDraw();
+				virtual bool onSetConfig(const ewol::object::Config& _conf);
+				virtual bool onGetConfig(const char* _config, std::string& _result) const;
 			public: // Derived function
 				virtual void systemDraw(const ewol::DrawProperty& _displayProp);
 				virtual void onRegenerateDisplay();

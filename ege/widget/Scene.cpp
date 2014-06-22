@@ -33,7 +33,7 @@
 
 const char * const ege::widget::Scene::eventPlayTimeChange = "event-scene-play-time-change";
 const char * const ege::widget::Scene::eventKillEnemy = "event-scene-kill-ennemy";
-
+const char * const ege::widget::Scene::configStatus = "status";
 
 
 ege::widget::Scene::Scene(bool _setAutoBullet, bool _setAutoCamera) :
@@ -50,6 +50,7 @@ ege::widget::Scene::Scene(bool _setAutoBullet, bool _setAutoCamera) :
 	periodicCallEnable();
 	addEventId(eventPlayTimeChange);
 	addEventId(eventKillEnemy);
+	registerConfig(configStatus, "list", "start;stop", "Satus of the activity of the Scene");
 	
 	m_debugDrawing = ewol::resource::Colored3DObject::keep();
 	
@@ -370,5 +371,35 @@ vec3 ege::widget::Scene::convertScreenPositionInMapPosition(const vec2& _posScre
 	return m_camera->projectOnZGround(calculateDeltaAngle(_posScreen));
 }
 
+
+bool ege::widget::Scene::onSetConfig(const ewol::object::Config& _conf) {
+	if (true == Widget::onSetConfig(_conf)) {
+		return true;
+	}
+	if (_conf.getConfig() == configStatus) {
+		if(compare_no_case(_conf.getData(), "start") == true) {
+			resume();
+		} else if(compare_no_case(_conf.getData(), "stop") == true) {
+			pause();
+		}
+		return true;
+	}
+	return false;
+}
+
+bool ege::widget::Scene::onGetConfig(const char* _config, std::string& _result) const {
+	if (true == ewol::Widget::onGetConfig(_config, _result)) {
+		return true;
+	}
+	if (_config == configStatus) {
+		if (m_isRunning == true) {
+			_result = "start";
+		} else {
+			_result = "stop";
+		}
+		return true;
+	}
+	return false;
+}
 
 
