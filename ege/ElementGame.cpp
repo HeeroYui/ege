@@ -139,7 +139,7 @@ float ege::ElementGame::getLifeRatio() {
 void ege::ElementGame::setFireOn(int32_t _groupIdSource, int32_t _type, float _power, const vec3& _center) {
 	float previousLife = m_life;
 	m_life += _power;
-	m_life = etk_avg(0, m_life, m_lifeMax);
+	m_life = std::avg(0, m_life, m_lifeMax);
 	if (m_life <= 0) {
 		EGE_DEBUG("[" << getUID() << "] element is killed ..." << getType());
 	}
