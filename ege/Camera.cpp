@@ -113,12 +113,12 @@ void ege::Camera::setAngleZ(float _angleZ) {
 }
 
 void ege::Camera::setAngleTeta(float _angleTeta) {
-	m_angleTeta = std::avg(M_PI/10.0f, _angleTeta, M_PI/2.0f);
+	m_angleTeta = std::avg((float)M_PI/10.0f, _angleTeta, (float)M_PI/2.0f);
 	update();
 }
 
 void ege::Camera::setDistance(float _distance) {
-	m_distance = std::avg(5, _distance, 150);
+	m_distance = std::avg(5.0f, _distance, 150.0f);
 	update();
 }
 
@@ -129,13 +129,13 @@ void ege::Camera::periodicCall(float _step) {
 	if (true == m_forceViewTop) {
 		if (0.0f != m_offsetFactor) {
 			m_offsetFactor -= _step*localFactor;
-			m_offsetFactor = std::avg(0,m_offsetFactor,1);
+			m_offsetFactor = std::avg(0.0f,m_offsetFactor,1.0f);
 			update();
 		}
 	} else {
 		if (1.0f != m_offsetFactor) {
 			m_offsetFactor += _step*localFactor;
-			m_offsetFactor = std::avg(0,m_offsetFactor,1);
+			m_offsetFactor = std::avg(0.0f,m_offsetFactor,1.0f);
 			update();
 		}
 	}

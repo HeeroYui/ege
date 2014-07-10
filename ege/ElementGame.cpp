@@ -139,7 +139,7 @@ float ege::ElementGame::getLifeRatio() {
 void ege::ElementGame::setFireOn(int32_t _groupIdSource, int32_t _type, float _power, const vec3& _center) {
 	float previousLife = m_life;
 	m_life += _power;
-	m_life = std::avg(0, m_life, m_lifeMax);
+	m_life = std::avg(0.0f, m_life, m_lifeMax);
 	if (m_life <= 0) {
 		EGE_DEBUG("[" << getUID() << "] element is killed ..." << getType());
 	}
@@ -436,7 +436,7 @@ static void drawShape(const btCollisionShape* _shape,
 
 void ege::ElementGame::drawDebug(const ewol::object::Shared<ewol::resource::Colored3DObject>& _draw, const ege::Camera& _camera) {
 	m_debugText.clear();
-	m_debugText.setColor(0x00FF00FF);
+	m_debugText.setColor(etk::Color<>(0x00, 0xFF, 0x00, 0xFF));
 	m_debugText.setPos(vec3(-20,32,0));
 	m_debugText.print(getType());
 	m_debugText.setPos(vec3(-20,20,0));
