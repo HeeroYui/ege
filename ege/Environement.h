@@ -42,11 +42,15 @@ namespace ege {
 		protected:
 			int32_t m_type;
 		public:
-			int32_t getType() { return m_type; };
+			int32_t getType() {
+				return m_type;
+			};
 		protected:
 			int32_t m_groupSource;
 		public:
-			int32_t getSourceGroup() { return m_groupSource; };
+			int32_t getSourceGroup() {
+				return m_groupSource;
+			};
 		protected:
 			std::vector<int32_t> m_groupDestination;
 		public:
@@ -80,6 +84,10 @@ namespace ege {
 			Environement();
 			virtual ~Environement() { };
 		public:
+			/**
+			 * @brief Remove all from the current environement
+			 */
+			void clear();
 			/**
 			 * @brief add a creator element system
 			 * @param[in] _type Type of the element.

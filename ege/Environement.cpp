@@ -275,3 +275,13 @@ ege::Environement::Environement() :
   m_particuleEngine(*this) {
 	// nothing to do ...
 }
+
+void ege::Environement::clear() {
+	for (auto &it : m_listElementGame) {
+		if (it != nullptr) {
+			delete it;
+			it = nullptr;
+		}
+	}
+	m_listElementGame.clear();
+}
