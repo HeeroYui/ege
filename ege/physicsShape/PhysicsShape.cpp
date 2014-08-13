@@ -17,7 +17,7 @@
 
 ege::PhysicsShape* ege::PhysicsShape::create(const std::string& _name) {
 	ege::PhysicsShape* tmpp = nullptr;
-	std::string name = std::tolower(_name);
+	std::string name = etk::tolower(_name);
 	if (name == "box") {
 		tmpp = new ege::PhysicsBox();
 	} else if (name == "sphere") {
