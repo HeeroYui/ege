@@ -40,16 +40,16 @@ namespace ege {
 				// extern event
 				static const char * const eventPlayTimeChange;
 				static const char * const eventKillEnemy;
-				// configurations:
-				static const char * const configStatus;
 			protected:
 				ege::Environement m_env;
-			public:
+			protected:
 				/**
 				 * @brief Constructor of the widget classes
 				 * @return (no execption generated (not managed in embended platform))
 				 */
-				Scene(bool _setAutoBullet=true, bool _setAutoCamera=true);
+				Scene();
+				void init(bool _setAutoBullet=true, bool _setAutoCamera=true);
+			public:
 				/**
 				 * @brief Destructor of the widget classes
 				 */
@@ -73,7 +73,13 @@ namespace ege {
 			// camera section
 				ege::Camera* m_camera; //!< display point of view.
 			// Other elements
-				bool m_isRunning; //!< the display is running (not in pause)
+			public:
+				enum gameStatus {
+					gameStart,
+					gameStop
+				};
+			protected:
+				ewol::object::ParamList<enum gameStatus> m_isRunning; //!< the display is running (not in pause)
 				float m_ratioTime; //!< Ratio time for the speed of the game ...
 				// Note : This is only for temporary elements : on the display
 				std::vector<ege::Environement::ResultNearestElement> m_displayElementOrdered;
@@ -92,7 +98,7 @@ namespace ege {
 				void pauseToggle();
 			protected:
 				bool m_debugMode;
-				ewol::object::Shared<ewol::resource::Colored3DObject> m_debugDrawing;  //!< for the debug draw elements
+				std::shared_ptr<ewol::resource::Colored3DObject> m_debugDrawing;  //!< for the debug draw elements
 			public:
 				/**
 				 * @brief Toggle the debug mode  == > usefull for DEBUG only ...
@@ -136,8 +142,7 @@ namespace ege {
 				
 			protected: // Derived function
 				virtual void onDraw();
-				virtual bool onSetConfig(const ewol::object::Config& _conf);
-				virtual bool onGetConfig(const char* _config, std::string& _result) const;
+				virtual void onParameterChangeValue(const ewol::object::ParameterRef& _paramPointer);
 			public: // Derived function
 				virtual void systemDraw(const ewol::DrawProperty& _displayProp);
 				virtual void onRegenerateDisplay();

@@ -95,7 +95,7 @@ void ege::ElementGame::FunctionFreeShape(void* _pointer) {
 }
 
 bool ege::ElementGame::loadMesh(const std::string& _meshFileName) {
-	ewol::object::Shared<ege::resource::Mesh> tmpMesh = ege::resource::Mesh::keep(_meshFileName);
+	std::shared_ptr<ege::resource::Mesh> tmpMesh = ege::resource::Mesh::create(_meshFileName);
 	if(nullptr == tmpMesh) {
 		EGE_ERROR("can not load the resources : " << _meshFileName);
 		return false;
@@ -103,7 +103,7 @@ bool ege::ElementGame::loadMesh(const std::string& _meshFileName) {
 	return setMesh(tmpMesh);
 }
 
-bool ege::ElementGame::setMesh(const ewol::object::Shared<ege::resource::Mesh>& _mesh) {
+bool ege::ElementGame::setMesh(const std::shared_ptr<ege::resource::Mesh>& _mesh) {
 	if (nullptr!=m_mesh) {
 		removeShape();
 		m_mesh.reset();
@@ -181,7 +181,7 @@ const float ege::ElementGame::getInvMass() {
 	return 0.0000000001f;
 };
 
-static void drawSphere(const ewol::object::Shared<ewol::resource::Colored3DObject>& _draw,
+static void drawSphere(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw,
                        btScalar _radius,
                        int _lats,
                        int _longs,
@@ -229,7 +229,7 @@ const float lifeHeight = 0.3f;
 const float lifeWidth = 2.0f;
 const float lifeYPos = 1.7f;
 
-void ege::ElementGame::drawLife(const ewol::object::Shared<ewol::resource::Colored3DObject>& _draw, const ege::Camera& _camera) {
+void ege::ElementGame::drawLife(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const ege::Camera& _camera) {
 	if (nullptr == _draw) {
 		return;
 	}
@@ -267,7 +267,7 @@ void ege::ElementGame::drawLife(const ewol::object::Shared<ewol::resource::Color
 }
 
 static void drawShape(const btCollisionShape* _shape,
-                      const ewol::object::Shared<ewol::resource::Colored3DObject>& _draw,
+                      const std::shared_ptr<ewol::resource::Colored3DObject>& _draw,
                       mat4 _transformationMatrix,
                       std::vector<vec3> _tmpVertices) {
 	if(    nullptr == _draw
@@ -434,7 +434,7 @@ static void drawShape(const btCollisionShape* _shape,
 	}
 }
 
-void ege::ElementGame::drawDebug(const ewol::object::Shared<ewol::resource::Colored3DObject>& _draw, const ege::Camera& _camera) {
+void ege::ElementGame::drawDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const ege::Camera& _camera) {
 	m_debugText.clear();
 	m_debugText.setColor(etk::Color<>(0x00, 0xFF, 0x00, 0xFF));
 	m_debugText.setPos(vec3(-20,32,0));

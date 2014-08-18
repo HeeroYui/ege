@@ -25,14 +25,16 @@ namespace ege {
 			private:
 				// mesh name :
 				std::string m_meshName;
-				ewol::object::Shared<ege::resource::Mesh> m_object;
+				std::shared_ptr<ege::resource::Mesh> m_object;
 				// mesh display properties:
 				vec3 m_position;
 				vec3 m_angle;
 				vec3 m_angleSpeed;
 				float m_cameraDistance;
+			protected:
+				Mesh();
+				void init(const std::string& _filename); // automatic considering in the appl Data older
 			public:
-				Mesh(const std::string& _filename); // automatic considering in the appl Data older
 				virtual ~Mesh();
 			public: // Derived function
 				virtual void onRegenerateDisplay();

@@ -33,26 +33,30 @@
 
 const char * const ege::widget::Scene::eventPlayTimeChange = "event-scene-play-time-change";
 const char * const ege::widget::Scene::eventKillEnemy = "event-scene-kill-ennemy";
-const char * const ege::widget::Scene::configStatus = "status";
 
 
-ege::widget::Scene::Scene(bool _setAutoBullet, bool _setAutoCamera) :
+ege::widget::Scene::Scene() :
   m_gameTime(0),
   m_angleView(M_PI/3.0),
   m_dynamicsWorld(nullptr),
   m_camera(nullptr),
-  m_isRunning(true),
+  m_isRunning(*this, "status", gameStart, "Satus of the activity of the Scene"),
   m_debugMode(false),
   m_debugDrawing(nullptr) {
 	addObjectType("ege::widget::Scene");
+	addEventId(eventPlayTimeChange);
+	addEventId(eventKillEnemy);
+}
+
+void ege::widget::Scene::init(bool _setAutoBullet, bool _setAutoCamera) {
+	ewol::Widget::init();
 	setKeyboardRepeate(false);
 	setCanHaveFocus(true);
 	periodicCallEnable();
-	addEventId(eventPlayTimeChange);
-	addEventId(eventKillEnemy);
-	registerConfig(configStatus, "list", "start;stop", "Satus of the activity of the Scene");
+	m_isRunning.add(gameStart, "start", "Scene is started");
+	m_isRunning.add(gameStop, "stop", "Scene is stopped");
 	
-	m_debugDrawing = ewol::resource::Colored3DObject::keep();
+	m_debugDrawing = ewol::resource::Colored3DObject::create();
 	
 	m_ratioTime = 1.0f;
 	if (_setAutoBullet == true) {
@@ -146,21 +150,21 @@ void ege::widget::Scene::onRegenerateDisplay() {
 
 void ege::widget::Scene::pause() {
 	EGE_DEBUG("Set pause");
-	m_isRunning = false;
+	m_isRunning.set(gameStop);
 }
 
 void ege::widget::Scene::resume() {
 	EGE_DEBUG("Set resume");
-	m_isRunning = true;
+	m_isRunning.set(gameStart);
 }
 
 void ege::widget::Scene::pauseToggle() {
-	if(true == m_isRunning) {
+	if(m_isRunning.get() == gameStart) {
 		EGE_DEBUG("Set Toggle: pause");
-		m_isRunning=false;
+		m_isRunning.set(gameStop);
 	} else {
 		EGE_DEBUG("Set Toggle: resume");
-		m_isRunning=true;
+		m_isRunning.set(gameStart);
 	}
 }
 
@@ -245,7 +249,7 @@ void ege::widget::Scene::periodicCall(const ewol::event::Time& _event) {
 		curentDelta *= m_ratioTime;
 	}
 	// check if the processing is availlable
-	if (false == m_isRunning) {
+	if (m_isRunning.get() == gameStart) {
 		markToRedraw();
 		return;
 	}
@@ -371,35 +375,12 @@ vec3 ege::widget::Scene::convertScreenPositionInMapPosition(const vec2& _posScre
 	return m_camera->projectOnZGround(calculateDeltaAngle(_posScreen));
 }
 
-
-bool ege::widget::Scene::onSetConfig(const ewol::object::Config& _conf) {
-	if (true == Widget::onSetConfig(_conf)) {
-		return true;
+void ege::widget::Scene::onParameterChangeValue(const ewol::object::ParameterRef& _paramPointer) {
+	ewol::Widget::onParameterChangeValue(_paramPointer);
+	if (_paramPointer == m_isRunning) {
+		// nothing to do ...
 	}
-	if (_conf.getConfig() == configStatus) {
-		if(compare_no_case(_conf.getData(), "start") == true) {
-			resume();
-		} else if(compare_no_case(_conf.getData(), "stop") == true) {
-			pause();
-		}
-		return true;
-	}
-	return false;
 }
 
-bool ege::widget::Scene::onGetConfig(const char* _config, std::string& _result) const {
-	if (true == ewol::Widget::onGetConfig(_config, _result)) {
-		return true;
-	}
-	if (_config == configStatus) {
-		if (m_isRunning == true) {
-			_result = "start";
-		} else {
-			_result = "stop";
-		}
-		return true;
-	}
-	return false;
-}
 
 

@@ -28,7 +28,7 @@ namespace ege {
 			int32_t m_GL_shininess;
 			int32_t m_GL_texture0;
 			MaterialGlId();
-			void link(const ewol::object::Shared<ewol::resource::Program>& _prog, const std::string& _baseName);
+			void link(const std::shared_ptr<ewol::resource::Program>& _prog, const std::string& _baseName);
 	};
 	class Material {
 		private:
@@ -37,13 +37,13 @@ namespace ege {
 			vec4 m_diffuseFactor;
 			vec4 m_specularFactor;
 			float m_shininess;
-			ewol::object::Shared<ewol::resource::TextureFile> m_texture0;
+			std::shared_ptr<ewol::resource::TextureFile> m_texture0;
 		public:
 			std::vector<uint32_t> m_listIndexFaces;
 		public:
 			Material();
 			~Material();
-			void draw(const ewol::object::Shared<ewol::resource::Program>& _prog, const ege::MaterialGlId& _glID);
+			void draw(const std::shared_ptr<ewol::resource::Program>& _prog, const ege::MaterialGlId& _glID);
 			void setAmbientFactor(const vec4& _val) {
 				m_ambientFactor = _val;
 			}

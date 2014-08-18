@@ -14,13 +14,17 @@
 #undef __class__
 #define __class__	"resource::Mesh"
 
-ege::resource::Mesh::Mesh(const std::string& _fileName, const std::string& _shaderName) :
-  ewol::Resource(_fileName),
+ege::resource::Mesh::Mesh() :
   m_normalMode(normalModeNone),
   m_checkNormal(false),
   m_pointerShape(nullptr),
   m_functionFreeShape(nullptr) {
-	addObjectType("ewol::resource::Mesh");
+	addObjectType("ege::resource::Mesh");
+	
+}
+
+void ege::resource::Mesh::init(const std::string& _fileName, const std::string& _shaderName) {
+	ewol::Resource::init(_fileName);
 	EGE_VERBOSE("Load a new mesh : '" << _fileName << "'");
 	// get the shader resource :
 	m_GLPosition = 0;
@@ -32,7 +36,7 @@ ege::resource::Mesh::Mesh(const std::string& _fileName, const std::string& _shad
 	m_light.setSpecularColor(vec4(0.0,0.0,0.0,1));
 	
 	//EGE_DEBUG(m_name << "  " << m_light);
-	m_GLprogram = ewol::resource::Program::keep(_shaderName);
+	m_GLprogram = ewol::resource::Program::create(_shaderName);
 	if (m_GLprogram != nullptr) {
 		m_GLPosition = m_GLprogram->getAttribute("EW_coord3d");
 		m_GLtexture = m_GLprogram->getAttribute("EW_texture2d");
@@ -44,17 +48,17 @@ ege::resource::Mesh::Mesh(const std::string& _fileName, const std::string& _shad
 		m_light.link(m_GLprogram, "EW_directionalLight");
 	}
 	// this is the properties of the buffer requested : "r"/"w" + "-" + buffer type "f"=flaot "i"=integer
-	m_verticesVBO = ewol::resource::VirtualBufferObject::keep(4);
+	m_verticesVBO = ewol::resource::VirtualBufferObject::create(4);
 	
 	// load the curent file :
 	std::string tmpName = etk::tolower(_fileName);
 	// select the corect loader :
-	if (end_with(tmpName, ".obj") == true) {
+	if (etk::end_with(tmpName, ".obj") == true) {
 		if (loadOBJ(_fileName) == false) {
 			EGE_ERROR("Error To load OBJ file " << tmpName );
 			return;
 		}
-	} else if (end_with(tmpName, ".emf") ) {
+	} else if (etk::end_with(tmpName, ".emf") ) {
 		if (loadEMF(_fileName) == false) {
 			EGE_ERROR("Error To load EMF file " << tmpName );
 			return;
@@ -1009,19 +1013,4 @@ void ege::resource::Mesh::setShape(void* _shape) {
 		m_pointerShape = nullptr;
 	}
 	m_pointerShape=_shape;
-}
-
-ewol::object::Shared<ege::resource::Mesh> ege::resource::Mesh::keep(const std::string& _meshName) {
-	ewol::object::Shared<ege::resource::Mesh> object = ewol::dynamic_pointer_cast<ege::resource::Mesh>(getManager().localKeep(_meshName));
-	if (object != nullptr) {
-		return object;
-	}
-	EGE_DEBUG("CREATE: Mesh: '" << _meshName << "'");
-	object = ewol::object::makeShared(new ege::resource::Mesh(_meshName));
-	if (object == nullptr) {
-		EGE_ERROR("allocation error of a resource : ??Mesh??" << _meshName);
-		return nullptr;
-	}
-	getManager().localAdd(object);
-	return object;
 }

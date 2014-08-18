@@ -20,7 +20,7 @@ ege::MaterialGlId::MaterialGlId() :
 }
 
 
-void ege::MaterialGlId::link(const ewol::object::Shared<ewol::resource::Program>& _prog, const std::string& _baseName) {
+void ege::MaterialGlId::link(const std::shared_ptr<ewol::resource::Program>& _prog, const std::string& _baseName) {
 	if (nullptr == _prog) {
 		return;
 	}
@@ -43,7 +43,7 @@ ege::Material::~Material() {
 	
 }
 
-void ege::Material::draw(const ewol::object::Shared<ewol::resource::Program>& _prog, const MaterialGlId& _glID) {
+void ege::Material::draw(const std::shared_ptr<ewol::resource::Program>& _prog, const MaterialGlId& _glID) {
 	_prog->uniform4(_glID.m_GL_ambientFactor, m_ambientFactor);
 	_prog->uniform4(_glID.m_GL_diffuseFactor, m_diffuseFactor);
 	_prog->uniform4(_glID.m_GL_specularFactor, m_specularFactor);
@@ -56,8 +56,8 @@ void ege::Material::draw(const ewol::object::Shared<ewol::resource::Program>& _p
 void ege::Material::setTexture0(const std::string& _filename) {
 	ivec2 tmpSize(256, 256);
 	// prevent overloard error :
-	ewol::object::Shared<ewol::resource::TextureFile> tmpCopy = m_texture0;
-	m_texture0 = ewol::resource::TextureFile::keep(_filename, tmpSize);
+	std::shared_ptr<ewol::resource::TextureFile> tmpCopy = m_texture0;
+	m_texture0 = ewol::resource::TextureFile::create(_filename, tmpSize);
 	if (m_texture0 == nullptr) {
 		EGE_ERROR("Can not load specific texture : " << _filename);
 		// retreave previous texture:

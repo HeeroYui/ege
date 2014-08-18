@@ -15,10 +15,8 @@
 #include <etk/math/Vector2D.h>
 #include <etk/math/Matrix4.h>
 
-namespace ege
-{
-	class Camera
-	{
+namespace ege {
+	class Camera {
 		protected:
 			mat4 m_matrix; //!< transformation matrix.
 			float m_offsetFactor; //!< this variable is used to move the camera to the top position of the system  == > automaticly

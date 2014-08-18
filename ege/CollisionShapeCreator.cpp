@@ -27,7 +27,7 @@
 #undef __class__
 #define __class__ "CollisionShapeCreator"
 
-btCollisionShape* ege::collision::createShape(const ewol::object::Shared<ege::resource::Mesh>& _mesh) {
+btCollisionShape* ege::collision::createShape(const std::shared_ptr<ege::resource::Mesh>& _mesh) {
 	if (nullptr == _mesh) {
 		return new btEmptyShape();;
 	}

@@ -19,18 +19,22 @@ extern const char * const ewolEventMeshPressed    = "ewol-mesh-Pressed";
 
 
 
-ege::widget::Mesh::Mesh(const std::string& _filename) :
-  m_meshName(_filename),
+ege::widget::Mesh::Mesh():
   m_position(0,0,0),
   m_angle(0,0,0),
   m_angleSpeed(0,0,0),
   m_cameraDistance(10.0) {
 	addObjectType("ege::widget::Mesh");
 	addEventId(ewolEventMeshPressed);
+}
+
+void ege::widget::Mesh::init(const std::string& _filename) {
+	ewol::Widget::init(_filename);
+	m_meshName = _filename;
 	// Limit event at 1:
 	setMouseLimit(1);
 	if (_filename!="") {
-		m_object = ege::resource::Mesh::keep(m_meshName);
+		m_object = ege::resource::Mesh::create(m_meshName);
 		if (nullptr == m_object) {
 			EGE_ERROR("Can not load the resource : \"" << m_meshName << "\"");
 		}
@@ -97,7 +101,7 @@ void ege::widget::Mesh::setFile(const std::string& _filename) {
 	if(    _filename!=""
 	    && m_meshName != _filename ) {
 		m_meshName = _filename;
-		m_object = ege::resource::Mesh::keep(m_meshName);
+		m_object = ege::resource::Mesh::create(m_meshName);
 		if (nullptr == m_object) {
 			EGE_ERROR("Can not load the resource : \"" << m_meshName << "\"");
 		}

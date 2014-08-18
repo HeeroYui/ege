@@ -91,7 +91,7 @@ namespace ege {
 				enum normalMode m_normalMode; // select the normal mode of display
 				bool m_checkNormal; //!< when enable, this check the normal of the mesh before sending it at the 3d card
 			protected:
-				ewol::object::Shared<ewol::resource::Program> m_GLprogram;
+				std::shared_ptr<ewol::resource::Program> m_GLprogram;
 				int32_t m_GLPosition;
 				int32_t m_GLMatrix;
 				int32_t m_GLMatrixPosition;
@@ -110,10 +110,13 @@ namespace ege {
 				etk::Hash<ege::Material*> m_materials;
 				std::vector<ege::PhysicsShape*> m_physics; //!< collision shape module ... (independent of bullet lib)
 			protected:
-				ewol::object::Shared<ewol::resource::VirtualBufferObject> m_verticesVBO;
+				std::shared_ptr<ewol::resource::VirtualBufferObject> m_verticesVBO;
+			protected:
+				Mesh();
+				void init(const std::string& _fileName, const std::string& _shaderName="DATA:textured3D2.prog");
 			public:
-				Mesh(const std::string& _fileName, const std::string& _shaderName="DATA:textured3D2.prog");
 				virtual ~Mesh();
+				DECLARE_RESOURCE_NAMED_FACTORY(Mesh);
 			public:
 				virtual void draw(mat4& _positionMatrix, bool _enableDepthTest=true, bool _enableDepthUpdate=true);
 				virtual void draw(mat4& _positionMatrix,
@@ -172,14 +175,6 @@ namespace ege {
 				void setFreeShapeFunction(void (*_functionFreeShape)(void* _pointer)) {
 					m_functionFreeShape = _functionFreeShape;
 				};
-			public:
-				/**
-				 * @brief keep the resource pointer.
-				 * @note Never free this pointer by your own...
-				 * @param[in] _filename Name of the ewol mesh file.
-				 * @return pointer on the resource or nullptr if an error occured.
-				 */
-				static ewol::object::Shared<ege::resource::Mesh> keep(const std::string& _meshname);
 		};
 	};
 };
