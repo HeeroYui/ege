@@ -13,15 +13,14 @@
 #include <ewol/widget/Widget.h>
 #include <ege/resource/Mesh.h>
 
-extern const char * const ewolEventMeshPressed;
-
-
 namespace ege {
 	namespace widget {
 		/**
 		 * @ingroup ewolWidgetGroup
 		 */
 		class Mesh :public ewol::Widget {
+			public:
+				ewol::object::Signal<void> signalPressed;
 			private:
 				// mesh name :
 				std::string m_meshName;

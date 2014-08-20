@@ -30,12 +30,9 @@
 #undef __class__
 #define __class__ "Scene"
 
-
-const char * const ege::widget::Scene::eventPlayTimeChange = "event-scene-play-time-change";
-const char * const ege::widget::Scene::eventKillEnemy = "event-scene-kill-ennemy";
-
-
 ege::widget::Scene::Scene() :
+  signalPlayTimeChange(*this, "time-change"),
+  signalKillEnemy(*this, "kill-ennemy"),
   m_gameTime(0),
   m_angleView(M_PI/3.0),
   m_dynamicsWorld(nullptr),
@@ -44,8 +41,6 @@ ege::widget::Scene::Scene() :
   m_debugMode(false),
   m_debugDrawing(nullptr) {
 	addObjectType("ege::widget::Scene");
-	addEventId(eventPlayTimeChange);
-	addEventId(eventKillEnemy);
 }
 
 void ege::widget::Scene::init(bool _setAutoBullet, bool _setAutoCamera) {
@@ -257,7 +252,7 @@ void ege::widget::Scene::periodicCall(const ewol::event::Time& _event) {
 	int32_t lastGameTime = m_gameTime;
 	m_gameTime += curentDelta;
 	if (lastGameTime != (int32_t)m_gameTime) {
-		generateEventId(eventPlayTimeChange, etk::to_string(m_gameTime));
+		signalPlayTimeChange.emit(shared_from_this(), m_gameTime);
 	}
 	
 	//EWOL_DEBUG("Time: m_lastCallTime=" << m_lastCallTime << " deltaTime=" << deltaTime);
@@ -293,7 +288,7 @@ void ege::widget::Scene::periodicCall(const ewol::event::Time& _event) {
 		}
 		
 		if (0 != numberEnnemyKilled) {
-			generateEventId(eventKillEnemy, etk::to_string(numberEnnemyKilled));
+			signalKillEnemy.emit(shared_from_this(), numberEnnemyKilled);
 		}
 	}
 	markToRedraw();

@@ -11,21 +11,18 @@
 #include <ewol/resource/Manager.h>
 #include <ege/debug.h>
 
-
-extern const char * const ewolEventMeshPressed    = "ewol-mesh-Pressed";
-
 #undef __class__
 #define __class__ "Mesh"
 
 
 
 ege::widget::Mesh::Mesh():
+  signalPressed(*this, "pressed"),
   m_position(0,0,0),
   m_angle(0,0,0),
   m_angleSpeed(0,0,0),
   m_cameraDistance(10.0) {
 	addObjectType("ege::widget::Mesh");
-	addEventId(ewolEventMeshPressed);
 }
 
 void ege::widget::Mesh::init(const std::string& _filename) {
@@ -90,7 +87,7 @@ bool ege::widget::Mesh::onEventInput(const ewol::event::Input& _event) {
 	//EGE_DEBUG("Event on BT ...");
 	if (1 == _event.getId()) {
 		if(ewol::key::statusSingle == _event.getStatus()) {
-			generateEventId(ewolEventMeshPressed);
+			signalPressed.emit(shared_from_this());
 			return true;
 		}
 	}
