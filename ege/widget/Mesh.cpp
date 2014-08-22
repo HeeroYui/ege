@@ -87,7 +87,7 @@ bool ege::widget::Mesh::onEventInput(const ewol::event::Input& _event) {
 	//EGE_DEBUG("Event on BT ...");
 	if (1 == _event.getId()) {
 		if(ewol::key::statusSingle == _event.getStatus()) {
-			signalPressed.emit(shared_from_this());
+			signalPressed.emit();
 			return true;
 		}
 	}
