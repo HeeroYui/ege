@@ -244,7 +244,7 @@ void ege::widget::Scene::periodicCall(const ewol::event::Time& _event) {
 		curentDelta *= m_ratioTime;
 	}
 	// check if the processing is availlable
-	if (m_isRunning.get() == gameStart) {
+	if (m_isRunning.get() == gameStop) {
 		markToRedraw();
 		return;
 	}
