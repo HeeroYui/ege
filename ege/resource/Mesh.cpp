@@ -10,6 +10,9 @@
 #include <ege/resource/Mesh.h>
 #include <ewol/resource/Manager.h>
 #include <etk/os/FSNode.h>
+#include <ege/resource/tools/viewBox.h>
+#include <ege/resource/tools/isoSphere.h>
+#include <ege/resource/tools/icoSphere.h>
 
 #undef __class__
 #define __class__	"resource::Mesh"
@@ -20,11 +23,11 @@ ege::resource::Mesh::Mesh() :
   m_pointerShape(nullptr),
   m_functionFreeShape(nullptr) {
 	addObjectType("ege::resource::Mesh");
-	
 }
 
 void ege::resource::Mesh::init(const std::string& _fileName, const std::string& _shaderName) {
 	ewol::Resource::init(_fileName);
+	addObjectType("ege::resource::Mesh");
 	EGE_VERBOSE("Load a new mesh : '" << _fileName << "'");
 	// get the shader resource :
 	m_GLPosition = 0;
@@ -69,6 +72,7 @@ void ege::resource::Mesh::init(const std::string& _fileName, const std::string& 
 	}
 }
 
+
 ege::resource::Mesh::~Mesh() {
 	// remove dynamics dependencies :
 	if (m_functionFreeShape!=nullptr) {
@@ -76,6 +80,23 @@ ege::resource::Mesh::~Mesh() {
 		m_pointerShape = nullptr;
 	}
 }
+
+void ege::resource::Mesh::clean() {
+	for (auto &elem : m_physics) {
+		delete(elem);
+	}
+	m_physics.clear();
+	for (int32_t iii=0; iii<m_materials.size(); ++iii) {
+		delete(m_materials[iii]);
+	}
+	m_materials.clear();
+	m_listFaces.clear();
+	m_listVertexNormal.clear();
+	m_listFacesNormal.clear();
+	m_listUV.clear();
+	m_listVertex.clear();
+}
+
 
 //#define DISPLAY_NB_VERTEX_DISPLAYED
 
@@ -288,96 +309,17 @@ void ege::resource::Mesh::generateVBO() {
 
 void ege::resource::Mesh::createViewBox(const std::string& _materialName,float _size) {
 	m_normalMode = normalModeNone;
-	// This is the direct generation basis on the .obj system
-	/*
-			           5                       6  
-			            o---------------------o   
-			           /.                    /|   
-			          / .                   / |   
-			         /  .                  /  |   
-			        /   .                 /   |   
-			       /    .                /    |   
-			    4 /     .               /     |   
-			     o---------------------o      |   
-			     |      .              |7     |   
-			     |      .              |      |   
-			     |      .              |      |   
-			     |      .              |      |   
-			     |      o..............|......o   
-			     |     . 1             |     / 2  
-			     |    .                |    /     
-			     |   .                 |   /      
-			     |  .                  |  /       
-			     | .                   | /        
-			     |.                    |/         
-			     o---------------------o          
-			    0                       3         
-	*/
-	m_listVertex.push_back(vec3( _size, -_size, -_size)); // 0
-	m_listVertex.push_back(vec3( _size, -_size,  _size)); // 1
-	m_listVertex.push_back(vec3(-_size, -_size,  _size)); // 2
-	m_listVertex.push_back(vec3(-_size, -_size, -_size)); // 3
-	m_listVertex.push_back(vec3( _size,  _size, -_size)); // 4
-	m_listVertex.push_back(vec3( _size,  _size,  _size)); // 5
-	m_listVertex.push_back(vec3(-_size,  _size,  _size)); // 6
-	m_listVertex.push_back(vec3(-_size,  _size, -_size)); // 7
-	/*
-		     o----------o----------o----------o
-		     |8         |9         |10        |11
-		     |          |          |          |
-		     |          |          |          |
-		     |    0     |    1     |    2     |
-		     |          |          |          |
-		     |          |          |          |
-		     |          |          |          |
-		     |          |          |          |
-		     o----------o----------o----------o
-		     |4         |5         |6         |7
-		     |          |          |          |
-		     |          |          |          |
-		     |    3     |    4     |    5     |
-		     |          |          |          |
-		     |          |          |          |
-		     |          |          |          |
-		     |          |          |          |
-		     o----------o----------o----------o
-		     0          1          2          3
-	*/
-	m_listUV.push_back(vec2(0.0    , 0.0    )); // 0
-	m_listUV.push_back(vec2(1.0/3.0, 0.0    )); // 1
-	m_listUV.push_back(vec2(2.0/3.0, 0.0    )); // 2
-	m_listUV.push_back(vec2(1.0    , 0.0    )); // 3
-	m_listUV.push_back(vec2(0.0    , 0.5    )); // 4
-	m_listUV.push_back(vec2(1.0/3.0, 0.5    )); // 5
-	m_listUV.push_back(vec2(2.0/3.0, 0.5    )); // 6
-	m_listUV.push_back(vec2(1.0    , 0.5    )); // 7
-	m_listUV.push_back(vec2(0.0    , 1.0    )); // 8
-	m_listUV.push_back(vec2(1.0/3.0, 1.0    )); // 9
-	m_listUV.push_back(vec2(2.0/3.0, 1.0    )); // 10
-	m_listUV.push_back(vec2(1.0    , 1.0    )); // 11
-	
-	if (m_listFaces.exist(_materialName) == false) {
-		FaceIndexing empty;
-		m_listFaces.add(_materialName, empty);
-	}
-	{
-		FaceIndexing& tmpElement = m_listFaces[_materialName];
-		tmpElement.m_faces.push_back(Face(0,1, 1,5,  2,6)); // 4
-		tmpElement.m_faces.push_back(Face(0,1, 2,6,  3,2)); // 4
-		tmpElement.m_faces.push_back(Face(4,4, 0,0,  3,1)); // 3
-		tmpElement.m_faces.push_back(Face(4,4, 3,1,  7,5)); // 3
-		tmpElement.m_faces.push_back(Face(2,6, 6,10, 7,11)); // 2
-		tmpElement.m_faces.push_back(Face(2,6, 7,11, 3,7)); // 2
-		tmpElement.m_faces.push_back(Face(4,2, 7,3,  6,7)); // 5
-		tmpElement.m_faces.push_back(Face(4,2, 6,7,  5,6)); // 5
-		tmpElement.m_faces.push_back(Face(1,5, 5,9,  6,10)); // 1
-		tmpElement.m_faces.push_back(Face(1,5, 6,10, 2,6)); // 1
-		tmpElement.m_faces.push_back(Face(0,4, 4,8,  5,9)); // 0
-		tmpElement.m_faces.push_back(Face(0,4, 5,9,  1,5)); // 0
-	}
+	ege::viewBox::create(m_materials, m_listFaces, m_listVertex, m_listUV,
+	                     _materialName, _size);
 	calculateNormaleFace();
 }
 
+void ege::resource::Mesh::createIcoSphere(const std::string& _materialName,float _size) {
+	m_normalMode = normalModeNone;
+	ege::icoSphere::create(m_materials, m_listFaces, m_listVertex, m_listUV,
+	                       _materialName, 2);
+	calculateNormaleFace();
+}
 
 bool ege::resource::Mesh::loadOBJ(const std::string& _fileName) {
 	m_normalMode = normalModeNone;

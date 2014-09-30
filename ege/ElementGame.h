@@ -74,7 +74,7 @@ namespace ege {
 			inline uint32_t getUID() const {
 				return m_uID;
 			};
-		private:
+		protected:
 			std::shared_ptr<ege::resource::Mesh> m_mesh; //!< Mesh of the Element (can be nullptr)
 			btCollisionShape* m_shape; //!< shape of the element (set a copy here to have the debug display of it)
 		public:

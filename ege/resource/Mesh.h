@@ -18,6 +18,9 @@
 #include <ewol/resource/VirtualBufferObject.h>
 #include <ege/Light.h>
 #include <ege/Material.h>
+#include <ege/resource/tools/Face.h>
+#include <ege/resource/tools/FaceIndexing.h>
+
 #include <ege/physicsShape/PhysicsShape.h>
 // 3 "float" elements
 #define MESH_VBO_VERTICES  (0)
@@ -31,51 +34,6 @@
 #define MESH_VBO_COLOR     (4)
 
 namespace ege {
-	/**
-	 * @not-in-doc
-	 */
-	class Face {
-		public:
-			int32_t m_vertex[3];
-			int32_t m_uv[3];
-			int32_t m_normal[3];
-		public:
-			Face() {};
-			Face(int32_t v1, int32_t t1,
-			     int32_t v2, int32_t t2,
-			     int32_t v3, int32_t t3) {
-				m_vertex[0] = v1;
-				m_vertex[1] = v2;
-				m_vertex[2] = v3;
-				m_uv[0] = t1;
-				m_uv[1] = t2;
-				m_uv[2] = t3;
-				m_normal[0] = -1;
-				m_normal[1] = -1;
-				m_normal[2] = -1;
-			};
-			Face(int32_t v1, int32_t t1, int32_t n1,
-			     int32_t v2, int32_t t2, int32_t n2,
-			     int32_t v3, int32_t t3, int32_t n3) {
-				m_vertex[0] = v1;
-				m_vertex[1] = v2;
-				m_vertex[2] = v3;
-				m_uv[0] = t1;
-				m_uv[1] = t2;
-				m_uv[2] = t3;
-				m_normal[0] = n1;
-				m_normal[1] = n2;
-				m_normal[2] = n3;
-			};
-	};
-	/**
-	 * @not-in-doc
-	 */
-	class FaceIndexing {
-		public:
-			std::vector<Face> m_faces;
-			std::vector<uint32_t> m_index;
-	};
 	namespace resource {
 		class Mesh : public ewol::Resource {
 			public:
@@ -109,6 +67,7 @@ namespace ege {
 				etk::Hash<FaceIndexing> m_listFaces; //!< List of all Face for the mesh
 				etk::Hash<ege::Material*> m_materials;
 				std::vector<ege::PhysicsShape*> m_physics; //!< collision shape module ... (independent of bullet lib)
+				void clean();
 			protected:
 				std::shared_ptr<ewol::resource::VirtualBufferObject> m_verticesVBO;
 			protected:
@@ -131,6 +90,7 @@ namespace ege {
 				void calculateNormaleEdge();
 			public :
 				void createViewBox(const std::string& _materialName,float _size=1.0);
+				void createIcoSphere(const std::string& _materialName,float _size=1.0);
 			private:
 				bool loadOBJ(const std::string& _fileName);
 				bool loadEMF(const std::string& _fileName);
