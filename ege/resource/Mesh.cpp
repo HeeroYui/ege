@@ -317,7 +317,7 @@ void ege::resource::Mesh::createViewBox(const std::string& _materialName,float _
 void ege::resource::Mesh::createIcoSphere(const std::string& _materialName,float _size) {
 	m_normalMode = normalModeNone;
 	ege::icoSphere::create(m_materials, m_listFaces, m_listVertex, m_listUV,
-	                       _materialName, 2);
+	                       _materialName, _size, 3);
 	calculateNormaleFace();
 }
 

@@ -17,7 +17,7 @@
 namespace ege {
 	namespace icoSphere {
 		void create(etk::Hash<ege::Material*>& _materials, etk::Hash<FaceIndexing>& _listFaces, std::vector<vec3>& _listVertex, std::vector<vec2>& _listUV,
-		            const std::string& _materialName, int32_t _recursionLevel);
+		            const std::string& _materialName, float _size, int32_t _recursionLevel);
 	};
 };
 

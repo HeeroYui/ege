@@ -8,6 +8,7 @@
 
 #include <ege/debug.h>
 #include <ege/resource/tools/icoSphere.h>
+#include <math.h>
 
 // return index of point in the middle of p1 and p2
 static int32_t getMiddlePoint(std::vector<vec3>& _listVertex, int32_t _p1, int32_t _p2) {
@@ -24,8 +25,15 @@ static int32_t getMiddlePoint(std::vector<vec3>& _listVertex, int32_t _p1, int32
 	return _listVertex.size()-1;
 }
 
+static int32_t addUV(std::vector<vec2>& _listUV, int32_t _uvId, float _add) {
+	//vec2 plop(-_add, _listUV[_uvId].y());
+	//_listUV.push_back(plop);
+	_listUV.push_back(_listUV[_uvId] + vec2(_add, 0.0f));
+	return _listUV.size()-1;
+}
+
 void ege::icoSphere::create(etk::Hash<ege::Material*>& _materials, etk::Hash<FaceIndexing>& _listFaces, std::vector<vec3>& _listVertex, std::vector<vec2>& _listUV,
-                            const std::string& _materialName, int32_t _recursionLevel) {
+                            const std::string& _materialName, float _size, int32_t _recursionLevel) {
 	/*
 	                                     5                                                  
 	                                    o                                                   
@@ -128,6 +136,84 @@ void ege::icoSphere::create(etk::Hash<ege::Material*>& _materials, etk::Hash<Fac
 			}
 			tmpElement.m_faces = listFaces;
 		}
+		// update UV mapping with generic projection:
+		_listUV.clear();
+		for (auto &vert : _listVertex) {
+			vec2 texturePos;
+			// projection sur le plan XY:
+			float proj = vert.x()*vert.x() + vert.y()*vert.y();
+			proj = std::sqrt(proj);
+			float angle = M_PI;
+			if (proj != 0.0f) {
+				angle = std::acos(std::abs(vert.x()) / proj);
+			}
+			if (vert.x()<0) {
+				if (vert.y()<0) {
+					angle = -M_PI + angle;
+				} else {
+					angle = M_PI - angle;
+				}
+			} else {
+				if (vert.y()<0) {
+					angle = -angle;
+				}
+			}
+			//EGE_WARNING( "angle = " << (angle/M_PI*180.0f) << " from: vert=" << etk::to_string(vert) << " proj=" << proj );
+			texturePos.setX(angle/(2.0f*M_PI)+0.5f);
+			
+			angle = std::acos(proj/1.0f);
+			if (vert.z()<0) {
+				angle = -angle;
+			}
+			//EGE_WARNING( "angle = " << (angle/M_PI*180.0f) << " from: vert=" << etk::to_string(vert) << " proj=" << proj );
+			texturePos.setY(angle/(M_PI)+0.5);
+			
+			texturePos.setMax(vec2(0.0f, 0.0f));
+			texturePos.setMin(vec2(1.0f, 1.0f));
+			//EGE_WARNING("texturePosition = " << texturePos);
+			_listUV.push_back(texturePos);
+		}
+		for (auto &face : tmpElement.m_faces) {
+			float y0 = _listVertex[face.m_vertex[0]].y();
+			float y1 = _listVertex[face.m_vertex[1]].y();
+			float y2 = _listVertex[face.m_vertex[2]].y();
+			face.m_uv[0] = face.m_vertex[0];
+			face.m_uv[1] = face.m_vertex[1];
+			face.m_uv[2] = face.m_vertex[2];
+			// mauvaus coter ...
+			if (_listVertex[face.m_vertex[0]].x() < 0) {
+				if (y0 < 0) {
+					if (y1 < 0) {
+						if (y2 >= 0) {
+							face.m_uv[2] = addUV(_listUV, face.m_vertex[2], -1.0f);
+						}
+					} else {
+						if (y2 < 0) {
+							face.m_uv[1] = addUV(_listUV, face.m_vertex[1], -1.0f);;
+						} else {
+							face.m_uv[0] = addUV(_listUV, face.m_vertex[0], 1.0f);;
+						}
+					}
+				} else {
+					if (y1 < 0) {
+						if (y2 < 0) {
+							face.m_uv[0] = addUV(_listUV, face.m_vertex[0], -1.0f);
+						} else {
+							face.m_uv[1] = addUV(_listUV, face.m_vertex[1], 1.0f);
+						}
+					} else {
+						if (y2 < 0) {
+							face.m_uv[2] = addUV(_listUV, face.m_vertex[2], 1.0f);
+						}
+					}
+				}
+			}
+		}
+		for (auto &vert : _listVertex) {
+			vert *=_size;
+		}
 	}
+	
+	
 }
 
