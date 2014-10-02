@@ -72,7 +72,7 @@ namespace ege {
 				std::shared_ptr<ewol::resource::VirtualBufferObject> m_verticesVBO;
 			protected:
 				Mesh();
-				void init(const std::string& _fileName, const std::string& _shaderName="DATA:textured3D2.prog");
+				void init(const std::string& _fileName="---", const std::string& _shaderName="DATA:textured3D2.prog");
 			public:
 				virtual ~Mesh();
 				DECLARE_RESOURCE_NAMED_FACTORY(Mesh);
@@ -90,7 +90,7 @@ namespace ege {
 				void calculateNormaleEdge();
 			public :
 				void createViewBox(const std::string& _materialName,float _size=1.0);
-				void createIcoSphere(const std::string& _materialName,float _size=1.0);
+				void createIcoSphere(const std::string& _materialName,float _size=1.0, int32_t _subdivision=3);
 			private:
 				bool loadOBJ(const std::string& _fileName);
 				bool loadEMF(const std::string& _fileName);

@@ -181,7 +181,9 @@ void ege::icoSphere::create(etk::Hash<ege::Material*>& _materials, etk::Hash<Fac
 			face.m_uv[1] = face.m_vertex[1];
 			face.m_uv[2] = face.m_vertex[2];
 			// mauvaus coter ...
-			if (_listVertex[face.m_vertex[0]].x() < 0) {
+			if (    _listVertex[face.m_vertex[0]].x() < 0
+			     || _listVertex[face.m_vertex[1]].x() < 0
+			     || _listVertex[face.m_vertex[2]].x() < 0) {
 				if (y0 < 0) {
 					if (y1 < 0) {
 						if (y2 >= 0) {

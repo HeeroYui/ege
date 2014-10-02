@@ -32,11 +32,11 @@ void ege::resource::Mesh::init(const std::string& _fileName, const std::string& 
 	// get the shader resource :
 	m_GLPosition = 0;
 	
-	m_light.setDirection(vec3(0,-cos(M_PI/4),0));
-	m_light.setHalfPlane(vec3(1,0,0));
-	m_light.setAmbientColor(vec4(1,1,1,1));
-	m_light.setDiffuseColor(vec4(1.0,1.0,1.0,1));
-	m_light.setSpecularColor(vec4(0.0,0.0,0.0,1));
+	m_light.setDirection(vec3(0.0f,-cos(M_PI/4),0.0f));
+	m_light.setHalfPlane(vec3(1.0f,0.0f,0.0f));
+	m_light.setAmbientColor(vec4(1.0f,1.0f,1.0f,1.0f));
+	m_light.setDiffuseColor(vec4(1.0f,1.0f,1.0f,1.0f));
+	m_light.setSpecularColor(vec4(0.0f,0.0f,0.0f,1.0f));
 	
 	//EGE_DEBUG(m_name << "  " << m_light);
 	m_GLprogram = ewol::resource::Program::create(_shaderName);
@@ -314,10 +314,10 @@ void ege::resource::Mesh::createViewBox(const std::string& _materialName,float _
 	calculateNormaleFace();
 }
 
-void ege::resource::Mesh::createIcoSphere(const std::string& _materialName,float _size) {
+void ege::resource::Mesh::createIcoSphere(const std::string& _materialName,float _size, int32_t _subdivision) {
 	m_normalMode = normalModeNone;
 	ege::icoSphere::create(m_materials, m_listFaces, m_listVertex, m_listUV,
-	                       _materialName, _size, 3);
+	                       _materialName, _size, _subdivision);
 	calculateNormaleFace();
 }
 
