@@ -38,8 +38,8 @@ namespace ege {
 		class Scene : public ewol::Widget {
 			public:
 				// extern event
-				ewol::object::Signal<float> signalPlayTimeChange;
-				ewol::object::Signal<int32_t> signalKillEnemy;
+				ewol::Signal<float> signalPlayTimeChange;
+				ewol::Signal<int32_t> signalKillEnemy;
 			protected:
 				ege::Environement m_env;
 			protected:

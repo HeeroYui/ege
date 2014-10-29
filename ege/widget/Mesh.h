@@ -20,7 +20,7 @@ namespace ege {
 		 */
 		class Mesh :public ewol::Widget {
 			public:
-				ewol::object::Signal<void> signalPressed;
+				ewol::Signal<void> signalPressed;
 			private:
 				// mesh name :
 				std::string m_meshName;
