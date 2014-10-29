@@ -46,7 +46,7 @@ namespace ege {
 		public:
 			~Game()
 		protected:
-			ewol::object::ParamList<enum gameStatus> m_status; //!< the display is running (not in pause)
+			ewol::parameter::List<enum gameStatus> m_status; //!< the display is running (not in pause)
 		public:
 			/**
 			 * @brief Get the game status.
@@ -63,7 +63,7 @@ namespace ege {
 				return m_status.set(_value)
 			}
 		protected:
-			ewol::object::ParamList<float> m_ratio; //!< Speed ratio
+			ewol::parameter::List<float> m_ratio; //!< Speed ratio
 		public:
 			/**
 			 * @brief Get the game speed ratio.

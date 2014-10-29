@@ -370,7 +370,7 @@ vec3 ege::widget::Scene::convertScreenPositionInMapPosition(const vec2& _posScre
 	return m_camera->projectOnZGround(calculateDeltaAngle(_posScreen));
 }
 
-void ege::widget::Scene::onParameterChangeValue(const ewol::object::ParameterRef& _paramPointer) {
+void ege::widget::Scene::onParameterChangeValue(const ewol::parameter::Ref& _paramPointer) {
 	ewol::Widget::onParameterChangeValue(_paramPointer);
 	if (_paramPointer == m_isRunning) {
 		// nothing to do ...

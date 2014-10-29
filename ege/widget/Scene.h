@@ -79,7 +79,7 @@ namespace ege {
 					gameStop
 				};
 			protected:
-				ewol::object::ParamList<enum gameStatus> m_isRunning; //!< the display is running (not in pause)
+				ewol::parameter::List<enum gameStatus> m_isRunning; //!< the display is running (not in pause)
 				float m_ratioTime; //!< Ratio time for the speed of the game ...
 				// Note : This is only for temporary elements : on the display
 				std::vector<ege::Environement::ResultNearestElement> m_displayElementOrdered;
@@ -142,7 +142,7 @@ namespace ege {
 				
 			protected: // Derived function
 				virtual void onDraw();
-				virtual void onParameterChangeValue(const ewol::object::ParameterRef& _paramPointer);
+				virtual void onParameterChangeValue(const ewol::parameter::Ref& _paramPointer);
 			public: // Derived function
 				virtual void systemDraw(const ewol::DrawProperty& _displayProp);
 				virtual void onRegenerateDisplay();
