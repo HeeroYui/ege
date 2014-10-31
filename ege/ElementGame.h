@@ -33,7 +33,7 @@ namespace ege {
 		private:
 			static void FunctionFreeShape(void* _pointer);
 		protected:
-			ege::Environement& m_env;
+			std::shared_ptr<ege::Environement> m_env;
 		protected:
 			btRigidBody* m_body; //!< all the element have a body  == > otherwise it will be not manage with this system...
 		public:
@@ -42,7 +42,7 @@ namespace ege {
 			 * The objest will be stored in a pool of element and keep a second time if needed  == > redure memory allocation,
 			 * when needed, the system will call the init and un-init function...
 			 */
-			ElementGame(ege::Environement& _env);
+			ElementGame(const std::shared_ptr<ege::Environement>& _env);
 			/**
 			 * @brief Destructor
 			 */
@@ -150,7 +150,7 @@ namespace ege {
 			 */
 			virtual void setFireOn(int32_t _groupIdSource, int32_t _type, float _power, const vec3& _center=vec3(0,0,0));
 			/**
-			 * @brief Call chan the element life change
+			 * @brief Call chan the element life change 
 			 */
 			virtual void onLifeChange() { };
 		protected:
@@ -234,7 +234,7 @@ namespace ege {
 			 * @brief Event arrive when an element has been remove from the system  == > this permit to keep pointer of ennemy, and not search them every cycle ...
 			 * @param[in] _removedElement Pointer on the element removed.
 			 */
-			virtual void elementIsRemoved(ege::ElementGame* _removedElement) { };
+			virtual void elementIsRemoved(std::shared_ptr<ege::ElementGame> _removedElement) { };
 		protected:
 			bool m_fixe; //!< is a fixed element  == > used for placement of every elements
 		public:
@@ -275,7 +275,10 @@ namespace ege {
 					/**
 					 * @brief Constructor
 					 */
-					localIA(ElementGame& element) : m_element(element) { };
+					localIA(ElementGame& _element) :
+					  m_element(_element) {
+						
+					};
 					/**
 					 * @brief Destructor
 					 */

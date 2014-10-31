@@ -46,44 +46,9 @@ namespace ege {
 		public:
 			~Game()
 		protected:
-			ewol::parameter::List<enum gameStatus> m_status; //!< the display is running (not in pause)
-		public:
-			/**
-			 * @brief Get the game status.
-			 * @return the current status.
-			 */
-			enum gameStatus getGameStatus() {
-				return m_status.get()
-			}
-			/**
-			 * @brief Set the game status.
-			 * @param[in] _value New game status.
-			 */
-			enum gameStatus setGameStatus(enum gameStatus _value) {
-				return m_status.set(_value)
-			}
-		protected:
-			ewol::parameter::List<float> m_ratio; //!< Speed ratio
-		public:
-			/**
-			 * @brief Get the game speed ratio.
-			 * @return the current ratio.
-			 */
-			float getSpeedRatio() {
-				return m_ratio.get()
-			}
-			/**
-			 * @brief Set the game ratio.
-			 * @param[in] _value New game ratio.
-			 */
-			enum gameStatus setSpeedRatio(float _value) {
-				return m_ratio.set(_value)
-			}
-		protected:
 			ege::PhysicEngine m_physicEngine; //!< physic engine interface
 			ege::AudioEngine m_AudioEngine; //!< physic engine interface
 			ege::IAEngine m_iAEngine; //!< physic engine interface
-			std::map<std::string, std::shared_ptr<ege::Camera>> m_listCamera; //!< list of all camera in the world
 		
 	}
 }

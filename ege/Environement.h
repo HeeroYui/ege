@@ -24,6 +24,9 @@ class btDynamicsWorld;
 #include <ejson/ejson.h>
 #include <exml/exml.h>
 #include <ege/ParticuleEngine.h>
+#include <ewol/object/Object.h>
+#include <ewol/signal/Signal.h>
+#include <ewol/event/Time.h>
 
 namespace ege {
 	enum property {
@@ -36,7 +39,13 @@ namespace ege {
 	};
 	class ElementGame;
 	class Environement;
-	typedef ege::ElementGame* (*createElement_tf)(ege::Environement& _env);
+	typedef std::shared_ptr<ege::ElementGame> (*createElement_tf)(const std::shared_ptr<ege::Environement>& _env);
+	
+	enum gameStatus {
+		gameStart,
+		gamePause,
+		gameStop
+	};
 	
 	class ElementInteraction {
 		protected:
@@ -76,13 +85,58 @@ namespace ege {
 			virtual void applyEvent(ege::ElementGame& _element) { };
 	};
 	
-	class Environement {
-		private:
-			btDynamicsWorld* m_dynamicsWorld; //!< curent system world description
-			std::vector<ege::ElementGame*> m_listElementGame; //!< List of all element added in the Game
+	class Environement : public ewol::Object {
 		public:
+			// extern event
+			ewol::Signal<float> signalPlayTimeChange;
+		private:
+			std::shared_ptr<btDynamicsWorld> m_dynamicsWorld; //!< curent system world description
+			std::vector<std::shared_ptr<ege::ElementGame>> m_listElementGame; //!< List of all element added in the Game
+		protected:
 			Environement();
+			void init();
+		public:
+			DECLARE_FACTORY(Environement);
 			virtual ~Environement() { };
+		protected:
+			ewol::parameter::List<enum gameStatus> m_status; //!< the display is running (not in pause)
+		public:
+			/**
+			 * @brief Get the game status.
+			 * @return the current status.
+			 */
+			enum gameStatus getGameStatus() {
+				return m_status.get();
+			}
+			/**
+			 * @brief Set the game status.
+			 * @param[in] _value New game status.
+			 */
+			void setGameStatus(enum gameStatus _value) {
+				m_status.set(_value);
+			}
+		protected:
+			ewol::parameter::List<float> m_ratio; //!< Speed ratio
+		public:
+			/**
+			 * @brief Get the game speed ratio.
+			 * @return the current ratio.
+			 */
+			float getSpeedRatio() {
+				return m_ratio.get();
+			}
+			/**
+			 * @brief Set the game ratio.
+			 * @param[in] _value New game ratio.
+			 */
+			void setSpeedRatio(float _value) {
+				m_ratio.set(_value);
+			}
+		protected:
+			std::map<std::string, std::shared_ptr<ege::Camera>> m_listCamera; //!< list of all camera in the world
+		public:
+			void addCamera(const std::string& _name, const std::shared_ptr<ege::Camera>& _camera);
+			std::shared_ptr<ege::Camera> getCamera(const std::string& _name);
 		public:
 			/**
 			 * @brief Remove all from the current environement
@@ -102,35 +156,35 @@ namespace ege {
 			 * @return nullptr if an error occured OR the pointer on the element and it is already added on the system.
 			 * @note Pointer is return in case of setting properties on it...
 			 */
-			ege::ElementGame* createElement(const std::string& _type, bool _autoAddElement=true, enum ege::property _property=ege::typeNone, void* _value=nullptr);
-			ege::ElementGame* createElement(const std::string& _type, std::string& _description, bool _autoAddElement=true);
-			ege::ElementGame* createElement(const std::string& _type, ejson::Value* _value, bool _autoAddElement=true);
-			ege::ElementGame* createElement(const std::string& _type, exml::Node* _node, bool _autoAddElement=true);
+			std::shared_ptr<ege::ElementGame> createElement(const std::string& _type, bool _autoAddElement=true, enum ege::property _property=ege::typeNone, void* _value=nullptr);
+			std::shared_ptr<ege::ElementGame> createElement(const std::string& _type, std::string& _description, bool _autoAddElement=true);
+			std::shared_ptr<ege::ElementGame> createElement(const std::string& _type, ejson::Value* _value, bool _autoAddElement=true);
+			std::shared_ptr<ege::ElementGame> createElement(const std::string& _type, exml::Node* _node, bool _autoAddElement=true);
 		public:
 			class ResultNearestElement {
 				public:
-					ege::ElementGame* element;
+					std::shared_ptr<ege::ElementGame> element;
 					float dist;
 			};
 			/**
 			 * @brief set the curent world
 			 * @param[in] _newWorld Pointer on the current world
 			 */
-			void setDynamicWorld(btDynamicsWorld* _newWorld) {
+			void setDynamicWorld(const std::shared_ptr<btDynamicsWorld>& _newWorld) {
 				m_dynamicsWorld=_newWorld;
 			};
 			/**
 			 * @brief get the curent world
 			 * @return pointer on the current world
 			 */
-			btDynamicsWorld* getDynamicWorld() {
+			std::shared_ptr<btDynamicsWorld> getDynamicWorld() {
 				return m_dynamicsWorld;
 			};
 			/**
 			 * @breif get a reference on the curent list of element games
 			 * @return all element list
 			 */
-			std::vector<ege::ElementGame*>& getElementGame() {
+			std::vector<std::shared_ptr<ege::ElementGame>>& getElementGame() {
 				return m_listElementGame;
 			};
 			/**
@@ -139,7 +193,7 @@ namespace ege {
 			 * @param[in] _distance Maximum distance search  == > return the element distance
 			 * @return Pointer on the neares element OR nullptr
 			 */
-			ege::ElementGame* getElementNearest(ege::ElementGame* _sourceRequest, float& _distance);
+			std::shared_ptr<ege::ElementGame> getElementNearest(std::shared_ptr<ege::ElementGame> _sourceRequest, float& _distance);
 			
 			void getElementNearest(const vec3& _sourcePosition,
 			                       float _distanceMax,
@@ -151,12 +205,12 @@ namespace ege {
 			 * @brief add an element on the list availlable.
 			 * @param[in] _newElement Element to add.
 			 */
-			void addElementGame(ege::ElementGame* _newElement);
+			void addElementGame(std::shared_ptr<ege::ElementGame> _newElement);
 			/**
 			 * @brief remove an element on the list availlable.
 			 * @param[in] _removeElement Element to remove.
 			 */
-			void rmElementGame(ege::ElementGame* _removeElement);
+			void rmElementGame(std::shared_ptr<ege::ElementGame> _removeElement);
 			/**
 			 * @brief get the element order from the nearest to the farest, and remove all element that are not in the camera angle and axes.
 			 * @param[in,out] _resultList List of the element ordered.
@@ -179,6 +233,12 @@ namespace ege {
 			ege::ParticuleEngine& getParticuleEngine() {
 				return m_particuleEngine;
 			};
+		protected:
+			int64_t m_gameTime; //!< time of the game running
+		public:
+			
+		private:
+			void periodicCall(const ewol::event::Time& _event);
 	};
 };
 

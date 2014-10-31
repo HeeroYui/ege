@@ -36,95 +36,57 @@ class btVector3;
 namespace ege {
 	namespace widget {
 		class Scene : public ewol::Widget {
-			public:
-				// extern event
-				ewol::Signal<float> signalPlayTimeChange;
-				ewol::Signal<int32_t> signalKillEnemy;
 			protected:
-				ege::Environement m_env;
+				std::shared_ptr<ege::Environement> m_env;
 			protected:
 				/**
 				 * @brief Constructor of the widget classes
 				 * @return (no execption generated (not managed in embended platform))
 				 */
 				Scene();
-				void init(bool _setAutoBullet=true, bool _setAutoCamera=true);
+				void init(std::shared_ptr<ege::Environement> _env);
 			public:
+				DECLARE_FACTORY(Scene);
 				/**
 				 * @brief Destructor of the widget classes
 				 */
 				virtual ~Scene();
-				void setBulletConfig(btDefaultCollisionConfiguration* _collisionConfiguration=nullptr,
-				                     btCollisionDispatcher* _dispatcher=nullptr,
-				                     btBroadphaseInterface* _broadphase=nullptr,
-				                     btConstraintSolver* _solver=nullptr,
-				                     btDynamicsWorld* _dynamicsWorld=nullptr);
-				void setCamera(ege::Camera* _camera=nullptr);
-			private:
-				float m_gameTime; //!< time of the game running
 			protected:
-				float m_angleView;
-				///this is the most important class
-				btDefaultCollisionConfiguration* m_collisionConfiguration;
-				btCollisionDispatcher* m_dispatcher;
-				btBroadphaseInterface* m_broadphase;
-				btConstraintSolver* m_solver;
-				btDynamicsWorld* m_dynamicsWorld;
-			// camera section
-				ege::Camera* m_camera; //!< display point of view.
-			// Other elements
+				std::string m_cameraName;
 			public:
-				enum gameStatus {
-					gameStart,
-					gameStop
-				};
+				void setCamera(const std::string& _cameraName) {
+					m_cameraName = _cameraName;
+				}
 			protected:
-				ewol::parameter::List<enum gameStatus> m_isRunning; //!< the display is running (not in pause)
-				float m_ratioTime; //!< Ratio time for the speed of the game ...
 				// Note : This is only for temporary elements : on the display
 				std::vector<ege::Environement::ResultNearestElement> m_displayElementOrdered;
-			public:
-				/**
-				 * @brief set the scene in pause for a while
-				 */
-				void pause();
-				/**
-				 * @brief resume the scene activity
-				 */
-				void resume();
-				/**
-				 * @brief Toggle between pause and running
-				 */
-				void pauseToggle();
 			protected:
-				bool m_debugMode;
-				std::shared_ptr<ewol::resource::Colored3DObject> m_debugDrawing;  //!< for the debug draw elements
+				//bool m_debugMode;
+				//std::shared_ptr<ewol::resource::Colored3DObject> m_debugDrawing;  //!< for the debug draw elements
 			public:
 				/**
 				 * @brief Toggle the debug mode  == > usefull for DEBUG only ...
 				 */
+				/*
 				void debugToggle() {
 					m_debugMode = m_debugMode?false:true;
 				};
+				*/
 			protected:
 				// Derived function
-				virtual void ScenePeriodicCall(int64_t _localTime, int32_t _deltaTime) { };
+				//virtual void ScenePeriodicCall(int64_t _localTime, int32_t _deltaTime) { };
 			public:
-				vec2 calculateDeltaAngle(const vec2& _posScreen);
-				vec3 convertScreenPositionInMapPosition(const vec2& _posScreen);
+				//vec2 calculateDeltaAngle(const vec2& _posScreen);
+				//vec3 convertScreenPositionInMapPosition(const vec2& _posScreen);
 				/**
 				 * @brief get the current camera reference for the scene rendering
 				 */
+				/*
 				ege::Camera& getCamera() {
 					return *m_camera;
 				};
-				/**
-				 * @brief set the curent Time Ratio (default 1)
-				 */
-				void setRatioTime(float _newRatio) {
-					m_ratioTime = _newRatio;
-				};
-				
+				*/
+				/*
 				void renderscene(int pass);
 				void drawOpenGL(btScalar* m, 
 				                const btCollisionShape* _shape,
@@ -139,7 +101,7 @@ namespace ege {
 				                etk::Color<float>& _tmpColor);
 				void getElementAroundNewElement(vec3 _sourcePosition,
 				                                std::vector<ege::Environement::ResultNearestElement>& _resultList);
-				
+				*/
 			protected: // Derived function
 				virtual void onDraw();
 				virtual void onParameterChangeValue(const ewol::parameter::Ref& _paramPointer);

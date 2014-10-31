@@ -57,16 +57,16 @@ namespace ege {
 				int32_t m_GLtexture;
 				int32_t m_bufferOfset;
 				int32_t m_numberOfElments;
-				MaterialGlId   m_GLMaterial;
-				ege::Light    m_light;
+				MaterialGlId m_GLMaterial;
+				ege::Light m_light;
 			protected:
 				std::vector<vec3> m_listVertex; //!< List of all vertex in the element
 				std::vector<vec2> m_listUV; //!< List of all UV point in the mesh (for the specify texture)
 				std::vector<vec3> m_listFacesNormal; //!< List of all Face normal, when calculated
 				std::vector<vec3> m_listVertexNormal; //!< List of all Face normal, when calculated
 				etk::Hash<FaceIndexing> m_listFaces; //!< List of all Face for the mesh
-				etk::Hash<ege::Material*> m_materials;
-				std::vector<ege::PhysicsShape*> m_physics; //!< collision shape module ... (independent of bullet lib)
+				etk::Hash<std::shared_ptr<ege::Material>> m_materials;
+				std::vector<std::shared_ptr<ege::PhysicsShape>> m_physics; //!< collision shape module ... (independent of bullet lib)
 				void clean();
 			protected:
 				std::shared_ptr<ewol::resource::VirtualBufferObject> m_verticesVBO;
@@ -95,7 +95,7 @@ namespace ege {
 				bool loadOBJ(const std::string& _fileName);
 				bool loadEMF(const std::string& _fileName);
 			public:
-				void addMaterial(const std::string& _name, ege::Material* _data);
+				void addMaterial(const std::string& _name, std::shared_ptr<ege::Material> _data);
 			public:
 				/**
 				 * @brief set the check of normal position befor sending it to the openGl card
@@ -111,7 +111,7 @@ namespace ege {
 				bool getCheckNormal() {
 					return m_checkNormal;
 				};
-				const std::vector<ege::PhysicsShape*>& getPhysicalProperties() const {
+				const std::vector<std::shared_ptr<ege::PhysicsShape>>& getPhysicalProperties() const {
 					return m_physics;
 				};
 			private:

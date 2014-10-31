@@ -11,7 +11,7 @@
 
 
 
-void ege::viewBox::create(etk::Hash<ege::Material*>& _materials, etk::Hash<FaceIndexing>& _listFaces, std::vector<vec3>& _listVertex, std::vector<vec2>& _listUV,
+void ege::viewBox::create(etk::Hash<std::shared_ptr<ege::Material>>& _materials, etk::Hash<FaceIndexing>& _listFaces, std::vector<vec3>& _listVertex, std::vector<vec2>& _listUV,
                           const std::string& _materialName, float _size) {
 	// This is the direct generation basis on the .obj system
 	/*

@@ -9,21 +9,36 @@
 #include <ege/debug.h>
 #include <ege/Environement.h>
 #include <ege/ElementGame.h>
+#include <ewol/object/Manager.h>
 
+#include <ewol/openGL/openGL.h>
+#include <etk/math/Matrix4.h>
+#include <BulletDynamics/Dynamics/btRigidBody.h>
+#include <LinearMath/btDefaultMotionState.h>
+#include <BulletDynamics/Dynamics/btDynamicsWorld.h>
+#include <BulletCollision/CollisionShapes/btCollisionShape.h>
+#include <LinearMath/btIDebugDraw.h>
+#include <btBulletCollisionCommon.h>
+#include <BulletCollision/CollisionShapes/btConvexPolyhedron.h>
+#include <BulletCollision/CollisionShapes/btShapeHull.h>
+#include <LinearMath/btTransformUtil.h>
+#include <LinearMath/btIDebugDraw.h>
+#include <btBulletDynamicsCommon.h>
+#include <BulletCollision/CollisionDispatch/btCollisionObject.h>
 
 #undef __class__
 #define __class__ "Environement"
 
 
-ege::ElementGame* ege::Environement::getElementNearest(ege::ElementGame* _sourceRequest, float& _distance) {
-	if (nullptr == _sourceRequest) {
+std::shared_ptr<ege::ElementGame> ege::Environement::getElementNearest(std::shared_ptr<ege::ElementGame> _sourceRequest, float& _distance) {
+	if (_sourceRequest == nullptr) {
 		return nullptr;
 	}
 	vec3 sourcePosition = _sourceRequest->getPosition();
-	ege::ElementGame* result = nullptr;
+	std::shared_ptr<ege::ElementGame> result = nullptr;
 	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
 		// chack nullptr  pointer
-		if (nullptr == m_listElementGame[iii]) {
+		if (m_listElementGame[iii] == nullptr) {
 			continue;
 		}
 		if (m_listElementGame[iii]->getGroup() <= 0) {
@@ -82,10 +97,10 @@ void ege::Environement::getElementNearestFixed(const vec3& _sourcePosition,
 	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
 		// chack nullptr  pointer
 		result.element = m_listElementGame[iii];
-		if (nullptr == result.element) {
+		if (result.element == nullptr) {
 			continue;
 		}
-		if (false == result.element->isFixed()) {
+		if (result.element->isFixed() == false) {
 			continue;
 		}
 		// check distance ...
@@ -116,7 +131,7 @@ static etk::Hash<ege::createElement_tf>& getHachTableCreating() {
 }
 
 void ege::Environement::addCreator(const std::string& _type, ege::createElement_tf _creator) {
-	if (nullptr == _creator) {
+	if (_creator == nullptr) {
 		EGE_ERROR("Try to add an empty CREATOR ...");
 		return;
 	}
@@ -125,25 +140,23 @@ void ege::Environement::addCreator(const std::string& _type, ege::createElement_
 	EGE_DEBUG("Add creator: " << _type << " (done)");
 }
 
-ege::ElementGame* ege::Environement::createElement(const std::string& _type, bool _autoAddElement, enum ege::property _property, void* _value) {
+std::shared_ptr<ege::ElementGame> ege::Environement::createElement(const std::string& _type, bool _autoAddElement, enum ege::property _property, void* _value) {
 	if (false == getHachTableCreating().exist(_type)) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return nullptr;
 	}
 	ege::createElement_tf creatorPointer = getHachTableCreating()[_type];
-	if (nullptr == creatorPointer) {
+	if (creatorPointer == nullptr) {
 		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
 		return nullptr;
 	}
-	ege::ElementGame* tmpElement = creatorPointer(*this);
-	if (nullptr == tmpElement) {
+	std::shared_ptr<ege::ElementGame> tmpElement = creatorPointer(std::dynamic_pointer_cast<ege::Environement>(shared_from_this()));
+	if (tmpElement == nullptr) {
 		EGE_ERROR("allocation error '" << _type << "'");
 		return nullptr;
 	}
 	if (false == tmpElement->init(_property, _value)) {
 		EGE_ERROR("Init error ... '" << _type << "'");
-		// remove created element ...
-		delete(tmpElement);
 		return nullptr;
 	}
 	if (_autoAddElement == true) {
@@ -152,26 +165,26 @@ ege::ElementGame* ege::Environement::createElement(const std::string& _type, boo
 	return tmpElement;
 }
 
-ege::ElementGame* ege::Environement::createElement(const std::string& _type, std::string& _description, bool _autoAddElement) {
+std::shared_ptr<ege::ElementGame> ege::Environement::createElement(const std::string& _type, std::string& _description, bool _autoAddElement) {
 	return createElement(_type, _autoAddElement, ege::typeString, static_cast<void*>(&_description));
 }
 
-ege::ElementGame* ege::Environement::createElement(const std::string& _type, ejson::Value* _value, bool _autoAddElement) {
+std::shared_ptr<ege::ElementGame> ege::Environement::createElement(const std::string& _type, ejson::Value* _value, bool _autoAddElement) {
 	return createElement(_type, _autoAddElement, ege::typeJson, static_cast<void*>(_value));
 }
 
-ege::ElementGame* ege::Environement::createElement(const std::string& _type, exml::Node* _node, bool _autoAddElement) {
+std::shared_ptr<ege::ElementGame> ege::Environement::createElement(const std::string& _type, exml::Node* _node, bool _autoAddElement) {
 	return createElement(_type, _autoAddElement, ege::typeXml, static_cast<void*>(_node));
 }
 
 
-void ege::Environement::addElementGame(ege::ElementGame* _newElement) {
+void ege::Environement::addElementGame(std::shared_ptr<ege::ElementGame> _newElement) {
 	// prevent memory allocation and un allocation ...
-	if (nullptr == _newElement) {
+	if (_newElement == nullptr) {
 		return;
 	}
 	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
-		if (nullptr == m_listElementGame[iii]) {
+		if (m_listElementGame[iii] == nullptr) {
 			m_listElementGame[iii] = _newElement;
 			m_listElementGame[iii]->dynamicEnable();
 			return;
@@ -181,13 +194,13 @@ void ege::Environement::addElementGame(ege::ElementGame* _newElement) {
 	_newElement->dynamicEnable();
 }
 
-void ege::Environement::rmElementGame(ege::ElementGame* _removeElement) {
-	if (nullptr == _removeElement) {
+void ege::Environement::rmElementGame(std::shared_ptr<ege::ElementGame> _removeElement) {
+	if (_removeElement == nullptr) {
 		return;
 	}
 	// inform the element that an element has been removed  == > this permit to keep pointer on elements ...
 	for (size_t iii=0; iii<m_listElementGame.size() ; iii++) {
-		if (nullptr != m_listElementGame[iii]) {
+		if (m_listElementGame[iii] != nullptr) {
 			m_listElementGame[iii]->elementIsRemoved(_removeElement);
 		}
 	}
@@ -197,8 +210,7 @@ void ege::Environement::rmElementGame(ege::ElementGame* _removeElement) {
 			m_listElementGame[iii]->onDestroy();
 			m_listElementGame[iii]->dynamicDisable();
 			m_listElementGame[iii]->unInit();
-			delete(m_listElementGame[iii]);
-			m_listElementGame[iii] = nullptr;
+			m_listElementGame[iii].reset();
 		}
 	}
 }
@@ -271,17 +283,91 @@ void ege::Environement::generateInteraction(ege::ElementInteraction& _event) {
 }
 
 ege::Environement::Environement() :
-  m_dynamicsWorld(nullptr),
+  signalPlayTimeChange(*this, "time-change"),
+  m_dynamicsWorld(),
+  m_listElementGame(),
+  m_status(*this, "status", gameStart, "Satus of the activity of the Environement"),
+  m_ratio(*this, "ratio", 1.0f, "game speed ratio"),
   m_particuleEngine(*this) {
 	// nothing to do ...
+	m_status.add(gameStart, "start", "Scene is started");
+	m_status.add(gameStop, "stop", "Scene is stopped");
+}
+
+void ege::Environement::init() {
+	ewol::Object::init();
+	getObjectManager().periodicCall.bind(shared_from_this(), &ege::Environement::periodicCall);
+	
 }
 
 void ege::Environement::clear() {
-	for (auto &it : m_listElementGame) {
-		if (it != nullptr) {
-			delete it;
-			it = nullptr;
+	m_listElementGame.clear();
+}
+
+
+void ege::Environement::periodicCall(const ewol::event::Time& _event) {
+	float curentDelta = _event.getDeltaCall();
+	// small hack to change speed ...
+	curentDelta *= m_ratio;
+	// check if the processing is availlable
+	if (m_status.get() == gameStop) {
+		return;
+	}
+	// update game time:
+	int32_t lastGameTime = m_gameTime*0.000001f;
+	m_gameTime += curentDelta;
+	if (lastGameTime != (int32_t)(m_gameTime*0.000001f)) {
+		signalPlayTimeChange.emit(m_gameTime*0.000001f);
+	}
+	
+	//EWOL_DEBUG("Time: m_lastCallTime=" << m_lastCallTime << " deltaTime=" << deltaTime);
+	
+	// update camera positions:
+	for (auto &it : m_listCamera) {
+		if (it.second != nullptr) {
+			it.second->periodicCall(curentDelta);
 		}
 	}
-	m_listElementGame.clear();
+	//EGE_DEBUG("stepSimulation (start)");
+	///step the simulation
+	if (m_dynamicsWorld != nullptr) {
+		m_dynamicsWorld->stepSimulation(curentDelta);
+		//optional but useful: debug drawing
+		m_dynamicsWorld->debugDrawWorld();
+	}
+	m_particuleEngine.update(curentDelta);
+	// remove all element that requested it ...
+	{
+		int32_t numberEnnemyKilled=0;
+		int32_t victoryPoint=0;
+		auto it(m_listElementGame.begin());
+		while (it != m_listElementGame.end()) {
+			if(*it != nullptr) {
+				if ((*it)->needToRemove() == true) {
+					if ((*it)->getGroup() > 1) {
+						numberEnnemyKilled++;
+						victoryPoint++;
+					}
+					EGE_DEBUG("[" << (*it)->getUID() << "] element Removing ... " << (*it)->getType());
+					rmElementGame((*it));
+				}
+			}
+		}
+		if (0 != numberEnnemyKilled) {
+			//signalKillEnemy.emit(numberEnnemyKilled);
+		}
+	}
+}
+
+
+void ege::Environement::addCamera(const std::string& _name, const std::shared_ptr<ege::Camera>& _camera) {
+	m_listCamera.insert(std::make_pair(_name, _camera));
+}
+
+std::shared_ptr<ege::Camera> ege::Environement::getCamera(const std::string& _name) {
+	auto cameraIt = m_listCamera.find(_name);
+	if (cameraIt != m_listCamera.end()) {
+		return cameraIt->second;
+	}
+	return nullptr;
 }

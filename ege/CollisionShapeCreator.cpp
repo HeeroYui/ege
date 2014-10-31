@@ -31,7 +31,7 @@ btCollisionShape* ege::collision::createShape(const std::shared_ptr<ege::resourc
 	if (nullptr == _mesh) {
 		return new btEmptyShape();;
 	}
-	const std::vector<ege::PhysicsShape*>& physiqueProperty = _mesh->getPhysicalProperties();
+	const std::vector<std::shared_ptr<ege::PhysicsShape>>& physiqueProperty = _mesh->getPhysicalProperties();
 	if (physiqueProperty.size() == 0) {
 		return new btEmptyShape();;
 	}

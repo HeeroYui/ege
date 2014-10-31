@@ -1,4 +1,4 @@
-	/**
+/**
  * @author Edouard DUPIN
  * 
  * @copyright 2011, Edouard DUPIN, all right reserved
@@ -34,11 +34,11 @@ const std::string& ege::ElementGame::getType() const {
 }
 
 
-ege::ElementGame::ElementGame(ege::Environement& _env) :
+ege::ElementGame::ElementGame(const std::shared_ptr<ege::Environement>& _env) :
   m_env(_env),
   m_body(nullptr),
   m_uID(0),
-  m_mesh(nullptr),
+  m_mesh(),
   m_shape(nullptr),
   m_life(100),
   m_lifeMax(100),
@@ -60,10 +60,8 @@ ege::ElementGame::~ElementGame() {
 	// same ...
 	dynamicDisable();
 	removeShape();
-	if (nullptr != m_body) {
-		delete(m_body);
-		m_body = nullptr;
-	}
+	delete m_body;
+	m_body = nullptr;
 	EGE_DEBUG("Destroy element : uId=" << m_uID);
 }
 
@@ -483,10 +481,10 @@ void ege::ElementGame::dynamicEnable() {
 		return;
 	}
 	if(nullptr!=m_body) {
-		m_env.getDynamicWorld()->addRigidBody(m_body);
+		m_env->getDynamicWorld()->addRigidBody(m_body);
 	}
 	if(nullptr!=m_IA) {
-		m_env.getDynamicWorld()->addAction(m_IA);
+		m_env->getDynamicWorld()->addAction(m_IA);
 	}
 	m_elementInPhysicsSystem = true;
 }
@@ -496,12 +494,12 @@ void ege::ElementGame::dynamicDisable() {
 		return;
 	}
 	if(nullptr!=m_IA) {
-		m_env.getDynamicWorld()->removeAction(m_IA);
+		m_env->getDynamicWorld()->removeAction(m_IA);
 	}
 	if(nullptr!=m_body) {
 		// Unlink element from the engine
-		m_env.getDynamicWorld()->removeRigidBody(m_body);
-		m_env.getDynamicWorld()->removeCollisionObject(m_body);
+		m_env->getDynamicWorld()->removeRigidBody(m_body);
+		m_env->getDynamicWorld()->removeCollisionObject(m_body);
 	}
 	m_elementInPhysicsSystem = false;
 }
@@ -517,7 +515,7 @@ void ege::ElementGame::iaEnable() {
 		return;
 	}
 	if (true == m_elementInPhysicsSystem) {
-		m_env.getDynamicWorld()->addAction(m_IA);
+		m_env->getDynamicWorld()->addAction(m_IA);
 	}
 }
 
@@ -527,7 +525,7 @@ void ege::ElementGame::iaDisable() {
 		return;
 	}
 	if (true == m_elementInPhysicsSystem) {
-		m_env.getDynamicWorld()->removeAction(m_IA);
+		m_env->getDynamicWorld()->removeAction(m_IA);
 	}
 	// remove IA :
 	delete(m_IA);

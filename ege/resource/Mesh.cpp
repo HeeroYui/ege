@@ -19,9 +19,7 @@
 
 ege::resource::Mesh::Mesh() :
   m_normalMode(normalModeNone),
-  m_checkNormal(false),
-  m_pointerShape(nullptr),
-  m_functionFreeShape(nullptr) {
+  m_checkNormal(false) {
 	addObjectType("ege::resource::Mesh");
 }
 
@@ -82,13 +80,7 @@ ege::resource::Mesh::~Mesh() {
 }
 
 void ege::resource::Mesh::clean() {
-	for (auto &elem : m_physics) {
-		delete(elem);
-	}
 	m_physics.clear();
-	for (int32_t iii=0; iii<m_materials.size(); ++iii) {
-		delete(m_materials[iii]);
-	}
 	m_materials.clear();
 	m_listFaces.clear();
 	m_listVertexNormal.clear();
@@ -603,9 +595,9 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 	int32_t meshFaceMaterialID = -1;
 	// material global param :
 	std::string materialName = "";
-	ege::Material* material = nullptr;
+	std::shared_ptr<ege::Material> material;
 	// physical shape:
-	ege::PhysicsShape* physics = nullptr;
+	std::shared_ptr<ege::PhysicsShape> physics;
 	while(1) {
 		int32_t level = countIndent(fileName);
 		if (level == 0) {
@@ -848,7 +840,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 						materialName = "";
 						material = nullptr;
 					}
-					material = new ege::Material();
+					material = std::make_shared<ege::Material>();
 					materialName = inputDataLine;
 					currentMode = EMFModuleMaterialNamed;
 					EGE_VERBOSE("    "<< materialName);
@@ -927,7 +919,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 	    && material!=nullptr) {
 		m_materials.add(materialName, material);
 		materialName = "";
-		material = nullptr;
+		material.reset();
 	}
 	EGE_VERBOSE("Stop parsing Mesh file");
 	
@@ -936,7 +928,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 	return true;
 }
 
-void ege::resource::Mesh::addMaterial(const std::string& _name, ege::Material* _data) {
+void ege::resource::Mesh::addMaterial(const std::string& _name, std::shared_ptr<ege::Material> _data) {
 	if (nullptr == _data) {
 		EGE_ERROR(" can not add material with null pointer");
 		return;
