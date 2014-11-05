@@ -27,6 +27,8 @@ class btDynamicsWorld;
 #include <ewol/object/Object.h>
 #include <ewol/signal/Signal.h>
 #include <ewol/event/Time.h>
+#include <ewol/parameter/Value.h>
+#include <ege/resource/Mesh.h>
 
 namespace ege {
 	enum property {
@@ -116,7 +118,7 @@ namespace ege {
 				m_status.set(_value);
 			}
 		protected:
-			ewol::parameter::List<float> m_ratio; //!< Speed ratio
+			ewol::parameter::Value<float> m_ratio; //!< Speed ratio
 		public:
 			/**
 			 * @brief Get the game speed ratio.
@@ -135,7 +137,17 @@ namespace ege {
 		protected:
 			std::map<std::string, std::shared_ptr<ege::Camera>> m_listCamera; //!< list of all camera in the world
 		public:
+			/**
+			 * @brief Add a camera in the camera pool.
+			 * @param[in] _name Name of the camera.
+			 * @param[in] _camera Pointer on the camera to add.
+			 */
 			void addCamera(const std::string& _name, const std::shared_ptr<ege::Camera>& _camera);
+			/**
+			 * @brief Get a specific camera.
+			 * @param[in] _name Name of the camera.
+			 * @return A pointer on the camera requested.
+			 */
 			std::shared_ptr<ege::Camera> getCamera(const std::string& _name);
 		public:
 			/**
@@ -239,6 +251,15 @@ namespace ege {
 			
 		private:
 			void periodicCall(const ewol::event::Time& _event);
+		protected:
+			std::vector<std::shared_ptr<ege::resource::Mesh>> m_listMeshToDrawFirst;
+		public:
+			void addStaticMeshToDraw(const std::shared_ptr<ege::resource::Mesh>& _mesh) {
+				m_listMeshToDrawFirst.push_back(_mesh);
+			}
+			const std::vector<std::shared_ptr<ege::resource::Mesh>>& getStaticMeshToDraw() {
+				return m_listMeshToDrawFirst;
+			}
 	};
 };
 

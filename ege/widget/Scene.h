@@ -60,48 +60,6 @@ namespace ege {
 			protected:
 				// Note : This is only for temporary elements : on the display
 				std::vector<ege::Environement::ResultNearestElement> m_displayElementOrdered;
-			protected:
-				//bool m_debugMode;
-				//std::shared_ptr<ewol::resource::Colored3DObject> m_debugDrawing;  //!< for the debug draw elements
-			public:
-				/**
-				 * @brief Toggle the debug mode  == > usefull for DEBUG only ...
-				 */
-				/*
-				void debugToggle() {
-					m_debugMode = m_debugMode?false:true;
-				};
-				*/
-			protected:
-				// Derived function
-				//virtual void ScenePeriodicCall(int64_t _localTime, int32_t _deltaTime) { };
-			public:
-				//vec2 calculateDeltaAngle(const vec2& _posScreen);
-				//vec3 convertScreenPositionInMapPosition(const vec2& _posScreen);
-				/**
-				 * @brief get the current camera reference for the scene rendering
-				 */
-				/*
-				ege::Camera& getCamera() {
-					return *m_camera;
-				};
-				*/
-				/*
-				void renderscene(int pass);
-				void drawOpenGL(btScalar* m, 
-				                const btCollisionShape* _shape,
-				                const btVector3& _color,
-				                int32_t	_debugMode,
-				                const btVector3& _worldBoundsMin,
-				                const btVector3& _worldBoundsMax);
-				void drawSphere(btScalar _radius,
-				                int _lats,
-				                int _longs,
-				                mat4& _transformationMatrix,
-				                etk::Color<float>& _tmpColor);
-				void getElementAroundNewElement(vec3 _sourcePosition,
-				                                std::vector<ege::Environement::ResultNearestElement>& _resultList);
-				*/
 			protected: // Derived function
 				virtual void onDraw();
 				virtual void onParameterChangeValue(const ewol::parameter::Ref& _paramPointer);

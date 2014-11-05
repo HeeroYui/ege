@@ -22,7 +22,7 @@ def create(target):
 	
 	myModule.add_path(tools.get_current_path(__file__))
 	
-	#myModule.copy_folder("data/*")
+	myModule.copy_folder("data/*")
 	
 	# set the package properties :
 	myModule.pkg_set("VERSION", "0.0.0")
