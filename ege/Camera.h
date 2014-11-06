@@ -33,6 +33,7 @@ namespace ege {
 			 * @param[in] _distance distance to the eye point
 			 */
 			Camera(const vec3& _eye=vec3(0,0,0), float _angleZ=0, float _angleTeta=0, float _distance=10);
+			// TODO : Rework this API ...
 		protected:
 			vec3 m_eye; //!< position where the camera see
 		public:

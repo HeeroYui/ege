@@ -42,6 +42,7 @@ void ege::resource::Mesh::init(const std::string& _fileName, const std::string& 
 		m_GLPosition = m_GLprogram->getAttribute("EW_coord3d");
 		m_GLtexture = m_GLprogram->getAttribute("EW_texture2d");
 		m_GLNormal = m_GLprogram->getAttribute("EW_normal");
+		m_GLColor = m_GLprogram->getAttribute("EW_color");
 		m_GLMatrix = m_GLprogram->getUniform("EW_MatrixTransformation");
 		m_GLMatrixPosition = m_GLprogram->getUniform("EW_MatrixPosition");
 		// Link material and Lights
@@ -49,7 +50,7 @@ void ege::resource::Mesh::init(const std::string& _fileName, const std::string& 
 		m_light.link(m_GLprogram, "EW_directionalLight");
 	}
 	// this is the properties of the buffer requested : "r"/"w" + "-" + buffer type "f"=flaot "i"=integer
-	m_verticesVBO = ewol::resource::VirtualBufferObject::create(4);
+	m_verticesVBO = ewol::resource::VirtualBufferObject::create(5);
 	
 	// load the curent file :
 	std::string tmpName = etk::tolower(_fileName);
@@ -83,6 +84,7 @@ void ege::resource::Mesh::clean() {
 	m_physics.clear();
 	m_materials.clear();
 	m_listFaces.clear();
+	m_listColor.clear();
 	m_listVertexNormal.clear();
 	m_listFacesNormal.clear();
 	m_listUV.clear();
@@ -117,11 +119,13 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	m_GLprogram->uniformMatrix4fv(m_GLMatrix, 1, tmpMatrix.m_mat);
 	m_GLprogram->uniformMatrix4fv(m_GLMatrixPosition, 1, _positionMatrix.m_mat);
 	// position :
-	m_GLprogram->sendAttributePointer(m_GLPosition, 3/*x,y,z*/, m_verticesVBO, MESH_VBO_VERTICES);
+	m_GLprogram->sendAttributePointer(m_GLPosition, m_verticesVBO, MESH_VBO_VERTICES);
 	// Texture :
-	m_GLprogram->sendAttributePointer(m_GLtexture, 2/*u,v*/, m_verticesVBO, MESH_VBO_TEXTURE);
+	m_GLprogram->sendAttributePointer(m_GLtexture, m_verticesVBO, MESH_VBO_TEXTURE);
 	// position :
-	m_GLprogram->sendAttributePointer(m_GLNormal, 3/*x,y,z*/, m_verticesVBO, MESH_VBO_VERTICES_NORMAL);
+	m_GLprogram->sendAttributePointer(m_GLNormal, m_verticesVBO, MESH_VBO_VERTICES_NORMAL);
+	// position :
+	m_GLprogram->sendAttributePointer(m_GLColor, m_verticesVBO, MESH_VBO_COLOR);
 	// draw lights :
 	m_light.draw(m_GLprogram);
 	#ifdef DISPLAY_NB_VERTEX_DISPLAYED
@@ -135,7 +139,9 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 		}
 		m_materials[m_listFaces.getKey(kkk)]->draw(m_GLprogram, m_GLMaterial);
 		if (m_checkNormal == false) {
-			ewol::openGL::drawElements(GL_TRIANGLES, m_listFaces.getValue(kkk).m_index);
+			//ewol::openGL::drawElements(GL_TRIANGLES, m_listFaces.getValue(kkk).m_index);
+			//ewol::openGL::drawElements(GL_LINE_LOOP, m_listFaces.getValue(kkk).m_index);
+			ewol::openGL::drawElements(GL_LINES, m_listFaces.getValue(kkk).m_index);
 			#ifdef DISPLAY_NB_VERTEX_DISPLAYED
 				nbElementDraw += m_listFaces.getValue(kkk).m_index.size();
 				nbElementDrawTheoric += m_listFaces.getValue(kkk).m_index.size();
@@ -172,6 +178,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 				}
 			}
 			ewol::openGL::drawElements(GL_TRIANGLES, tmpIndexResult);
+			//ewol::openGL::drawElements(GL_LINE_LOOP, tmpIndexResult);
 			#ifdef DISPLAY_NB_VERTEX_DISPLAYED
 				nbElementDraw += tmpIndexResult.size();
 				nbElementDrawTheoric += m_listFaces.getValue(kkk).m_index.size();
@@ -255,15 +262,30 @@ void ege::resource::Mesh::generateVBO() {
 		for (size_t iii=0; iii<tmpFaceList.m_faces.size() ; iii++) {
 			int32_t vertexVBOId[3];
 			for(size_t indice=0 ; indice<3; indice++) {
+				// ghet position
 				vec3 position = m_listVertex[tmpFaceList.m_faces[iii].m_vertex[indice]];
+				// get Color
+				etk::Color<float> color;
+				if (tmpFaceList.m_faces[iii].m_color[indice] != -1) {
+					color = m_listColor[tmpFaceList.m_faces[iii].m_color[indice]];
+				} else {
+					color = etk::color::white;
+				}
+				// get µNormal
 				vec3 normal;
 				if (m_normalMode == normalModeVertex) {
 					normal = m_listVertexNormal[tmpFaceList.m_faces[iii].m_normal[indice]];
 				} else {
 					normal = m_listFacesNormal[tmpFaceList.m_faces[iii].m_normal[indice]];
 				}
-				vec2 texturepos(m_listUV[tmpFaceList.m_faces[iii].m_uv[indice]].x(),1.0f-m_listUV[tmpFaceList.m_faces[iii].m_uv[indice]].y());
-				// try to find it in the list :
+				// get Texture Position
+				vec2 texturepos;
+				if (tmpFaceList.m_faces[iii].m_uv[indice] == -1) {
+					texturepos.setValue(0,0);
+				} else {
+					texturepos.setValue(m_listUV[tmpFaceList.m_faces[iii].m_uv[indice]].x(),1.0f-m_listUV[tmpFaceList.m_faces[iii].m_uv[indice]].y());
+				}
+				// Create the vectex Buffer list:
 				bool elementFind = false;
 				#ifdef TRY_MINIMAL_VBO
 				for (int32_t jjj=0; jjj<m_verticesVBO->sizeOnBufferVec3(MESH_VBO_VERTICES); jjj++) {
@@ -283,7 +305,8 @@ void ege::resource::Mesh::generateVBO() {
 					m_verticesVBO->pushOnBuffer(MESH_VBO_VERTICES, position);
 					m_verticesVBO->pushOnBuffer(MESH_VBO_VERTICES_NORMAL, normal);
 					m_verticesVBO->pushOnBuffer(MESH_VBO_TEXTURE, texturepos);
-					vertexVBOId[indice] = m_verticesVBO->sizeOnBufferVec3(MESH_VBO_VERTICES)-1;
+					m_verticesVBO->pushOnBuffer(MESH_VBO_COLOR, color);
+					vertexVBOId[indice] = m_verticesVBO->bufferSize(MESH_VBO_VERTICES)-1;
 				}
 			}
 			for(size_t indice=0 ; indice<3; indice++) {
@@ -947,4 +970,87 @@ void ege::resource::Mesh::setShape(void* _shape) {
 		m_pointerShape = nullptr;
 	}
 	m_pointerShape=_shape;
+}
+
+int32_t ege::resource::Mesh::findPositionInList(const vec3& _pos) {
+	for (size_t iii=0; iii<m_listVertex.size(); ++iii) {
+		if (m_listVertex[iii] == _pos) {
+			return iii;
+		}
+	}
+	m_listVertex.push_back(_pos);
+	return m_listVertex.size()-1;
+}
+int32_t ege::resource::Mesh::findTextureInList(const vec2& _uv) {
+	for (size_t iii=0; iii<m_listUV.size(); ++iii) {
+		if (m_listUV[iii] == _uv) {
+			return iii;
+		}
+	}
+	m_listUV.push_back(_uv);
+	return m_listUV.size()-1;
+}
+int32_t ege::resource::Mesh::findColorInList(const etk::Color<float>& _color) {
+	for (size_t iii=0; iii<m_listColor.size(); ++iii) {
+		if (m_listColor[iii] == _color) {
+			return iii;
+		}
+	}
+	m_listColor.push_back(_color);
+	return m_listColor.size()-1;
+}
+
+
+void ege::resource::Mesh::addFaceIndexing(const std::string& _layerName) {
+	if (m_listFaces.exist(_layerName) == false) {
+		FaceIndexing empty;
+		m_listFaces.add(_layerName, empty);
+	}
+}
+void ege::resource::Mesh::addTriangle(const std::string& _layerName,
+                                      const vec3& _pos1, const vec3& _pos2, const vec3& _pos3,
+                                      const vec2& _uv1, const vec2& _uv2, const vec2& _uv3,
+                                      const etk::Color<float>& _color1, const etk::Color<float>& _color2, const etk::Color<float>& _color3) {
+	if (m_listFaces.exist(_layerName) == false) {
+		EGE_ERROR("Mesh layer : " << _layerName << " does not exist in list faces ...");
+		return;
+	}
+	// try to find position:
+	int32_t pos1 = findPositionInList(_pos1);
+	int32_t pos2 = findPositionInList(_pos2);
+	int32_t pos3 = findPositionInList(_pos3);
+	// try to find Color:
+	int32_t uv1 = findTextureInList(_uv1);
+	int32_t uv2 = findTextureInList(_uv2);
+	int32_t uv3 = findTextureInList(_uv3);
+	// try to find UV mapping:
+	int32_t color1 = findColorInList(_color1);
+	int32_t color2 = findColorInList(_color2);
+	int32_t color3 = findColorInList(_color3);
+	Face tmpFace(pos1, uv1,
+	             pos2, uv2,
+	             pos3, uv3);
+	tmpFace.setColor(color1, color2, color3);
+	m_listFaces[_layerName].m_faces.push_back(tmpFace);
+}
+
+void ege::resource::Mesh::addTriangle(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3,
+                                      const etk::Color<float>& _color1, const etk::Color<float>& _color2, const etk::Color<float>& _color3) {
+	if (m_listFaces.exist(_layerName) == false) {
+		EGE_ERROR("Mesh layer : " << _layerName << " does not exist in list faces ...");
+		return;
+	}
+	// try to find position:
+	int32_t pos1 = findPositionInList(_pos1);
+	int32_t pos2 = findPositionInList(_pos2);
+	int32_t pos3 = findPositionInList(_pos3);
+	// try to find UV mapping:
+	int32_t color1 = findColorInList(_color1);
+	int32_t color2 = findColorInList(_color2);
+	int32_t color3 = findColorInList(_color3);
+	Face tmpFace(pos1, -1,
+	             pos2, -1,
+	             pos3, -1);
+	tmpFace.setColor(color1, color2, color3);
+	m_listFaces[_layerName].m_faces.push_back(tmpFace);
 }

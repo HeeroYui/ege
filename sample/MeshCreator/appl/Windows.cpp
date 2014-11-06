@@ -19,13 +19,53 @@
 appl::Windows::Windows() {
 	addObjectType("appl::Windows");
 }
+
+
+static std::shared_ptr<ege::resource::Mesh> createGrid(int32_t _lineCount) {
+	std::shared_ptr<ege::resource::Mesh> out = ege::resource::Mesh::create("---", "DATA:color3.prog");
+	float lineSize = 0.1f;
+	if (out != nullptr) {
+		std::shared_ptr<ege::Material> material = std::make_shared<ege::Material>();
+		// set the element material properties :
+		material->setAmbientFactor(vec4(1,1,1,1));
+		material->setDiffuseFactor(vec4(0,0,0,1));
+		material->setSpecularFactor(vec4(0,0,0,1));
+		material->setShininess(1);
+		out->addMaterial("basics", material);
+		
+		out->addFaceIndexing("basics");
+		/*
+		out->addQuad("basics",
+		             vec3(-10,0,0), vec3(10,0,0), vec3(10,10,-lineSize), vec3(-10,10,-lineSize),
+		             etk::color::white, etk::color::red, etk::color::green, etk::color::blue);
+		*/
+		// create horizontal lines
+		for (int32_t iii=-_lineCount; iii<=_lineCount; ++iii) {
+			out->addQuad("basics",
+			             vec3(-_lineCount,iii,0), vec3(_lineCount,iii,0), vec3(_lineCount,iii,lineSize), vec3(-_lineCount,iii,lineSize),
+			             etk::color::white);
+		}
+		// create vertical lines
+		for (int32_t iii=-_lineCount; iii<=_lineCount; ++iii) {
+			out->addQuad("basics",
+			             vec3(iii,-_lineCount,0), vec3(iii,_lineCount,0), vec3(iii,_lineCount,lineSize), vec3(iii,-_lineCount,lineSize),
+			             etk::color::white);
+		}
+		
+		// generate the VBO
+		out->generateVBO();
+	}
+	return out;
+}
+
+
 void appl::Windows::init() {
 	ewol::widget::Windows::init();
 	setTitle("example ege : MeshCreator");
 	
 	m_env = ege::Environement::create();
 	// Create basic Camera
-	m_env->addCamera("basic", std::make_shared<ege::Camera>());
+	m_env->addCamera("basic", std::make_shared<ege::Camera>(vec3(0,0,0),0,0,10));
 	
 	std::shared_ptr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create(m_env);
 	if (tmpWidget == nullptr) {
@@ -69,6 +109,11 @@ void appl::Windows::init() {
 		myMesh->generateVBO();
 		m_env->addStaticMeshToDraw(myMesh);
 	}
+	myMesh = createGrid(10);
+	if (myMesh != nullptr) {
+		m_env->addStaticMeshToDraw(myMesh);
+	}
+	/*
 	myMesh = ege::resource::Mesh::create("---");
 	if (myMesh != nullptr) {
 		std::shared_ptr<ege::Material> material = std::make_shared<ege::Material>();
@@ -82,4 +127,7 @@ void appl::Windows::init() {
 		myMesh->generateVBO();
 		m_env->addStaticMeshToDraw(myMesh);
 	}
+	*/
 }
+
+

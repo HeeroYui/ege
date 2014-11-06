@@ -55,6 +55,7 @@ namespace ege {
 				int32_t m_GLMatrixPosition;
 				int32_t m_GLNormal;
 				int32_t m_GLtexture;
+				int32_t m_GLColor;
 				int32_t m_bufferOfset;
 				int32_t m_numberOfElments;
 				MaterialGlId m_GLMaterial;
@@ -62,6 +63,7 @@ namespace ege {
 			protected:
 				std::vector<vec3> m_listVertex; //!< List of all vertex in the element
 				std::vector<vec2> m_listUV; //!< List of all UV point in the mesh (for the specify texture)
+				std::vector<etk::Color<float>> m_listColor; //!< List of all Color point in the mesh
 				std::vector<vec3> m_listFacesNormal; //!< List of all Face normal, when calculated
 				std::vector<vec3> m_listVertexNormal; //!< List of all Face normal, when calculated
 				etk::Hash<FaceIndexing> m_listFaces; //!< List of all Face for the mesh
@@ -135,6 +137,154 @@ namespace ege {
 				void setFreeShapeFunction(void (*_functionFreeShape)(void* _pointer)) {
 					m_functionFreeShape = _functionFreeShape;
 				};
+				/**
+				 * @brief Add in the faces list the layer requested
+				 * @param[in] _layerName face index to add
+				 */
+				void addFaceIndexing(const std::string& _layerName);
+			public:
+				/**
+				 * @not-in-doc
+				 * @brief draw a colored triangle (usefull for debug and test)
+				 * @param[in] _layerName Material and face indexing layer name
+				 * @param[in] _pos1 First point position
+				 * @param[in] _pos2 Second point position
+				 * @param[in] _pos3 Third point position
+				 * @param[in] _color1 color of the _pos1 element
+				 * @param[in] _color2 color of the _pos2 element
+				 * @param[in] _color3 color of the _pos3 element
+				 */
+				void addTriangle(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3, const etk::Color<float>& _color) {
+					addTriangle(_layerName, _pos1, _pos2, _pos3, _color, _color, _color);
+				}
+				/**
+				 * @not-in-doc
+				 * @brief draw a colored triangle (usefull for debug and test)
+				 * @param[in] _layerName Material and face indexing layer name
+				 * @param[in] _pos1 First point position
+				 * @param[in] _pos2 Second point position
+				 * @param[in] _pos3 Third point position
+				 * @param[in] _color1 color of the _pos1 element
+				 * @param[in] _color2 color of the _pos2 element
+				 * @param[in] _color3 color of the _pos3 element
+				 */
+				void addTriangle(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3,
+				                 const etk::Color<float>& _color1, const etk::Color<float>& _color2, const etk::Color<float>& _color3);
+				/**
+				 * @not-in-doc
+				 * @brief draw a colored quad (usefull for debug and test)
+				 * @param[in] _layerName Material and face indexing layer name
+				 * @param[in] _pos1 First point position
+				 * @param[in] _pos2 Second point position
+				 * @param[in] _pos3 Third point position
+				 * @param[in] _pos4 faurth point position
+				 * @param[in] _color color of all elements
+				 */
+				void addQuad(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3, const vec3& _pos4, const etk::Color<float>& _color) {
+					addQuad(_layerName, _pos1, _pos2, _pos3, _pos4, _color, _color, _color, _color);
+				}
+				/**
+				 * @not-in-doc
+				 * @brief draw a colored quad (usefull for debug and test)
+				 * @param[in] _layerName Material and face indexing layer name
+				 * @param[in] _pos1 First point position
+				 * @param[in] _pos2 Second point position
+				 * @param[in] _pos3 Third point position
+				 * @param[in] _pos4 faurth point position
+				 * @param[in] _color1 color of the _pos1 element
+				 * @param[in] _color2 color of the _pos2 element
+				 * @param[in] _color3 color of the _pos3 element
+				 * @param[in] _color4 color of the _pos4 element
+				 */
+				void addQuad(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3, const vec3& _pos4,
+				                 const etk::Color<float>& _color1, const etk::Color<float>& _color2, const etk::Color<float>& _color3, const etk::Color<float>& _color4) {
+					addTriangle(_layerName, _pos1, _pos2, _pos3, _color1, _color2, _color3);
+					addTriangle(_layerName, _pos1, _pos3, _pos4, _color1, _color3, _color4);
+				}
+				/**
+				 * @not-in-doc
+				 * @brief draw a textured colored triangle (usefull for debug and test)
+				 * @param[in] _layerName Material and face indexing layer name
+				 * @param[in] _pos1 First point position
+				 * @param[in] _pos2 Second point position
+				 * @param[in] _pos3 Third point position
+				 * @param[in] _color color of all elements
+				 * @param[in] _uv1 texture position of the _pos1 element
+				 * @param[in] _uv2 texture position of the _pos2 element
+				 * @param[in] _uv3 texture position of the _pos3 element
+				 */
+				void addTriangle(const std::string& _layerName,
+				                 const vec3& _pos1, const vec3& _pos2, const vec3& _pos3,
+				                 const vec2& _uv1, const vec2& _uv2, const vec2& _uv3,
+				                 const etk::Color<float>& _color) {
+					addTriangle(_layerName, _pos1, _pos2, _pos3, _uv1, _uv2, _uv3, _color, _color, _color);
+				}
+				/**
+				 * @not-in-doc
+				 * @brief draw a textured colored triangle (usefull for debug and test)
+				 * @param[in] _layerName Material and face indexing layer name
+				 * @param[in] _pos1 First point position
+				 * @param[in] _pos2 Second point position
+				 * @param[in] _pos3 Third point position
+				 * @param[in] _color1 color of the _pos1 element
+				 * @param[in] _color2 color of the _pos2 element
+				 * @param[in] _color3 color of the _pos3 element
+				 * @param[in] _uv1 texture position of the _pos1 element
+				 * @param[in] _uv2 texture position of the _pos2 element
+				 * @param[in] _uv3 texture position of the _pos3 element
+				 */
+				void addTriangle(const std::string& _layerName,
+				                 const vec3& _pos1, const vec3& _pos2, const vec3& _pos3,
+				                 const vec2& _uv1, const vec2& _uv2, const vec2& _uv3,
+				                 const etk::Color<float>& _color1=etk::color::white, const etk::Color<float>& _color2=etk::color::white, const etk::Color<float>& _color3=etk::color::white);
+				/**
+				 * @not-in-doc
+				 * @brief draw a textured colored quad (usefull for debug and test)
+				 * @param[in] _layerName Material and face indexing layer name
+				 * @param[in] _pos1 First point position
+				 * @param[in] _pos2 Second point position
+				 * @param[in] _pos3 Third point position
+				 * @param[in] _pos4 faurth point position
+				 * @param[in] _color color of all elements
+				 * @param[in] _uv1 texture position of the _pos1 element
+				 * @param[in] _uv2 texture position of the _pos2 element
+				 * @param[in] _uv3 texture position of the _pos3 element
+				 * @param[in] _uv4 texture position of the _pos4 element
+				 */
+				void addQuad(const std::string& _layerName,
+				             const vec3& _pos1, const vec3& _pos2, const vec3& _pos3, const vec3& _pos4,
+				             const vec2& _uv1, const vec2& _uv2, const vec2& _uv3, const vec2& _uv4,
+				             const etk::Color<float>& _color) {
+					addQuad(_layerName, _pos1, _pos2, _pos3, _pos4, _uv1, _uv2, _uv3, _uv4, _color, _color, _color, _color);
+				}
+				/**
+				 * @not-in-doc
+				 * @brief draw a textured quad (usefull for debug and test)
+				 * @param[in] _layerName Material and face indexing layer name
+				 * @param[in] _pos1 First point position
+				 * @param[in] _pos2 Second point position
+				 * @param[in] _pos3 Third point position
+				 * @param[in] _pos4 faurth point position
+				 * @param[in] _uv1 texture position of the _pos1 element
+				 * @param[in] _uv2 texture position of the _pos2 element
+				 * @param[in] _uv3 texture position of the _pos3 element
+				 * @param[in] _uv4 texture position of the _pos4 element
+				 * @param[in] _color1 color of the _pos1 element
+				 * @param[in] _color2 color of the _pos2 element
+				 * @param[in] _color3 color of the _pos3 element
+				 * @param[in] _color4 color of the _pos4 element
+				 */
+				void addQuad(const std::string& _layerName,
+				             const vec3& _pos1, const vec3& _pos2, const vec3& _pos3, const vec3& _pos4,
+				             const vec2& _uv1, const vec2& _uv2, const vec2& _uv3, const vec2& _uv4,
+				             const etk::Color<float>& _color1=etk::color::white, const etk::Color<float>& _color2=etk::color::white, const etk::Color<float>& _color3=etk::color::white, const etk::Color<float>& _color4=etk::color::white) {
+					addTriangle(_layerName, _pos1, _pos2, _pos3, _uv1, _uv2, _uv3, _color1, _color2, _color3);
+					addTriangle(_layerName, _pos1, _pos3, _pos4, _uv1, _uv3, _uv4, _color1, _color3, _color4);
+				}
+			protected:
+				int32_t findPositionInList(const vec3& _pos);
+				int32_t findTextureInList(const vec2& _uv);
+				int32_t findColorInList(const etk::Color<float>& _color);
 		};
 	};
 };

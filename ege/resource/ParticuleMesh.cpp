@@ -54,11 +54,11 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 	vec4 tmpColor(_mainColor.r(), _mainColor.g(), _mainColor.b(), _mainColor.a());
 	m_GLprogram->uniform4(m_GLMainColor, tmpColor);
 	// position :
-	m_GLprogram->sendAttributePointer(m_GLPosition, 3/*x,y,z*/, m_verticesVBO, MESH_VBO_VERTICES);
+	m_GLprogram->sendAttributePointer(m_GLPosition, m_verticesVBO, MESH_VBO_VERTICES);
 	// Texture :
-	m_GLprogram->sendAttributePointer(m_GLtexture, 2/*u,v*/, m_verticesVBO, MESH_VBO_TEXTURE);
+	m_GLprogram->sendAttributePointer(m_GLtexture, m_verticesVBO, MESH_VBO_TEXTURE);
 	// position :
-	m_GLprogram->sendAttributePointer(m_GLNormal, 3/*x,y,z*/, m_verticesVBO, MESH_VBO_VERTICES_NORMAL);
+	m_GLprogram->sendAttributePointer(m_GLNormal, m_verticesVBO, MESH_VBO_VERTICES_NORMAL);
 	// draw lights :
 	m_light.draw(m_GLprogram);
 	#ifdef DISPLAY_NB_VERTEX_DISPLAYED
