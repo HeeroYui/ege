@@ -30,6 +30,8 @@ namespace ege {
 			MaterialGlId();
 			void link(const std::shared_ptr<ewol::resource::Program>& _prog, const std::string& _baseName);
 	};
+	
+	
 	class Material {
 		private:
 			// values
@@ -37,6 +39,7 @@ namespace ege {
 			vec4 m_diffuseFactor;
 			vec4 m_specularFactor;
 			float m_shininess;
+			enum ewol::openGL::renderMode m_renderMode; // Select Render mode (triangle/Line/point ...)
 			std::shared_ptr<ewol::resource::TextureFile> m_texture0;
 		public:
 			std::vector<uint32_t> m_listIndexFaces;
@@ -55,6 +58,11 @@ namespace ege {
 			}
 			void setShininess(float _val) {
 				m_shininess = _val;
+			}
+			void setRenderMode(enum ewol::openGL::renderMode _val);
+			int32_t getRenderModeOpenGl();
+			enum ewol::openGL::renderMode getRenderMode() {
+				return m_renderMode;
 			}
 			void setTexture0(const std::string& _filename);
 			

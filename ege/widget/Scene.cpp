@@ -86,7 +86,7 @@ void ege::widget::Scene::onDraw() {
 	std::shared_ptr<btDynamicsWorld> world = m_env->getDynamicWorld();
 	if (world != nullptr) {
 		
-		m_env->getOrderedElementForDisplay(m_displayElementOrdered, camera->getOrigin(), camera->getViewVector());
+		m_env->getOrderedElementForDisplay(m_displayElementOrdered, camera->getEye(), camera->getViewVector());
 		//EGE_DEBUG("DRAW : " << m_displayElementOrdered.size() << " elements");
 		
 		// TODO : remove this  == > no more needed ==> checked in the generate the list of the element ordered

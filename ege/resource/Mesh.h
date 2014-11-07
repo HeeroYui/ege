@@ -88,8 +88,8 @@ namespace ege {
 				}
 				void generateVBO();
 			private:
-				void calculateNormaleFace();
-				void calculateNormaleEdge();
+				void calculateNormaleFace(const std::string& _materialName);
+				void calculateNormaleEdge(const std::string& _materialName);
 			public :
 				void createViewBox(const std::string& _materialName,float _size=1.0);
 				void createIcoSphere(const std::string& _materialName,float _size=1.0, int32_t _subdivision=3);
@@ -143,6 +143,9 @@ namespace ege {
 				 */
 				void addFaceIndexing(const std::string& _layerName);
 			public:
+				void addLine(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const etk::Color<float>& _color);
+				void addPoint(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const etk::Color<float>& _color);
+				
 				/**
 				 * @not-in-doc
 				 * @brief draw a colored triangle (usefull for debug and test)

@@ -19,7 +19,6 @@ ege::MaterialGlId::MaterialGlId() :
 	// nothing to do else ...
 }
 
-
 void ege::MaterialGlId::link(const std::shared_ptr<ewol::resource::Program>& _prog, const std::string& _baseName) {
 	if (nullptr == _prog) {
 		return;
@@ -36,9 +35,11 @@ ege::Material::Material() :
   m_diffuseFactor(0,0,0,1),
   m_specularFactor(0,0,0,1),
   m_shininess(1),
+  m_renderMode(ewol::openGL::renderTriangle),
   m_texture0(nullptr) {
 	// nothing to do else ...
 }
+
 ege::Material::~Material() {
 	
 }
@@ -66,5 +67,47 @@ void ege::Material::setTexture0(const std::string& _filename) {
 	}
 }
 
+int32_t ege::Material::getRenderModeOpenGl() {
+	return static_cast<int32_t>(m_renderMode);
+}
 
+void ege::Material::setRenderMode(enum ewol::openGL::renderMode _val) {
+	switch (_val) {
+		case ewol::openGL::renderPoint:
+			break;
+		case ewol::openGL::renderLine:
+			break;
+		case ewol::openGL::renderLineStrip:
+			EGE_INFO("Does not support " << _val << " auto convert it in 'LINE'");
+			_val = ewol::openGL::renderLine;
+			break;
+		case ewol::openGL::renderLineLoop:
+			EGE_INFO("Does not support " << _val << " auto convert it in 'LINE'");
+			_val = ewol::openGL::renderLine;
+			break;
+		case ewol::openGL::renderTriangle:
+			break;
+		case ewol::openGL::renderTriangleStrip:
+			EGE_INFO("Does not support " << _val << " auto convert it in 'TRIANGLE'");
+			_val = ewol::openGL::renderTriangle;
+			break;
+		case ewol::openGL::renderTriangleFan:
+			EGE_INFO("Does not support " << _val << " auto convert it in 'TRIANGLE'");
+			_val = ewol::openGL::renderTriangle;
+			break;
+		case ewol::openGL::renderQuad:
+			EGE_INFO("Does not support " << _val << " auto convert it in 'TRIANGLE'");
+			_val = ewol::openGL::renderTriangle;
+			break;
+		case ewol::openGL::renderQuadStrip:
+			EGE_INFO("Does not support " << _val << " auto convert it in 'TRIANGLE'");
+			_val = ewol::openGL::renderTriangle;
+			break;
+		case ewol::openGL::renderPolygon:
+			EGE_ERROR("Does not support " << _val << " try convert it in 'TRIANGLE'");
+			_val = ewol::openGL::renderTriangle;
+			break;
+	}
+	m_renderMode = _val;
+}
 

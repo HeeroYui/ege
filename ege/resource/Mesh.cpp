@@ -19,7 +19,8 @@
 
 ege::resource::Mesh::Mesh() :
   m_normalMode(normalModeNone),
-  m_checkNormal(false) {
+  m_checkNormal(false),
+  m_functionFreeShape(nullptr) {
 	addObjectType("ege::resource::Mesh");
 }
 
@@ -139,9 +140,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 		}
 		m_materials[m_listFaces.getKey(kkk)]->draw(m_GLprogram, m_GLMaterial);
 		if (m_checkNormal == false) {
-			//ewol::openGL::drawElements(GL_TRIANGLES, m_listFaces.getValue(kkk).m_index);
-			//ewol::openGL::drawElements(GL_LINE_LOOP, m_listFaces.getValue(kkk).m_index);
-			ewol::openGL::drawElements(GL_LINES, m_listFaces.getValue(kkk).m_index);
+			ewol::openGL::drawElements(m_materials[m_listFaces.getKey(kkk)]->getRenderModeOpenGl(), m_listFaces.getValue(kkk).m_index);
 			#ifdef DISPLAY_NB_VERTEX_DISPLAYED
 				nbElementDraw += m_listFaces.getValue(kkk).m_index.size();
 				nbElementDrawTheoric += m_listFaces.getValue(kkk).m_index.size();
@@ -177,8 +176,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 					}
 				}
 			}
-			ewol::openGL::drawElements(GL_TRIANGLES, tmpIndexResult);
-			//ewol::openGL::drawElements(GL_LINE_LOOP, tmpIndexResult);
+			ewol::openGL::drawElements(m_materials[m_listFaces.getKey(kkk)]->getRenderModeOpenGl(), tmpIndexResult);
 			#ifdef DISPLAY_NB_VERTEX_DISPLAYED
 				nbElementDraw += tmpIndexResult.size();
 				nbElementDrawTheoric += m_listFaces.getValue(kkk).m_index.size();
@@ -200,25 +198,36 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 }
 
 // normal calculation of the normal face is really easy :
-void ege::resource::Mesh::calculateNormaleFace() {
+// TODO : Use it for multiple Material interface
+void ege::resource::Mesh::calculateNormaleFace(const std::string& _materialName) {
 	m_listFacesNormal.clear();
 	if (m_normalMode != ege::resource::Mesh::normalModeFace) {
-		std::vector<Face>& tmpFaceList = m_listFaces.getValue(0).m_faces;
-		for(size_t iii=0 ; iii<tmpFaceList.size() ; iii++) {
+		EGE_INFO("calculateNormaleFace(" << _materialName << ")");
+		ewol::openGL::renderMode tmpRenderMode = m_materials[_materialName]->getRenderMode();
+		if (    tmpRenderMode == ewol::openGL::renderPoint
+		     || tmpRenderMode == ewol::openGL::renderLine
+		     || tmpRenderMode == ewol::openGL::renderLineStrip
+		     || tmpRenderMode == ewol::openGL::renderLineLoop) {
+			// can not calculate normal on lines ...
+			m_normalMode = ege::resource::Mesh::normalModeNone;
+			return;
+		}
+		for(auto &it : m_listFaces[_materialName].m_faces) {
 			// for all case, We use only the 3 vertex for quad element, in theory 3D modeler export element in triangle if it is not a real plane.
-			vec3 normal = btCross(m_listVertex[tmpFaceList[iii].m_vertex[0]]-m_listVertex[tmpFaceList[iii].m_vertex[1]],
-			                      m_listVertex[tmpFaceList[iii].m_vertex[1]]-m_listVertex[tmpFaceList[iii].m_vertex[2]]);
+			vec3 normal = btCross(m_listVertex[it.m_vertex[0]]-m_listVertex[it.m_vertex[1]],
+			                      m_listVertex[it.m_vertex[1]]-m_listVertex[it.m_vertex[2]]);
 			m_listFacesNormal.push_back(normal.normalized());
 		}
 		m_normalMode = ege::resource::Mesh::normalModeFace;
 	}
 }
 
-void ege::resource::Mesh::calculateNormaleEdge() {
+void ege::resource::Mesh::calculateNormaleEdge(const std::string& _materialName) {
 	m_listVertexNormal.clear();
 	if (m_normalMode != ege::resource::Mesh::normalModeVertex) {
+		EGE_INFO("calculateNormaleEdge(" << _materialName << ")");
 		for(size_t iii=0 ; iii<m_listVertex.size() ; iii++) {
-			std::vector<Face>& tmpFaceList = m_listFaces.getValue(0).m_faces;
+			std::vector<Face>& tmpFaceList = m_listFaces[_materialName].m_faces;
 			vec3 normal(0,0,0);
 			// add the vertex from all the element in the list for face when the element in the face ...
 			for(size_t jjj=0 ; jjj<tmpFaceList.size() ; jjj++) {
@@ -247,7 +256,7 @@ void ege::resource::Mesh::generateVBO() {
 	// calculate the normal of all faces if needed
 	if (m_normalMode == ege::resource::Mesh::normalModeNone) {
 		// when no normal detected  == > auto generate Face normal ....
-		calculateNormaleFace();
+		calculateNormaleFace(m_listFaces.getKeys()[0]);
 	}
 	// generate element in 2 pass : 
 	//    - create new index dependeng a vertex is a unique componenet of position, texture, normal
@@ -273,10 +282,16 @@ void ege::resource::Mesh::generateVBO() {
 				}
 				// get µNormal
 				vec3 normal;
-				if (m_normalMode == normalModeVertex) {
-					normal = m_listVertexNormal[tmpFaceList.m_faces[iii].m_normal[indice]];
-				} else {
-					normal = m_listFacesNormal[tmpFaceList.m_faces[iii].m_normal[indice]];
+				switch(m_normalMode) {
+					case normalModeVertex:
+						normal = m_listVertexNormal[tmpFaceList.m_faces[iii].m_normal[indice]];
+						break;
+					case normalModeFace:
+						normal = m_listFacesNormal[tmpFaceList.m_faces[iii].m_normal[indice]];
+						break;
+					default:
+					case normalModeNone:
+						break;
 				}
 				// get Texture Position
 				vec2 texturepos;
@@ -326,14 +341,14 @@ void ege::resource::Mesh::createViewBox(const std::string& _materialName,float _
 	m_normalMode = normalModeNone;
 	ege::viewBox::create(m_materials, m_listFaces, m_listVertex, m_listUV,
 	                     _materialName, _size);
-	calculateNormaleFace();
+	calculateNormaleFace(_materialName);
 }
 
 void ege::resource::Mesh::createIcoSphere(const std::string& _materialName,float _size, int32_t _subdivision) {
 	m_normalMode = normalModeNone;
 	ege::icoSphere::create(m_materials, m_listFaces, m_listVertex, m_listUV,
 	                       _materialName, _size, _subdivision);
-	calculateNormaleFace();
+	calculateNormaleFace(_materialName);
 }
 
 bool ege::resource::Mesh::loadOBJ(const std::string& _fileName) {
@@ -584,7 +599,7 @@ enum emfModuleMode {
 	EMFModuleMaterialNamed,
 	EMFModuleMaterial_END,
 };
-
+// TODO : rework with string line extractor
 bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 	m_checkNormal = true;
 	m_normalMode = normalModeNone;
@@ -927,6 +942,11 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 				} else if(0 == strncmp(inputDataLine,"map_Kd ",7)) {
 					material->setTexture0(fileName.getRelativeFolder() + &inputDataLine[7]);
 					EGE_VERBOSE("        Texture " << &inputDataLine[7]);
+				} else if(0 == strncmp(inputDataLine,"renderMode ",11)) {
+					ewol::openGL::renderMode mode;
+					etk::from_string(mode, &inputDataLine[11]);
+					material->setRenderMode(mode);
+					EGE_VERBOSE("        Texture " << mode);
 				} else {
 					EGE_ERROR("unknow material property ... : '" << inputDataLine << "'");
 				}
@@ -1007,23 +1027,70 @@ void ege::resource::Mesh::addFaceIndexing(const std::string& _layerName) {
 		m_listFaces.add(_layerName, empty);
 	}
 }
+
+void ege::resource::Mesh::addPoint(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const etk::Color<float>& _color) {
+	if (    m_listFaces.exist(_layerName) == false
+	     || m_materials.exist(_layerName) == false) {
+		EGE_ERROR("Mesh layer : " << _layerName << " does not exist in list faces=" << m_listFaces.exist(_layerName) << " materials=" << m_listFaces.exist(_layerName) << " ...");
+		return;
+	}
+	ewol::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
+	if (tmpRenderMode != ewol::openGL::renderPoint) {
+		EGE_ERROR("try to add Point in a mesh material section that not support Point");
+		return;
+	}
+	EGE_TODO("addPoint ...");
+}
+
+void ege::resource::Mesh::addLine(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const etk::Color<float>& _color) {
+	if (    m_listFaces.exist(_layerName) == false
+	     || m_materials.exist(_layerName) == false) {
+		EGE_ERROR("Mesh layer : " << _layerName << " does not exist in list faces=" << m_listFaces.exist(_layerName) << " materials=" << m_listFaces.exist(_layerName) << " ...");
+		return;
+	}
+	ewol::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
+	if (    tmpRenderMode != ewol::openGL::renderLine
+	     && tmpRenderMode != ewol::openGL::renderLineStrip
+	     && tmpRenderMode != ewol::openGL::renderLineLoop) {
+		EGE_ERROR("try to add Line in a mesh material section that not support Line");
+		return;
+	}
+	// try to find position:
+	int32_t pos1 = findPositionInList(_pos1);
+	int32_t pos2 = findPositionInList(_pos2);
+	// try to find UV mapping:
+	int32_t color = findColorInList(_color);
+	Face tmpFace;
+	tmpFace.setVertex(pos1, pos2);
+	tmpFace.setColor(color, color, color);
+	m_listFaces[_layerName].m_faces.push_back(tmpFace);
+}
+
 void ege::resource::Mesh::addTriangle(const std::string& _layerName,
                                       const vec3& _pos1, const vec3& _pos2, const vec3& _pos3,
                                       const vec2& _uv1, const vec2& _uv2, const vec2& _uv3,
                                       const etk::Color<float>& _color1, const etk::Color<float>& _color2, const etk::Color<float>& _color3) {
-	if (m_listFaces.exist(_layerName) == false) {
-		EGE_ERROR("Mesh layer : " << _layerName << " does not exist in list faces ...");
+	if (    m_listFaces.exist(_layerName) == false
+	     || m_materials.exist(_layerName) == false) {
+		EGE_ERROR("Mesh layer : " << _layerName << " does not exist in list faces=" << m_listFaces.exist(_layerName) << " materials=" << m_listFaces.exist(_layerName) << " ...");
+		return;
+	}
+	ewol::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
+	if (    tmpRenderMode != ewol::openGL::renderTriangle
+	     && tmpRenderMode != ewol::openGL::renderLineStrip
+	     && tmpRenderMode != ewol::openGL::renderTriangleFan) {
+		EGE_ERROR("try to add Line in a mesh material section that not support Line");
 		return;
 	}
 	// try to find position:
 	int32_t pos1 = findPositionInList(_pos1);
 	int32_t pos2 = findPositionInList(_pos2);
 	int32_t pos3 = findPositionInList(_pos3);
-	// try to find Color:
+	// try to find UV mapping:
 	int32_t uv1 = findTextureInList(_uv1);
 	int32_t uv2 = findTextureInList(_uv2);
 	int32_t uv3 = findTextureInList(_uv3);
-	// try to find UV mapping:
+	// try to find Color:
 	int32_t color1 = findColorInList(_color1);
 	int32_t color2 = findColorInList(_color2);
 	int32_t color3 = findColorInList(_color3);
@@ -1036,21 +1103,34 @@ void ege::resource::Mesh::addTriangle(const std::string& _layerName,
 
 void ege::resource::Mesh::addTriangle(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3,
                                       const etk::Color<float>& _color1, const etk::Color<float>& _color2, const etk::Color<float>& _color3) {
-	if (m_listFaces.exist(_layerName) == false) {
-		EGE_ERROR("Mesh layer : " << _layerName << " does not exist in list faces ...");
+	if (    m_listFaces.exist(_layerName) == false
+	     || m_materials.exist(_layerName) == false) {
+		EGE_ERROR("Mesh layer : " << _layerName << " does not exist in list faces=" << m_listFaces.exist(_layerName) << " materials=" << m_listFaces.exist(_layerName) << " ...");
 		return;
 	}
-	// try to find position:
-	int32_t pos1 = findPositionInList(_pos1);
-	int32_t pos2 = findPositionInList(_pos2);
-	int32_t pos3 = findPositionInList(_pos3);
-	// try to find UV mapping:
-	int32_t color1 = findColorInList(_color1);
-	int32_t color2 = findColorInList(_color2);
-	int32_t color3 = findColorInList(_color3);
-	Face tmpFace(pos1, -1,
-	             pos2, -1,
-	             pos3, -1);
-	tmpFace.setColor(color1, color2, color3);
-	m_listFaces[_layerName].m_faces.push_back(tmpFace);
+	ewol::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
+	if (    tmpRenderMode != ewol::openGL::renderQuad
+	     || tmpRenderMode != ewol::openGL::renderQuadStrip) {
+		EGE_TODO("Create quad interface ...");
+	} else if (    tmpRenderMode == ewol::openGL::renderTriangle
+	            || tmpRenderMode == ewol::openGL::renderLineStrip
+	            || tmpRenderMode == ewol::openGL::renderTriangleFan) {
+		
+		// try to find position:
+		int32_t pos1 = findPositionInList(_pos1);
+		int32_t pos2 = findPositionInList(_pos2);
+		int32_t pos3 = findPositionInList(_pos3);
+		// try to find Color:
+		int32_t color1 = findColorInList(_color1);
+		int32_t color2 = findColorInList(_color2);
+		int32_t color3 = findColorInList(_color3);
+		Face tmpFace(pos1, -1,
+		             pos2, -1,
+		             pos3, -1);
+		tmpFace.setColor(color1, color2, color3);
+		m_listFaces[_layerName].m_faces.push_back(tmpFace);
+	} else {
+		EGE_ERROR("try to add Quad in a mesh material section that not support Quad");
+		return;
+	}
 }

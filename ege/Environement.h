@@ -13,7 +13,7 @@ namespace ege {
 	class Environement;
 	class ElementInteraction;
 };
-#include <ege/Camera.h>
+#include <ege/camera/Camera.h>
 
 #include <etk/types.h>
 #include <BulletDynamics/Dynamics/btActionInterface.h>

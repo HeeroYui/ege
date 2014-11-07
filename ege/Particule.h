@@ -15,7 +15,7 @@ namespace ege {
 
 #include <etk/types.h>
 #include <ege/Environement.h>
-#include <ege/Camera.h>
+#include <ege/camera/Camera.h>
 
 
 namespace ege {

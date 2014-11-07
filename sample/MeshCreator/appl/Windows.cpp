@@ -11,6 +11,7 @@
 #include <appl/Windows.h>
 #include <ewol/widget/Label.h>
 #include <ege/widget/Scene.h>
+#include <ege/camera/View.h>
 #include <etk/tool.h>
 
 #undef __class__
@@ -31,6 +32,7 @@ static std::shared_ptr<ege::resource::Mesh> createGrid(int32_t _lineCount) {
 		material->setDiffuseFactor(vec4(0,0,0,1));
 		material->setSpecularFactor(vec4(0,0,0,1));
 		material->setShininess(1);
+		material->setRenderMode(ewol::openGL::renderLine);
 		out->addMaterial("basics", material);
 		
 		out->addFaceIndexing("basics");
@@ -41,15 +43,21 @@ static std::shared_ptr<ege::resource::Mesh> createGrid(int32_t _lineCount) {
 		*/
 		// create horizontal lines
 		for (int32_t iii=-_lineCount; iii<=_lineCount; ++iii) {
+			/*
 			out->addQuad("basics",
 			             vec3(-_lineCount,iii,0), vec3(_lineCount,iii,0), vec3(_lineCount,iii,lineSize), vec3(-_lineCount,iii,lineSize),
 			             etk::color::white);
+			*/
+			out->addLine("basics", vec3(-_lineCount,iii,0), vec3(_lineCount,iii,0), etk::color::white);
 		}
 		// create vertical lines
 		for (int32_t iii=-_lineCount; iii<=_lineCount; ++iii) {
+			/*
 			out->addQuad("basics",
 			             vec3(iii,-_lineCount,0), vec3(iii,_lineCount,0), vec3(iii,_lineCount,lineSize), vec3(iii,-_lineCount,lineSize),
 			             etk::color::white);
+			*/
+			out->addLine("basics", vec3(iii,-_lineCount,0), vec3(iii,_lineCount,0), etk::color::white);
 		}
 		
 		// generate the VBO
@@ -65,7 +73,7 @@ void appl::Windows::init() {
 	
 	m_env = ege::Environement::create();
 	// Create basic Camera
-	m_env->addCamera("basic", std::make_shared<ege::Camera>(vec3(0,0,0),0,0,10));
+	m_env->addCamera("basic", std::make_shared<ege::camera::View>(vec3(30,30,-100), vec3(0,0,0)));
 	
 	std::shared_ptr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create(m_env);
 	if (tmpWidget == nullptr) {
@@ -113,21 +121,21 @@ void appl::Windows::init() {
 	if (myMesh != nullptr) {
 		m_env->addStaticMeshToDraw(myMesh);
 	}
-	/*
-	myMesh = ege::resource::Mesh::create("---");
-	if (myMesh != nullptr) {
-		std::shared_ptr<ege::Material> material = std::make_shared<ege::Material>();
-		material->setAmbientFactor(vec4(0.112f,0.112f,0.112f,1.0f));
-		material->setDiffuseFactor(vec4(0.512f,0.512f,0.512f,1.0f));
-		material->setSpecularFactor(vec4(0.5f,0.5f,0.5f,1.0f));
-		material->setShininess(96.078431f);
-		material->setTexture0("DATA:texture_mars.png");
-		myMesh->addMaterial("basics", material);
-		myMesh->createIcoSphere("basics", 16, 3);
-		myMesh->generateVBO();
-		m_env->addStaticMeshToDraw(myMesh);
+	if (true) {
+		myMesh = ege::resource::Mesh::create("---");
+		if (myMesh != nullptr) {
+			std::shared_ptr<ege::Material> material = std::make_shared<ege::Material>();
+			material->setAmbientFactor(vec4(0.112f,0.112f,0.112f,1.0f));
+			material->setDiffuseFactor(vec4(0.512f,0.512f,0.512f,1.0f));
+			material->setSpecularFactor(vec4(0.5f,0.5f,0.5f,1.0f));
+			material->setShininess(96.078431f);
+			material->setTexture0("DATA:texture_mars.png");
+			myMesh->addMaterial("basics", material);
+			myMesh->createIcoSphere("basics", 16, 3);
+			myMesh->generateVBO();
+			m_env->addStaticMeshToDraw(myMesh);
+		}
 	}
-	*/
 }
 
 

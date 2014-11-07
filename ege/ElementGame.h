@@ -18,7 +18,7 @@
 #include <ewol/openGL/openGL.h>
 #include <ewol/resource/Colored3DObject.h>
 #include <ege/resource/Mesh.h>
-#include <ege/Camera.h>
+#include <ege/camera/Camera.h>
 #include <ewol/compositing/Text.h>
 #include <ege/Environement.h>
 

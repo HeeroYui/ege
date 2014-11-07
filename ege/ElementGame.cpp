@@ -235,6 +235,7 @@ void ege::ElementGame::drawLife(const std::shared_ptr<ewol::resource::Colored3DO
 	if (ratio == 1.0f) {
 		return;
 	}
+	#if 0
 	mat4 transformationMatrix =   etk::matTranslate(getPosition())
 	                            * etk::matRotate(vec3(0,0,1),_camera.getAngleZ())
 	                            * etk::matRotate(vec3(1,0,0),(M_PI/2.0f-_camera.getAngleTeta()));
@@ -262,6 +263,7 @@ void ege::ElementGame::drawLife(const std::shared_ptr<ewol::resource::Colored3DO
 		myColor = 0xDA7B00FF;
 	}
 	_draw->draw(localVertices, myColor, transformationMatrix, false, false);
+	#endif
 }
 
 static void drawShape(const btCollisionShape* _shape,
@@ -450,11 +452,12 @@ void ege::ElementGame::drawDebug(const std::shared_ptr<ewol::resource::Colored3D
 	// note : set the vertice here to prevent multiple allocations...
 	std::vector<vec3> EwolVertices;
 	drawShape(m_shape, _draw, transformationMatrix, EwolVertices);
-	
+	/*
 	m_debugText.draw(   etk::matTranslate(getPosition())
 	                  * etk::matRotate(vec3(0,0,1),_camera.getAngleZ())
 	                  * etk::matRotate(vec3(1,0,0),(M_PI/2.0f-_camera.getAngleTeta()))
 	                  * etk::matScale(vec3(0.05,0.05,0.05)));
+	*/
 }
 
 void ege::ElementGame::draw(int32_t _pass) {

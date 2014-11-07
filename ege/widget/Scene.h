@@ -14,7 +14,7 @@
 #include <etk/math/Matrix4.h>
 #include <vector>
 #include <ewol/debug.h>
-#include <ege/Camera.h>
+#include <ege/camera/Camera.h>
 #include <ewol/widget/Widget.h>
 #include <ewol/openGL/openGL.h>
 #include <ewol/resource/Manager.h>
