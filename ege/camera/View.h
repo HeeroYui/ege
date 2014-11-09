@@ -23,7 +23,7 @@ namespace ege {
 				/**
 				 * @brief Constructor.
 				 */
-				View(const vec3& _eye=vec3(0,0,0), const vec3& _target=vec3(0,0,1), const vec3& _up=vec3(1,0,0));
+				View(const vec3& _eye=vec3(0,0,0), const vec3& _target=vec3(0,0,1), float _angle=0.0f);
 				/**
 				 * @brief Destructor.
 				 */
@@ -59,19 +59,19 @@ namespace ege {
 					return m_target;
 				};
 			protected:
-				vec3 m_up; //!< rotation angle of the camera (in rad) through the axis origin->eye
+				float m_angle; //!< rotation angle of the camera (in rad) through the axis origin->eye
 			public:
 				/**
-				 * @brief Set the up camera axis.
-				 * @param[in] _up camera up axis.
+				 * @brief Set the camera angle.
+				 * @param[in] _angle camera angle.
 				 */
-				void setUp(const vec3& _up);
+				void setAngle(float _angle);
 				/**
-				 * @brief Get the up camera axis.
-				 * @return the up camera axis.
+				 * @brief Get the camera angle.
+				 * @return the up camera angle.
 				 */
-				const vec3& getUp() const {
-					return m_up;
+				float getAngle() const {
+					return m_angle;
 				};
 			protected:
 				virtual vec3 getViewVector() const;

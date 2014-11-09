@@ -10,6 +10,7 @@
 #include <appl/debug.h>
 #include <appl/Windows.h>
 #include <ewol/widget/Label.h>
+#include <ewol/object/Manager.h>
 #include <ege/widget/Scene.h>
 #include <ege/camera/View.h>
 #include <etk/tool.h>
@@ -71,9 +72,12 @@ void appl::Windows::init() {
 	ewol::widget::Windows::init();
 	setTitle("example ege : MeshCreator");
 	
+	getObjectManager().periodicCall.bind(shared_from_this(), &appl::Windows::onCallbackPeriodicUpdateCamera);
+	
 	m_env = ege::Environement::create();
 	// Create basic Camera
-	m_env->addCamera("basic", std::make_shared<ege::camera::View>(vec3(30,30,-100), vec3(0,0,0)));
+	m_camera = std::make_shared<ege::camera::View>(vec3(30,30,-100), vec3(50,0,0));
+	m_env->addCamera("basic", m_camera);
 	
 	std::shared_ptr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create(m_env);
 	if (tmpWidget == nullptr) {
@@ -136,6 +140,13 @@ void appl::Windows::init() {
 			m_env->addStaticMeshToDraw(myMesh);
 		}
 	}
+}
+
+
+void appl::Windows::onCallbackPeriodicUpdateCamera(const ewol::event::Time& _event) {
+	static float offset = 0;
+	offset += 0.01;
+	m_camera->setEye(vec3(100*std::sin(offset),100*std::cos(offset),40));
 }
 
 
