@@ -83,11 +83,11 @@ void ege::widget::Scene::onDraw() {
 	std::shared_ptr<ege::Camera> camera = m_env->getCamera(m_cameraName);
 	//EGE_DEBUG("Draw (start)");
 	mat4 tmpMatrix;
-	std::shared_ptr<btDynamicsWorld> world = m_env->getDynamicWorld();
+	std::shared_ptr<btDynamicsWorld> world = m_env->getPhysicEngine().getDynamicWorld();
 	if (world != nullptr) {
 		
 		m_env->getOrderedElementForDisplay(m_displayElementOrdered, camera->getEye(), camera->getViewVector());
-		//EGE_DEBUG("DRAW : " << m_displayElementOrdered.size() << " elements");
+		EGE_DEBUG("DRAW : " << m_displayElementOrdered.size() << "/" << m_env->getElement().size() << " elements");
 		
 		// TODO : remove this  == > no more needed ==> checked in the generate the list of the element ordered
 		for (size_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
@@ -104,6 +104,8 @@ void ege::widget::Scene::onDraw() {
 				m_displayElementOrdered[iii].element->draw(pass);
 			}
 		}
+	} else {
+		EGE_WARNING("No Dynamic world ...");
 	}
 	if (camera != nullptr) {
 		m_env->getParticuleEngine().draw(*camera);

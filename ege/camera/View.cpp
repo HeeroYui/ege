@@ -32,7 +32,7 @@ void ege::camera::View::update() {
 	m_matrix.translate(vec3(0,0,-distance));
 	m_matrix.rotate(vec3(1,0,0), -M_PI*0.5f + psy);
 	m_matrix.rotate(vec3(0,0,1), tetha);
-	m_matrix.translate(m_target);
+	m_matrix.translate(-m_target);
 	
 	EGE_DEBUG("Camera properties : distance=" << distance );
 	EGE_DEBUG("                         psy=" << psy);

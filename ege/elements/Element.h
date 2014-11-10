@@ -6,8 +6,8 @@
  * @license BSD v3 (see license file)
  */
 
-#ifndef __EGE_ELEMENT_GAME_H__
-#define __EGE_ELEMENT_GAME_H__
+#ifndef __EGE_ELEMENT_H__
+#define __EGE_ELEMENT_H__
 
 #include <etk/types.h>
 #include <etk/math/Vector3D.h>
@@ -29,24 +29,20 @@
 #define ELEMENT_SCALE     (1.0f/8.0f)
 
 namespace ege {
-	class ElementGame {
-		private:
-			static void FunctionFreeShape(void* _pointer);
+	class Element {
 		protected:
 			std::shared_ptr<ege::Environement> m_env;
-		protected:
-			btRigidBody* m_body; //!< all the element have a body  == > otherwise it will be not manage with this system...
 		public:
 			/**
 			 * @brief Constructor (when constructer is called just add element that did not change.
 			 * The objest will be stored in a pool of element and keep a second time if needed  == > redure memory allocation,
 			 * when needed, the system will call the init and un-init function...
 			 */
-			ElementGame(const std::shared_ptr<ege::Environement>& _env);
+			Element(const std::shared_ptr<ege::Environement>& _env);
 			/**
 			 * @brief Destructor
 			 */
-			virtual ~ElementGame();
+			virtual ~Element();
 			/**
 			 * @brief get the element Type description string.
 			 * @return A reference on the descriptive string.
@@ -76,7 +72,6 @@ namespace ege {
 			};
 		protected:
 			std::shared_ptr<ege::resource::Mesh> m_mesh; //!< Mesh of the Element (can be nullptr)
-			btCollisionShape* m_shape; //!< shape of the element (set a copy here to have the debug display of it)
 		public:
 			/**
 			 * @brief Select a mesh with a specific name.
@@ -84,21 +79,14 @@ namespace ege {
 			 * @note Automaticly load the shape if it is specify in the mesh file
 			 * @return true if no error occured
 			 */
-			bool loadMesh(const std::string& _meshFileName);
+			virtual bool loadMesh(const std::string& _meshFileName);
 			/**
 			 * @brief set the the Mesh properties.
 			 * @param[in] _mesh The mesh pointer. (nullptr to force the mesh remove ...)
 			 * @note : this remove the shape and the mesh properties.
 			 * @return true if no error occured
 			 */
-			bool setMesh(const std::shared_ptr<ege::resource::Mesh>& _mesh);
-			/**
-			 * @brief set the shape properties.
-			 * @param[in] _shape The shape pointer.
-			 * @note : this remove the shape properties.
-			 * @return true if no error occured
-			 */
-			bool setShape(btCollisionShape* _shape);
+			virtual bool setMesh(const std::shared_ptr<ege::resource::Mesh>& _mesh);
 			/**
 			 * @brief get a pointer on the Mesh file.
 			 * @return the mesh pointer.
@@ -106,18 +94,6 @@ namespace ege {
 			inline const std::shared_ptr<ege::resource::Mesh>& getMesh() {
 				return m_mesh;
 			};
-			/**
-			 * @brief get a pointer on the bullet collision shape.
-			 * @return the collision pointer.
-			 */
-			inline btCollisionShape* getShape() {
-				return m_shape;
-			};
-		private:
-			/**
-			 * @brief remove the curent selected shape.
-			 */
-			void removeShape();
 		protected:
 			float m_life; //!< Current life of the object
 			float m_lifeMax; //!< Maximum possible life of the element
@@ -150,7 +126,7 @@ namespace ege {
 			 */
 			virtual void setFireOn(int32_t _groupIdSource, int32_t _type, float _power, const vec3& _center=vec3(0,0,0));
 			/**
-			 * @brief Call chan the element life change 
+			 * @brief Call when the element life change.
 			 */
 			virtual void onLifeChange() { };
 		protected:
@@ -170,7 +146,7 @@ namespace ege {
 			inline void setGroup(int32_t _newGroup) {
 				m_group=_newGroup;
 			};
-		
+		public:
 			/**
 			 * @brief Can be call tu opdate the list of the element displayed on the scren (example : no display of the hiden triangle)
 			 * @param[in] the camera properties
@@ -181,11 +157,12 @@ namespace ege {
 			 * @brief draw the curent element (can have multiple display)
 			 * @param[in] pass Id of the current pass : [0..?]
 			 */
-			virtual void draw(int32_t _pass=0);
+			virtual void draw(int32_t _pass=0) = 0;
 			
 			/**
 			 * @brief draw the current life of the element
 			 */
+			// TODO : Remove this ...
 			virtual void drawLife(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const ege::Camera& _camera);
 			
 		protected:
@@ -206,35 +183,20 @@ namespace ege {
 				return getPosition();
 			};
 			/**
-			 * @brief set the current Theoric position of the element
-			 * @param[in] set the 3D position.
-			 */
-			virtual void setPositionTheoric(const vec3& _pos) { };
-			/**
 			 * @brief get the current position of the element
 			 * @return the 3D position.
 			 */
-			const vec3& getPosition();
+			virtual const vec3& getPosition();
 			/**
 			 * @brief set the current position of the element
 			 * @param[in] _pos set the 3D position.
 			 */
-			void setPosition(const vec3& _pos);
-			/**
-			 * @brief get the current speed of the element
-			 * @return the 3D speed.
-			 */
-			const vec3& getSpeed();
-			/**
-			 * @brief get the current mass of the element
-			 * @return the mass in kG.
-			 */
-			const float getInvMass();
+			virtual void setPosition(const vec3& _pos) {};
 			/**
 			 * @brief Event arrive when an element has been remove from the system  == > this permit to keep pointer of ennemy, and not search them every cycle ...
 			 * @param[in] _removedElement Pointer on the element removed.
 			 */
-			virtual void elementIsRemoved(std::shared_ptr<ege::ElementGame> _removedElement) { };
+			virtual void elementIsRemoved(std::shared_ptr<ege::Element> _removedElement) { };
 		protected:
 			bool m_fixe; //!< is a fixed element  == > used for placement of every elements
 		public:
@@ -252,66 +214,21 @@ namespace ege {
 			 * @brief get the current space needed by the element in the workspace
 			 * @return The dimention needed.
 			 */
-			inline float getRadius()
-			{
+			inline float getRadius() {
 				return m_radius;
 			};
-		protected:
-			bool m_elementInPhysicsSystem;
-		public:
+			/**
+			 * @brief, call when the element is removed (call only one time)
+			 */
+			virtual void onDestroy() {};
 			/**
 			 * @brief set the elment in the physique engine
 			 */
-			void dynamicEnable();
+			virtual void dynamicEnable() {};
 			/**
 			 * @brief remove this element from the physique engine
 			 */
-			void dynamicDisable();
-		private:
-			class localIA : public btActionInterface {
-				private:
-					ege::ElementGame& m_element;
-				public:
-					/**
-					 * @brief Constructor
-					 */
-					localIA(ElementGame& _element) :
-					  m_element(_element) {
-						
-					};
-					/**
-					 * @brief Destructor
-					 */
-					virtual ~localIA() {
-						
-					};
-				public: // herited function
-					void debugDraw(btIDebugDraw* _debugDrawer) {
-						
-					};
-					void updateAction(btCollisionWorld* _collisionWorld, btScalar _step) {
-						m_element.iaAction(_step);
-					};
-			};
-			localIA* m_IA;
-		public:
-			/**
-			 * @brief enable periodic call Of this object for processing Artificial Intelligence
-			 */
-			void iaEnable();
-			/**
-			 * @brief disable periodic call Of this object for processing Artificial Intelligence
-			 */
-			void iaDisable();
-			/**
-			 * @brief periodic call for intelligence artificial.
-			 * @param[in] step : step of time in s
-			 */
-			virtual void iaAction(float _step) { };
-			/**
-			 * @brief, call when the element is removed (call only one time
-			 */
-			virtual void onDestroy() {};
+			virtual void dynamicDisable() {};
 	};
 };
 

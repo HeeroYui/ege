@@ -258,19 +258,44 @@ void ege::resource::Mesh::generateVBO() {
 		// when no normal detected  == > auto generate Face normal ....
 		calculateNormaleFace(m_listFaces.getKeys()[0]);
 	}
+	
+	
 	// generate element in 2 pass : 
 	//    - create new index dependeng a vertex is a unique componenet of position, texture, normal
 	//    - the index list generation (can be dynamic ... (TODO later)
 	for (int32_t kkk=0; kkk<m_listFaces.size(); kkk++) {
 		// clean faces indexes :
 		m_listFaces.getValue(kkk).m_index.clear();
+		int32_t nbIndicInFace = 3;
+		switch (m_materials[m_listFaces.getKey(kkk)]->getRenderMode()) {
+			case ewol::openGL::renderTriangle:
+			case ewol::openGL::renderTriangleStrip:
+			case ewol::openGL::renderTriangleFan:
+				nbIndicInFace = 3;
+				break;
+			case ewol::openGL::renderLine:
+			case ewol::openGL::renderLineStrip:
+			case ewol::openGL::renderLineLoop:
+				nbIndicInFace = 2;
+				break;
+			case ewol::openGL::renderPoint:
+				nbIndicInFace = 1;
+				break;
+			case ewol::openGL::renderQuad:
+			case ewol::openGL::renderQuadStrip:
+				nbIndicInFace = 4;
+				break;
+			case ewol::openGL::renderPolygon:
+				nbIndicInFace = 3;
+				break;
+		}
 		#ifdef TRY_MINIMAL_VBO
 			int64_t tmpppppp=0;
 		#endif
 		FaceIndexing& tmpFaceList = m_listFaces.getValue(kkk);
 		for (size_t iii=0; iii<tmpFaceList.m_faces.size() ; iii++) {
 			int32_t vertexVBOId[3];
-			for(size_t indice=0 ; indice<3; indice++) {
+			for(size_t indice=0 ; indice<nbIndicInFace; indice++) {
 				// ghet position
 				vec3 position = m_listVertex[tmpFaceList.m_faces[iii].m_vertex[indice]];
 				// get Color
@@ -1077,7 +1102,7 @@ void ege::resource::Mesh::addTriangle(const std::string& _layerName,
 	}
 	ewol::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
 	if (    tmpRenderMode != ewol::openGL::renderTriangle
-	     && tmpRenderMode != ewol::openGL::renderLineStrip
+	     && tmpRenderMode != ewol::openGL::renderTriangleStrip
 	     && tmpRenderMode != ewol::openGL::renderTriangleFan) {
 		EGE_ERROR("try to add Line in a mesh material section that not support Line");
 		return;

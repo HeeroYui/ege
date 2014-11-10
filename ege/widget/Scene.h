@@ -18,7 +18,7 @@
 #include <ewol/widget/Widget.h>
 #include <ewol/openGL/openGL.h>
 #include <ewol/resource/Manager.h>
-#include <ege/ElementGame.h>
+#include <ege/elements/Element.h>
 #include <ewol/Dimension.h>
 
 class btBroadphaseInterface;

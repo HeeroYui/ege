@@ -29,6 +29,7 @@ class btDynamicsWorld;
 #include <ewol/event/Time.h>
 #include <ewol/parameter/Value.h>
 #include <ege/resource/Mesh.h>
+#include <ege/physics/Engine.h>
 
 namespace ege {
 	enum property {
@@ -39,9 +40,9 @@ namespace ege {
 		typeUser1, //!< user type 1
 		typeUser2 //!< User type 2
 	};
-	class ElementGame;
+	class Element;
 	class Environement;
-	typedef std::shared_ptr<ege::ElementGame> (*createElement_tf)(const std::shared_ptr<ege::Environement>& _env);
+	typedef std::shared_ptr<ege::Element> (*createElement_tf)(const std::shared_ptr<ege::Environement>& _env);
 	
 	enum gameStatus {
 		gameStart,
@@ -84,7 +85,7 @@ namespace ege {
 				m_positionSource(_pos)
 			{ };
 		public:
-			virtual void applyEvent(ege::ElementGame& _element) { };
+			virtual void applyEvent(ege::Element& _element) { };
 	};
 	
 	class Environement : public ewol::Object {
@@ -92,8 +93,9 @@ namespace ege {
 			// extern event
 			ewol::Signal<float> signalPlayTimeChange;
 		private:
-			std::shared_ptr<btDynamicsWorld> m_dynamicsWorld; //!< curent system world description
-			std::vector<std::shared_ptr<ege::ElementGame>> m_listElementGame; //!< List of all element added in the Game
+			//std::shared_ptr<btDynamicsWorld> m_dynamicsWorld; //!< curent system world description
+			ege::physics::Engine m_physicEngine; //!< EGE physic engine interface.
+			std::vector<std::shared_ptr<ege::Element>> m_listElement; //!< List of all element added in the Game
 		protected:
 			Environement();
 			void init();
@@ -168,16 +170,17 @@ namespace ege {
 			 * @return nullptr if an error occured OR the pointer on the element and it is already added on the system.
 			 * @note Pointer is return in case of setting properties on it...
 			 */
-			std::shared_ptr<ege::ElementGame> createElement(const std::string& _type, bool _autoAddElement=true, enum ege::property _property=ege::typeNone, void* _value=nullptr);
-			std::shared_ptr<ege::ElementGame> createElement(const std::string& _type, std::string& _description, bool _autoAddElement=true);
-			std::shared_ptr<ege::ElementGame> createElement(const std::string& _type, ejson::Value* _value, bool _autoAddElement=true);
-			std::shared_ptr<ege::ElementGame> createElement(const std::string& _type, exml::Node* _node, bool _autoAddElement=true);
+			std::shared_ptr<ege::Element> createElement(const std::string& _type, bool _autoAddElement=true, enum ege::property _property=ege::typeNone, void* _value=nullptr);
+			std::shared_ptr<ege::Element> createElement(const std::string& _type, std::string& _description, bool _autoAddElement=true);
+			std::shared_ptr<ege::Element> createElement(const std::string& _type, ejson::Value* _value, bool _autoAddElement=true);
+			std::shared_ptr<ege::Element> createElement(const std::string& _type, exml::Node* _node, bool _autoAddElement=true);
 		public:
 			class ResultNearestElement {
 				public:
-					std::shared_ptr<ege::ElementGame> element;
+					std::shared_ptr<ege::Element> element;
 					float dist;
 			};
+			#if 0
 			/**
 			 * @brief set the curent world
 			 * @param[in] _newWorld Pointer on the current world
@@ -192,12 +195,16 @@ namespace ege {
 			std::shared_ptr<btDynamicsWorld> getDynamicWorld() {
 				return m_dynamicsWorld;
 			};
+			#endif
+			ege::physics::Engine& getPhysicEngine() {
+				return m_physicEngine;
+			}
 			/**
 			 * @breif get a reference on the curent list of element games
 			 * @return all element list
 			 */
-			std::vector<std::shared_ptr<ege::ElementGame>>& getElementGame() {
-				return m_listElementGame;
+			std::vector<std::shared_ptr<ege::Element>>& getElement() {
+				return m_listElement;
 			};
 			/**
 			 * @brief get the nearest Element
@@ -205,7 +212,7 @@ namespace ege {
 			 * @param[in] _distance Maximum distance search  == > return the element distance
 			 * @return Pointer on the neares element OR nullptr
 			 */
-			std::shared_ptr<ege::ElementGame> getElementNearest(std::shared_ptr<ege::ElementGame> _sourceRequest, float& _distance);
+			std::shared_ptr<ege::Element> getElementNearest(std::shared_ptr<ege::Element> _sourceRequest, float& _distance);
 			
 			void getElementNearest(const vec3& _sourcePosition,
 			                       float _distanceMax,
@@ -217,12 +224,12 @@ namespace ege {
 			 * @brief add an element on the list availlable.
 			 * @param[in] _newElement Element to add.
 			 */
-			void addElementGame(std::shared_ptr<ege::ElementGame> _newElement);
+			void addElement(std::shared_ptr<ege::Element> _newElement);
 			/**
 			 * @brief remove an element on the list availlable.
 			 * @param[in] _removeElement Element to remove.
 			 */
-			void rmElementGame(std::shared_ptr<ege::ElementGame> _removeElement);
+			void rmElement(std::shared_ptr<ege::Element> _removeElement);
 			/**
 			 * @brief get the element order from the nearest to the farest, and remove all element that are not in the camera angle and axes.
 			 * @param[in,out] _resultList List of the element ordered.

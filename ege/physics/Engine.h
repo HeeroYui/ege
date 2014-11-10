@@ -14,11 +14,10 @@
 #include <etk/math/Matrix4.h>
 #include <vector>
 #include <ewol/debug.h>
-#include <ege/Camera.h>
+#include <ege/camera/Camera.h>
 #include <ewol/widget/Widget.h>
 #include <ewol/openGL/openGL.h>
 #include <ewol/resource/Manager.h>
-#include <ege/ElementGame.h>
 #include <ewol/Dimension.h>
 
 class btBroadphaseInterface;
@@ -32,13 +31,14 @@ class btDynamicsWorld;
 #include <LinearMath/btScalar.h>
 class btVector3;
 
+//#include <ege/elements/Element.h>
 
 namespace ege {
 	namespace physics {
 		class Engine {
 			private:
 				///this is the most important class
-				std::shared_ptr<btDefaultCollisionConfiguration< m_collisionConfiguration;
+				std::shared_ptr<btDefaultCollisionConfiguration> m_collisionConfiguration;
 				std::shared_ptr<btCollisionDispatcher> m_dispatcher;
 				std::shared_ptr<btBroadphaseInterface> m_broadphase;
 				std::shared_ptr<btConstraintSolver> m_solver;
@@ -51,6 +51,20 @@ namespace ege {
 				                     std::shared_ptr<btBroadphaseInterface> _broadphase=nullptr,
 				                     std::shared_ptr<btConstraintSolver> _solver=nullptr,
 				                     std::shared_ptr<btDynamicsWorld> _dynamicsWorld=nullptr);
+				/**
+				 * @brief set the curent world
+				 * @param[in] _newWorld Pointer on the current world
+				 */
+				void setDynamicWorld(const std::shared_ptr<btDynamicsWorld>& _newWorld) {
+					m_dynamicsWorld=_newWorld;
+				};
+				/**
+				 * @brief get the curent world
+				 * @return pointer on the current world
+				 */
+				std::shared_ptr<btDynamicsWorld> getDynamicWorld() {
+					return m_dynamicsWorld;
+				};
 		};
 	};
 };
