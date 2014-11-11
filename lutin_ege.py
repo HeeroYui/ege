@@ -43,6 +43,7 @@ def create(target):
 		'ege/physicsShape/PhysicsConvexHull.cpp',
 		'ege/physicsShape/PhysicsCylinder.cpp',
 		'ege/physicsShape/PhysicsSphere.cpp',
+		'ege/Ray.cpp',
 		])
 	
 	myModule.copy_folder('data/ParticuleMesh.*','')

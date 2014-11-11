@@ -66,3 +66,9 @@ vec3 ege::camera::View::getViewVector() const {
 	return m_eye-m_target;
 }
 
+
+ege::Ray ege::camera::View::getRayFromScreen(const vec2& _offset) {
+	ege::Ray out(m_eye, getViewVector());
+	// TODO : Use offset...
+	return out;
+}

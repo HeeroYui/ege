@@ -66,3 +66,14 @@ void ege::Camera::configureOpenGL() {
 	ewol::openGL::setMatrix(getMatrixProjection());
 }
 
+
+ege::Ray ege::Camera::getRayFromScreen(const vec2& _offset) {
+	ege::Ray out;
+	return out;
+}
+
+ege::Ray ege::Camera::getRayFromScreenPosition(const vec2& _position, const vec2& _size) {
+	vec2 half = _size * 0.5f;
+	return getRayFromScreen(_position/half - vec2(1,1));
+}
+

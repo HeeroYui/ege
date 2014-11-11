@@ -14,6 +14,8 @@
 #include <etk/math/Vector3D.h>
 #include <etk/math/Vector2D.h>
 #include <etk/math/Matrix4.h>
+#include <ege/Ray.h>
+
 
 namespace ege {
 	class Camera {
@@ -143,6 +145,20 @@ namespace ege {
 			float getZNear() {
 				return m_zNear;
 			}
+		public:
+			/**
+			 * Get ray from the camera with the screen offset.
+			 * @param[in] _offset Offset in the screen [-1..1]
+			 * @return the ray requested.
+			 */
+			virtual ege::Ray getRayFromScreen(const vec2& _offset);
+			/**
+			 * Get ray from the camera with the screen offset.
+			 * @param[in] _position positin the screen
+			 * @param[in] _size size of the screen
+			 * @return the ray requested.
+			 */
+			ege::Ray getRayFromScreenPosition(const vec2& _position, const vec2& _size);
 	};
 };
 

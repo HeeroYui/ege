@@ -75,6 +75,8 @@ namespace ege {
 				};
 			protected:
 				virtual vec3 getViewVector() const;
+			public:
+				virtual ege::Ray getRayFromScreen(const vec2& _offset);
 		};
 	};
 };
