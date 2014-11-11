@@ -52,10 +52,19 @@ namespace ege {
 				 */
 				virtual ~Scene();
 			protected:
-				std::string m_cameraName;
+				std::string m_cameraName; //!< current camera name
 			public:
-				void setCamera(const std::string& _cameraName) {
-					m_cameraName = _cameraName;
+				/** 
+				 * @brief Select a Camera for the display.
+				 * @param[in] _cameraName New name of the camera.
+				 */
+				void setCamera(const std::string& _cameraName);
+				/** 
+				 * @brief Get the current camera name to display the environnement.
+				 * @return the current camera name.
+				 */
+				const std::string& getCamera() const {
+					return m_cameraName;
 				}
 			protected:
 				// Note : This is only for temporary elements : on the display
@@ -67,6 +76,7 @@ namespace ege {
 				virtual void systemDraw(const ewol::DrawProperty& _displayProp);
 				virtual void onRegenerateDisplay();
 				virtual void periodicCall(const ewol::event::Time& _event);
+				virtual void calculateSize(const vec2& _available);
 		};
 	};
 };

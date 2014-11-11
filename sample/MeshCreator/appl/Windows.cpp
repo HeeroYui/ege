@@ -36,31 +36,21 @@ static std::shared_ptr<ege::resource::Mesh> createGrid(int32_t _lineCount) {
 		material->setSpecularFactor(vec4(0,0,0,1));
 		material->setShininess(1);
 		material->setRenderMode(ewol::openGL::renderLine);
+		//material->setRenderMode(ewol::openGL::renderPoint);
 		out->addMaterial("basics", material);
 		
 		out->addFaceIndexing("basics");
-		/*
-		out->addQuad("basics",
-		             vec3(-10,0,0), vec3(10,0,0), vec3(10,10,-lineSize), vec3(-10,10,-lineSize),
-		             etk::color::white, etk::color::red, etk::color::green, etk::color::blue);
-		*/
 		// create horizontal lines
 		for (int32_t iii=-_lineCount; iii<=_lineCount; ++iii) {
-			/*
-			out->addQuad("basics",
-			             vec3(-_lineCount,iii,0), vec3(_lineCount,iii,0), vec3(_lineCount,iii,lineSize), vec3(-_lineCount,iii,lineSize),
-			             etk::color::white);
-			*/
 			out->addLine("basics", vec3(-_lineCount,iii,0), vec3(_lineCount,iii,0), etk::color::white);
+			//out->addPoint("basics", vec3(-_lineCount,iii,0), etk::color::white);
+			//out->addPoint("basics", vec3(_lineCount,iii,0), etk::color::white);
 		}
 		// create vertical lines
 		for (int32_t iii=-_lineCount; iii<=_lineCount; ++iii) {
-			/*
-			out->addQuad("basics",
-			             vec3(iii,-_lineCount,0), vec3(iii,_lineCount,0), vec3(iii,_lineCount,lineSize), vec3(iii,-_lineCount,lineSize),
-			             etk::color::white);
-			*/
 			out->addLine("basics", vec3(iii,-_lineCount,0), vec3(iii,_lineCount,0), etk::color::white);
+			//out->addPoint("basics", vec3(iii,-_lineCount,0), etk::color::white);
+			//out->addPoint("basics", vec3(iii,_lineCount,0), etk::color::white);
 		}
 		
 		// generate the VBO
@@ -153,7 +143,9 @@ void appl::Windows::init() {
 void appl::Windows::onCallbackPeriodicUpdateCamera(const ewol::event::Time& _event) {
 	static float offset = 0;
 	offset += 0.01;
-	m_camera->setEye(vec3(100*std::sin(offset),100*std::cos(offset),40)+vec3(50,0,0));
+	static float offset2 = 0;
+	offset2 += 0.003;
+	m_camera->setEye(vec3(100*std::sin(offset),100*std::cos(offset),40*std::cos(offset2))+vec3(50,0,0));
 }
 
 

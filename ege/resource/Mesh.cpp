@@ -349,7 +349,7 @@ void ege::resource::Mesh::generateVBO() {
 					vertexVBOId[indice] = m_verticesVBO->bufferSize(MESH_VBO_VERTICES)-1;
 				}
 			}
-			for(size_t indice=0 ; indice<3; indice++) {
+			for(size_t indice=0 ; indice<nbIndicInFace; indice++) {
 				tmpFaceList.m_index.push_back(vertexVBOId[indice]);
 			}
 		}
@@ -1053,7 +1053,7 @@ void ege::resource::Mesh::addFaceIndexing(const std::string& _layerName) {
 	}
 }
 
-void ege::resource::Mesh::addPoint(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const etk::Color<float>& _color) {
+void ege::resource::Mesh::addPoint(const std::string& _layerName, const vec3& _pos, const etk::Color<float>& _color) {
 	if (    m_listFaces.exist(_layerName) == false
 	     || m_materials.exist(_layerName) == false) {
 		EGE_ERROR("Mesh layer : " << _layerName << " does not exist in list faces=" << m_listFaces.exist(_layerName) << " materials=" << m_listFaces.exist(_layerName) << " ...");
@@ -1064,7 +1064,14 @@ void ege::resource::Mesh::addPoint(const std::string& _layerName, const vec3& _p
 		EGE_ERROR("try to add Point in a mesh material section that not support Point");
 		return;
 	}
-	EGE_TODO("addPoint ...");
+	// try to find position:
+	int32_t pos = findPositionInList(_pos);
+	// try to find UV mapping:
+	int32_t color = findColorInList(_color);
+	Face tmpFace;
+	tmpFace.setVertex(pos);
+	tmpFace.setColor(color, color, color);
+	m_listFaces[_layerName].m_faces.push_back(tmpFace);
 }
 
 void ege::resource::Mesh::addLine(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const etk::Color<float>& _color) {

@@ -143,8 +143,10 @@ namespace ege {
 				 */
 				void addFaceIndexing(const std::string& _layerName);
 			public:
+				
+				void addPoint(const std::string& _layerName, const vec3& _pos, const etk::Color<float>& _color);
+				
 				void addLine(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const etk::Color<float>& _color);
-				void addPoint(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const etk::Color<float>& _color);
 				
 				/**
 				 * @not-in-doc

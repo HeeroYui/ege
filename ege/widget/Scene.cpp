@@ -131,9 +131,6 @@ void ege::widget::Scene::periodicCall(const ewol::event::Time& _event) {
 	markToRedraw();
 }
 
-#define GAME_Z_NEAR  (1)
-#define GAME_Z_FAR   (4000)
-
 //#define SCENE_BRUT_PERFO_TEST
 
 void ege::widget::Scene::systemDraw(const ewol::DrawProperty& _displayProp) {
@@ -146,29 +143,17 @@ void ege::widget::Scene::systemDraw(const ewol::DrawProperty& _displayProp) {
 	            m_origin.y(),
 	            m_size.x(),
 	            m_size.y());
-	#ifdef SCENE_BRUT_PERFO_TEST
-		float tmp___localTime0 = (float)(ewol::getTime() - tmp___startTime0) / 1000.0f;
-		EWOL_DEBUG("      SCENE000  : " << tmp___localTime0 << "ms ");
-	#endif
+	// configure render with the camera...
 	std::shared_ptr<ege::Camera> camera = m_env->getCamera(m_cameraName);
 	if (camera != nullptr) {
-		ewol::openGL::setCameraMatrix(camera->getMatrix());
+		camera->configureOpenGL();
 	}
-	// TODO : set this in the camera ...
-	float ratio = m_size.x() / m_size.y();
-	//EWOL_INFO("ratio : " << ratio);
-	float angleView = (M_PI/3.0);
-	mat4 tmpProjection = etk::matPerspective(angleView, ratio, GAME_Z_NEAR, GAME_Z_FAR);
-	ewol::openGL::setMatrix(tmpProjection);
-	#ifdef SCENE_BRUT_PERFO_TEST
-		int64_t tmp___startTime3 = ewol::getTime();
-	#endif
 	onDraw();
-	#ifdef SCENE_BRUT_PERFO_TEST
-		float tmp___localTime3 = (float)(ewol::getTime() - tmp___startTime3) / 1000.0f;
-		EWOL_DEBUG("      SCENE333  : " << tmp___localTime3 << "ms ");
-	#endif
 	ewol::openGL::pop();
+	#ifdef SCENE_BRUT_PERFO_TEST
+		float tmp___localTime1 = (float)(ewol::getTime() - tmp___startTime0) / 1000.0f;
+		EWOL_DEBUG("      SCENE render  : " << tmp___localTime1 << "ms ");
+	#endif
 }
 
 void ege::widget::Scene::onParameterChangeValue(const ewol::parameter::Ref& _paramPointer) {
@@ -180,5 +165,26 @@ void ege::widget::Scene::onParameterChangeValue(const ewol::parameter::Ref& _par
 	*/
 }
 
+
+void ege::widget::Scene::setCamera(const std::string& _cameraName) {
+	if (m_cameraName == _cameraName) {
+		return;
+	}
+	m_cameraName = _cameraName;
+	// Update camera aspect ratio:
+	std::shared_ptr<ege::Camera> camera = m_env->getCamera(m_cameraName);
+	if (camera != nullptr) {
+		camera->setSceenSize(m_size);
+	}
+}
+
+void ege::widget::Scene::calculateSize(const vec2& _available) {
+	ewol::Widget::calculateSize(_available);
+	// Update camera aspect ratio:
+	std::shared_ptr<ege::Camera> camera = m_env->getCamera(m_cameraName);
+	if (camera != nullptr) {
+		camera->setSceenSize(m_size);
+	}
+}
 
 
