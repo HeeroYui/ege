@@ -540,8 +540,8 @@ void ege::resource::Mesh::addTriangle(const std::string& _layerName, const vec3&
 		return;
 	}
 	ewol::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
-	if (    tmpRenderMode != ewol::openGL::renderQuad
-	     || tmpRenderMode != ewol::openGL::renderQuadStrip) {
+	if (    tmpRenderMode == ewol::openGL::renderQuad
+	     || tmpRenderMode == ewol::openGL::renderQuadStrip) {
 		EGE_TODO("Create quad interface ...");
 	} else if (    tmpRenderMode == ewol::openGL::renderTriangle
 	            || tmpRenderMode == ewol::openGL::renderLineStrip

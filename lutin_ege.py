@@ -32,6 +32,7 @@ def create(target):
 		'ege/resource/Mesh.cpp',
 		'ege/resource/MeshEmf.cpp',
 		'ege/resource/MeshGird.cpp',
+		'ege/resource/MeshCube.cpp',
 		'ege/resource/MeshObj.cpp',
 		'ege/resource/ParticuleMesh.cpp',
 		'ege/resource/tools/icoSphere.cpp',

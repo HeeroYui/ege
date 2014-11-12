@@ -11,7 +11,6 @@
 
 std::shared_ptr<ege::resource::Mesh> ege::resource::Mesh::createGrid(int32_t _lineCount, const vec3& _position, float _size, const std::string& _materialName) {
 	std::shared_ptr<ege::resource::Mesh> out = ege::resource::Mesh::create("---", "DATA:color3.prog");
-	float lineSize = 0.1f;
 	if (out != nullptr) {
 		std::shared_ptr<ege::Material> material = std::make_shared<ege::Material>();
 		// set the element material properties :
