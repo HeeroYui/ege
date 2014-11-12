@@ -22,20 +22,18 @@
 #include <ege/resource/tools/FaceIndexing.h>
 
 #include <ege/physicsShape/PhysicsShape.h>
-// 3 "float" elements
+// VBO table property:
 #define MESH_VBO_VERTICES  (0)
-// 2 "float" elements
 #define MESH_VBO_TEXTURE   (1)
-// 3 "float" elements
 #define MESH_VBO_VERTICES_NORMAL    (2)
-// Face normal position :
 #define MESH_VBO_FACE_NORMAL       (3)
-// 4 "float" elements
 #define MESH_VBO_COLOR     (4)
 
 namespace ege {
 	namespace resource {
 		class Mesh : public ewol::Resource {
+			public:
+				static std::shared_ptr<ege::resource::Mesh> createGrid(int32_t _lineCount, const vec3& _position=vec3(0,0,0), float _size=1.0f, const std::string& _materialName="basics");
 			public:
 				/**
 				 * @not-in-doc
@@ -146,7 +144,12 @@ namespace ege {
 				
 				void addPoint(const std::string& _layerName, const vec3& _pos, const etk::Color<float>& _color);
 				
-				void addLine(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const etk::Color<float>& _color);
+				void addLine(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const etk::Color<float>& _color) {
+					addLine( _layerName, _pos1, _pos2, _color, _color);
+				}
+				void addLine(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const etk::Color<float>& _color1, const etk::Color<float>& _color2);
+				void addLines(const std::string& _layerName, const std::vector<vec3>& _list, const etk::Color<float>& _color);
+				void addLines(const std::string& _layerName, const std::vector<vec3>& _list, const std::vector<etk::Color<float>>& _color);
 				
 				/**
 				 * @not-in-doc

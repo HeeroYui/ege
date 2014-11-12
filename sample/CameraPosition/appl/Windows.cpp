@@ -30,13 +30,13 @@ appl::Windows::Windows() {
 
 void appl::Windows::init() {
 	ewol::widget::Windows::init();
-	setTitle("example ege : MeshCreator");
+	setTitle("example ege : CameraPosirion");
 	
 	getObjectManager().periodicCall.bind(shared_from_this(), &appl::Windows::onCallbackPeriodicUpdateCamera);
 	
 	m_env = ege::Environement::create();
 	// Create basic Camera
-	m_camera = std::make_shared<ege::camera::View>(vec3(30,30,-100), vec3(50,0,0));
+	m_camera = std::make_shared<ege::camera::View>(vec3(30,30,-100), vec3(0,0,0));
 	m_env->addCamera("basic", m_camera);
 	
 	std::shared_ptr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create(m_env);
@@ -85,37 +85,15 @@ void appl::Windows::init() {
 	if (myMesh != nullptr) {
 		m_env->addStaticMeshToDraw(myMesh);
 	}
-	if (true) {
-		myMesh = ege::resource::Mesh::create("---");
-		if (myMesh != nullptr) {
-			std::shared_ptr<ege::Material> material = std::make_shared<ege::Material>();
-			material->setAmbientFactor(vec4(0.112f,0.112f,0.112f,1.0f));
-			material->setDiffuseFactor(vec4(0.512f,0.512f,0.512f,1.0f));
-			material->setSpecularFactor(vec4(0.5f,0.5f,0.5f,1.0f));
-			material->setShininess(96.078431f);
-			material->setTexture0("DATA:texture_mars.png");
-			myMesh->addMaterial("basics", material);
-			myMesh->createIcoSphere("basics", 16, 3);
-			myMesh->generateVBO();
-			std::shared_ptr<ege::ElementBase> element = std::make_shared<ege::ElementBase>(m_env);
-			//std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);
-			element->setPosition(vec3(50,0,0));
-			element->setMesh(myMesh);
-			m_env->addElement(element);
-			//m_env->addStaticMeshToDraw(myMesh);
-		}
-	}
 }
 
 
 void appl::Windows::onCallbackPeriodicUpdateCamera(const ewol::event::Time& _event) {
-	/*
 	static float offset = 0;
 	offset += 0.01;
 	static float offset2 = 0;
 	offset2 += 0.003;
-	m_camera->setEye(vec3(100*std::sin(offset),100*std::cos(offset),40*std::cos(offset2))+vec3(50,0,0));
-	*/
+	m_camera->setEye(vec3(100*std::sin(offset),100*std::cos(offset),40*std::cos(offset2)));
 }
 
 
