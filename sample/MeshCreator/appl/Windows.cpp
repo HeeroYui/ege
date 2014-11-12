@@ -80,7 +80,7 @@ void appl::Windows::init() {
 	ewol::widget::Windows::init();
 	setTitle("example ege : MeshCreator");
 	
-	//getObjectManager().periodicCall.bind(shared_from_this(), &appl::Windows::onCallbackPeriodicUpdateCamera);
+	getObjectManager().periodicCall.bind(shared_from_this(), &appl::Windows::onCallbackPeriodicUpdateCamera);
 	
 	m_env = ege::Environement::create();
 	// Create basic Camera
@@ -101,12 +101,12 @@ void appl::Windows::init() {
 	if (myMesh != nullptr) {
 		m_env->addStaticMeshToDraw(myMesh);
 	}
-	myMesh = createGrid(10, vec3(0,0,0), 5);
+	myMesh = ege::resource::Mesh::createGrid(10, vec3(0,0,0), 5);
 	if (myMesh != nullptr) {
 		m_env->addStaticMeshToDraw(myMesh);
 	}
 	if (true) {
-		myMesh = ege::resource::Mesh::create("---");
+		myMesh = createMars();
 		if (myMesh != nullptr) {
 			std::shared_ptr<ege::ElementBase> element = std::make_shared<ege::ElementBase>(m_env);
 			//std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);

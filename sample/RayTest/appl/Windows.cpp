@@ -93,7 +93,16 @@ void appl::Windows::init() {
 	}
 	myMesh = ege::resource::Mesh::createCube(3);
 	if (myMesh != nullptr) {
-		m_env->addStaticMeshToDraw(myMesh);
+		std::shared_ptr<ege::ElementBase> element = std::make_shared<ege::ElementBase>(m_env);
+		//std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);
+		element->setPosition(vec3(50,0,0));
+		element->setMesh(myMesh);
+		m_env->addElement(element);
+		element = std::make_shared<ege::ElementBase>(m_env);
+		//std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);
+		element->setPosition(vec3(-50,0,0));
+		element->setMesh(myMesh);
+		m_env->addElement(element);
 	}
 }
 
