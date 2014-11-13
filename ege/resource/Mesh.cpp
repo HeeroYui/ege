@@ -20,6 +20,15 @@
 ege::resource::Mesh::Mesh() :
   m_normalMode(normalModeNone),
   m_checkNormal(false),
+  m_GLPosition(-1),
+  m_GLMatrix(-1),
+  m_GLMatrixPosition(-1),
+  m_GLNormal(-1),
+  m_GLtexture(-1),
+  m_GLColor(-1),
+  m_bufferOfset(-1),
+  m_numberOfElments(-1),
+  m_pointerShape(nullptr),
   m_functionFreeShape(nullptr) {
 	addObjectType("ege::resource::Mesh");
 }
@@ -117,8 +126,8 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	mat4 projMatrix = ewol::openGL::getMatrix();
 	mat4 camMatrix = ewol::openGL::getCameraMatrix();
 	mat4 tmpMatrix = projMatrix * camMatrix;
-	m_GLprogram->uniformMatrix4fv(m_GLMatrix, 1, tmpMatrix.m_mat);
-	m_GLprogram->uniformMatrix4fv(m_GLMatrixPosition, 1, _positionMatrix.m_mat);
+	m_GLprogram->uniformMatrix(m_GLMatrix, tmpMatrix);
+	m_GLprogram->uniformMatrix(m_GLMatrixPosition, _positionMatrix);
 	// position :
 	m_GLprogram->sendAttributePointer(m_GLPosition, m_verticesVBO, MESH_VBO_VERTICES);
 	// Texture :

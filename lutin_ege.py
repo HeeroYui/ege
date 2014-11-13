@@ -57,6 +57,7 @@ def create(target):
 	
 	myModule.compile_flags_CC([
 		'-Wno-write-strings',
+		'-Wmissing-field-initializers',
 		'-Wall'])
 	
 	myModule.add_export_path(tools.get_current_path(__file__))

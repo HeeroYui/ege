@@ -21,8 +21,11 @@ namespace ege {
 			int32_t m_normal[3];
 			int32_t m_color[3];
 		public:
-			Face() {
-				m_nbElement = 1;
+			Face() :
+			  m_nbElement(1) {
+				m_vertex[0] = -1;
+				m_vertex[1] = -1;
+				m_vertex[2] = -1;
 				m_uv[0] = -1;
 				m_uv[1] = -1;
 				m_uv[2] = -1;
@@ -35,8 +38,8 @@ namespace ege {
 			};
 			Face(int32_t _v1, int32_t _t1,
 			     int32_t _v2, int32_t _t2,
-			     int32_t _v3, int32_t _t3) {
-				m_nbElement = 3;
+			     int32_t _v3, int32_t _t3) :
+			  m_nbElement(3) {
 				m_vertex[0] = _v1;
 				m_vertex[1] = _v2;
 				m_vertex[2] = _v3;
@@ -52,8 +55,8 @@ namespace ege {
 			};
 			Face(int32_t _v1, int32_t _t1, int32_t _n1,
 			     int32_t _v2, int32_t _t2, int32_t _n2,
-			     int32_t _v3, int32_t _t3, int32_t _n3) {
-				m_nbElement = 3;
+			     int32_t _v3, int32_t _t3, int32_t _n3) :
+			  m_nbElement(3) {
 				m_vertex[0] = _v1;
 				m_vertex[1] = _v2;
 				m_vertex[2] = _v3;

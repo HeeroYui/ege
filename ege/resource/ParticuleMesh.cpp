@@ -49,8 +49,8 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 	mat4 projMatrix = ewol::openGL::getMatrix();
 	mat4 camMatrix = ewol::openGL::getCameraMatrix();
 	mat4 tmpMatrix = projMatrix * camMatrix;
-	m_GLprogram->uniformMatrix4fv(m_GLMatrix, 1, tmpMatrix.m_mat);
-	m_GLprogram->uniformMatrix4fv(m_GLMatrixPosition, 1, _positionMatrix.m_mat);
+	m_GLprogram->uniformMatrix(m_GLMatrix, tmpMatrix);
+	m_GLprogram->uniformMatrix(m_GLMatrixPosition, _positionMatrix);
 	vec4 tmpColor(_mainColor.r(), _mainColor.g(), _mainColor.b(), _mainColor.a());
 	m_GLprogram->uniform4(m_GLMainColor, tmpColor);
 	// position :
