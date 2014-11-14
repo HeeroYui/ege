@@ -31,6 +31,9 @@ namespace ege {
 			const vec3& getSize() const {
 				return m_size;
 			};
+			void setSize(const vec3& _size) {
+				m_size = _size;
+			}
 		public:
 			virtual const ege::PhysicsBox* toBox() const {
 				return this;

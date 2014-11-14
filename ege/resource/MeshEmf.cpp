@@ -388,7 +388,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 								EGE_ERROR("Allocation error when creating physical shape ...");
 								continue;
 							}
-							m_physics.push_back(physics);
+							addPhysicElement(physics);
 							EGE_VERBOSE("            " << m_physics.size() << " " << inputDataLine);
 							currentMode = EMFModuleMeshPhysicsNamed;
 						} else if (currentMode == EMFModuleMeshPhysicsNamed) {

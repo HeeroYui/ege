@@ -322,10 +322,12 @@ void ege::ElementPhysic::draw(int32_t _pass) {
 	if (false == m_elementInPhysicsSystem) {
 		return;
 	}
+	EGE_INFO("draw : " << _pass );
 	if (_pass == 0) {
 		if(    nullptr != m_body
 		    && nullptr != m_mesh
 		    && m_body->getMotionState() ) {
+			EGE_INFO("       plop ");
 			btScalar mmm[16];
 			btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
 			myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(mmm);

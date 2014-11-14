@@ -16,6 +16,7 @@
 #include <etk/tool.h>
 #include <ege/elements/ElementBase.h>
 #include <ege/elements/ElementPhysic.h>
+#include <ege/physicsShape/PhysicsBox.h>
 
 #undef __class__
 #define __class__ "Windows"
@@ -93,16 +94,23 @@ void appl::Windows::init() {
 	}
 	myMesh = ege::resource::Mesh::createCube(3);
 	if (myMesh != nullptr) {
-		std::shared_ptr<ege::ElementBase> element = std::make_shared<ege::ElementBase>(m_env);
-		//std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);
-		element->setPosition(vec3(50,0,0));
+		//std::shared_ptr<ege::ElementBase> element = std::make_shared<ege::ElementBase>(m_env);
+		std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);
+		element->setPosition(vec3(20,10,10));
 		element->setMesh(myMesh);
+		// add physic interface:
+		std::shared_ptr<ege::PhysicsBox> physic = std::make_shared<ege::PhysicsBox>();
+		physic->setSize(vec3(3.2,3.2,3.2));
+		myMesh->addPhysicElement(physic);
+		
 		m_env->addElement(element);
+		/*
 		element = std::make_shared<ege::ElementBase>(m_env);
 		//std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);
 		element->setPosition(vec3(-50,0,0));
 		element->setMesh(myMesh);
 		m_env->addElement(element);
+		*/
 	}
 }
 

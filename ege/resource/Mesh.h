@@ -115,6 +115,9 @@ namespace ege {
 				const std::vector<std::shared_ptr<ege::PhysicsShape>>& getPhysicalProperties() const {
 					return m_physics;
 				};
+				void addPhysicElement(const std::shared_ptr<ege::PhysicsShape>& _shape) {
+					m_physics.push_back(_shape);
+				}
 			private:
 				void* m_pointerShape; //!< all mesh have a basic shape (bullet or other) the void pointer mermit to not depent on the bullet lib
 			public:
