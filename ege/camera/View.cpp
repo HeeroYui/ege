@@ -69,6 +69,10 @@ vec3 ege::camera::View::getViewVector() const {
 
 ege::Ray ege::camera::View::getRayFromScreen(const vec2& _offset) {
 	ege::Ray out(m_eye, getViewVector());
+	EGE_WARNING("request ray from : " << _offset);
+	EGE_WARNING("    camera offset = " << vec2(m_angleView/2*_offset.x(), 2*_offset.y()*m_aspectRatio/m_angleView));
+	
+	EGE_WARNING("return ray : " << out);
 	// TODO : Use offset...
 	return out;
 }

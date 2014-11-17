@@ -23,6 +23,7 @@
 #include <ege/Environement.h>
 #include <ege/elements/Element.h>
 
+#include <LinearMath/btDefaultMotionState.h>
 
 #define INDEX_RIGHT_AXIS   (0)
 #define INDEX_FORWARD_AXIS (1)
@@ -36,13 +37,17 @@ namespace ege {
 			static void FunctionFreeShape(void* _pointer);
 		protected:
 			btRigidBody* m_body; //!< all the element have a body  == > otherwise it will be not manage with this system...
+		private:
+			btDefaultMotionState* m_motionState;
+		public:
+			void createRigidBody(float _mass=400000000.0f);
 		public:
 			/**
 			 * @brief Constructor (when constructer is called just add element that did not change.
 			 * The objest will be stored in a pool of element and keep a second time if needed  == > redure memory allocation,
 			 * when needed, the system will call the init and un-init function...
 			 */
-			ElementPhysic(const std::shared_ptr<ege::Environement>& _env);
+			ElementPhysic(const std::shared_ptr<ege::Environement>& _env, bool _autoRigidBody=true);
 			/**
 			 * @brief Destructor
 			 */
@@ -99,11 +104,13 @@ namespace ege {
 			 * @param[in] set the 3D position.
 			 */
 			virtual void setPositionTheoric(const vec3& _pos) { };
+		
 			/**
 			 * @brief get the current speed of the element
 			 * @return the 3D speed.
 			 */
 			const vec3& getSpeed();
+		
 			/**
 			 * @brief get the current mass of the element
 			 * @return the mass in kG.

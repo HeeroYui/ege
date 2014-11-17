@@ -96,21 +96,26 @@ void appl::Windows::init() {
 	if (myMesh != nullptr) {
 		//std::shared_ptr<ege::ElementBase> element = std::make_shared<ege::ElementBase>(m_env);
 		std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);
-		element->setPosition(vec3(20,10,10));
 		element->setMesh(myMesh);
+		element->setPosition(vec3(20,10,10));
 		// add physic interface:
 		std::shared_ptr<ege::PhysicsBox> physic = std::make_shared<ege::PhysicsBox>();
 		physic->setSize(vec3(3.2,3.2,3.2));
 		myMesh->addPhysicElement(physic);
 		
 		m_env->addElement(element);
-		/*
-		element = std::make_shared<ege::ElementBase>(m_env);
-		//std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);
-		element->setPosition(vec3(-50,0,0));
+		
+		
+		//element = std::make_shared<ege::ElementBase>(m_env);
+		element = std::make_shared<ege::ElementPhysic>(m_env);
 		element->setMesh(myMesh);
+		element->setPosition(vec3(20,-10,10));
+		
+		// add physic interface:
+		physic = std::make_shared<ege::PhysicsBox>();
+		physic->setSize(vec3(3.2,3.2,3.2));
 		m_env->addElement(element);
-		*/
+		
 	}
 }
 
@@ -120,7 +125,36 @@ void appl::Windows::onCallbackPeriodicUpdateCamera(const ewol::event::Time& _eve
 	offset += 0.01;
 	static float offset2 = 0;
 	offset2 += 0.003;
-	m_camera->setEye(vec3(100*std::sin(offset),100*std::cos(offset),40*std::cos(offset2)));
+	//m_camera->setEye(vec3(100*std::sin(offset),100*std::cos(offset),40*std::cos(offset2)));
 }
 
 
+
+bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
+	if (_event.getId() == 1) {
+		vec2 pos = relativePosition(_event.getPos());
+		ege::Ray ray = m_camera->getRayFromScreenPosition(pos, m_size);
+		APPL_INFO("pos=" << pos << " ray = " << ray);
+		return true;
+	}
+	return false;
+}
+/*
+btCollisionWorld::ClosestRayResultCallback RayCallback(
+    btVector3(out_origin.x, out_origin.y, out_origin.z), 
+    btVector3(out_direction.x, out_direction.y, out_direction.z)
+);
+dynamicsWorld->rayTest(
+    btVector3(out_origin.x, out_origin.y, out_origin.z), 
+    btVector3(out_direction.x, out_direction.y, out_direction.z), 
+    RayCallback
+);
+ 
+if(RayCallback.hasHit()) {
+    std::ostringstream oss;
+    oss << "mesh " << (int)RayCallback.m_collisionObject->getUserPointer();
+    message = oss.str();
+}else{
+    message = "background";
+}
+*/

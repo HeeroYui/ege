@@ -34,13 +34,17 @@ const std::string& ege::ElementPhysic::getType() const {
 }
 
 
-ege::ElementPhysic::ElementPhysic(const std::shared_ptr<ege::Environement>& _env) :
+ege::ElementPhysic::ElementPhysic(const std::shared_ptr<ege::Environement>& _env, bool _autoRigidBody) :
   ege::Element(_env),
   m_body(nullptr),
   m_shape(nullptr),
   m_elementInPhysicsSystem(false),
   m_IA(nullptr) {
-	
+	if (_autoRigidBody == true) {
+		createRigidBody();
+	} else {
+		EGE_TODO("add basic API to create custum rigid body");
+	}
 }
 
 ege::ElementPhysic::~ElementPhysic() {
@@ -52,6 +56,28 @@ ege::ElementPhysic::~ElementPhysic() {
 	delete m_body;
 	m_body = nullptr;
 }
+
+
+void ege::ElementPhysic::createRigidBody(float _mass) {
+	
+	/// Create Dynamic Objects
+	btTransform startTransform;
+	startTransform.setIdentity();
+	vec3 localInertia(0,0,0);
+	//rigidbody is dynamic if and only if mass is non zero, otherwise static
+	/*
+	if (mass != 0.0f && getShape()!=nullptr) {
+		getShape()->calculateLocalInertia(mass, localInertia);
+	}
+	*/
+	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+	m_motionState = new btDefaultMotionState(startTransform);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(_mass,m_motionState,getShape(),localInertia);
+	m_body = new btRigidBody(rbInfo);
+	//m_body->applyTorqueImpulse(btVector3(0,0,0.2));
+	//m_body->setAngularVelocity(vec3(etk::tool::frand(-1,1),etk::tool::frand(-1,1),etk::tool::frand(-1,1)));
+}
+
 
 bool ege::ElementPhysic::setMesh(const std::shared_ptr<ege::resource::Mesh>& _mesh) {
 	if (nullptr!=m_mesh) {
@@ -100,14 +126,14 @@ void ege::ElementPhysic::removeShape() {
 }
 
 void ege::ElementPhysic::FunctionFreeShape(void* _pointer) {
-	if (nullptr == _pointer) {
+	if (_pointer == nullptr) {
 		return;
 	}
 	delete(static_cast<btCollisionShape*>(_pointer));
 }
 
 void ege::ElementPhysic::setPosition(const vec3& _pos) {
-	if (nullptr!=m_body) {
+	if (m_body != nullptr) {
 		btTransform transformation = m_body->getCenterOfMassTransform();
 		transformation.setOrigin(_pos);
 		m_body->setCenterOfMassTransform(transformation);
@@ -115,7 +141,7 @@ void ege::ElementPhysic::setPosition(const vec3& _pos) {
 }
 
 const vec3& ege::ElementPhysic::getPosition() {
-	if (nullptr!=m_body) {
+	if (m_body != nullptr) {
 		return m_body->getCenterOfMassPosition();
 	}
 	return ege::Element::getPosition();
@@ -123,14 +149,14 @@ const vec3& ege::ElementPhysic::getPosition() {
 
 const vec3& ege::ElementPhysic::getSpeed() {
 	static vec3 emptySpeed(0,0,0);
-	if (nullptr!=m_body) {
+	if (m_body != nullptr) {
 		return m_body->getLinearVelocity();
 	}
 	return emptySpeed;
 };
 
 const float ege::ElementPhysic::getInvMass() {
-	if (nullptr!=m_body) {
+	if (m_body != nullptr) {
 		return m_body->getInvMass();
 	}
 	return 0.0000000001f;
@@ -140,8 +166,8 @@ static void drawShape(const btCollisionShape* _shape,
                       const std::shared_ptr<ewol::resource::Colored3DObject>& _draw,
                       mat4 _transformationMatrix,
                       std::vector<vec3> _tmpVertices) {
-	if(    nullptr == _draw
-	    || nullptr == _shape) {
+	if(    _draw == nullptr
+	    || _shape == nullptr) {
 		return;
 	}
 	etk::Color<float> tmpColor(1.0, 0.0, 0.0, 0.3);
@@ -319,15 +345,15 @@ void ege::ElementPhysic::drawDebug(const std::shared_ptr<ewol::resource::Colored
 }
 
 void ege::ElementPhysic::draw(int32_t _pass) {
-	if (false == m_elementInPhysicsSystem) {
+	if (m_elementInPhysicsSystem == false) {
 		return;
 	}
-	EGE_INFO("draw : " << _pass );
+	//EGE_INFO("draw : " << _pass );
 	if (_pass == 0) {
-		if(    nullptr != m_body
-		    && nullptr != m_mesh
+		if(    m_body != nullptr
+		    && m_mesh != nullptr
 		    && m_body->getMotionState() ) {
-			EGE_INFO("       plop ");
+			//EGE_INFO("       plop ");
 			btScalar mmm[16];
 			btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
 			myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(mmm);
@@ -340,26 +366,26 @@ void ege::ElementPhysic::draw(int32_t _pass) {
 }
 
 void ege::ElementPhysic::dynamicEnable() {
-	if (true == m_elementInPhysicsSystem) {
+	if (m_elementInPhysicsSystem == true) {
 		return;
 	}
-	if(nullptr!=m_body) {
+	if(m_body != nullptr) {
 		m_env->getPhysicEngine().getDynamicWorld()->addRigidBody(m_body);
 	}
-	if(nullptr!=m_IA) {
+	if(m_IA != nullptr) {
 		m_env->getPhysicEngine().getDynamicWorld()->addAction(m_IA);
 	}
 	m_elementInPhysicsSystem = true;
 }
 
 void ege::ElementPhysic::dynamicDisable() {
-	if (false == m_elementInPhysicsSystem) {
+	if (m_elementInPhysicsSystem == false) {
 		return;
 	}
-	if(nullptr!=m_IA) {
+	if(m_IA != nullptr) {
 		m_env->getPhysicEngine().getDynamicWorld()->removeAction(m_IA);
 	}
-	if(nullptr!=m_body) {
+	if(m_body != nullptr) {
 		// Unlink element from the engine
 		m_env->getPhysicEngine().getDynamicWorld()->removeRigidBody(m_body);
 		m_env->getPhysicEngine().getDynamicWorld()->removeCollisionObject(m_body);
@@ -368,26 +394,26 @@ void ege::ElementPhysic::dynamicDisable() {
 }
 
 void ege::ElementPhysic::iaEnable() {
-	if (nullptr != m_IA) {
+	if (m_IA != nullptr) {
 		// IA already started ...
 		return;
 	}
 	m_IA = new localIA(*this);
-	if (nullptr == m_IA) {
+	if (m_IA == nullptr) {
 		EGE_ERROR("Can not start the IA  == > allocation error");
 		return;
 	}
-	if (true == m_elementInPhysicsSystem) {
+	if (m_elementInPhysicsSystem == true) {
 		m_env->getPhysicEngine().getDynamicWorld()->addAction(m_IA);
 	}
 }
 
 void ege::ElementPhysic::iaDisable() {
-	if (nullptr == m_IA) {
+	if (m_IA == nullptr) {
 		// IA already stopped ...
 		return;
 	}
-	if (true == m_elementInPhysicsSystem) {
+	if (m_elementInPhysicsSystem == true) {
 		m_env->getPhysicEngine().getDynamicWorld()->removeAction(m_IA);
 	}
 	// remove IA :
