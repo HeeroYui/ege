@@ -236,7 +236,8 @@ void ege::Environement::getOrderedElementForDisplay(std::vector<ege::Environemen
 		result.element = m_listElement[iii];
 		// check distance ...
 		vec3 destPosition = result.element->getPosition();
-		vec3 angleView = (destPosition - _position).normalized();
+		vec3 angleView = (destPosition - _position);
+		angleView.safeNormalize();
 		float dotResult=angleView.dot(_direction);
 		//EGE_DEBUG("Dot position : " << destPosition << "  == > dot=" << dotResult);
 		/*

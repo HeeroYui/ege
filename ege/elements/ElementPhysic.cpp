@@ -395,6 +395,31 @@ void ege::ElementPhysic::iaDisable() {
 	m_IA = nullptr;
 }
 
+void ege::ElementPhysic::setMass(float _value) {
+	if (m_body == nullptr) {
+		return;
+	}
+	m_body->setMassProps(_value, vec3(0,0,0));
+}
 
+void ege::ElementPhysic::setLinearVelocity(const vec3& _value) {
+	if (m_body == nullptr) {
+		return;
+	}
+	m_body->setLinearVelocity(vec3(0,0,0));
+}
 
+void ege::ElementPhysic::setTorqueImpulse(const vec3& _value) {
+	if (m_body == nullptr) {
+		return;
+	}
+	
+}
+
+void ege::ElementPhysic::setAngularVelocity(const vec3& _value) {
+	if (m_body == nullptr) {
+		return;
+	}
+	m_body->setAngularVelocity(_value);
+}
 

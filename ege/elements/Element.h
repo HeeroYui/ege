@@ -29,7 +29,7 @@
 #define ELEMENT_SCALE     (1.0f/8.0f)
 
 namespace ege {
-	class Element {
+	class Element : public std::enable_shared_from_this<Element> {
 		protected:
 			std::shared_ptr<ege::Environement> m_env;
 		public:

@@ -109,6 +109,14 @@ namespace ege {
 			 * @return the mass in kG.
 			 */
 			const float getInvMass();
+			
+			virtual void setMass(float _value);
+			virtual void setLinearVelocity(const vec3& _value);
+			virtual void setTorqueImpulse(const vec3& _value);
+			virtual void setAngularVelocity(const vec3& _value);
+			
+			
+			
 		protected:
 			bool m_elementInPhysicsSystem;
 		public:

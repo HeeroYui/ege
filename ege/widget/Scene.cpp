@@ -30,7 +30,8 @@
 #undef __class__
 #define __class__ "Scene"
 
-ege::widget::Scene::Scene() {
+ege::widget::Scene::Scene() :
+	m_cameraName("default") {
 	addObjectType("ege::widget::Scene");
 }
 
@@ -81,6 +82,10 @@ void ege::widget::Scene::onDraw() {
 	
 	// get camera :
 	std::shared_ptr<ege::Camera> camera = m_env->getCamera(m_cameraName);
+	if (camera == nullptr) {
+		EGE_ERROR(" can not get camera named: '" << m_cameraName << "'");
+		return;
+	}
 	//EGE_DEBUG("Draw (start)");
 	mat4 tmpMatrix;
 	std::shared_ptr<btDynamicsWorld> world = m_env->getPhysicEngine().getDynamicWorld();
