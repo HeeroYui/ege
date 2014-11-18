@@ -5,8 +5,9 @@
  * 
  * @license BSD v3 (see license file)
  */
+#include <etk/types.h>
 #include <ege/Ray.h>
-#include <etk/math/Vector3D.h>
+#include <ege/debug.h>
 
 #undef __class__
 #define __class__ "Ray"

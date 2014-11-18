@@ -41,6 +41,7 @@ void ege::widget::Scene::init(std::shared_ptr<ege::Environement> _env) {
 	setKeyboardRepeate(false);
 	setCanHaveFocus(true);
 	periodicCallEnable();
+	m_debugDrawProperty = ewol::resource::Colored3DObject::create();
 }
 
 ege::widget::Scene::~Scene() {
@@ -108,6 +109,10 @@ void ege::widget::Scene::onDraw() {
 			for (size_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
 				m_displayElementOrdered[iii].element->draw(pass);
 			}
+		}
+		// Draw debug ...
+		for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
+			m_displayElementOrdered[iii].element->drawDebug(m_debugDrawProperty, camera);
 		}
 	} else {
 		EGE_WARNING("No Dynamic world ...");

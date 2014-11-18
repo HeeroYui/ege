@@ -90,7 +90,7 @@ namespace ege {
 			/**
 			 * @brief draw the current life of the element
 			 */
-			// virtual void drawLife(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const ege::Camera& _camera);
+			// virtual void drawLife(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera);
 			
 			/**
 			 * @brief get the theoric position. Sometimes, the element has move due to an explosion or something else, then its real position in not the one that woult it be at the end ...
@@ -176,7 +176,12 @@ namespace ege {
 			virtual void onDestroy() {};
 			virtual const vec3& getPosition();
 			virtual void setPosition(const vec3& _pos);
-			virtual void drawDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const ege::Camera& _camera);
+			virtual void drawDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera);
+		protected:
+			void drawShape(const btCollisionShape* _shape,
+			               const std::shared_ptr<ewol::resource::Colored3DObject>& _draw,
+			               mat4 _transformationMatrix,
+			               std::vector<vec3> _tmpVertices);
 	};
 };
 

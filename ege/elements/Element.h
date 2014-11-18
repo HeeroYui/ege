@@ -163,7 +163,7 @@ namespace ege {
 			 * @brief draw the current life of the element
 			 */
 			// TODO : Remove this ...
-			virtual void drawLife(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const ege::Camera& _camera);
+			virtual void drawLife(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera);
 			
 		protected:
 			// For debug only ...
@@ -173,7 +173,7 @@ namespace ege {
 			 * @brief Debug display of the current element
 			 * @param[in,out] draw Basic system to draw the debug shape and informations
 			 */
-			virtual void drawDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const ege::Camera& _camera);
+			virtual void drawDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera);
 			
 			/**
 			 * @brief get the theoric position. Sometimes, the element has move due to an explosion or something else, then its real position in not the one that woult it be at the end ...
@@ -229,6 +229,13 @@ namespace ege {
 			 * @brief remove this element from the physique engine
 			 */
 			virtual void dynamicDisable() {};
+		protected:
+			void drawSphere(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw,
+			                btScalar _radius,
+			                int _lats,
+			                int _longs,
+			                mat4& _transformationMatrix,
+			                etk::Color<float>& _tmpColor);
 	};
 };
 

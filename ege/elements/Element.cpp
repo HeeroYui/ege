@@ -101,12 +101,12 @@ const vec3& ege::Element::getPosition() {
 	return emptyPosition;
 };
 
-static void drawSphere(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw,
-                       btScalar _radius,
-                       int _lats,
-                       int _longs,
-                       mat4& _transformationMatrix,
-                       etk::Color<float>& _tmpColor) {
+void ege::Element::drawSphere(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw,
+                              btScalar _radius,
+                              int _lats,
+                              int _longs,
+                              mat4& _transformationMatrix,
+                              etk::Color<float>& _tmpColor) {
 	int i, j;
 	std::vector<vec3> EwolVertices;
 	for(i = 0; i <= _lats; i++) {
@@ -149,7 +149,7 @@ const float lifeHeight = 0.3f;
 const float lifeWidth = 2.0f;
 const float lifeYPos = 1.7f;
 
-void ege::Element::drawLife(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const ege::Camera& _camera) {
+void ege::Element::drawLife(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera) {
 	if (nullptr == _draw) {
 		return;
 	}
@@ -188,7 +188,7 @@ void ege::Element::drawLife(const std::shared_ptr<ewol::resource::Colored3DObjec
 	#endif
 }
 
-void ege::Element::drawDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const ege::Camera& _camera) {
+void ege::Element::drawDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera) {
 	m_debugText.clear();
 	m_debugText.setColor(etk::Color<>(0x00, 0xFF, 0x00, 0xFF));
 	m_debugText.setPos(vec3(-20,32,0));

@@ -162,10 +162,10 @@ const float ege::ElementPhysic::getInvMass() {
 	return 0.0000000001f;
 };
 
-static void drawShape(const btCollisionShape* _shape,
-                      const std::shared_ptr<ewol::resource::Colored3DObject>& _draw,
-                      mat4 _transformationMatrix,
-                      std::vector<vec3> _tmpVertices) {
+void ege::ElementPhysic::drawShape(const btCollisionShape* _shape,
+                                   const std::shared_ptr<ewol::resource::Colored3DObject>& _draw,
+                                   mat4 _transformationMatrix,
+                                   std::vector<vec3> _tmpVertices) {
 	if(    _draw == nullptr
 	    || _shape == nullptr) {
 		return;
@@ -177,15 +177,15 @@ static void drawShape(const btCollisionShape* _shape,
 	switch (shapetype) {
 		case SPHERE_SHAPE_PROXYTYPE: {
 			// Sphere collision shape ...
-			//EGE_DEBUG("            draw (01): SPHERE_SHAPE_PROXYTYPE");
+			EGE_DEBUG("            draw (01): SPHERE_SHAPE_PROXYTYPE");
 			const btSphereShape* sphereShape = static_cast<const btSphereShape*>(_shape);
 			float radius = sphereShape->getMargin();//radius doesn't include the margin, so draw with margin
-			// TODO : drawSphere(_draw, radius, 10, 10, _transformationMatrix, tmpColor);
+			drawSphere(_draw, radius, 10, 10, _transformationMatrix, tmpColor);
 			break;
 		}
 		case BOX_SHAPE_PROXYTYPE: {
 			// Box collision shape ...
-			//EGE_DEBUG("            draw (02): BOX_SHAPE_PROXYTYPE");
+			EGE_DEBUG("            draw (02): BOX_SHAPE_PROXYTYPE");
 			const btBoxShape* boxShape = static_cast<const btBoxShape*>(_shape);
 			btVector3 halfExtent = boxShape->getHalfExtentsWithMargin();
 			static int indices[36] = { 0,1,2,	3,2,1,	4,0,6,
@@ -303,7 +303,7 @@ static void drawShape(const btCollisionShape* _shape,
 		}
 		case COMPOUND_SHAPE_PROXYTYPE: {
 			// Multiple sub element collision shape ...
-			//EGE_DEBUG("            draw (07): COMPOUND_SHAPE_PROXYTYPE");
+			EGE_DEBUG("            draw (07): COMPOUND_SHAPE_PROXYTYPE");
 			const btCompoundShape* compoundShape = static_cast<const btCompoundShape*>(_shape);
 			for (int32_t iii=compoundShape->getNumChildShapes()-1;iii >= 0;iii--) {
 				btTransform childTrans = compoundShape->getChildTransform(iii);
@@ -319,7 +319,7 @@ static void drawShape(const btCollisionShape* _shape,
 		}
 		case EMPTY_SHAPE_PROXYTYPE: {
 			// No collision shape ...
-			//EGE_DEBUG("            draw (08): EMPTY_SHAPE_PROXYTYPE");
+			EGE_DEBUG("            draw (08): EMPTY_SHAPE_PROXYTYPE");
 			// nothing to display ...
 			break;
 		}
@@ -330,7 +330,7 @@ static void drawShape(const btCollisionShape* _shape,
 	}
 }
 
-void ege::ElementPhysic::drawDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const ege::Camera& _camera) {
+void ege::ElementPhysic::drawDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera) {
 	ege::Element::drawDebug(_draw, _camera);
 	btScalar mmm[16];
 	btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
@@ -353,7 +353,7 @@ void ege::ElementPhysic::draw(int32_t _pass) {
 		if(    m_body != nullptr
 		    && m_mesh != nullptr
 		    && m_body->getMotionState() ) {
-			//EGE_INFO("       plop ");
+			//EGE_INFO("element pos = " << getPosition());
 			btScalar mmm[16];
 			btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
 			myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(mmm);

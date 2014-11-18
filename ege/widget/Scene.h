@@ -38,6 +38,7 @@ namespace ege {
 		class Scene : public ewol::Widget {
 			protected:
 				std::shared_ptr<ege::Environement> m_env;
+				std::shared_ptr<ewol::resource::Colored3DObject> m_debugDrawProperty;
 			protected:
 				/**
 				 * @brief Constructor of the widget classes
