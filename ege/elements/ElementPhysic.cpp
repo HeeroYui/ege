@@ -34,7 +34,7 @@ const std::string& ege::ElementPhysic::getType() const {
 }
 
 
-ege::ElementPhysic::ElementPhysic(const std::shared_ptr<ege::Environement>& _env, bool _autoRigidBody) :
+ege::ElementPhysic::ElementPhysic(const std::shared_ptr<ege::Environement>& _env, bool _autoRigidBody) ://, float _mass) :
   ege::Element(_env),
   m_body(nullptr),
   m_shape(nullptr),
@@ -59,27 +59,25 @@ ege::ElementPhysic::~ElementPhysic() {
 
 
 void ege::ElementPhysic::createRigidBody(float _mass) {
-	
 	/// Create Dynamic Objects
 	btTransform startTransform;
 	startTransform.setIdentity();
 	vec3 localInertia(0,0,0);
 	//rigidbody is dynamic if and only if mass is non zero, otherwise static
-	/*
-	if (mass != 0.0f && getShape()!=nullptr) {
-		getShape()->calculateLocalInertia(mass, localInertia);
+	if (_mass != 0.0f && getShape()!=nullptr) {
+		getShape()->calculateLocalInertia(_mass, localInertia);
 	}
-	*/
 	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-	m_motionState = new btDefaultMotionState(startTransform);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(_mass,m_motionState,getShape(),localInertia);
+	btDefaultMotionState* motionState = new btDefaultMotionState(startTransform);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(_mass, motionState, getShape(), localInertia);
 	m_body = new btRigidBody(rbInfo);
 	//m_body->applyTorqueImpulse(btVector3(0,0,0.2));
-	//m_body->setAngularVelocity(vec3(etk::tool::frand(-1,1),etk::tool::frand(-1,1),etk::tool::frand(-1,1)));
+	m_body->setAngularVelocity(vec3(0,0,0));
 }
 
 
 bool ege::ElementPhysic::setMesh(const std::shared_ptr<ege::resource::Mesh>& _mesh) {
+	EGE_WARNING("Set Mesh");
 	if (nullptr!=m_mesh) {
 		removeShape();
 	}
@@ -89,19 +87,30 @@ bool ege::ElementPhysic::setMesh(const std::shared_ptr<ege::resource::Mesh>& _me
 		return true;
 	}
 	if (m_mesh->getShape() != nullptr) {
+		EGE_WARNING("create shape whith mesh internal shape ...");
 		m_shape = static_cast<btCollisionShape*>(m_mesh->getShape());
 		return true;
 	}
+	EGE_WARNING("create the mesh shape with the mesh");
 	m_mesh->setShape(ege::collision::createShape(m_mesh));
+	EGE_WARNING("set remove function shape");
 	m_mesh->setFreeShapeFunction(&FunctionFreeShape);
 	m_shape = static_cast<btCollisionShape*>(m_mesh->getShape());
+	vec3 localInertia(0,0,0);
+	m_shape->calculateLocalInertia(50000000, localInertia); // TODO : BETTER ///
 	return true;
 }
 
 
 bool ege::ElementPhysic::setShape(btCollisionShape* _shape) {
+	EGE_WARNING("Set Shape");
 	removeShape();
 	m_shape = _shape;
+	if (_shape == nullptr) {
+		EGE_WARNING("Remove shape ...");
+	} else {
+		EGE_INFO("set shape ...");
+	}
 	return true;
 }
 
@@ -115,11 +124,13 @@ void ege::ElementPhysic::removeShape() {
 		// no mesh  == > standalone shape
 		delete(m_shape);
 		m_shape=nullptr;
+		EGE_WARNING("Remove shape .2.");
 		return;
 	}
 	if (m_shape != m_mesh->getShape()) {
 		delete(m_shape);
 		m_shape=nullptr;
+		EGE_WARNING("Remove shape .3.");
 		return;
 	}
 	// otherwise : the shape is auto remove by the resources when no more needed ...
@@ -360,6 +371,7 @@ void ege::ElementPhysic::draw(int32_t _pass) {
 			
 			mat4 transformationMatrix(mmm);
 			transformationMatrix.transpose();
+			EGE_INFO("element pos = " << getPosition() << " mat=" << transformationMatrix);
 			m_mesh->draw(transformationMatrix);
 		}
 	}
@@ -370,9 +382,11 @@ void ege::ElementPhysic::dynamicEnable() {
 		return;
 	}
 	if(m_body != nullptr) {
+		EGE_ERROR("dynamicEnable : RigidBody");
 		m_env->getPhysicEngine().getDynamicWorld()->addRigidBody(m_body);
 	}
 	if(m_IA != nullptr) {
+		EGE_ERROR("dynamicEnable : IA");
 		m_env->getPhysicEngine().getDynamicWorld()->addAction(m_IA);
 	}
 	m_elementInPhysicsSystem = true;
@@ -383,9 +397,11 @@ void ege::ElementPhysic::dynamicDisable() {
 		return;
 	}
 	if(m_IA != nullptr) {
+		EGE_ERROR("dynamicDisable : IA");
 		m_env->getPhysicEngine().getDynamicWorld()->removeAction(m_IA);
 	}
 	if(m_body != nullptr) {
+		EGE_ERROR("dynamicDisable : RigidBody");
 		// Unlink element from the engine
 		m_env->getPhysicEngine().getDynamicWorld()->removeRigidBody(m_body);
 		m_env->getPhysicEngine().getDynamicWorld()->removeCollisionObject(m_body);

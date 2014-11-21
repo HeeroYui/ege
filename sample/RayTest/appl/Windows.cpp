@@ -17,6 +17,7 @@
 #include <ege/elements/ElementBase.h>
 #include <ege/elements/ElementPhysic.h>
 #include <ege/physicsShape/PhysicsBox.h>
+#include <ege/physicsShape/PhysicsSphere.h>
 
 #undef __class__
 #define __class__ "Windows"
@@ -26,7 +27,7 @@ appl::Windows::Windows() {
 }
 
 static std::shared_ptr<ege::resource::Mesh> createViewBoxStar() {
-	std::shared_ptr<ege::resource::Mesh> out = ege::resource::Mesh::create("---", "DATA:texturedNoMaterial.prog");
+	std::shared_ptr<ege::resource::Mesh> out = ege::resource::Mesh::create("viewBoxStar", "DATA:texturedNoMaterial.prog");
 	if (out != nullptr) {
 		std::shared_ptr<ege::Material> material = std::make_shared<ege::Material>();
 		// set the element material properties :
@@ -34,13 +35,14 @@ static std::shared_ptr<ege::resource::Mesh> createViewBoxStar() {
 		material->setDiffuseFactor(vec4(0,0,0,1));
 		material->setSpecularFactor(vec4(0,0,0,1));
 		material->setShininess(1);
-		material->setTexture0(""); //"
-		out->addMaterial("basics", material);
 		// 1024  == > 1<<9
 		// 2048  == > 1<<10
 		// 4096  == > 1<<11
 		int32_t size = 1<<11;
-		material->setImageSize(ivec2(size,size));
+		//material->setTexture0(""); //"
+		material->setTexture0Magic(ivec2(size,size));
+		out->addMaterial("basics", material);
+		//material->setImageSize(ivec2(size,size));
 		egami::Image* myImage = material->get();
 		if (nullptr == myImage) {
 			return out;
@@ -96,24 +98,38 @@ void appl::Windows::init() {
 	if (myMesh != nullptr) {
 		//std::shared_ptr<ege::ElementBase> element = std::make_shared<ege::ElementBase>(m_env);
 		std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);
-		element->setMesh(myMesh);
-		element->setPosition(vec3(20,10,10));
 		// add physic interface:
+		/*
 		std::shared_ptr<ege::PhysicsBox> physic = std::make_shared<ege::PhysicsBox>();
 		physic->setSize(vec3(3.2,3.2,3.2));
+		*/
+		std::shared_ptr<ege::PhysicsSphere> physic = std::make_shared<ege::PhysicsSphere>();
+		physic->setRadius(4.2f);
 		myMesh->addPhysicElement(physic);
 		
-		m_env->addElement(element);
-		
-		
-		//element = std::make_shared<ege::ElementBase>(m_env);
-		element = std::make_shared<ege::ElementPhysic>(m_env);
 		element->setMesh(myMesh);
-		element->setPosition(vec3(20,-10,10));
+		element->createRigidBody(4000000);
+		element->setPosition(vec3(20,10,10));
+		
+		m_env->addElement(element);
+	}
+	myMesh = ege::resource::Mesh::createCube(3);
+	if (myMesh != nullptr) {
+		//element = std::make_shared<ege::ElementBase>(m_env);
+		std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);
 		
 		// add physic interface:
-		physic = std::make_shared<ege::PhysicsBox>();
-		physic->setSize(vec3(3.2,3.2,3.2));
+		std::shared_ptr<ege::PhysicsSphere> physic = std::make_shared<ege::PhysicsSphere>();
+		physic->setRadius(3.3f);
+		myMesh->addPhysicElement(physic);
+		
+		
+		element->setMesh(myMesh);
+		element->createRigidBody(4000000);
+		element->setPosition(vec3(20,-10,10));
+		
+		element->iaEnable();
+		
 		m_env->addElement(element);
 		
 	}
@@ -124,8 +140,8 @@ void appl::Windows::onCallbackPeriodicUpdateCamera(const ewol::event::Time& _eve
 	static float offset = 0;
 	offset += 0.01;
 	static float offset2 = 0;
-	offset2 += 0.003;
-	//m_camera->setEye(vec3(100*std::sin(offset),100*std::cos(offset),40*std::cos(offset2)));
+	//offset2 += 0.003;
+	m_camera->setEye(vec3(100*std::sin(offset),100*std::cos(offset),40*std::cos(offset2)));
 }
 
 

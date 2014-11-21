@@ -7,6 +7,7 @@
  * 
  */
 
+#include <ege/debug.h>
 #include <ege/CollisionShapeCreator.h>
 
 #include <btBulletCollisionCommon.h>
@@ -29,10 +30,12 @@
 
 btCollisionShape* ege::collision::createShape(const std::shared_ptr<ege::resource::Mesh>& _mesh) {
 	if (nullptr == _mesh) {
+		EGE_DEBUG("Create empty shape (no mesh)");
 		return new btEmptyShape();;
 	}
 	const std::vector<std::shared_ptr<ege::PhysicsShape>>& physiqueProperty = _mesh->getPhysicalProperties();
 	if (physiqueProperty.size() == 0) {
+		EGE_DEBUG("Create empty shape (no default shape)");
 		return new btEmptyShape();;
 	}
 	int32_t count = 0;
@@ -44,7 +47,10 @@ btCollisionShape* ege::collision::createShape(const std::shared_ptr<ege::resourc
 	}
 	btCompoundShape* outputShape = nullptr;
 	if (count>1) {
+		EGE_DEBUG("Create complexe shape");
 		outputShape = new btCompoundShape();
+	} else {
+		EGE_DEBUG("Create simple shape");
 	}
 	for (size_t iii=0; iii<physiqueProperty.size(); iii++) {
 		if (nullptr == physiqueProperty[iii]) {
@@ -52,6 +58,7 @@ btCollisionShape* ege::collision::createShape(const std::shared_ptr<ege::resourc
 		}
 		switch (physiqueProperty[iii]->getType()) {
 			case ege::PhysicsShape::box : {
+				EGE_DEBUG("    Box");
 				const ege::PhysicsBox* tmpElement = physiqueProperty[iii]->toBox();
 				if (nullptr  == tmpElement) {
 					// ERROR ...
@@ -70,6 +77,7 @@ btCollisionShape* ege::collision::createShape(const std::shared_ptr<ege::resourc
 				break;
 			}
 			case ege::PhysicsShape::cylinder : {
+				EGE_DEBUG("    Cylinder");
 				const ege::PhysicsCylinder* tmpElement = physiqueProperty[iii]->toCylinder();
 				if (nullptr  == tmpElement) {
 					// ERROR ...
@@ -88,6 +96,7 @@ btCollisionShape* ege::collision::createShape(const std::shared_ptr<ege::resourc
 				break;
 			}
 			case ege::PhysicsShape::capsule : {
+				EGE_DEBUG("    Capsule");
 				const ege::PhysicsCapsule* tmpElement = physiqueProperty[iii]->toCapsule();
 				if (nullptr  == tmpElement) {
 					// ERROR ...
@@ -106,6 +115,7 @@ btCollisionShape* ege::collision::createShape(const std::shared_ptr<ege::resourc
 				break;
 			}
 			case ege::PhysicsShape::cone : {
+				EGE_DEBUG("    Cone");
 				const ege::PhysicsCone* tmpElement = physiqueProperty[iii]->toCone();
 				if (nullptr  == tmpElement) {
 					// ERROR ...
@@ -124,6 +134,7 @@ btCollisionShape* ege::collision::createShape(const std::shared_ptr<ege::resourc
 				break;
 			}
 			case ege::PhysicsShape::sphere : {
+				EGE_DEBUG("    Sphere");
 				const ege::PhysicsSphere* tmpElement = physiqueProperty[iii]->toSphere();
 				if (nullptr  == tmpElement) {
 					// ERROR ...
@@ -142,6 +153,7 @@ btCollisionShape* ege::collision::createShape(const std::shared_ptr<ege::resourc
 				break;
 			}
 			case ege::PhysicsShape::convexHull : {
+				EGE_DEBUG("    convexHull");
 				const ege::PhysicsConvexHull* tmpElement = physiqueProperty[iii]->toConvexHull();
 				if (nullptr  == tmpElement) {
 					// ERROR ...
@@ -160,11 +172,13 @@ btCollisionShape* ege::collision::createShape(const std::shared_ptr<ege::resourc
 				break;
 			}
 			default :
+				EGE_DEBUG("    ???");
 				// TODO : UNKNOW type ... 
 				break;
 		}
 	}
 	if (nullptr == outputShape) {
+		EGE_DEBUG("create empty shape ...");
 		return new btEmptyShape();
 	}
 	return outputShape;

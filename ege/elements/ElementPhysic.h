@@ -37,8 +37,6 @@ namespace ege {
 			static void FunctionFreeShape(void* _pointer);
 		protected:
 			btRigidBody* m_body; //!< all the element have a body  == > otherwise it will be not manage with this system...
-		private:
-			btDefaultMotionState* m_motionState;
 		public:
 			void createRigidBody(float _mass=400000000.0f);
 		public:

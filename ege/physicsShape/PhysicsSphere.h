@@ -32,6 +32,9 @@ namespace ege {
 			float getRadius() const {
 				return m_radius;
 			};
+			void setRadius(float _radius) {
+				m_radius = _radius;
+			};
 		private:
 			virtual const ege::PhysicsSphere* toSphere() const {
 				return this;

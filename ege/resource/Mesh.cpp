@@ -102,7 +102,7 @@ void ege::resource::Mesh::clean() {
 }
 
 
-//#define DISPLAY_NB_VERTEX_DISPLAYED
+#define DISPLAY_NB_VERTEX_DISPLAYED
 
 void ege::resource::Mesh::draw(mat4& _positionMatrix,
                                 bool _enableDepthTest,
@@ -128,14 +128,20 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	mat4 tmpMatrix = projMatrix * camMatrix;
 	m_GLprogram->uniformMatrix(m_GLMatrix, tmpMatrix);
 	m_GLprogram->uniformMatrix(m_GLMatrixPosition, _positionMatrix);
+	EGE_DEBUG(" m_GLMatrix=" << m_GLMatrix << " ==> " << tmpMatrix);
+	EGE_DEBUG(" m_GLMatrixPosition=" << m_GLMatrixPosition << " ==> " << _positionMatrix);
 	// position :
 	m_GLprogram->sendAttributePointer(m_GLPosition, m_verticesVBO, MESH_VBO_VERTICES);
+	EGE_DEBUG(" m_GLPosition=" << m_GLPosition << " ==> " << "");
 	// Texture :
 	m_GLprogram->sendAttributePointer(m_GLtexture, m_verticesVBO, MESH_VBO_TEXTURE);
+	EGE_DEBUG(" m_GLtexture=" << m_GLtexture << " ==> " << "");
 	// position :
 	m_GLprogram->sendAttributePointer(m_GLNormal, m_verticesVBO, MESH_VBO_VERTICES_NORMAL);
+	EGE_DEBUG(" m_GLNormal=" << m_GLNormal << " ==> " << "");
 	// position :
 	m_GLprogram->sendAttributePointer(m_GLColor, m_verticesVBO, MESH_VBO_COLOR);
+	EGE_DEBUG(" m_GLColor=" << m_GLColor << " ==> " << "");
 	// draw lights :
 	m_light.draw(m_GLprogram);
 	#ifdef DISPLAY_NB_VERTEX_DISPLAYED
@@ -193,9 +199,18 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 		}
 	}
 	#ifdef DISPLAY_NB_VERTEX_DISPLAYED
-		EGE_DEBUG(((float)nbElementDraw/(float)nbElementDrawTheoric*100.0f) << "% Request draw : " << m_listFaces.size() << ":" << nbElementDraw << "/" << nbElementDrawTheoric << " elements [" << m_name << "]");
+		if (m_listFaces.size() == 0) {
+			EGE_ERROR(" !!!! No Face to display elements [" << m_name << "]");
+		} else {
+			if (nbElementDrawTheoric != 0) {
+				EGE_DEBUG(((float)nbElementDraw/(float)nbElementDrawTheoric*100.0f) << "% Request draw : " << m_listFaces.size() << ":" << nbElementDraw << "/" << nbElementDrawTheoric << " elements [" << m_name << "]");
+			} else {
+				EGE_DEBUG("0% Request draw : " << m_listFaces.size() << ":" << nbElementDraw << "/" << nbElementDrawTheoric << " elements [" << m_name << "]");
+			}
+		}
 	#endif
 	m_GLprogram->unUse();
+
 	if (_enableDepthTest == true){
 		if (false == _enableDepthUpdate) {
 			glDepthMask(GL_TRUE);
@@ -203,7 +218,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 		ewol::openGL::disable(ewol::openGL::FLAG_DEPTH_TEST);
 	}
 	// TODO : UNDERSTAND why ... it is needed
-	glBindBuffer(GL_ARRAY_BUFFER,0);
+	//glBindBuffer(GL_ARRAY_BUFFER,0);
 }
 
 // normal calculation of the normal face is really easy :
@@ -267,7 +282,7 @@ void ege::resource::Mesh::generateVBO() {
 		// when no normal detected  == > auto generate Face normal ....
 		calculateNormaleFace(m_listFaces.getKeys()[0]);
 	}
-	
+	EGE_WARNING("Generate VBO for nb faces : " << m_listFaces.size());
 	
 	// generate element in 2 pass : 
 	//    - create new index dependeng a vertex is a unique componenet of position, texture, normal

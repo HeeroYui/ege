@@ -51,19 +51,52 @@ void ege::Material::draw(const std::shared_ptr<ewol::resource::Program>& _prog, 
 	_prog->uniform1f(_glID.m_GL_shininess, m_shininess);
 	if (nullptr != m_texture0) {
 		_prog->setTexture0(_glID.m_GL_texture0, m_texture0->getId());
+		#if DEBUG
+			if (_prog->checkIdValidity(_glID.m_GL_texture0) == false) {
+				EGE_ERROR("try to set texture on a unexistant shader interface (wrong ID)");
+			}
+		#endif
+	} else {
+		#if DEBUG
+			if (_prog->checkIdValidity(_glID.m_GL_texture0) == true) {
+				EGE_ERROR("Missing texture to send on the shader ...");
+			}
+		#endif
 	}
 }
 
 void ege::Material::setTexture0(const std::string& _filename) {
 	ivec2 tmpSize(256, 256);
-	// prevent overloard error :
-	std::shared_ptr<ewol::resource::TextureFile> tmpCopy = m_texture0;
-	m_texture0 = ewol::resource::TextureFile::create(_filename, tmpSize);
-	if (m_texture0 == nullptr) {
-		EGE_ERROR("Can not load specific texture : " << _filename);
-		// retreave previous texture:
-		m_texture0 = tmpCopy;
-		return;
+	if (_filename != "") {
+		// prevent overloard error :
+		std::shared_ptr<ewol::resource::Texture> tmpCopy = m_texture0;
+		m_texture0 = ewol::resource::TextureFile::create(_filename, tmpSize);
+		if (m_texture0 == nullptr) {
+			EGE_ERROR("Can not load specific texture : " << _filename);
+			// retreave previous texture:
+			m_texture0 = tmpCopy;
+			if (m_texture0 != nullptr) {
+				return;
+			}
+		}
+	} else {
+		m_texture0.reset();
+	}
+}
+
+void ege::Material::setTexture0Magic(const ivec2& _size) {
+	// create a simple custum texture :
+	m_texture0 = ewol::resource::Texture::create();
+	if (m_texture0 != nullptr) {
+		setImageSize(_size);
+		egami::Image& img = m_texture0->get();
+		for (int32_t xxx=0; xxx<_size.x(); ++xxx) {
+			for (int32_t yyy=0; yyy<_size.y(); ++yyy) {
+				img.set(ivec2(xxx,yyy), etk::Color<>(1,0,0,1));
+			}
+		}
+	} else {
+		EGE_ERROR("Can not create empty stupid texture ...");
 	}
 }
 

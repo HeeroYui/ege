@@ -40,7 +40,7 @@ namespace ege {
 			vec4 m_specularFactor;
 			float m_shininess;
 			enum ewol::openGL::renderMode m_renderMode; // Select Render mode (triangle/Line/point ...)
-			std::shared_ptr<ewol::resource::TextureFile> m_texture0;
+			std::shared_ptr<ewol::resource::Texture> m_texture0;
 		public:
 			std::vector<uint32_t> m_listIndexFaces;
 		public:
@@ -65,6 +65,7 @@ namespace ege {
 				return m_renderMode;
 			}
 			void setTexture0(const std::string& _filename);
+			void setTexture0Magic(const ivec2& _size);
 			
 			void setImageSize(const ivec2& _newSize) {
 				if (m_texture0 == nullptr){
