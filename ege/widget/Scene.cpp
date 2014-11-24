@@ -111,11 +111,9 @@ void ege::widget::Scene::onDraw() {
 			}
 		}
 		// Draw debug ...
-		/*
 		for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
 			m_displayElementOrdered[iii].element->drawDebug(m_debugDrawProperty, camera);
 		}
-		*/
 	} else {
 		EGE_WARNING("No Dynamic world ...");
 	}

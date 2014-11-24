@@ -102,7 +102,7 @@ void ege::resource::Mesh::clean() {
 }
 
 
-#define DISPLAY_NB_VERTEX_DISPLAYED
+//#define DISPLAY_NB_VERTEX_DISPLAYED
 
 void ege::resource::Mesh::draw(mat4& _positionMatrix,
                                 bool _enableDepthTest,
@@ -128,14 +128,10 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	mat4 tmpMatrix = projMatrix * camMatrix;
 	m_GLprogram->uniformMatrix(m_GLMatrix, tmpMatrix);
 	m_GLprogram->uniformMatrix(m_GLMatrixPosition, _positionMatrix);
-	EGE_DEBUG(" m_GLMatrix=" << m_GLMatrix << " ==> " << tmpMatrix);
-	EGE_DEBUG(" m_GLMatrixPosition=" << m_GLMatrixPosition << " ==> " << _positionMatrix);
 	// position :
 	m_GLprogram->sendAttributePointer(m_GLPosition, m_verticesVBO, MESH_VBO_VERTICES);
-	EGE_DEBUG(" m_GLPosition=" << m_GLPosition << " ==> " << "");
 	// Texture :
 	m_GLprogram->sendAttributePointer(m_GLtexture, m_verticesVBO, MESH_VBO_TEXTURE);
-	EGE_DEBUG(" m_GLtexture=" << m_GLtexture << " ==> " << "");
 	// position :
 	if (m_normalMode != normalModeNone) {
 		m_GLprogram->sendAttributePointer(m_GLNormal, m_verticesVBO, MESH_VBO_VERTICES_NORMAL);
@@ -149,14 +145,8 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	#else
 		}
 	#endif
-	EGE_DEBUG(" m_GLNormal=" << m_GLNormal << " ==> " << "");
 	// position :
 	m_GLprogram->sendAttributePointer(m_GLColor, m_verticesVBO, MESH_VBO_COLOR);
-	EGE_DEBUG(" m_GLColor=" << m_GLColor << " ==> " << "");
-	EGE_ERROR(" VBO size V=" << m_verticesVBO->getElementSize(MESH_VBO_VERTICES)
-	                << " T=" << m_verticesVBO->getElementSize(MESH_VBO_TEXTURE)
-	                << " N=" << m_verticesVBO->getElementSize(MESH_VBO_VERTICES_NORMAL)
-	                << " C=" << m_verticesVBO->getElementSize(MESH_VBO_COLOR) << " ");
 	// draw lights :
 	m_light.draw(m_GLprogram);
 	#ifdef DISPLAY_NB_VERTEX_DISPLAYED
@@ -170,7 +160,6 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 		}
 		m_materials[m_listFaces.getKey(kkk)]->draw(m_GLprogram, m_GLMaterial);
 		if (m_checkNormal == false) {
-			EGE_ERROR("NO normal ... mode =" << m_materials[m_listFaces.getKey(kkk)]->getRenderModeOpenGl() << " list = " << m_listFaces.getValue(kkk).m_index.size() );
 			ewol::openGL::drawElements(m_materials[m_listFaces.getKey(kkk)]->getRenderModeOpenGl(), m_listFaces.getValue(kkk).m_index);
 			#ifdef DISPLAY_NB_VERTEX_DISPLAYED
 				nbElementDraw += m_listFaces.getValue(kkk).m_index.size();
@@ -210,7 +199,6 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 					}
 					break;
 				default:
-					EGE_INFO("draw without filtering ... *********************");
 					for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
 						tmpIndexResult.push_back(iii*3);
 						tmpIndexResult.push_back(iii*3+1);

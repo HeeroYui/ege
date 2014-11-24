@@ -91,9 +91,9 @@ bool ege::ElementPhysic::setMesh(const std::shared_ptr<ege::resource::Mesh>& _me
 		m_shape = static_cast<btCollisionShape*>(m_mesh->getShape());
 		return true;
 	}
-	EGE_WARNING("create the mesh shape with the mesh");
+	EGE_DEBUG("create the mesh shape with the mesh");
 	m_mesh->setShape(ege::collision::createShape(m_mesh));
-	EGE_WARNING("set remove function shape");
+	EGE_DEBUG("set remove function shape");
 	m_mesh->setFreeShapeFunction(&FunctionFreeShape);
 	m_shape = static_cast<btCollisionShape*>(m_mesh->getShape());
 	vec3 localInertia(0,0,0);
@@ -103,7 +103,7 @@ bool ege::ElementPhysic::setMesh(const std::shared_ptr<ege::resource::Mesh>& _me
 
 
 bool ege::ElementPhysic::setShape(btCollisionShape* _shape) {
-	EGE_WARNING("Set Shape");
+	EGE_DEBUG("Set Shape");
 	removeShape();
 	m_shape = _shape;
 	if (_shape == nullptr) {
@@ -369,13 +369,8 @@ void ege::ElementPhysic::draw(int32_t _pass) {
 			btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
 			myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(mmm);
 			
-			/*mat4 transformationMatrix(mmm);
+			mat4 transformationMatrix(mmm);
 			transformationMatrix.transpose();
-			*/
-			mat4 transformationMatrix;
-			transformationMatrix.identity();
-			transformationMatrix.translate(getPosition());
-			EGE_INFO("element pos = " << getPosition() << " mat=" << transformationMatrix);
 			m_mesh->draw(transformationMatrix);
 		}
 	}
@@ -386,11 +381,11 @@ void ege::ElementPhysic::dynamicEnable() {
 		return;
 	}
 	if(m_body != nullptr) {
-		EGE_ERROR("dynamicEnable : RigidBody");
+		EGE_VERBOSE("dynamicEnable : RigidBody");
 		m_env->getPhysicEngine().getDynamicWorld()->addRigidBody(m_body);
 	}
 	if(m_IA != nullptr) {
-		EGE_ERROR("dynamicEnable : IA");
+		EGE_VERBOSE("dynamicEnable : IA");
 		m_env->getPhysicEngine().getDynamicWorld()->addAction(m_IA);
 	}
 	m_elementInPhysicsSystem = true;
@@ -401,11 +396,11 @@ void ege::ElementPhysic::dynamicDisable() {
 		return;
 	}
 	if(m_IA != nullptr) {
-		EGE_ERROR("dynamicDisable : IA");
+		EGE_VERBOSE("dynamicDisable : IA");
 		m_env->getPhysicEngine().getDynamicWorld()->removeAction(m_IA);
 	}
 	if(m_body != nullptr) {
-		EGE_ERROR("dynamicDisable : RigidBody");
+		EGE_VERBOSE("dynamicDisable : RigidBody");
 		// Unlink element from the engine
 		m_env->getPhysicEngine().getDynamicWorld()->removeRigidBody(m_body);
 		m_env->getPhysicEngine().getDynamicWorld()->removeCollisionObject(m_body);
