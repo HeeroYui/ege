@@ -83,9 +83,9 @@ void appl::Windows::init() {
 		tmpWidget->setCamera("basic");
 		setSubWidget(tmpWidget);
 	}
-	
+	std::shared_ptr<ege::resource::Mesh> myMesh;
 	// Create an external box :
-	std::shared_ptr<ege::resource::Mesh> myMesh = createViewBoxStar();
+	myMesh = createViewBoxStar();
 	if (myMesh != nullptr) {
 		m_env->addStaticMeshToDraw(myMesh);
 	}

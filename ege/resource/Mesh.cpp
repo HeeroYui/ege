@@ -137,11 +137,26 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	m_GLprogram->sendAttributePointer(m_GLtexture, m_verticesVBO, MESH_VBO_TEXTURE);
 	EGE_DEBUG(" m_GLtexture=" << m_GLtexture << " ==> " << "");
 	// position :
-	m_GLprogram->sendAttributePointer(m_GLNormal, m_verticesVBO, MESH_VBO_VERTICES_NORMAL);
+	if (m_normalMode != normalModeNone) {
+		m_GLprogram->sendAttributePointer(m_GLNormal, m_verticesVBO, MESH_VBO_VERTICES_NORMAL);
+		#if DEBUG
+			// TODO : ...
+		#endif
+	#if DEBUG
+		} else {
+			// TODO : ...
+		}
+	#else
+		}
+	#endif
 	EGE_DEBUG(" m_GLNormal=" << m_GLNormal << " ==> " << "");
 	// position :
 	m_GLprogram->sendAttributePointer(m_GLColor, m_verticesVBO, MESH_VBO_COLOR);
 	EGE_DEBUG(" m_GLColor=" << m_GLColor << " ==> " << "");
+	EGE_ERROR(" VBO size V=" << m_verticesVBO->getElementSize(MESH_VBO_VERTICES)
+	                << " T=" << m_verticesVBO->getElementSize(MESH_VBO_TEXTURE)
+	                << " N=" << m_verticesVBO->getElementSize(MESH_VBO_VERTICES_NORMAL)
+	                << " C=" << m_verticesVBO->getElementSize(MESH_VBO_COLOR) << " ");
 	// draw lights :
 	m_light.draw(m_GLprogram);
 	#ifdef DISPLAY_NB_VERTEX_DISPLAYED
@@ -155,6 +170,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 		}
 		m_materials[m_listFaces.getKey(kkk)]->draw(m_GLprogram, m_GLMaterial);
 		if (m_checkNormal == false) {
+			EGE_ERROR("NO normal ... mode =" << m_materials[m_listFaces.getKey(kkk)]->getRenderModeOpenGl() << " list = " << m_listFaces.getValue(kkk).m_index.size() );
 			ewol::openGL::drawElements(m_materials[m_listFaces.getKey(kkk)]->getRenderModeOpenGl(), m_listFaces.getValue(kkk).m_index);
 			#ifdef DISPLAY_NB_VERTEX_DISPLAYED
 				nbElementDraw += m_listFaces.getValue(kkk).m_index.size();
@@ -172,24 +188,35 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 			std::vector<uint32_t> tmpIndexResult;
 			std::vector<ege::Face>& tmppFaces = m_listFaces.getValue(kkk).m_faces;
 			//std::vector<uint32_t>& tmppIndex = m_listFaces.getValue(kkk).m_index;
-			if (normalModeFace == m_normalMode) {
-				for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
-					if(btDot(mattttt * m_listFacesNormal[tmppFaces[iii].m_normal[0]], cameraNormal) >= 0.0f) {
+			switch(m_normalMode) {
+				case normalModeFace:
+					for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
+						if(btDot(mattttt * m_listFacesNormal[tmppFaces[iii].m_normal[0]], cameraNormal) >= 0.0f) {
+							tmpIndexResult.push_back(iii*3);
+							tmpIndexResult.push_back(iii*3+1);
+							tmpIndexResult.push_back(iii*3+2);
+						}
+					}
+					break;
+				case normalModeVertex:
+					for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
+						if(    (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[0]], cameraNormal) >= -0.2f)
+						    || (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[1]], cameraNormal) >= -0.2f)
+						    || (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[2]], cameraNormal) >= -0.2f) ) {
+							tmpIndexResult.push_back(iii*3);
+							tmpIndexResult.push_back(iii*3+1);
+							tmpIndexResult.push_back(iii*3+2);
+						}
+					}
+					break;
+				default:
+					EGE_INFO("draw without filtering ... *********************");
+					for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
 						tmpIndexResult.push_back(iii*3);
 						tmpIndexResult.push_back(iii*3+1);
 						tmpIndexResult.push_back(iii*3+2);
 					}
-				}
-			} else {
-				for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
-					if(    (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[0]], cameraNormal) >= -0.2f)
-					    || (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[1]], cameraNormal) >= -0.2f)
-					    || (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[2]], cameraNormal) >= -0.2f) ) {
-						tmpIndexResult.push_back(iii*3);
-						tmpIndexResult.push_back(iii*3+1);
-						tmpIndexResult.push_back(iii*3+2);
-					}
-				}
+					break;
 			}
 			ewol::openGL::drawElements(m_materials[m_listFaces.getKey(kkk)]->getRenderModeOpenGl(), tmpIndexResult);
 			#ifdef DISPLAY_NB_VERTEX_DISPLAYED
@@ -218,7 +245,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 		ewol::openGL::disable(ewol::openGL::FLAG_DEPTH_TEST);
 	}
 	// TODO : UNDERSTAND why ... it is needed
-	//glBindBuffer(GL_ARRAY_BUFFER,0);
+	glBindBuffer(GL_ARRAY_BUFFER,0);
 }
 
 // normal calculation of the normal face is really easy :
@@ -278,7 +305,7 @@ void ege::resource::Mesh::calculateNormaleEdge(const std::string& _materialName)
 
 void ege::resource::Mesh::generateVBO() {
 	// calculate the normal of all faces if needed
-	if (m_normalMode == ege::resource::Mesh::normalModeNone) {
+	if (m_normalMode != ege::resource::Mesh::normalModeNone) {
 		// when no normal detected  == > auto generate Face normal ....
 		calculateNormaleFace(m_listFaces.getKeys()[0]);
 	}
@@ -367,7 +394,9 @@ void ege::resource::Mesh::generateVBO() {
 				#endif
 				if (false == elementFind) {
 					m_verticesVBO->pushOnBuffer(MESH_VBO_VERTICES, position);
-					m_verticesVBO->pushOnBuffer(MESH_VBO_VERTICES_NORMAL, normal);
+					if (m_normalMode != normalModeNone) {
+						m_verticesVBO->pushOnBuffer(MESH_VBO_VERTICES_NORMAL, normal);
+					}
 					m_verticesVBO->pushOnBuffer(MESH_VBO_TEXTURE, texturepos);
 					m_verticesVBO->pushOnBuffer(MESH_VBO_COLOR, color);
 					vertexVBOId[indice] = m_verticesVBO->bufferSize(MESH_VBO_VERTICES)-1;

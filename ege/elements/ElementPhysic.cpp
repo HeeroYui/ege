@@ -369,8 +369,12 @@ void ege::ElementPhysic::draw(int32_t _pass) {
 			btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
 			myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(mmm);
 			
-			mat4 transformationMatrix(mmm);
+			/*mat4 transformationMatrix(mmm);
 			transformationMatrix.transpose();
+			*/
+			mat4 transformationMatrix;
+			transformationMatrix.identity();
+			transformationMatrix.translate(getPosition());
 			EGE_INFO("element pos = " << getPosition() << " mat=" << transformationMatrix);
 			m_mesh->draw(transformationMatrix);
 		}
