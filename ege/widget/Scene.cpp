@@ -29,9 +29,15 @@
 
 #undef __class__
 #define __class__ "Scene"
+namespace etk {
+	template<> std::string to_string<std::shared_ptr<ewol::resource::Colored3DObject> >(const std::shared_ptr<ewol::resource::Colored3DObject>& _value) {
+		return "{{ERROR}}";
+	}
+};
 
 ege::widget::Scene::Scene() :
-	m_cameraName("default") {
+  signalDisplayDebug(*this, "drawDebug", "Call to draw debug after all elements"),
+  m_cameraName("default") {
 	addObjectType("ege::widget::Scene");
 }
 
@@ -114,6 +120,7 @@ void ege::widget::Scene::onDraw() {
 		for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
 			m_displayElementOrdered[iii].element->drawDebug(m_debugDrawProperty, camera);
 		}
+		signalDisplayDebug.emit(m_debugDrawProperty);
 	} else {
 		EGE_WARNING("No Dynamic world ...");
 	}

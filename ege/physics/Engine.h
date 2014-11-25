@@ -9,6 +9,11 @@
 #ifndef __EGE_PHYSICS_ENGINE_H__
 #define __EGE_PHYSICS_ENGINE_H__
 
+namespace ege {
+	namespace physics {
+		class Engine;
+	};
+};
 #include <etk/types.h>
 #include <etk/math/Vector3D.h>
 #include <etk/math/Matrix4.h>

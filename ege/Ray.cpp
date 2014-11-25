@@ -9,6 +9,9 @@
 #include <ege/Ray.h>
 #include <ege/debug.h>
 
+#include <BulletDynamics/Dynamics/btDynamicsWorld.h>
+#include <BulletCollision/CollisionDispatch/btCollisionWorld.h>
+
 #undef __class__
 #define __class__ "Ray"
 
@@ -37,3 +40,21 @@ std::ostream& ege::operator <<(std::ostream& _os, const ege::Ray& _obj) {
 	_os << "}";
 	return _os;
 }
+
+void ege::Ray::testRay(ege::physics::Engine& _engine) {
+	vec3 start = m_origin;
+	vec3 stop = m_origin+m_direction*1000.0f;
+	// Start and End are vectors
+	btCollisionWorld::ClosestRayResultCallback rayCallback(start, stop);
+	EGE_ERROR("Process Raycast :");
+	// Perform raycast
+	_engine.getDynamicWorld()->rayTest(start, stop, rayCallback);
+	if(rayCallback.hasHit()) {
+		vec3 end = rayCallback.m_hitPointWorld;
+		vec3 normal = rayCallback.m_hitNormalWorld;
+		EGE_ERROR("    hit at point=" << end << " normal=" << normal);
+	} else {
+		EGE_ERROR("    No Hit");
+	}
+}
+

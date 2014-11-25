@@ -12,6 +12,7 @@
 #include <ewol/widget/Windows.h>
 #include <ege/Environement.h>
 #include <ege/camera/View.h>
+#include <ewol/resource/Colored3DObject.h>
 
 namespace appl {
 	class Windows : public ewol::widget::Windows {
@@ -27,6 +28,7 @@ namespace appl {
 		private:
 			void onCallbackPeriodicUpdateCamera(const ewol::event::Time& _event);
 			bool onEventInput(const ewol::event::Input& _event);
+			void onCallbackDisplayDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _obj);
 	};
 };
 

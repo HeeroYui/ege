@@ -10,6 +10,10 @@
 #define __EGE_RAY_H__
 
 #include <etk/math/Vector3D.h>
+namespace ege {
+	class Ray;
+};
+#include <ege/physics/Engine.h>
 
 namespace ege {
 	class Ray {
@@ -61,6 +65,8 @@ namespace ege {
 			 * @param[in] _direction The ray's direction.
 			 */
 			void set(const vec3& _origin, const vec3& _direction);
+		public:
+			void testRay(ege::physics::Engine& _engine);
 	};
 	std::ostream& operator <<(std::ostream& _os, const ege::Ray& _obj);
 };

@@ -82,6 +82,7 @@ void appl::Windows::init() {
 		tmpWidget->setFill(bvec2(true,true));
 		tmpWidget->setCamera("basic");
 		setSubWidget(tmpWidget);
+		tmpWidget->signalDisplayDebug.bind(shared_from_this(), &appl::Windows::onCallbackDisplayDebug);
 	}
 	std::shared_ptr<ege::resource::Mesh> myMesh;
 	// Create an external box :
@@ -151,26 +152,22 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 		vec2 pos = relativePosition(_event.getPos());
 		ege::Ray ray = m_camera->getRayFromScreenPosition(pos, m_size);
 		APPL_INFO("pos=" << pos << " ray = " << ray);
+		ray.testRay(m_env->getPhysicEngine());
 		return true;
 	}
 	return false;
 }
-/*
-btCollisionWorld::ClosestRayResultCallback RayCallback(
-    btVector3(out_origin.x, out_origin.y, out_origin.z), 
-    btVector3(out_direction.x, out_direction.y, out_direction.z)
-);
-dynamicsWorld->rayTest(
-    btVector3(out_origin.x, out_origin.y, out_origin.z), 
-    btVector3(out_direction.x, out_direction.y, out_direction.z), 
-    RayCallback
-);
- 
-if(RayCallback.hasHit()) {
-    std::ostringstream oss;
-    oss << "mesh " << (int)RayCallback.m_collisionObject->getUserPointer();
-    message = oss.str();
-}else{
-    message = "background";
+
+void appl::Windows::onCallbackDisplayDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _obj) {
+	EWOL_INFO("draw user debug");
+	etk::Color<float> tmpColor(0.0, 1.0, 0.0, 0.3);
+	std::vector<vec3> vertices;
+	vertices.push_back(vec3(100,0,0));
+	vertices.push_back(vec3(100,100,0));
+	vertices.push_back(vec3(100,100,100));
+	mat4 mat;
+	mat.identity();
+	mat.translate(vec3(0,0,0));
+	_obj->draw(vertices, tmpColor, mat);
 }
-*/
+

@@ -32,6 +32,7 @@ class btDynamicsWorld;
 #include <LinearMath/btScalar.h>
 class btVector3;
 #include <ewol/widget/Widget.h>
+#include <ewol/signal/Signal.h>
 
 namespace ege {
 	namespace widget {
@@ -39,6 +40,8 @@ namespace ege {
 			protected:
 				std::shared_ptr<ege::Environement> m_env;
 				std::shared_ptr<ewol::resource::Colored3DObject> m_debugDrawProperty;
+			public:
+				ewol::Signal<std::shared_ptr<ewol::resource::Colored3DObject>/*, std::shared_ptr<ege::Camera>*/> signalDisplayDebug;
 			protected:
 				/**
 				 * @brief Constructor of the widget classes
