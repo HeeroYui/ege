@@ -151,6 +151,7 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 	if (_event.getId() == 1) {
 		vec2 pos = relativePosition(_event.getPos());
 		ege::Ray ray = m_camera->getRayFromScreenPosition(pos, m_size);
+		m_ray = ray;
 		APPL_INFO("pos=" << pos << " ray = " << ray);
 		ray.testRay(m_env->getPhysicEngine());
 		return true;
@@ -162,9 +163,9 @@ void appl::Windows::onCallbackDisplayDebug(const std::shared_ptr<ewol::resource:
 	EWOL_INFO("draw user debug");
 	etk::Color<float> tmpColor(0.0, 1.0, 0.0, 0.3);
 	std::vector<vec3> vertices;
-	vertices.push_back(vec3(100,0,0));
-	vertices.push_back(vec3(100,100,0));
-	vertices.push_back(vec3(100,100,100));
+	vertices.push_back(m_ray.getOrigin());
+	vertices.push_back(m_ray.getOrigin() + m_ray.getDirection()*1000);
+	vertices.push_back(vec3(10,0,0));
 	mat4 mat;
 	mat.identity();
 	mat.translate(vec3(0,0,0));
