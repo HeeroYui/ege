@@ -27,11 +27,11 @@ void ege::camera::View::update() {
 	float tetha = std::asin(pos.y());
 	if (pos.x() < 0) {
 		tetha *= -1;
-		tetha += M_PI;
+		tetha -= M_PI;
 	}
 	m_matrix.translate(vec3(0,0,-distance));
 	m_matrix.rotate(vec3(1,0,0), -M_PI*0.5f + psy);
-	m_matrix.rotate(vec3(0,0,1), tetha);
+	m_matrix.rotate(vec3(0,0,1), -tetha-M_PI/2.0f);
 	m_matrix.translate(-m_target);
 	
 	EGE_DEBUG("Camera properties : distance=" << distance );
@@ -63,16 +63,30 @@ void ege::camera::View::setAngle(float _angle) {
 }
 
 vec3 ege::camera::View::getViewVector() const {
-	return m_eye-m_target;
+	return m_target - m_eye;
 }
 
 
 ege::Ray ege::camera::View::getRayFromScreen(const vec2& _offset) {
-	vec3 direction = getViewVector();
+	vec2 cameraAngleOffset(m_angleView/2*_offset.x(), 2*_offset.y()*m_aspectRatio/m_angleView);
+	#if 0
+		mat4 inverse = m_matrix.invert();
+		vec3 screenOffset(0,0,-1);
+		screenOffset.rotate(vec3(1,0,0), cameraAngleOffset.x());
+		screenOffset.rotate(vec3(0,1,0), cameraAngleOffset.y());
+		vec3 direction = inverse*screenOffset;
+	#else
+		vec3 direction = getViewVector();
+		//mat4 transformation;
+		//transformation.indentity();
+		//transformation.rotate(vec3(1,0,0), cameraAngleOffset.x());
+		direction.rotate(vec3(1,0,0), cameraAngleOffset.x());
+		direction.rotate(vec3(0,1,0), cameraAngleOffset.y());
+	#endif
 	direction.safeNormalize();
 	ege::Ray out(m_eye, direction);
 	EGE_WARNING("request ray from : " << _offset);
-	EGE_WARNING("    camera offset = " << vec2(m_angleView/2*_offset.x(), 2*_offset.y()*m_aspectRatio/m_angleView));
+	EGE_WARNING("    camera offset = " << cameraAngleOffset);
 	
 	EGE_WARNING("return ray : " << out);
 	// TODO : Use offset...

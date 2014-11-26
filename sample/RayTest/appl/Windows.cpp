@@ -72,6 +72,7 @@ void appl::Windows::init() {
 	m_env = ege::Environement::create();
 	// Create basic Camera
 	m_camera = std::make_shared<ege::camera::View>(vec3(30,30,-100), vec3(0,0,0));
+	m_camera->setEye(vec3(100*std::sin(0),100*std::cos(0),40*std::cos(0)));
 	m_env->addCamera("basic", m_camera);
 	
 	std::shared_ptr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create(m_env);
@@ -142,12 +143,13 @@ void appl::Windows::onCallbackPeriodicUpdateCamera(const ewol::event::Time& _eve
 	offset += 0.01;
 	static float offset2 = 0;
 	//offset2 += 0.003;
-	m_camera->setEye(vec3(100*std::sin(offset),100*std::cos(offset),40*std::cos(offset2)));
+	//m_camera->setEye(vec3(100*std::sin(offset),100*std::cos(offset),40*std::cos(offset2)));
 }
 
 
 
 bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
+	static float ploppp=1;
 	if (_event.getId() == 1) {
 		vec2 pos = relativePosition(_event.getPos());
 		ege::Ray ray = m_camera->getRayFromScreenPosition(pos, m_size);
@@ -155,20 +157,30 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 		APPL_INFO("pos=" << pos << " ray = " << ray);
 		ray.testRay(m_env->getPhysicEngine());
 		return true;
+	} else if (_event.getId() == 4) {
+		ploppp += 1.0f;
+		m_camera->setEye(vec3(100*std::sin(0),100*std::cos(0),40*std::cos(0))*ploppp);
+	} else if (_event.getId() == 5) {
+		ploppp -= 1.0f;
+		if (ploppp == 0) {
+			ploppp = 1.0f;
+		}
+		m_camera->setEye(vec3(100*std::sin(0),100*std::cos(0),40*std::cos(0))*ploppp);
 	}
 	return false;
 }
 
 void appl::Windows::onCallbackDisplayDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _obj) {
-	EWOL_INFO("draw user debug");
 	etk::Color<float> tmpColor(0.0, 1.0, 0.0, 0.3);
 	std::vector<vec3> vertices;
-	vertices.push_back(m_ray.getOrigin());
-	vertices.push_back(m_ray.getOrigin() + m_ray.getDirection()*1000);
-	vertices.push_back(vec3(10,0,0));
+	//vertices.push_back(m_ray.getOrigin()+vec3(1,0,0));
+	//vertices.push_back(vec3(100,0,0));//m_ray.getOrigin() + m_ray.getDirection()*1000);
+	//vertices.push_back(m_ray.getOrigin() + m_ray.getDirection()*1000);
+	vertices.push_back(vec3(0,0,0));
+	vertices.push_back(m_ray.getDirection()*1000);
 	mat4 mat;
 	mat.identity();
 	mat.translate(vec3(0,0,0));
-	_obj->draw(vertices, tmpColor, mat);
+	_obj->drawLine(vertices, tmpColor, mat);
 }
 
