@@ -30,6 +30,9 @@ namespace appl {
 			bool onEventInput(const ewol::event::Input& _event);
 			void onCallbackDisplayDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _obj);
 			ege::Ray m_ray;
+			float m_angleTetha;
+			float m_anglePsy;
+			vec2 m_oldScreenPos;
 	};
 };
 

@@ -22,7 +22,9 @@
 #undef __class__
 #define __class__ "Windows"
 
-appl::Windows::Windows() {
+appl::Windows::Windows() :
+  m_angleTetha(0),
+  m_anglePsy(0) {
 	addObjectType("appl::Windows");
 }
 
@@ -72,7 +74,7 @@ void appl::Windows::init() {
 	m_env = ege::Environement::create();
 	// Create basic Camera
 	m_camera = std::make_shared<ege::camera::View>(vec3(30,30,-100), vec3(0,0,0));
-	m_camera->setEye(vec3(100*std::sin(0),100*std::cos(0),40*std::cos(0)));
+	m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),40*std::cos(m_anglePsy)));
 	m_env->addCamera("basic", m_camera);
 	
 	std::shared_ptr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create(m_env);
@@ -158,26 +160,43 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 		ray.testRay(m_env->getPhysicEngine());
 		return true;
 	} else if (_event.getId() == 4) {
-		ploppp += 1.0f;
-		m_camera->setEye(vec3(100*std::sin(0),100*std::cos(0),40*std::cos(0))*ploppp);
+		ploppp += 0.2f;
+		m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),40*std::cos(m_anglePsy))*ploppp);
 	} else if (_event.getId() == 5) {
-		ploppp -= 1.0f;
+		ploppp -= 0.2f;
 		if (ploppp == 0) {
 			ploppp = 1.0f;
 		}
-		m_camera->setEye(vec3(100*std::sin(0),100*std::cos(0),40*std::cos(0))*ploppp);
+		m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),40*std::cos(m_anglePsy))*ploppp);
+	} else if (_event.getId() == 3) {
+		if (_event.getStatus() == ewol::key::statusDown) {
+			m_oldScreenPos = relativePosition(_event.getPos());
+			return true;
+		} else if (_event.getStatus() == ewol::key::statusMove) {
+			vec2 pos = relativePosition(_event.getPos());
+			m_angleTetha -= (m_oldScreenPos.x()-pos.x())*0.05f;
+			m_anglePsy += (m_oldScreenPos.y()-pos.y())*0.05f;
+			m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),40*std::cos(m_anglePsy))*ploppp);
+			m_oldScreenPos = relativePosition(_event.getPos());
+			return true;
+		}
 	}
 	return false;
 }
 
 void appl::Windows::onCallbackDisplayDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _obj) {
 	etk::Color<float> tmpColor(0.0, 1.0, 0.0, 0.3);
-	std::vector<vec3> vertices;
-	//vertices.push_back(m_ray.getOrigin()+vec3(1,0,0));
+	static std::vector<vec3> vertices;
+	//vertices.push_back(m_ray.getOrigin());//+vec3(1,0,0));
 	//vertices.push_back(vec3(100,0,0));//m_ray.getOrigin() + m_ray.getDirection()*1000);
 	//vertices.push_back(m_ray.getOrigin() + m_ray.getDirection()*1000);
-	vertices.push_back(vec3(0,0,0));
-	vertices.push_back(m_ray.getDirection()*1000);
+	#if 0
+		vertices.push_back(vec3(0,0,0));
+		vertices.push_back(m_ray.getDirection()*50);
+	#else
+		vertices.push_back(m_ray.getOrigin());
+		vertices.push_back(m_ray.getOrigin()+m_ray.getDirection()*100);
+	#endif
 	mat4 mat;
 	mat.identity();
 	mat.translate(vec3(0,0,0));
