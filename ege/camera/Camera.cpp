@@ -77,3 +77,21 @@ ege::Ray ege::Camera::getRayFromScreenPosition(const vec2& _position, const vec2
 	return getRayFromScreen(_position/half - vec2(1,1));
 }
 
+vec2 ege::Camera::tansformPositionToAngle(vec3 _vect) {
+	vec2 out(0.0f, 0.0f);
+	float distance = _vect.length();
+	if (distance == 0.0f) {
+		return out;
+	}
+	out.setY(std::asin(_vect.z()/distance));
+	_vect.setZ(0.0f);
+	if (_vect.x() == 0 && _vect.y() == 0) {
+		return out;
+	}
+	_vect.normalize();
+	out.setX(std::asin(_vect.y()));
+	if (_vect.x() < 0) {
+		out.setX(out.x()*-1 - M_PI);
+	}
+	return out;
+}

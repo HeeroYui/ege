@@ -41,7 +41,7 @@ std::ostream& ege::operator <<(std::ostream& _os, const ege::Ray& _obj) {
 	return _os;
 }
 
-void ege::Ray::testRay(ege::physics::Engine& _engine) {
+std::pair<vec3,vec3> ege::Ray::testRay(ege::physics::Engine& _engine) {
 	vec3 start = m_origin;
 	vec3 stop = m_origin+m_direction*1000.0f;
 	// Start and End are vectors
@@ -53,8 +53,9 @@ void ege::Ray::testRay(ege::physics::Engine& _engine) {
 		vec3 end = rayCallback.m_hitPointWorld;
 		vec3 normal = rayCallback.m_hitNormalWorld;
 		EGE_ERROR("    hit at point=" << end << " normal=" << normal);
-	} else {
-		EGE_ERROR("    No Hit");
+		return std::pair<vec3,vec3>(end,normal);
 	}
+	EGE_ERROR("    No Hit");
+	return std::pair<vec3,vec3>(vec3(0,0,0),vec3(0,0,0));
 }
 

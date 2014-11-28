@@ -66,7 +66,7 @@ namespace ege {
 			 */
 			void set(const vec3& _origin, const vec3& _direction);
 		public:
-			void testRay(ege::physics::Engine& _engine);
+			std::pair<vec3,vec3> testRay(ege::physics::Engine& _engine);
 	};
 	std::ostream& operator <<(std::ostream& _os, const ege::Ray& _obj);
 };

@@ -159,6 +159,14 @@ namespace ege {
 			 * @return the ray requested.
 			 */
 			ege::Ray getRayFromScreenPosition(const vec2& _position, const vec2& _size);
+		protected:
+			/**
+			 * @brief get Tetha and psy angle from a position:
+			 * @param[in] _vect Vector to transform in the euler angle
+			 * @return x: tetha; y: psy
+			 */
+			vec2 tansformPositionToAngle(vec3 _vect);
+
 	};
 };
 

@@ -157,7 +157,7 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 		ege::Ray ray = m_camera->getRayFromScreenPosition(pos, m_size);
 		m_ray = ray;
 		APPL_INFO("pos=" << pos << " ray = " << ray);
-		ray.testRay(m_env->getPhysicEngine());
+		m_destination = ray.testRay(m_env->getPhysicEngine());
 		return true;
 	} else if (_event.getId() == 4) {
 		ploppp += 0.2f;
@@ -186,7 +186,9 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 
 void appl::Windows::onCallbackDisplayDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _obj) {
 	etk::Color<float> tmpColor(0.0, 1.0, 0.0, 0.3);
+	etk::Color<float> tmpColor2(1.0, 0.0, 0.0, 0.3);
 	static std::vector<vec3> vertices;
+	static std::vector<vec3> vertices2;
 	//vertices.push_back(m_ray.getOrigin());//+vec3(1,0,0));
 	//vertices.push_back(vec3(100,0,0));//m_ray.getOrigin() + m_ray.getDirection()*1000);
 	//vertices.push_back(m_ray.getOrigin() + m_ray.getDirection()*1000);
@@ -197,9 +199,21 @@ void appl::Windows::onCallbackDisplayDebug(const std::shared_ptr<ewol::resource:
 		vertices.push_back(m_ray.getOrigin());
 		vertices.push_back(m_ray.getOrigin()+m_ray.getDirection()*100);
 	#endif
+	if (vertices.size() > 50) {
+		vertices.erase(vertices.begin(), vertices.begin()+vertices.size()-50);
+	}
+	if (m_destination.second != vec3(0,0,0)) {
+		vertices2.push_back(m_destination.first);
+		vertices2.push_back(m_destination.first + m_destination.second*100);
+		m_destination.second = vec3(0,0,0);
+	}
+	if (vertices2.size() > 50) {
+		vertices2.erase(vertices2.begin(), vertices2.begin()+vertices2.size()-50);
+	}
 	mat4 mat;
 	mat.identity();
 	mat.translate(vec3(0,0,0));
 	_obj->drawLine(vertices, tmpColor, mat);
+	_obj->drawLine(vertices2, tmpColor2, mat);
 }
 

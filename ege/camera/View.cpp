@@ -19,24 +19,18 @@ void ege::camera::View::update() {
 	//m_matrix.translate(m_eye);
 	m_matrix.identity();
 	m_matrix.rotate(vec3(0,0,1), -m_angle);
-	vec3 pos = m_eye-m_target;
+	vec3 pos = -getViewVector();
+	vec2 angles = tansformPositionToAngle(pos);
 	float distance = pos.length();
-	float psy = std::asin(pos.z()/distance);
-	pos.setZ(0.0f);
-	pos.normalize();
-	float tetha = std::asin(pos.y());
-	if (pos.x() < 0) {
-		tetha *= -1;
-		tetha -= M_PI;
-	}
+	
 	m_matrix.translate(vec3(0,0,-distance));
-	m_matrix.rotate(vec3(1,0,0), -M_PI*0.5f + psy);
-	m_matrix.rotate(vec3(0,0,1), -tetha-M_PI/2.0f);
+	m_matrix.rotate(vec3(1,0,0), -M_PI*0.5f + angles.y());
+	m_matrix.rotate(vec3(0,0,1), -angles.x()-M_PI/2.0f);
 	m_matrix.translate(-m_target);
 	
 	EGE_DEBUG("Camera properties : distance=" << distance );
-	EGE_DEBUG("                         psy=" << psy);
-	EGE_DEBUG("                       Tetha=" << tetha);
+	EGE_DEBUG("                         psy=" << angles.y());
+	EGE_DEBUG("                       Tetha=" << angles.x());
 	EGE_DEBUG("                       m_eye=" << etk::to_string(m_eye));
 }
 
@@ -70,33 +64,26 @@ vec3 ege::camera::View::getViewVector() const {
 ege::Ray ege::camera::View::getRayFromScreen(const vec2& _offset) {
 	vec2 cameraAngleOffset(m_angleView*0.5f*_offset.x(), _offset.y()*0.5f*m_angleView/m_aspectRatio);
 	#if 1
-		#if 1
-			mat4 inverse = m_matrix.invert();
-			vec3 screenOffset(0,0,-1);
-			screenOffset = getViewVector();
-			screenOffset = screenOffset.rotate(vec3(0,1,0), cameraAngleOffset.x());
-			screenOffset = screenOffset.rotate(vec3(1,0,0), cameraAngleOffset.y());
-			vec3 direction = screenOffset;
-		#else
-			mat4 inverse = m_matrix.invert();
-			vec3 screenOffset(0,0,-1);
-			//screenOffset = getViewVector();
-			screenOffset = screenOffset.rotate(vec3(0,1,0), cameraAngleOffset.x());
-			screenOffset = screenOffset.rotate(vec3(1,0,0), cameraAngleOffset.y());
-			vec3 direction = inverse*screenOffset;
-		#endif
+		// It is not the best way to create the ray but it work . (My knowlege is not enought now ...)
+		mat4 inverse = m_matrix.invert();
+		vec3 screenOffset(0,0,-1);
+		screenOffset = screenOffset.rotate(vec3(0,1,0), cameraAngleOffset.x());
+		screenOffset = screenOffset.rotate(vec3(1,0,0), -cameraAngleOffset.y());
+		vec2 angles = tansformPositionToAngle(-getViewVector());
+		screenOffset = screenOffset.rotate(vec3(1,0,0), -M_PI*0.5f + angles.y());
+		screenOffset = screenOffset.rotate(vec3(0,0,1), angles.x() - M_PI/2.0f);
+		vec3 direction = screenOffset;
 	#else
-		vec3 direction = getViewVector();
-		direction = direction.rotate(vec3(1,0,0), cameraAngleOffset.x());
-		direction = direction.rotate(vec3(0,1,0), cameraAngleOffset.y());
+		// lA PROJECTION TOURNE EN FONCTION DE L'ANGLE
+		mat4 inverse = m_matrix.invert();
+		vec3 screenOffset(0,0,-1);
+		//screenOffset = getViewVector();
+		screenOffset = screenOffset.rotate(vec3(0,1,0), cameraAngleOffset.x());
+		screenOffset = screenOffset.rotate(vec3(1,0,0), cameraAngleOffset.y());
+		vec3 direction = inverse*screenOffset;
 	#endif
 	direction.safeNormalize();
 	ege::Ray out(m_eye, direction);
-	EGE_WARNING("request ray from : " << _offset);
-	EGE_WARNING("    camera offset = " << cameraAngleOffset);
-	EGE_WARNING("    angle view x=" << m_angleView << " y=" << m_angleView/m_aspectRatio);
-	
-	EGE_WARNING("return ray : " << out);
-	// TODO : Use offset...
+	EGE_VERBOSE("return ray : " << out);
 	return out;
 }

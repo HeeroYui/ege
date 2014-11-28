@@ -33,6 +33,7 @@ namespace appl {
 			float m_angleTetha;
 			float m_anglePsy;
 			vec2 m_oldScreenPos;
+			std::pair<vec3,vec3> m_destination;
 	};
 };
 
