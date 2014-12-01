@@ -69,8 +69,6 @@ void appl::Windows::init() {
 	ewol::widget::Windows::init();
 	setTitle("example ege : RayTest");
 	
-	getObjectManager().periodicCall.bind(shared_from_this(), &appl::Windows::onCallbackPeriodicUpdateCamera);
-	
 	m_env = ege::Environement::create();
 	// Create basic Camera
 	m_camera = std::make_shared<ege::camera::View>(vec3(30,30,-100), vec3(0,0,0));
@@ -103,12 +101,8 @@ void appl::Windows::init() {
 		//std::shared_ptr<ege::ElementBase> element = std::make_shared<ege::ElementBase>(m_env);
 		std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);
 		// add physic interface:
-		/*
 		std::shared_ptr<ege::PhysicsBox> physic = std::make_shared<ege::PhysicsBox>();
 		physic->setSize(vec3(3.2,3.2,3.2));
-		*/
-		std::shared_ptr<ege::PhysicsSphere> physic = std::make_shared<ege::PhysicsSphere>();
-		physic->setRadius(4.2f);
 		myMesh->addPhysicElement(physic);
 		
 		element->setMesh(myMesh);
@@ -124,7 +118,7 @@ void appl::Windows::init() {
 		
 		// add physic interface:
 		std::shared_ptr<ege::PhysicsSphere> physic = std::make_shared<ege::PhysicsSphere>();
-		physic->setRadius(3.3f);
+		physic->setRadius(4.5f);
 		myMesh->addPhysicElement(physic);
 		
 		
@@ -139,25 +133,18 @@ void appl::Windows::init() {
 	}
 }
 
-
-void appl::Windows::onCallbackPeriodicUpdateCamera(const ewol::event::Time& _event) {
-	static float offset = 0;
-	offset += 0.01;
-	static float offset2 = 0;
-	//offset2 += 0.003;
-	//m_camera->setEye(vec3(100*std::sin(offset),100*std::cos(offset),40*std::cos(offset2)));
-}
-
-
-
 bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 	static float ploppp=1;
 	if (_event.getId() == 1) {
 		vec2 pos = relativePosition(_event.getPos());
 		ege::Ray ray = m_camera->getRayFromScreenPosition(pos, m_size);
 		m_ray = ray;
-		APPL_INFO("pos=" << pos << " ray = " << ray);
+		APPL_DEBUG("pos=" << pos << " ray = " << ray);
 		m_destination = ray.testRay(m_env->getPhysicEngine());
+		std::pair<std::shared_ptr<ege::Element>, std::pair<vec3,vec3>> result = ray.testRayObject(m_env->getPhysicEngine());
+		if (result.first != nullptr) {
+			APPL_INFO("Select Object :" << result.first->getUID());
+		}
 		return true;
 	} else if (_event.getId() == 4) {
 		ploppp += 0.2f;
@@ -185,35 +172,34 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 }
 
 void appl::Windows::onCallbackDisplayDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _obj) {
-	etk::Color<float> tmpColor(0.0, 1.0, 0.0, 0.3);
-	etk::Color<float> tmpColor2(1.0, 0.0, 0.0, 0.3);
-	static std::vector<vec3> vertices;
-	static std::vector<vec3> vertices2;
-	//vertices.push_back(m_ray.getOrigin());//+vec3(1,0,0));
-	//vertices.push_back(vec3(100,0,0));//m_ray.getOrigin() + m_ray.getDirection()*1000);
-	//vertices.push_back(m_ray.getOrigin() + m_ray.getDirection()*1000);
-	#if 0
-		vertices.push_back(vec3(0,0,0));
-		vertices.push_back(m_ray.getDirection()*50);
-	#else
-		vertices.push_back(m_ray.getOrigin());
-		vertices.push_back(m_ray.getOrigin()+m_ray.getDirection()*100);
-	#endif
-	if (vertices.size() > 50) {
-		vertices.erase(vertices.begin(), vertices.begin()+vertices.size()-50);
-	}
-	if (m_destination.second != vec3(0,0,0)) {
-		vertices2.push_back(m_destination.first);
-		vertices2.push_back(m_destination.first + m_destination.second*100);
-		m_destination.second = vec3(0,0,0);
-	}
-	if (vertices2.size() > 50) {
-		vertices2.erase(vertices2.begin(), vertices2.begin()+vertices2.size()-50);
-	}
 	mat4 mat;
 	mat.identity();
-	mat.translate(vec3(0,0,0));
-	_obj->drawLine(vertices, tmpColor, mat);
-	_obj->drawLine(vertices2, tmpColor2, mat);
+	// Display ray line
+	if (true) {
+		static std::vector<vec3> vertices;
+		if (m_ray.getOrigin() != vec3(0,0,0)) {
+			vertices.push_back(m_ray.getOrigin());
+			vertices.push_back(m_ray.getOrigin()+m_ray.getDirection()*50);
+			// prevent Ray removing with empty
+			m_ray.setOrigin(vec3(0,0,0));
+		}
+		if (vertices.size() > 250) {
+			vertices.erase(vertices.begin(), vertices.begin()+vertices.size()-250);
+		}
+		_obj->drawLine(vertices, etk::Color<float>(0.0, 1.0, 0.0, 0.8), mat);
+	}
+	// display normal impact line
+	if (true) {
+		static std::vector<vec3> vertices;
+		if (m_destination.second != vec3(0,0,0)) {
+			vertices.push_back(m_destination.first);
+			vertices.push_back(m_destination.first + m_destination.second*20);
+			m_destination.second = vec3(0,0,0);
+		}
+		if (vertices.size() > 250) {
+			vertices.erase(vertices.begin(), vertices.begin()+vertices.size()-250);
+		}
+		_obj->drawLine(vertices, etk::Color<float>(1.0, 0.0, 0.0, 0.8), mat);
+	}
 }
 

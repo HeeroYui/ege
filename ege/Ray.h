@@ -12,8 +12,10 @@
 #include <etk/math/Vector3D.h>
 namespace ege {
 	class Ray;
+	class Element;
 };
 #include <ege/physics/Engine.h>
+#include <memory>
 
 namespace ege {
 	class Ray {
@@ -67,6 +69,7 @@ namespace ege {
 			void set(const vec3& _origin, const vec3& _direction);
 		public:
 			std::pair<vec3,vec3> testRay(ege::physics::Engine& _engine);
+			std::pair<std::shared_ptr<ege::Element>, std::pair<vec3,vec3>> testRayObject(ege::physics::Engine& _engine);
 	};
 	std::ostream& operator <<(std::ostream& _os, const ege::Ray& _obj);
 };

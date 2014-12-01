@@ -71,6 +71,7 @@ void ege::ElementPhysic::createRigidBody(float _mass) {
 	btDefaultMotionState* motionState = new btDefaultMotionState(startTransform);
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(_mass, motionState, getShape(), localInertia);
 	m_body = new btRigidBody(rbInfo);
+	m_body->setUserPointer((void*)this);
 	//m_body->applyTorqueImpulse(btVector3(0,0,0.2));
 	m_body->setAngularVelocity(vec3(0,0,0));
 }

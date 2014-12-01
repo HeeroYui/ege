@@ -26,7 +26,6 @@ namespace appl {
 			DECLARE_FACTORY(Windows);
 			virtual ~Windows() { };
 		private:
-			void onCallbackPeriodicUpdateCamera(const ewol::event::Time& _event);
 			bool onEventInput(const ewol::event::Input& _event);
 			void onCallbackDisplayDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _obj);
 			ege::Ray m_ray;

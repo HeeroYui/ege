@@ -8,6 +8,7 @@
 #include <etk/types.h>
 #include <ege/Ray.h>
 #include <ege/debug.h>
+#include <ege/elements/Element.h>
 
 #include <BulletDynamics/Dynamics/btDynamicsWorld.h>
 #include <BulletCollision/CollisionDispatch/btCollisionWorld.h>
@@ -46,16 +47,40 @@ std::pair<vec3,vec3> ege::Ray::testRay(ege::physics::Engine& _engine) {
 	vec3 stop = m_origin+m_direction*1000.0f;
 	// Start and End are vectors
 	btCollisionWorld::ClosestRayResultCallback rayCallback(start, stop);
-	EGE_ERROR("Process Raycast :");
+	EGE_VERBOSE("Process Raycast :");
 	// Perform raycast
 	_engine.getDynamicWorld()->rayTest(start, stop, rayCallback);
 	if(rayCallback.hasHit()) {
 		vec3 end = rayCallback.m_hitPointWorld;
 		vec3 normal = rayCallback.m_hitNormalWorld;
-		EGE_ERROR("    hit at point=" << end << " normal=" << normal);
+		EGE_VERBOSE("    hit at point=" << end << " normal=" << normal);
 		return std::pair<vec3,vec3>(end,normal);
 	}
-	EGE_ERROR("    No Hit");
+	EGE_VERBOSE("    No Hit");
 	return std::pair<vec3,vec3>(vec3(0,0,0),vec3(0,0,0));
 }
 
+
+std::pair<std::shared_ptr<ege::Element>, std::pair<vec3,vec3>> ege::Ray::testRayObject(ege::physics::Engine& _engine) {
+	vec3 start = m_origin;
+	vec3 stop = m_origin+m_direction*1000.0f;
+	// Start and End are vectors
+	btCollisionWorld::ClosestRayResultCallback rayCallback(start, stop);
+	EGE_VERBOSE("Process Raycast :");
+	// Perform raycast
+	_engine.getDynamicWorld()->rayTest(start, stop, rayCallback);
+	if(rayCallback.hasHit()) {
+		vec3 end = rayCallback.m_hitPointWorld;
+		vec3 normal = rayCallback.m_hitNormalWorld;
+		ege::Element* elem = static_cast<ege::Element*>(rayCallback.m_collisionObject->getUserPointer());
+		if (elem != nullptr) {
+			EGE_VERBOSE("    hit at point=" << end << " normal=" << normal);
+			return std::pair<std::shared_ptr<ege::Element>, std::pair<vec3,vec3>>(elem->shared_from_this(), std::pair<vec3,vec3>(end,normal));
+		}
+		EGE_VERBOSE("    Can not get the element pointer");
+		return std::pair<std::shared_ptr<ege::Element>, std::pair<vec3,vec3>>(nullptr, std::pair<vec3,vec3>(end,normal));
+	} else {
+		EGE_VERBOSE("    No Hit");
+	}
+	return std::pair<std::shared_ptr<ege::Element>, std::pair<vec3,vec3>>(nullptr, std::pair<vec3,vec3>(vec3(0,0,0),vec3(0,0,0)));
+}
