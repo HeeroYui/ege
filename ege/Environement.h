@@ -151,6 +151,13 @@ namespace ege {
 			 * @return A pointer on the camera requested.
 			 */
 			std::shared_ptr<ege::Camera> getCamera(const std::string& _name);
+			/**
+			 * @brief Get List of all camera.
+			 * @return All the camera registerred.
+			 */
+			std::map<std::string, std::shared_ptr<ege::Camera>> getCameraList() const {
+				return m_listCamera;
+			}
 		public:
 			/**
 			 * @brief Remove all from the current environement

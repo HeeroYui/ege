@@ -192,36 +192,15 @@ void ege::ElementPhysic::drawShape(const btCollisionShape* _shape,
 			EGE_DEBUG("            draw (01): SPHERE_SHAPE_PROXYTYPE");
 			const btSphereShape* sphereShape = static_cast<const btSphereShape*>(_shape);
 			float radius = sphereShape->getMargin();//radius doesn't include the margin, so draw with margin
-			drawSphere(_draw, radius, 10, 10, _transformationMatrix, tmpColor);
+			_draw->drawSphere(radius, 10, 10, _transformationMatrix, tmpColor);
 			break;
 		}
 		case BOX_SHAPE_PROXYTYPE: {
 			// Box collision shape ...
 			EGE_DEBUG("            draw (02): BOX_SHAPE_PROXYTYPE");
 			const btBoxShape* boxShape = static_cast<const btBoxShape*>(_shape);
-			btVector3 halfExtent = boxShape->getHalfExtentsWithMargin();
-			static int indices[36] = { 0,1,2,	3,2,1,	4,0,6,
-			                           6,0,2,	5,1,4,	4,1,0,
-			                           7,3,1,	7,1,5,	5,4,7,
-			                           7,4,6,	7,2,3,	7,6,2};
-			vec3 vertices[8]={ vec3(halfExtent[0],halfExtent[1],halfExtent[2]),
-			                   vec3(-halfExtent[0],halfExtent[1],halfExtent[2]),
-			                   vec3(halfExtent[0],-halfExtent[1],halfExtent[2]),
-			                   vec3(-halfExtent[0],-halfExtent[1],halfExtent[2]),
-			                   vec3(halfExtent[0],halfExtent[1],-halfExtent[2]),
-			                   vec3(-halfExtent[0],halfExtent[1],-halfExtent[2]),
-			                   vec3(halfExtent[0],-halfExtent[1],-halfExtent[2]),
-			                   vec3(-halfExtent[0],-halfExtent[1],-halfExtent[2])};
-			_tmpVertices.clear();
-			for (int32_t iii=0 ; iii<36 ; iii+=3) {
-				// normal calculation :
-				//btVector3 normal = (vertices[indices[iii+2]]-vertices[indices[iii]]).cross(vertices[indices[iii+1]]-vertices[indices[iii]]);
-				//normal.normalize ();
-				_tmpVertices.push_back(vertices[indices[iii]]);
-				_tmpVertices.push_back(vertices[indices[iii+1]]);
-				_tmpVertices.push_back(vertices[indices[iii+2]]);
-			}
-			_draw->draw(_tmpVertices, tmpColor, _transformationMatrix);
+			vec3 halfExtent = boxShape->getHalfExtentsWithMargin();
+			_draw->drawSquare(halfExtent, _transformationMatrix, tmpColor);
 			break;
 		}
 		case CONE_SHAPE_PROXYTYPE: {

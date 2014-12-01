@@ -87,3 +87,13 @@ ege::Ray ege::camera::View::getRayFromScreen(const vec2& _offset) {
 	EGE_VERBOSE("return ray : " << out);
 	return out;
 }
+
+void ege::camera::View::drawDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera) {
+	mat4 mat;
+	mat.identity();
+	vec2 angles = tansformPositionToAngle(-getViewVector());
+	mat.rotate(vec3(1,0,0), -M_PI*0.5f + angles.y());
+	mat.rotate(vec3(0,0,1), angles.x() - M_PI/2.0f);
+	mat.translate(m_eye);
+	_draw->drawSquare(vec3(5,5,5), mat, etk::Color<float>(0.0f, 0.0f, 1.0f, 1.0f));
+}

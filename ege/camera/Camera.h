@@ -15,6 +15,7 @@
 #include <etk/math/Vector2D.h>
 #include <etk/math/Matrix4.h>
 #include <ege/Ray.h>
+#include <ewol/resource/Colored3DObject.h>
 
 
 namespace ege {
@@ -166,6 +167,12 @@ namespace ege {
 			 * @return x: tetha; y: psy
 			 */
 			vec2 tansformPositionToAngle(vec3 _vect);
+		public:
+			/**
+			 * @brief Debug display of the current element
+			 * @param[in,out] draw Basic system to draw the debug shape and informations
+			 */
+			virtual void drawDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera) { }
 
 	};
 };

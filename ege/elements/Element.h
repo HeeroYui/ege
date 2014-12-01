@@ -229,13 +229,6 @@ namespace ege {
 			 * @brief remove this element from the physique engine
 			 */
 			virtual void dynamicDisable() {};
-		protected:
-			void drawSphere(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw,
-			                btScalar _radius,
-			                int _lats,
-			                int _longs,
-			                mat4& _transformationMatrix,
-			                etk::Color<float>& _tmpColor);
 	};
 };
 

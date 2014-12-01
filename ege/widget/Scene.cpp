@@ -116,10 +116,18 @@ void ege::widget::Scene::onDraw() {
 				m_displayElementOrdered[iii].element->draw(pass);
 			}
 		}
-		// Draw debug ...
+		// Draw debug ... (Object)
 		for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
 			m_displayElementOrdered[iii].element->drawDebug(m_debugDrawProperty, camera);
 		}
+		// Draw debug ... (Camera)
+		std::map<std::string, std::shared_ptr<ege::Camera>> listCamera = m_env->getCameraList();
+		for (auto &itCam : listCamera) {
+			if (itCam.second != nullptr) {
+				itCam.second->drawDebug(m_debugDrawProperty, camera);
+			}
+		}
+		// Draw debug ... (User)
 		signalDisplayDebug.emit(m_debugDrawProperty);
 	} else {
 		EGE_WARNING("No Dynamic world ...");
