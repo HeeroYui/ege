@@ -19,7 +19,7 @@
 
 
 namespace ege {
-	class Camera {
+	class Camera : public std::enable_shared_from_this<Camera>{
 		public:
 			/**
 			 * @brief Constructor.

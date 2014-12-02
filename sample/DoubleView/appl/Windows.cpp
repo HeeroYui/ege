@@ -82,8 +82,11 @@ void appl::Windows::init() {
 	std::shared_ptr<ege::camera::View> camera2 = std::make_shared<ege::camera::View>(vec3(100,0,0), vec3(0,0,0));
 	m_env->addCamera("front", camera2);
 	// Create basic Camera
-	std::shared_ptr<ege::camera::View> camera3 = std::make_shared<ege::camera::View>(vec3(0,100,0), vec3(0,0,0));
-	m_env->addCamera("left", camera3);
+	std::shared_ptr<ege::camera::View> camera3 = std::make_shared<ege::camera::View>(vec3(20,20,100), vec3(0,0,0));
+	m_env->addCamera("top", camera3);
+	// Create basic Camera
+	std::shared_ptr<ege::camera::View> camera4 = std::make_shared<ege::camera::View>(vec3(0,100,0), vec3(0,0,0));
+	m_env->addCamera("left", camera4);
 	
 	std::shared_ptr<ewol::widget::Sizer> tmpSizerVert = ewol::widget::Sizer::create(ewol::widget::Sizer::modeVert);
 	if (tmpSizerVert == nullptr) {
@@ -121,7 +124,7 @@ void appl::Windows::init() {
 			} else {
 				tmpWidget->setExpand(bvec2(true,true));
 				tmpWidget->setFill(bvec2(true,true));
-				tmpWidget->setCamera("left");
+				tmpWidget->setCamera("top");
 				tmpSizerHori->subWidgetAdd(tmpWidget);
 				tmpWidget->signalDisplayDebug.bind(shared_from_this(), &appl::Windows::onCallbackDisplayDebug);
 			}
@@ -192,14 +195,14 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 		}
 		return true;
 	} else if (_event.getId() == 4) {
-		ploppp += 0.2f;
-		m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),40*std::cos(m_anglePsy))*ploppp);
+		ploppp += 0.01f;
+		m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),80*std::cos(m_anglePsy))*ploppp);
 	} else if (_event.getId() == 5) {
-		ploppp -= 0.2f;
+		ploppp -= 0.01f;
 		if (ploppp == 0) {
 			ploppp = 1.0f;
 		}
-		m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),40*std::cos(m_anglePsy))*ploppp);
+		m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),80*std::cos(m_anglePsy))*ploppp);
 	} else if (_event.getId() == 3) {
 		if (_event.getStatus() == ewol::key::statusDown) {
 			m_oldScreenPos = relativePosition(_event.getPos());
@@ -207,12 +210,35 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 		} else if (_event.getStatus() == ewol::key::statusMove) {
 			vec2 pos = relativePosition(_event.getPos());
 			m_angleTetha -= (m_oldScreenPos.x()-pos.x())*0.05f;
-			m_anglePsy += (m_oldScreenPos.y()-pos.y())*0.05f;
-			m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),40*std::cos(m_anglePsy))*ploppp);
+			m_anglePsy += (m_oldScreenPos.y()-pos.y())*0.01f;
+			m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),80*std::cos(m_anglePsy))*ploppp);
 			m_oldScreenPos = relativePosition(_event.getPos());
 			return true;
 		}
-	}
+	} else if (_event.getId() == 2) {
+		if (_event.getStatus() == ewol::key::statusDown) {
+			m_oldScreenPos = relativePosition(_event.getPos());
+			return true;
+		} else if (_event.getStatus() == ewol::key::statusMove) {
+			vec2 pos = relativePosition(_event.getPos())*0.2;
+			pos -= m_oldScreenPos*0.2;
+			float cameraAngle = m_camera->getTetha();
+			vec3 newPos = vec3(std::sin(cameraAngle)*pos.x() + std::cos(cameraAngle)*pos.y(),
+			                   std::cos(cameraAngle)*pos.x() + std::sin(cameraAngle)*pos.y(),
+			                   0);
+			APPL_ERROR("apply offset = " << newPos << " from pos=" << pos << " angle=" << cameraAngle);
+			newPos += m_camera->getTarget();
+			newPos.setMin(vec3(200,200,200));
+			newPos.setMax(vec3(-200,-200,-200));
+			m_camera->setTarget(newPos);
+			m_oldScreenPos = relativePosition(_event.getPos());
+			return true;
+		}
+	} else if (_event.getId() == 10) {
+		m_camera->setAngle(m_camera->getAngle() + 0.01f);
+	} else if (_event.getId() == 11) {
+		m_camera->setAngle(m_camera->getAngle() - 0.01f);
+	} 
 	return false;
 }
 

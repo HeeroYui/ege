@@ -60,6 +60,13 @@ vec3 ege::camera::View::getViewVector() const {
 	return m_target - m_eye;
 }
 
+float ege::camera::View::getTetha() {
+	return tansformPositionToAngle(-getViewVector()).x();
+}
+
+float ege::camera::View::getPsy() {
+	return tansformPositionToAngle(-getViewVector()).y();
+}
 
 ege::Ray ege::camera::View::getRayFromScreen(const vec2& _offset) {
 	vec2 cameraAngleOffset(m_angleView*0.5f*_offset.x(), _offset.y()*0.5f*m_angleView/m_aspectRatio);
@@ -90,10 +97,34 @@ ege::Ray ege::camera::View::getRayFromScreen(const vec2& _offset) {
 
 void ege::camera::View::drawDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera) {
 	mat4 mat;
+	if (_camera != shared_from_this()) {
+		mat.identity();
+		vec2 angles = tansformPositionToAngle(-getViewVector());
+		mat.rotate(vec3(0,0,1), angles.x() - M_PI/2.0f);
+		mat.rotate(vec3(1,0,0), -M_PI*0.5f + angles.y());
+		mat.translate(vec3(0,0,getViewVector().length()));
+		mat.rotate(vec3(0,0,1), m_angle);
+		//mat.translate(vec3(m_eye.x(), m_eye.y(), m_eye.z()));
+		_draw->drawSquare(vec3(2,2,2), mat, etk::Color<float>(0.0f, 0.0f, 1.0f, 1.0f));
+		std::vector<vec3> EwolVertices;
+		EwolVertices.push_back(vec3(0,0,0));
+		EwolVertices.push_back(vec3(-5,-5,-5));
+		EwolVertices.push_back(vec3(5,-5,-5));
+		
+		EwolVertices.push_back(vec3(0,0,0));
+		EwolVertices.push_back(vec3(5,-5,-5));
+		EwolVertices.push_back(vec3(5,5,-5));
+		
+		EwolVertices.push_back(vec3(0,0,0));
+		EwolVertices.push_back(vec3(5,5,-5));
+		EwolVertices.push_back(vec3(-5,5,-5));
+		
+		EwolVertices.push_back(vec3(0,0,0));
+		EwolVertices.push_back(vec3(-5,5,-5));
+		EwolVertices.push_back(vec3(-5,-5,-5));
+		_draw->draw(EwolVertices, etk::Color<float>(0.0f, 0.0f, 1.0f, 0.5f), mat);
+	}
 	mat.identity();
-	vec2 angles = tansformPositionToAngle(-getViewVector());
-	mat.rotate(vec3(1,0,0), -M_PI*0.5f + angles.y());
-	mat.rotate(vec3(0,0,1), angles.x() - M_PI/2.0f);
-	mat.translate(m_eye);
-	_draw->drawSquare(vec3(5,5,5), mat, etk::Color<float>(0.0f, 0.0f, 1.0f, 1.0f));
+	mat.translate(m_target);
+	_draw->drawSphere(1, 3, 3, mat, etk::Color<float>(0.0f, 0.0f, 1.0f, 1.0f));
 }
