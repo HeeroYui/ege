@@ -20,6 +20,12 @@
 #include <ege/physicsShape/PhysicsBox.h>
 #include <ege/physicsShape/PhysicsSphere.h>
 
+#include <BulletDynamics/Dynamics/btRigidBody.h>
+#include <LinearMath/btDefaultMotionState.h>
+#include <BulletDynamics/Dynamics/btDynamicsWorld.h>
+#include <BulletCollision/CollisionShapes/btCollisionShape.h>
+
+
 #undef __class__
 #define __class__ "Windows"
 
@@ -71,59 +77,22 @@ void appl::Windows::init() {
 	ewol::widget::Windows::init();
 	setTitle("example ege : DoubleView");
 	
+	getObjectManager().periodicCall.bind(shared_from_this(), &appl::Windows::onCallbackPeriodicCheckCollision);
+	
 	m_env = ege::Environement::create();
 	// Create basic Camera
 	m_camera = std::make_shared<ege::camera::View>(vec3(30,30,-100), vec3(0,0,0));
 	m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),40*std::cos(m_anglePsy)));
 	m_env->addCamera("basic", m_camera);
-	// Create basic Camera
-	std::shared_ptr<ege::camera::View> camera2 = std::make_shared<ege::camera::View>(vec3(100,0,0), vec3(0,0,0));
-	m_env->addCamera("front", camera2);
-	// Create basic Camera
-	std::shared_ptr<ege::camera::View> camera3 = std::make_shared<ege::camera::View>(vec3(20,20,100), vec3(0,0,0));
-	m_env->addCamera("top", camera3);
-	// Create basic Camera
-	std::shared_ptr<ege::camera::View> camera4 = std::make_shared<ege::camera::View>(vec3(0,100,0), vec3(0,0,0));
-	m_env->addCamera("left", camera4);
 	
-	std::shared_ptr<ewol::widget::Sizer> tmpSizerVert = ewol::widget::Sizer::create(ewol::widget::Sizer::modeVert);
-	if (tmpSizerVert == nullptr) {
+	std::shared_ptr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create(m_env);
+	if (tmpWidget == nullptr) {
 		APPL_CRITICAL("Can not allocate widget ==> display might be in error");
 	} else {
-		setSubWidget(tmpSizerVert);
-		std::shared_ptr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create(m_env);
-		if (tmpWidget == nullptr) {
-			APPL_CRITICAL("Can not allocate widget ==> display might be in error");
-		} else {
-			tmpWidget->setExpand(bvec2(true,true));
-			tmpWidget->setFill(bvec2(true,true));
-			tmpWidget->setCamera("basic");
-			tmpSizerVert->subWidgetAdd(tmpWidget);
-		}
-		std::shared_ptr<ewol::widget::Sizer> tmpSizerHori = ewol::widget::Sizer::create(ewol::widget::Sizer::modeHori);
-		if (tmpSizerHori == nullptr) {
-			APPL_CRITICAL("Can not allocate widget ==> display might be in error");
-		} else {
-			tmpSizerVert->subWidgetAdd(tmpSizerHori);
-			tmpWidget = ege::widget::Scene::create(m_env);
-			if (tmpWidget == nullptr) {
-				APPL_CRITICAL("Can not allocate widget ==> display might be in error");
-			} else {
-				tmpWidget->setExpand(bvec2(true,true));
-				tmpWidget->setFill(bvec2(true,true));
-				tmpWidget->setCamera("front");
-				tmpSizerHori->subWidgetAdd(tmpWidget);
-			}
-			tmpWidget = ege::widget::Scene::create(m_env);
-			if (tmpWidget == nullptr) {
-				APPL_CRITICAL("Can not allocate widget ==> display might be in error");
-			} else {
-				tmpWidget->setExpand(bvec2(true,true));
-				tmpWidget->setFill(bvec2(true,true));
-				tmpWidget->setCamera("top");
-				tmpSizerHori->subWidgetAdd(tmpWidget);
-			}
-		}
+		tmpWidget->setExpand(bvec2(true,true));
+		tmpWidget->setFill(bvec2(true,true));
+		tmpWidget->setCamera("basic");
+		setSubWidget(tmpWidget);
 	}
 	
 	std::shared_ptr<ege::resource::Mesh> myMesh;
@@ -149,6 +118,7 @@ void appl::Windows::init() {
 		element->setMesh(myMesh);
 		element->createRigidBody(4000000);
 		element->setPosition(vec3(20,10,10));
+		element->setMass(1000);
 		
 		m_env->addElement(element);
 	}
@@ -166,6 +136,7 @@ void appl::Windows::init() {
 		element->setMesh(myMesh);
 		element->createRigidBody(4000000);
 		element->setPosition(vec3(20,-10,10));
+		element->setMass(3000);
 		
 		element->iaEnable();
 		
@@ -176,7 +147,28 @@ void appl::Windows::init() {
 
 bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 	static float ploppp=1;
-	if (_event.getId() == 4) {
+	if (_event.getId() == 1) {
+		if (_event.getStatus() == ewol::key::statusDown) {
+			vec2 pos = relativePosition(_event.getPos());
+			ege::Ray ray = m_camera->getRayFromScreenPosition(pos, m_size);
+			
+			std::shared_ptr<ege::resource::Mesh> myMesh;
+			myMesh = ege::resource::Mesh::createCube(1, "basics", etk::color::green);
+			if (myMesh != nullptr) {
+				std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);
+				std::shared_ptr<ege::PhysicsBox> physic = std::make_shared<ege::PhysicsBox>();
+				physic->setSize(vec3(1.01,1.01,1.01));
+				myMesh->addPhysicElement(physic);
+				element->setMesh(myMesh);
+				element->createRigidBody(4000000);
+				element->setPosition(ray.getOrigin());
+				element->setMass(20);
+				element->setLinearVelocity(ray.getDirection()*100);
+				m_env->addElement(element);
+			}
+			return true;
+		}
+	} else if (_event.getId() == 4) {
 		ploppp += 0.01f;
 		m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),80*std::cos(m_anglePsy))*ploppp);
 	} else if (_event.getId() == 5) {
@@ -223,4 +215,33 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 	} 
 	return false;
 }
+
+//! http://www.bulletphysics.org/mediawiki-1.5.8/index.php?title=Collision_Callbacks_and_Triggers
+// manually detect collision : (loop to detect cillisions ...
+void appl::Windows::onCallbackPeriodicCheckCollision(const ewol::event::Time& _event) {
+	int32_t numManifolds = m_env->getPhysicEngine().getDynamicWorld()->getDispatcher()->getNumManifolds();
+	if (numManifolds != 0) {
+		APPL_ERROR("numManifolds=" << numManifolds);
+	}
+	for (int i=0;i<numManifolds;i++) {
+		btPersistentManifold* contactManifold = m_env->getPhysicEngine().getDynamicWorld()->getDispatcher()->getManifoldByIndexInternal(i);
+		const btCollisionObject* obA = static_cast<const btCollisionObject*>(contactManifold->getBody0());
+		const btCollisionObject* obB = static_cast<const btCollisionObject*>(contactManifold->getBody1());
+		int numContacts = contactManifold->getNumContacts();
+		if (numContacts != 0) {
+			APPL_ERROR("    numContacts=" << numContacts);
+		}
+		for (int j=0;j<numContacts;j++) {
+			btManifoldPoint& pt = contactManifold->getContactPoint(j);
+			if (pt.getDistance()<0.f) {
+				const vec3& ptA = pt.getPositionWorldOnA();
+				const vec3& ptB = pt.getPositionWorldOnB();
+				const vec3& normalOnB = pt.m_normalWorldOnB;
+				APPL_ERROR("        point1=" << ptA << " point2=" << ptB << " normal=" << normalOnB);
+			}
+		}
+	}
+}
+
+
 

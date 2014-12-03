@@ -425,13 +425,15 @@ void ege::ElementPhysic::setMass(float _value) {
 
 void ege::ElementPhysic::setLinearVelocity(const vec3& _value) {
 	if (m_body == nullptr) {
+		EGE_WARNING("no body");
 		return;
 	}
-	m_body->setLinearVelocity(vec3(0,0,0));
+	m_body->setLinearVelocity(_value);
 }
 
 void ege::ElementPhysic::setTorqueImpulse(const vec3& _value) {
 	if (m_body == nullptr) {
+		EGE_WARNING("no body");
 		return;
 	}
 	
@@ -439,6 +441,7 @@ void ege::ElementPhysic::setTorqueImpulse(const vec3& _value) {
 
 void ege::ElementPhysic::setAngularVelocity(const vec3& _value) {
 	if (m_body == nullptr) {
+		EGE_WARNING("no body");
 		return;
 	}
 	m_body->setAngularVelocity(_value);

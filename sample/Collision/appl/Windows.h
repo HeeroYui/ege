@@ -30,6 +30,7 @@ namespace appl {
 			float m_angleTetha;
 			float m_anglePsy;
 			vec2 m_oldScreenPos;
+			void onCallbackPeriodicCheckCollision(const ewol::event::Time& _event);
 	};
 };
 
