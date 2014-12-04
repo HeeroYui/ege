@@ -180,6 +180,28 @@ namespace ege {
 			               const std::shared_ptr<ewol::resource::Colored3DObject>& _draw,
 			               mat4 _transformationMatrix,
 			               std::vector<vec3> _tmpVertices);
+		protected:
+			bool m_detectCollisionEnable; //!< physic collision detect enable.
+		public:
+			/**
+			 * @brief get collision status of the object.
+			 * @return the collision status.
+			 */
+			bool getCollisionDetectionStatus() {
+				return m_detectCollisionEnable;
+			}
+			/**
+			 * @brief Change enable status of the object.
+			 * @param[in] _status new requested status.
+			 */
+			void setCollisionDetectionStatus(bool _status=true);
+			/**
+			 * @brief when a collision is detected with an other object (just after calculate data update
+			 * @param[in] _obj the Other object
+			 * @param[in] _point Position of the impact in the global world
+			 * @param[in] _normal Normal of the impact
+			 */
+			virtual void onCollisionDetected(const std::shared_ptr<ege::Element>& _obj, const vec3& _point, const vec3& _normal) {};
 	};
 };
 

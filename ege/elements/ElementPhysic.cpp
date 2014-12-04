@@ -39,7 +39,8 @@ ege::ElementPhysic::ElementPhysic(const std::shared_ptr<ege::Environement>& _env
   m_body(nullptr),
   m_shape(nullptr),
   m_elementInPhysicsSystem(false),
-  m_IA(nullptr) {
+  m_IA(nullptr),
+  m_detectCollisionEnable(false) {
 	if (_autoRigidBody == true) {
 		createRigidBody();
 	} else {
@@ -445,5 +446,24 @@ void ege::ElementPhysic::setAngularVelocity(const vec3& _value) {
 		return;
 	}
 	m_body->setAngularVelocity(_value);
+}
+
+
+void ege::ElementPhysic::setCollisionDetectionStatus(bool _status) {
+	if (m_body == nullptr) {
+		EGE_WARNING("no body");
+		return;
+	}
+	if (m_detectCollisionEnable == _status) {
+		return;
+	}
+	m_detectCollisionEnable = _status;
+	if (m_detectCollisionEnable == true) {
+		m_body->setCollisionFlags(m_body->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
+	} else {
+		if ((m_body->getCollisionFlags() & btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK) != 0) {
+			m_body->setCollisionFlags(m_body->getCollisionFlags() - btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
+		}
+	}
 }
 

@@ -25,6 +25,7 @@ namespace ege {
 #include <ewol/resource/Manager.h>
 #include <ewol/Dimension.h>
 
+
 class btBroadphaseInterface;
 class btCollisionShape;
 class btOverlappingPairCache;
@@ -35,6 +36,7 @@ class btDefaultCollisionConfiguration;
 class btDynamicsWorld;
 #include <LinearMath/btScalar.h>
 class btVector3;
+
 
 //#include <ege/elements/Element.h>
 
@@ -70,6 +72,32 @@ namespace ege {
 				std::shared_ptr<btDynamicsWorld> getDynamicWorld() {
 					return m_dynamicsWorld;
 				};
+			public:
+				// Define a collision point ==> for debug only ...
+				//! @not-in-doc
+				class collisionPoints {
+					public:
+						std::shared_ptr<ege::Element> elem1;
+						std::shared_ptr<ege::Element> elem2;
+						vec3 positionElem1;
+						vec3 positionElem2;
+						vec3 normalElem2;
+						collisionPoints(const std::shared_ptr<ege::Element>& _elem1,
+						                const std::shared_ptr<ege::Element>& _elem2,
+						                const vec3& _pos1,
+						                const vec3& _pos2,
+						                const vec3& _normal) :
+						  elem1(_elem1),
+						  elem2(_elem2),
+						  positionElem1(_pos1),
+						  positionElem2(_pos2),
+						  normalElem2(_normal) { }
+				};
+				/**
+				 * @brief Get the list of all collision point actually availlable ...
+				 * @return the requested list of points
+				 */
+				std::vector<ege::physics::Engine::collisionPoints> getListOfCollision();
 		};
 	};
 };

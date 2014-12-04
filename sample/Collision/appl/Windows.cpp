@@ -20,12 +20,6 @@
 #include <ege/physicsShape/PhysicsBox.h>
 #include <ege/physicsShape/PhysicsSphere.h>
 
-#include <BulletDynamics/Dynamics/btRigidBody.h>
-#include <LinearMath/btDefaultMotionState.h>
-#include <BulletDynamics/Dynamics/btDynamicsWorld.h>
-#include <BulletCollision/CollisionShapes/btCollisionShape.h>
-
-
 #undef __class__
 #define __class__ "Windows"
 
@@ -145,6 +139,20 @@ void appl::Windows::init() {
 	}
 }
 
+namespace appl {
+	class ElementHerit : public ege::ElementPhysic {
+		public:
+			ElementHerit(const std::shared_ptr<ege::Environement>& _env, bool _autoRigidBody=true) :
+			  ege::ElementPhysic(_env, _autoRigidBody) {
+				setCollisionDetectionStatus(true);
+			}
+			virtual void onCollisionDetected(const std::shared_ptr<ege::Element>& _obj, const vec3& _point, const vec3& _normal) {
+				APPL_WARNING("[" << getUID() << "] collision : pos=" << _point << " norm=" <<_normal);
+			}
+	};
+}
+
+
 bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 	static float ploppp=1;
 	if (_event.getId() == 1) {
@@ -155,7 +163,7 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 			std::shared_ptr<ege::resource::Mesh> myMesh;
 			myMesh = ege::resource::Mesh::createCube(1, "basics", etk::color::green);
 			if (myMesh != nullptr) {
-				std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);
+				std::shared_ptr<appl::ElementHerit> element = std::make_shared<appl::ElementHerit>(m_env);
 				std::shared_ptr<ege::PhysicsBox> physic = std::make_shared<ege::PhysicsBox>();
 				physic->setSize(vec3(1.01,1.01,1.01));
 				myMesh->addPhysicElement(physic);
@@ -216,30 +224,14 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 	return false;
 }
 
-//! http://www.bulletphysics.org/mediawiki-1.5.8/index.php?title=Collision_Callbacks_and_Triggers
-// manually detect collision : (loop to detect cillisions ...
 void appl::Windows::onCallbackPeriodicCheckCollision(const ewol::event::Time& _event) {
-	int32_t numManifolds = m_env->getPhysicEngine().getDynamicWorld()->getDispatcher()->getNumManifolds();
-	if (numManifolds != 0) {
-		APPL_ERROR("numManifolds=" << numManifolds);
+	std::vector<ege::physics::Engine::collisionPoints> list = m_env->getPhysicEngine().getListOfCollision();
+	
+	if (list.size() != 0) {
+		APPL_INFO("num contact =" << list.size());
 	}
-	for (int i=0;i<numManifolds;i++) {
-		btPersistentManifold* contactManifold = m_env->getPhysicEngine().getDynamicWorld()->getDispatcher()->getManifoldByIndexInternal(i);
-		const btCollisionObject* obA = static_cast<const btCollisionObject*>(contactManifold->getBody0());
-		const btCollisionObject* obB = static_cast<const btCollisionObject*>(contactManifold->getBody1());
-		int numContacts = contactManifold->getNumContacts();
-		if (numContacts != 0) {
-			APPL_ERROR("    numContacts=" << numContacts);
-		}
-		for (int j=0;j<numContacts;j++) {
-			btManifoldPoint& pt = contactManifold->getContactPoint(j);
-			if (pt.getDistance()<0.f) {
-				const vec3& ptA = pt.getPositionWorldOnA();
-				const vec3& ptB = pt.getPositionWorldOnB();
-				const vec3& normalOnB = pt.m_normalWorldOnB;
-				APPL_ERROR("        point1=" << ptA << " point2=" << ptB << " normal=" << normalOnB);
-			}
-		}
+	for (size_t iii=0;iii<list.size();++iii) {
+		APPL_ERROR("    [" << list[iii].elem1->getUID() << "]:point1=" << list[iii].positionElem1 << " [" << list[iii].elem1->getUID() << "]:point2=" << list[iii].positionElem2  << " normal=" << list[iii].normalElem2);
 	}
 }
 
