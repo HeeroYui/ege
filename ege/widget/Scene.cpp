@@ -37,7 +37,9 @@ namespace etk {
 
 ege::widget::Scene::Scene() :
   signalDisplayDebug(*this, "drawDebug", "Call to draw debug after all elements"),
-  m_cameraName("default") {
+  m_cameraName("default"),
+  m_debugPhysic(*this, "debugPhysic", false, "Display debug of the physic interface"),
+  m_debugApplication(*this, "debugApplication", false, "Display debug of the application") {
 	addObjectType("ege::widget::Scene");
 }
 
@@ -116,19 +118,23 @@ void ege::widget::Scene::onDraw() {
 				m_displayElementOrdered[iii].element->draw(pass);
 			}
 		}
-		// Draw debug ... (Object)
-		for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
-			m_displayElementOrdered[iii].element->drawDebug(m_debugDrawProperty, camera);
-		}
-		// Draw debug ... (Camera)
-		std::map<std::string, std::shared_ptr<ege::Camera>> listCamera = m_env->getCameraList();
-		for (auto &itCam : listCamera) {
-			if (itCam.second != nullptr) {
-				itCam.second->drawDebug(m_debugDrawProperty, camera);
+		if (m_debugPhysic.get() == true) {
+			// Draw debug ... (Object)
+			for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
+				m_displayElementOrdered[iii].element->drawDebug(m_debugDrawProperty, camera);
+			}
+			// Draw debug ... (Camera)
+			std::map<std::string, std::shared_ptr<ege::Camera>> listCamera = m_env->getCameraList();
+			for (auto &itCam : listCamera) {
+				if (itCam.second != nullptr) {
+					itCam.second->drawDebug(m_debugDrawProperty, camera);
+				}
 			}
 		}
-		// Draw debug ... (User)
-		signalDisplayDebug.emit(m_debugDrawProperty);
+		if (m_debugApplication.get() == true) {
+			// Draw debug ... (User)
+			signalDisplayDebug.emit(m_debugDrawProperty);
+		}
 	} else {
 		EGE_WARNING("No Dynamic world ...");
 	}

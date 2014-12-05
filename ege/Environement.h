@@ -98,7 +98,7 @@ namespace ege {
 			std::vector<std::shared_ptr<ege::Element>> m_listElement; //!< List of all element added in the Game
 		protected:
 			Environement();
-			void init();
+			void init(const std::string& _name="NoName");
 		public:
 			DECLARE_FACTORY(Environement);
 			virtual ~Environement() { };
@@ -274,6 +274,7 @@ namespace ege {
 			const std::vector<std::shared_ptr<ege::resource::Mesh>>& getStaticMeshToDraw() {
 				return m_listMeshToDrawFirst;
 			}
+			virtual void onParameterChangeValue(const ewol::parameter::Ref& _paramPointer);
 	};
 };
 

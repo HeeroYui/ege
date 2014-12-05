@@ -73,7 +73,6 @@ void ege::ElementPhysic::createRigidBody(float _mass) {
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(_mass, motionState, getShape(), localInertia);
 	m_body = new btRigidBody(rbInfo);
 	m_body->setUserPointer((void*)this);
-	//m_body->applyTorqueImpulse(btVector3(0,0,0.2));
 	m_body->setAngularVelocity(vec3(0,0,0));
 }
 
@@ -421,7 +420,12 @@ void ege::ElementPhysic::setMass(float _value) {
 	if (m_body == nullptr) {
 		return;
 	}
-	m_body->setMassProps(_value, vec3(0,0,0));
+	vec3 localInertia(0,0,0);
+	if (_value != 0.0f && getShape()!=nullptr) {
+		getShape()->calculateLocalInertia(_value, localInertia);
+		EWOL_ERROR("Update inertia calculated : " << localInertia);
+	}
+	m_body->setMassProps(_value, localInertia);
 }
 
 void ege::ElementPhysic::setLinearVelocity(const vec3& _value) {
@@ -437,7 +441,7 @@ void ege::ElementPhysic::setTorqueImpulse(const vec3& _value) {
 		EGE_WARNING("no body");
 		return;
 	}
-	
+	m_body->applyTorqueImpulse(_value);
 }
 
 void ege::ElementPhysic::setAngularVelocity(const vec3& _value) {

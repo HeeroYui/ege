@@ -42,8 +42,10 @@ namespace ege {
 		public:
 			/**
 			 * @brief Constructor (when constructer is called just add element that did not change.
-			 * The objest will be stored in a pool of element and keep a second time if needed  == > redure memory allocation,
+			 * The object will be stored in a pool of element and keep a second time if needed  == > redure memory allocation,
 			 * when needed, the system will call the init and un-init function...
+			 * @param[in] _env glabal ege environement
+			 * @param[in] _autoRigidBody add a basic rigid body (not availlable after befor setting a shape)
 			 */
 			ElementPhysic(const std::shared_ptr<ege::Environement>& _env, bool _autoRigidBody=true);
 			/**
@@ -89,19 +91,22 @@ namespace ege {
 			 * @brief draw the current life of the element
 			 */
 			// virtual void drawLife(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera);
-			
+		// TODO : Remove this ...
+		protected:
+			vec3 m_theoricPosition;
+		public:
 			/**
 			 * @brief get the theoric position. Sometimes, the element has move due to an explosion or something else, then its real position in not the one that woult it be at the end ...
 			 * @return the theoric position
 			 */
 			virtual vec3 getPositionTheoric() {
-				return getPosition();
+				return m_theoricPosition;
 			};
 			/**
 			 * @brief set the current Theoric position of the element
 			 * @param[in] set the 3D position.
 			 */
-			virtual void setPositionTheoric(const vec3& _pos) { };
+			virtual void setPositionTheoric(const vec3& _pos) { m_theoricPosition = _pos; };
 		
 			/**
 			 * @brief get the current speed of the element

@@ -25,6 +25,42 @@ appl::Windows::Windows() {
 }
 
 
+static std::shared_ptr<ege::resource::Mesh> createViewBoxStar() {
+	std::shared_ptr<ege::resource::Mesh> out = ege::resource::Mesh::create("viewBoxStar", "DATA:texturedNoMaterial.prog");
+	if (out != nullptr) {
+		std::shared_ptr<ege::Material> material = std::make_shared<ege::Material>();
+		// set the element material properties :
+		material->setAmbientFactor(vec4(1,1,1,1));
+		material->setDiffuseFactor(vec4(0,0,0,1));
+		material->setSpecularFactor(vec4(0,0,0,1));
+		material->setShininess(1);
+		// 1024  == > 1<<9
+		// 2048  == > 1<<10
+		// 4096  == > 1<<11
+		int32_t size = 1<<11;
+		//material->setTexture0(""); //"
+		material->setTexture0Magic(ivec2(size,size));
+		out->addMaterial("basics", material);
+		//material->setImageSize(ivec2(size,size));
+		egami::Image* myImage = material->get();
+		if (nullptr == myImage) {
+			return out;
+		}
+		myImage->clear(etk::color::black);
+		ivec2 tmpPos;
+		for (int32_t iii=0; iii<6000; iii++) {
+			tmpPos.setValue(etk::tool::frand(0,size), etk::tool::frand(0,size)) ;
+			myImage->set(tmpPos, etk::color::white);
+		}
+		material->flush();
+		// basis on cube :
+		out->createViewBox("basics", 1000/* distance */);
+		// generate the VBO
+		out->generateVBO();
+	}
+	return out;
+}
+
 
 
 
@@ -48,37 +84,10 @@ void appl::Windows::init() {
 		tmpWidget->setCamera("basic");
 		setSubWidget(tmpWidget);
 	}
+	std::shared_ptr<ege::resource::Mesh> myMesh;
 	// Create an external box :
-	std::shared_ptr<ege::resource::Mesh> myMesh = ege::resource::Mesh::create("---", "DATA:texturedNoMaterial.prog");
+	myMesh = createViewBoxStar();
 	if (myMesh != nullptr) {
-		std::shared_ptr<ege::Material> material = std::make_shared<ege::Material>();
-		// set the element material properties :
-		material->setAmbientFactor(vec4(1,1,1,1));
-		material->setDiffuseFactor(vec4(0,0,0,1));
-		material->setSpecularFactor(vec4(0,0,0,1));
-		material->setShininess(1);
-		material->setTexture0(""); //"
-		myMesh->addMaterial("basics", material);
-		// 1024  == > 1<<9
-		// 2048  == > 1<<10
-		// 4096  == > 1<<11
-		int32_t size = 1<<11;
-		material->setImageSize(ivec2(size,size));
-		egami::Image* myImage = material->get();
-		if (nullptr == myImage) {
-			return;
-		}
-		myImage->clear(etk::color::black);
-		ivec2 tmpPos;
-		for (int32_t iii=0; iii<6000; iii++) {
-			tmpPos.setValue(etk::tool::frand(0,size), etk::tool::frand(0,size)) ;
-			myImage->set(tmpPos, etk::color::white);
-		}
-		material->flush();
-		// basis on cube :
-		myMesh->createViewBox("basics", 1000/* distance */);
-		// generate the VBO
-		myMesh->generateVBO();
 		m_env->addStaticMeshToDraw(myMesh);
 	}
 	myMesh = ege::resource::Mesh::createGrid(10, vec3(0,0,0), 5);

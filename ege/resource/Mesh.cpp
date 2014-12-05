@@ -15,7 +15,7 @@
 #include <ege/resource/tools/icoSphere.h>
 
 #undef __class__
-#define __class__	"resource::Mesh"
+#define __class__ "resource::Mesh"
 
 ege::resource::Mesh::Mesh() :
   m_normalMode(normalModeNone),
@@ -61,7 +61,12 @@ void ege::resource::Mesh::init(const std::string& _fileName, const std::string& 
 	}
 	// this is the properties of the buffer requested : "r"/"w" + "-" + buffer type "f"=flaot "i"=integer
 	m_verticesVBO = ewol::resource::VirtualBufferObject::create(5);
-	
+	if (m_verticesVBO == nullptr) {
+		EGE_ERROR("can not instanciate VBO ...");
+		return;
+	}
+	// TO facilitate some debugs we add a name of the VBO :
+	m_verticesVBO->setName("[VBO] of " + _fileName);
 	// load the curent file :
 	std::string tmpName = etk::tolower(_fileName);
 	// select the corect loader :
@@ -240,14 +245,14 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 // TODO : Use it for multiple Material interface
 void ege::resource::Mesh::calculateNormaleFace(const std::string& _materialName) {
 	m_listFacesNormal.clear();
-	if (m_normalMode != ege::resource::Mesh::normalModeFace) {
+	if (m_normalMode == ege::resource::Mesh::normalModeFace) {
 		EGE_INFO("calculateNormaleFace(" << _materialName << ")");
 		ewol::openGL::renderMode tmpRenderMode = m_materials[_materialName]->getRenderMode();
 		if (    tmpRenderMode == ewol::openGL::renderPoint
 		     || tmpRenderMode == ewol::openGL::renderLine
 		     || tmpRenderMode == ewol::openGL::renderLineStrip
 		     || tmpRenderMode == ewol::openGL::renderLineLoop) {
-			// can not calculate normal on lines ...
+			EGE_ERROR("calculateNormaleFace(" << _materialName << ") : can not calculate normal on lines ...");
 			m_normalMode = ege::resource::Mesh::normalModeNone;
 			return;
 		}
@@ -257,14 +262,22 @@ void ege::resource::Mesh::calculateNormaleFace(const std::string& _materialName)
 			                      m_listVertex[it.m_vertex[1]]-m_listVertex[it.m_vertex[2]]);
 			m_listFacesNormal.push_back(normal.normalized());
 		}
-		m_normalMode = ege::resource::Mesh::normalModeFace;
 	}
 }
 
 void ege::resource::Mesh::calculateNormaleEdge(const std::string& _materialName) {
 	m_listVertexNormal.clear();
-	if (m_normalMode != ege::resource::Mesh::normalModeVertex) {
+	if (m_normalMode == ege::resource::Mesh::normalModeVertex) {
 		EGE_INFO("calculateNormaleEdge(" << _materialName << ")");
+		ewol::openGL::renderMode tmpRenderMode = m_materials[_materialName]->getRenderMode();
+		if (    tmpRenderMode == ewol::openGL::renderPoint
+		     || tmpRenderMode == ewol::openGL::renderLine
+		     || tmpRenderMode == ewol::openGL::renderLineStrip
+		     || tmpRenderMode == ewol::openGL::renderLineLoop) {
+			EGE_ERROR("calculateNormaleEdge(" << _materialName << ") :  can not calculate normal on lines ...");
+			m_normalMode = ege::resource::Mesh::normalModeNone;
+			return;
+		}
 		for(size_t iii=0 ; iii<m_listVertex.size() ; iii++) {
 			std::vector<Face>& tmpFaceList = m_listFaces[_materialName].m_faces;
 			vec3 normal(0,0,0);
@@ -283,7 +296,6 @@ void ege::resource::Mesh::calculateNormaleEdge(const std::string& _materialName)
 				m_listVertexNormal.push_back(normal.normalized());
 			}
 		}
-		m_normalMode = ege::resource::Mesh::normalModeVertex;
 	}
 }
 

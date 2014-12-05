@@ -41,7 +41,7 @@ namespace ege {
 				std::shared_ptr<ege::Environement> m_env;
 				std::shared_ptr<ewol::resource::Colored3DObject> m_debugDrawProperty;
 			public:
-				ewol::Signal<std::shared_ptr<ewol::resource::Colored3DObject>/*, std::shared_ptr<ege::Camera>*/> signalDisplayDebug;
+				ewol::Signal<std::shared_ptr<ewol::resource::Colored3DObject>/*, std::shared_ptr<ege::Camera>*/> signalDisplayDebug; //!< emit a signal to the application to draw the debug (@ref setDebugPhysic)
 			protected:
 				/**
 				 * @brief Constructor of the widget classes
@@ -81,6 +81,40 @@ namespace ege {
 				virtual void onRegenerateDisplay();
 				virtual void periodicCall(const ewol::event::Time& _event);
 				virtual void calculateSize(const vec2& _available);
+			protected:
+				ewol::parameter::Value<bool> m_debugPhysic; //!< display Physic Debug
+			public:
+				/**
+				 * @brief Set the debug display of the physic engine
+				 * @param[in] _status new status of the debug
+				 */
+				void setDebugPhysic(bool _status) {
+					m_debugPhysic.set(_status);
+				}
+				/**
+				 * @brief Get the debug display status of the physic engine
+				 * @return The current status of the debug.
+				 */
+				bool getDebugPhysic() {
+					return m_debugPhysic.get();
+				}
+			protected:
+				ewol::parameter::Value<bool> m_debugApplication; //!< display Application Debug
+			public:
+				/**
+				 * @brief Set the debug display of the application
+				 * @param[in] _status new status of the debug
+				 */
+				void setDebugApplication(bool _status) {
+					m_debugApplication.set(_status);
+				}
+				/**
+				 * @brief Get the debug display status of the application
+				 * @return The current status of the debug.
+				 */
+				bool getDebugApplication() {
+					return m_debugApplication.get();
+				}
 		};
 	};
 };

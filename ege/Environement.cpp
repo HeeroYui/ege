@@ -291,17 +291,17 @@ void ege::Environement::generateInteraction(ege::ElementInteraction& _event) {
 ege::Environement::Environement() :
   signalPlayTimeChange(*this, "time-change"),
   m_listElement(),
-  m_status(*this, "status", gameStart, "Satus of the activity of the Environement"),
+  m_status(*this, "status", gameStop, "Satus of the activity of the Environement"),
   m_ratio(*this, "ratio", 1.0f, "game speed ratio"),
   m_particuleEngine(*this) {
 	// nothing to do ...
 	m_status.add(gameStart, "start", "Scene is started");
+	m_status.add(gamePause, "pause", "Scene is paused");
 	m_status.add(gameStop, "stop", "Scene is stopped");
 }
 
-void ege::Environement::init() {
-	ewol::Object::init();
-	getObjectManager().periodicCall.bind(shared_from_this(), &ege::Environement::periodicCall);
+void ege::Environement::init(const std::string& _name) {
+	ewol::Object::init(_name);
 	
 }
 
@@ -339,7 +339,7 @@ void ege::Environement::periodicCall(const ewol::event::Time& _event) {
 	//EGE_DEBUG("stepSimulation (start)");
 	///step the simulation
 	if (m_physicEngine.getDynamicWorld() != nullptr) {
-		EGE_VERBOSE("    step simulation : " << curentDelta);
+		EGE_ERROR("    step simulation : " << curentDelta);
 		m_physicEngine.getDynamicWorld()->stepSimulation(curentDelta);
 		//optional but useful: debug drawing
 		m_physicEngine.getDynamicWorld()->debugDrawWorld();
@@ -364,6 +364,8 @@ void ege::Environement::periodicCall(const ewol::event::Time& _event) {
 				} else {
 					++it;
 				}
+			} else {
+				++it;
 			}
 		}
 		if (0 != numberEnnemyKilled) {
@@ -383,4 +385,15 @@ std::shared_ptr<ege::Camera> ege::Environement::getCamera(const std::string& _na
 		return cameraIt->second;
 	}
 	return nullptr;
+}
+
+
+void ege::Environement::onParameterChangeValue(const ewol::parameter::Ref& _paramPointer) {
+	if (_paramPointer == m_status) {
+		if (m_status.get() == gameStart) {
+			getObjectManager().periodicCall.bind(shared_from_this(), &ege::Environement::periodicCall);
+		} else {
+			getObjectManager().periodicCall.release(shared_from_this());
+		}
+	}
 }
