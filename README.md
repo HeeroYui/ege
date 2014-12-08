@@ -3,6 +3,25 @@ Ege
 
 `Ege` (Ewol Game Engine) is a FREE software.
 
+Install blender exporter emf file
+=================================
+
+get blender version
+
+		blender --version
+
+create user addon directory: (replace 2.xx with the blender version)
+
+	mkdir -p ~/.config/blender/2.xx/scripts/addons/
+	cd ~/.config/blender/2.xx/scripts/addons/
+	ln -s EGE_FOLDER/blender/io_scene_emf .
+
+- Launch Blender
+- File -> User Preferences
+- Select "Addons" tab
+- Enable "Import-export: Ewol Mesh file format emf"
+
+
 License (APACHE v2.0)
 =====================
 Copyright ege Edouard DUPIN
