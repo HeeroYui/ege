@@ -8,13 +8,12 @@ Install blender exporter emf file
 
 get blender version
 
-		blender --version
+	blender --version | grep "Blender "
 
 create user addon directory: (replace 2.xx with the blender version)
 
 	mkdir -p ~/.config/blender/2.xx/scripts/addons/
-	cd ~/.config/blender/2.xx/scripts/addons/
-	ln -s EGE_FOLDER/blender/io_scene_emf .
+	ln -s $(pwd)/blender/io_scene_emf ~/.config/blender/2.xx/scripts/addons/
 
 - Launch Blender
 - File -> User Preferences
