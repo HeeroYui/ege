@@ -84,3 +84,10 @@ std::pair<std::shared_ptr<ege::Element>, std::pair<vec3,vec3>> ege::Ray::testRay
 	}
 	return std::pair<std::shared_ptr<ege::Element>, std::pair<vec3,vec3>>(nullptr, std::pair<vec3,vec3>(vec3(0,0,0),vec3(0,0,0)));
 }
+
+vec3 ege::Ray::testRayZeroPlane() {
+	float coef = m_origin.z() / m_direction.z();
+	EGE_INFO("RAY : " << *this << " coef=" << coef);
+	return m_origin - coef*m_direction;
+}
+

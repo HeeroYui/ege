@@ -70,6 +70,7 @@ namespace ege {
 		public:
 			std::pair<vec3,vec3> testRay(ege::physics::Engine& _engine);
 			std::pair<std::shared_ptr<ege::Element>, std::pair<vec3,vec3>> testRayObject(ege::physics::Engine& _engine);
+			vec3 testRayZeroPlane();
 	};
 	std::ostream& operator <<(std::ostream& _os, const ege::Ray& _obj);
 };

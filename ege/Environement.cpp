@@ -339,7 +339,7 @@ void ege::Environement::periodicCall(const ewol::event::Time& _event) {
 	//EGE_DEBUG("stepSimulation (start)");
 	///step the simulation
 	if (m_physicEngine.getDynamicWorld() != nullptr) {
-		EGE_ERROR("    step simulation : " << curentDelta);
+		EGE_VERBOSE("    step simulation : " << curentDelta);
 		m_physicEngine.getDynamicWorld()->stepSimulation(curentDelta);
 		//optional but useful: debug drawing
 		m_physicEngine.getDynamicWorld()->debugDrawWorld();
