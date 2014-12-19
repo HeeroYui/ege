@@ -452,7 +452,13 @@ void ege::ElementPhysic::setAngularVelocity(const vec3& _value) {
 	m_body->setAngularVelocity(_value);
 }
 
-
+btQuaternion ege::ElementPhysic::getOrientation() const {
+	if (m_body == nullptr) {
+		EGE_WARNING("no body");
+		return btQuaternion(0,0,0,0);
+	}
+	return m_body->getOrientation();
+}
 void ege::ElementPhysic::setCollisionDetectionStatus(bool _status) {
 	if (m_body == nullptr) {
 		EGE_WARNING("no body");

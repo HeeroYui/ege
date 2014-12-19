@@ -125,7 +125,7 @@ namespace ege {
 			virtual void setTorqueImpulse(const vec3& _value);
 			virtual void setAngularVelocity(const vec3& _value);
 			
-			
+			btQuaternion getOrientation() const;
 			
 		protected:
 			bool m_elementInPhysicsSystem;

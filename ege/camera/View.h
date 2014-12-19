@@ -35,7 +35,7 @@ namespace ege {
 				 * @brief set the position of the camera.
 				 * @param[in] pos Position of the camera.
 				 */
-				void setEye(const vec3& _eye);
+				virtual void setEye(const vec3& _eye);
 				/**
 				 * @brief get the curent Camera Eye position.
 				 * @return the current position.
@@ -50,7 +50,7 @@ namespace ege {
 				 * @brief set a new Camera target position.
 				 * @param[in] _target New camera target position.
 				 */
-				void setTarget(const vec3& _target);
+				virtual void setTarget(const vec3& _target);
 				/**
 				 * @brief Get the curent Camera target position.
 				 * @return The target position.
@@ -65,7 +65,7 @@ namespace ege {
 				 * @brief Set the camera angle.
 				 * @param[in] _angle camera angle.
 				 */
-				void setAngle(float _angle);
+				virtual void setAngle(float _angle);
 				/**
 				 * @brief Get the camera angle.
 				 * @return the up camera angle.
