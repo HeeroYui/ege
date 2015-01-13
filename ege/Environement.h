@@ -177,10 +177,10 @@ namespace ege {
 			 * @return nullptr if an error occured OR the pointer on the element and it is already added on the system.
 			 * @note Pointer is return in case of setting properties on it...
 			 */
-			std::shared_ptr<ege::Element> createElement(const std::string& _type, bool _autoAddElement=true, enum ege::property _property=ege::typeNone, void* _value=nullptr);
-			std::shared_ptr<ege::Element> createElement(const std::string& _type, std::string& _description, bool _autoAddElement=true);
-			std::shared_ptr<ege::Element> createElement(const std::string& _type, ejson::Value* _value, bool _autoAddElement=true);
-			std::shared_ptr<ege::Element> createElement(const std::string& _type, exml::Node* _node, bool _autoAddElement=true);
+			std::shared_ptr<ege::Element> createElement(const std::string& _type, bool _autoAddElement=true, enum ege::property _property=ege::typeNone, std::shared_ptr<void> _value=nullptr);
+			std::shared_ptr<ege::Element> createElement(const std::string& _type, std::shared_ptr<std::string> _description, bool _autoAddElement=true);
+			std::shared_ptr<ege::Element> createElement(const std::string& _type, std::shared_ptr<ejson::Value> _value, bool _autoAddElement=true);
+			std::shared_ptr<ege::Element> createElement(const std::string& _type, std::shared_ptr<exml::Node> _node, bool _autoAddElement=true);
 		public:
 			class ResultNearestElement {
 				public:

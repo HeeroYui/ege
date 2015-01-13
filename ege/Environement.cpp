@@ -165,16 +165,16 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 	return tmpElement;
 }
 
-std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, std::string& _description, bool _autoAddElement) {
-	return createElement(_type, _autoAddElement, ege::typeString, static_cast<void*>(&_description));
+std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, std::shared_ptr<std::string> _description, bool _autoAddElement) {
+	return createElement(_type, _autoAddElement, ege::typeString, std::static_pointer_cast<void>(&_description));
 }
 
-std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, ejson::Value* _value, bool _autoAddElement) {
-	return createElement(_type, _autoAddElement, ege::typeJson, static_cast<void*>(_value));
+std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, std::shared_ptr<ejson::Value> _value, bool _autoAddElement) {
+	return createElement(_type, _autoAddElement, ege::typeJson, std::static_pointer_cast<void>(_value));
 }
 
-std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, exml::Node* _node, bool _autoAddElement) {
-	return createElement(_type, _autoAddElement, ege::typeXml, static_cast<void*>(_node));
+std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, std::shared_ptr<exml::Node> _node, bool _autoAddElement) {
+	return createElement(_type, _autoAddElement, ege::typeXml, std::static_pointer_cast<void>(_node));
 }
 
 
