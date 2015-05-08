@@ -1,7 +1,6 @@
 #!/usr/bin/python
-import lutinModule as module
-import lutinTools as tools
-import lutinDebug as debug
+import lutin.module as module
+import lutin.tools as tools
 import datetime
 
 
