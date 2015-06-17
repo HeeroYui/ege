@@ -49,7 +49,7 @@ def create(target):
 		])
 	myModule.copy_folder('data/ParticuleMesh.*','')
 	# name of the dependency
-	myModule.add_module_depend(['ewol', 'bullet'])
+	myModule.add_module_depend(['ewol', 'bullet-physics'])
 	myModule.compile_flags('c++', [
 		'-Wno-write-strings',
 		'-Wmissing-field-initializers',

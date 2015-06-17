@@ -3,6 +3,8 @@ Ege
 
 `Ege` (Ewol Game Engine) is a FREE software.
 
+[![Build Status](https://travis-ci.org/atria-soft/ege.svg?branch=master)](https://travis-ci.org/atria-soft/ege)
+
 Install blender exporter emf file
 =================================
 
