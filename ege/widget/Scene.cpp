@@ -12,7 +12,7 @@
 #include <math.h>
 #include <ege/debug.h>
 #include <ewol/ewol.h>
-#include <ewol/openGL/openGL.h>
+#include <gale/renderer/openGL/openGL.h>
 #include <etk/math/Matrix4.h>
 #include <BulletDynamics/Dynamics/btRigidBody.h>
 #include <LinearMath/btDefaultMotionState.h>
@@ -168,20 +168,17 @@ void ege::widget::Scene::systemDraw(const ewol::DrawProperty& _displayProp) {
 	#ifdef SCENE_BRUT_PERFO_TEST
 		int64_t tmp___startTime0 = ewol::getTime();
 	#endif
-	glBindBuffer(GL_ARRAY_BUFFER,0);
-	ewol::openGL::push();
+	gale::openGL::bindBuffer(0);
+	gale::openGL::push();
 	// here we invert the reference of the standard openGl view because the reference in the common display is Top left and not buttom left
-	glViewport( m_origin.x(),
-	            m_origin.y(),
-	            m_size.x(),
-	            m_size.y());
+	gale::openGL::setViewPort(m_origin, m_size);
 	// configure render with the camera...
 	std::shared_ptr<ege::Camera> camera = m_env->getCamera(m_cameraName);
 	if (camera != nullptr) {
 		camera->configureOpenGL();
 	}
 	onDraw();
-	ewol::openGL::pop();
+	gale::openGL::pop();
 	#ifdef SCENE_BRUT_PERFO_TEST
 		float tmp___localTime1 = (float)(ewol::getTime() - tmp___startTime0) / 1000.0f;
 		EWOL_DEBUG("      SCENE render  : " << tmp___localTime1 << "ms ");

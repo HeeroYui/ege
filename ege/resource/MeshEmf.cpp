@@ -483,7 +483,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 					material->setTexture0(fileName.getRelativeFolder() + &inputDataLine[7]);
 					EGE_VERBOSE("        Texture " << &inputDataLine[7]);
 				} else if(0 == strncmp(inputDataLine,"renderMode ",11)) {
-					ewol::openGL::renderMode mode;
+					gale::openGL::renderMode mode;
 					etk::from_string(mode, &inputDataLine[11]);
 					material->setRenderMode(mode);
 					EGE_VERBOSE("        Texture " << mode);

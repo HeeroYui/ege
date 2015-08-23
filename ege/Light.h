@@ -12,7 +12,7 @@
 #include <etk/types.h>
 #include <etk/math/Vector3D.h>
 #include <etk/math/Vector4D.h>
-#include <ewol/resource/Program.h>
+#include <gale/resource/Program.h>
 
 namespace ege {
 	class Light {
@@ -33,8 +33,8 @@ namespace ege {
 		public:
 			Light();
 			~Light();
-			void link(const std::shared_ptr<ewol::resource::Program>& _prog, const std::string& _baseName);
-			void draw(const std::shared_ptr<ewol::resource::Program>& _prog);
+			void link(const std::shared_ptr<gale::resource::Program>& _prog, const std::string& _baseName);
+			void draw(const std::shared_ptr<gale::resource::Program>& _prog);
 			void setDirection(const vec3& val) {
 				m_direction = val;
 			}

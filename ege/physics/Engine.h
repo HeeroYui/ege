@@ -21,9 +21,9 @@ namespace ege {
 #include <ewol/debug.h>
 #include <ege/camera/Camera.h>
 #include <ewol/widget/Widget.h>
-#include <ewol/openGL/openGL.h>
-#include <ewol/resource/Manager.h>
-#include <ewol/Dimension.h>
+#include <gale/renderer/openGL/openGL.h>
+#include <gale/resource/Manager.h>
+#include <gale/Dimension.h>
 
 
 class btBroadphaseInterface;

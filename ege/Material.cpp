@@ -6,7 +6,7 @@
  * @license BSD v3 (see license file)
  */
 
-#include <ewol/resource/Manager.h>
+#include <gale/resource/Manager.h>
 #include <ege/Material.h>
 #include <ege/debug.h>
 
@@ -19,7 +19,7 @@ ege::MaterialGlId::MaterialGlId() :
 	// nothing to do else ...
 }
 
-void ege::MaterialGlId::link(const std::shared_ptr<ewol::resource::Program>& _prog, const std::string& _baseName) {
+void ege::MaterialGlId::link(const std::shared_ptr<gale::resource::Program>& _prog, const std::string& _baseName) {
 	if (nullptr == _prog) {
 		return;
 	}
@@ -35,7 +35,7 @@ ege::Material::Material() :
   m_diffuseFactor(0,0,0,1),
   m_specularFactor(0,0,0,1),
   m_shininess(1),
-  m_renderMode(ewol::openGL::renderTriangle),
+  m_renderMode(gale::openGL::render_triangle),
   m_texture0(nullptr) {
 	// nothing to do else ...
 }
@@ -44,7 +44,7 @@ ege::Material::~Material() {
 	
 }
 
-void ege::Material::draw(const std::shared_ptr<ewol::resource::Program>& _prog, const MaterialGlId& _glID) {
+void ege::Material::draw(const std::shared_ptr<gale::resource::Program>& _prog, const MaterialGlId& _glID) {
 	_prog->uniform4(_glID.m_GL_ambientFactor, m_ambientFactor);
 	_prog->uniform4(_glID.m_GL_diffuseFactor, m_diffuseFactor);
 	_prog->uniform4(_glID.m_GL_specularFactor, m_specularFactor);
@@ -100,45 +100,45 @@ void ege::Material::setTexture0Magic(const ivec2& _size) {
 	}
 }
 
-int32_t ege::Material::getRenderModeOpenGl() {
-	return static_cast<int32_t>(m_renderMode);
+enum gale::openGL::renderMode ege::Material::getRenderModeOpenGl() {
+	return m_renderMode;
 }
 
-void ege::Material::setRenderMode(enum ewol::openGL::renderMode _val) {
+void ege::Material::setRenderMode(enum gale::openGL::renderMode _val) {
 	switch (_val) {
-		case ewol::openGL::renderPoint:
+		case gale::openGL::render_point:
 			break;
-		case ewol::openGL::renderLine:
+		case gale::openGL::render_line:
 			break;
-		case ewol::openGL::renderLineStrip:
+		case gale::openGL::render_lineStrip:
 			EGE_INFO("Does not support " << _val << " auto convert it in 'LINE'");
-			_val = ewol::openGL::renderLine;
+			_val = gale::openGL::render_line;
 			break;
-		case ewol::openGL::renderLineLoop:
+		case gale::openGL::render_lineLoop:
 			EGE_INFO("Does not support " << _val << " auto convert it in 'LINE'");
-			_val = ewol::openGL::renderLine;
+			_val = gale::openGL::render_line;
 			break;
-		case ewol::openGL::renderTriangle:
+		case gale::openGL::render_triangle:
 			break;
-		case ewol::openGL::renderTriangleStrip:
+		case gale::openGL::render_triangleStrip:
 			EGE_INFO("Does not support " << _val << " auto convert it in 'TRIANGLE'");
-			_val = ewol::openGL::renderTriangle;
+			_val = gale::openGL::render_triangle;
 			break;
-		case ewol::openGL::renderTriangleFan:
+		case gale::openGL::render_triangleFan:
 			EGE_INFO("Does not support " << _val << " auto convert it in 'TRIANGLE'");
-			_val = ewol::openGL::renderTriangle;
+			_val = gale::openGL::render_triangle;
 			break;
-		case ewol::openGL::renderQuad:
+		case gale::openGL::render_quad:
 			EGE_INFO("Does not support " << _val << " auto convert it in 'TRIANGLE'");
-			_val = ewol::openGL::renderTriangle;
+			_val = gale::openGL::render_triangle;
 			break;
-		case ewol::openGL::renderQuadStrip:
+		case gale::openGL::render_quadStrip:
 			EGE_INFO("Does not support " << _val << " auto convert it in 'TRIANGLE'");
-			_val = ewol::openGL::renderTriangle;
+			_val = gale::openGL::render_triangle;
 			break;
-		case ewol::openGL::renderPolygon:
+		case gale::openGL::render_polygon:
 			EGE_ERROR("Does not support " << _val << " try convert it in 'TRIANGLE'");
-			_val = ewol::openGL::renderTriangle;
+			_val = gale::openGL::render_triangle;
 			break;
 	}
 	m_renderMode = _val;

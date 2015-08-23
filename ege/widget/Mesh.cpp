@@ -8,7 +8,7 @@
 
 #include <ege/widget/Mesh.h>
 #include <ewol/widget/Manager.h>
-#include <ewol/resource/Manager.h>
+#include <gale/resource/Manager.h>
 #include <ege/debug.h>
 
 #undef __class__
@@ -54,22 +54,19 @@ void ege::widget::Mesh::onDraw() {
 }
 
 void ege::widget::Mesh::systemDraw(const ewol::DrawProperty& _displayProp) {
-	ewol::openGL::push();
+	gale::openGL::push();
 	// here we invert the reference of the standard openGl view because the reference in the common display is Top left and not buttom left
-	glViewport( m_origin.x(),
-	            m_origin.y(),
-	            m_size.x(),
-	            m_size.y());
+	gale::openGL::setViewPort(m_origin, m_size);
 	float ratio = m_size.x() / m_size.y();
 	//EGE_INFO("ratio : " << ratio);
 	mat4 tmpProjection = etk::matPerspective(M_PI/3.0, ratio, 0.5, 100);
 	//mat4 tmpMat = tmpProjection * m_camera.getMatrix();
 	// set internal matrix system :
 	//ewol::openGL::setMatrix(tmpMat);
-	ewol::openGL::setMatrix(tmpProjection);
+	gale::openGL::setMatrix(tmpProjection);
 	
 	onDraw();
-	ewol::openGL::pop();
+	gale::openGL::pop();
 }
 
 void ege::widget::Mesh::onRegenerateDisplay() {
@@ -85,8 +82,8 @@ void ege::widget::Mesh::periodicCall(const ewol::event::Time& _event) {
 
 bool ege::widget::Mesh::onEventInput(const ewol::event::Input& _event) {
 	//EGE_DEBUG("Event on BT ...");
-	if (1 == _event.getId()) {
-		if(ewol::key::statusSingle == _event.getStatus()) {
+	if (_event.getId() == 1) {
+		if(_event.getStatus() == gale::key::status_single) {
 			signalPressed.emit();
 			return true;
 		}
@@ -95,7 +92,7 @@ bool ege::widget::Mesh::onEventInput(const ewol::event::Input& _event) {
 }
 
 void ege::widget::Mesh::setFile(const std::string& _filename) {
-	if(    _filename!=""
+	if(    _filename != ""
 	    && m_meshName != _filename ) {
 		m_meshName = _filename;
 		m_object = ege::resource::Mesh::create(m_meshName);

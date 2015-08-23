@@ -12,7 +12,7 @@
 #include <etk/types.h>
 #include <etk/math/Vector3D.h>
 #include <etk/math/Vector4D.h>
-#include <ewol/resource/Program.h>
+#include <gale/resource/Program.h>
 #include <ewol/resource/Image.h>
 
 namespace ege {
@@ -28,7 +28,7 @@ namespace ege {
 			int32_t m_GL_shininess;
 			int32_t m_GL_texture0;
 			MaterialGlId();
-			void link(const std::shared_ptr<ewol::resource::Program>& _prog, const std::string& _baseName);
+			void link(const std::shared_ptr<gale::resource::Program>& _prog, const std::string& _baseName);
 	};
 	
 	
@@ -39,14 +39,14 @@ namespace ege {
 			vec4 m_diffuseFactor;
 			vec4 m_specularFactor;
 			float m_shininess;
-			enum ewol::openGL::renderMode m_renderMode; // Select Render mode (triangle/Line/point ...)
+			enum gale::openGL::renderMode m_renderMode; // Select Render mode (triangle/Line/point ...)
 			std::shared_ptr<ewol::resource::Texture> m_texture0;
 		public:
 			std::vector<uint32_t> m_listIndexFaces;
 		public:
 			Material();
 			~Material();
-			void draw(const std::shared_ptr<ewol::resource::Program>& _prog, const ege::MaterialGlId& _glID);
+			void draw(const std::shared_ptr<gale::resource::Program>& _prog, const ege::MaterialGlId& _glID);
 			void setAmbientFactor(const vec4& _val) {
 				m_ambientFactor = _val;
 			}
@@ -59,9 +59,9 @@ namespace ege {
 			void setShininess(float _val) {
 				m_shininess = _val;
 			}
-			void setRenderMode(enum ewol::openGL::renderMode _val);
-			int32_t getRenderModeOpenGl();
-			enum ewol::openGL::renderMode getRenderMode() {
+			void setRenderMode(enum gale::openGL::renderMode _val);
+			enum gale::openGL::renderMode getRenderModeOpenGl();
+			enum gale::openGL::renderMode getRenderMode() {
 				return m_renderMode;
 			}
 			void setTexture0(const std::string& _filename);

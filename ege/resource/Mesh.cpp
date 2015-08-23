@@ -8,7 +8,8 @@
 
 #include <ege/debug.h>
 #include <ege/resource/Mesh.h>
-#include <ewol/resource/Manager.h>
+#include <gale/resource/Manager.h>
+#include <gale/renderer/openGL/openGL-include.h>
 #include <etk/os/FSNode.h>
 #include <ege/resource/tools/viewBox.h>
 #include <ege/resource/tools/isoSphere.h>
@@ -30,12 +31,11 @@ ege::resource::Mesh::Mesh() :
   m_numberOfElments(-1),
   m_pointerShape(nullptr),
   m_functionFreeShape(nullptr) {
-	addObjectType("ege::resource::Mesh");
+	addResourceType("ege::resource::Mesh");
 }
 
 void ege::resource::Mesh::init(const std::string& _fileName, const std::string& _shaderName) {
-	ewol::Resource::init(_fileName);
-	addObjectType("ege::resource::Mesh");
+	gale::Resource::init(_fileName);
 	EGE_VERBOSE("Load a new mesh : '" << _fileName << "'");
 	// get the shader resource :
 	m_GLPosition = 0;
@@ -47,7 +47,7 @@ void ege::resource::Mesh::init(const std::string& _fileName, const std::string& 
 	m_light.setSpecularColor(vec4(0.0f,0.0f,0.0f,1.0f));
 	
 	//EGE_DEBUG(m_name << "  " << m_light);
-	m_GLprogram = ewol::resource::Program::create(_shaderName);
+	m_GLprogram = gale::resource::Program::create(_shaderName);
 	if (m_GLprogram != nullptr) {
 		m_GLPosition = m_GLprogram->getAttribute("EW_coord3d");
 		m_GLtexture = m_GLprogram->getAttribute("EW_texture2d");
@@ -60,7 +60,7 @@ void ege::resource::Mesh::init(const std::string& _fileName, const std::string& 
 		m_light.link(m_GLprogram, "EW_directionalLight");
 	}
 	// this is the properties of the buffer requested : "r"/"w" + "-" + buffer type "f"=flaot "i"=integer
-	m_verticesVBO = ewol::resource::VirtualBufferObject::create(5);
+	m_verticesVBO = gale::resource::VirtualBufferObject::create(5);
 	if (m_verticesVBO == nullptr) {
 		EGE_ERROR("can not instanciate VBO ...");
 		return;
@@ -118,18 +118,18 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	}
 	//EGE_DEBUG(m_name << "  " << m_light);
 	if (_enableDepthTest == true) {
-		ewol::openGL::enable(ewol::openGL::FLAG_DEPTH_TEST);
+		gale::openGL::enable(gale::openGL::flag_depthTest);
 		if (false == _enableDepthUpdate) {
 			glDepthMask(GL_FALSE);
 		}
 	} else {
-		ewol::openGL::disable(ewol::openGL::FLAG_DEPTH_TEST);
+		gale::openGL::disable(gale::openGL::flag_depthTest);
 	}
 	//EGE_DEBUG("    display " << m_coord.size() << " elements" );
 	m_GLprogram->use();
 	// set Matrix : translation/positionMatrix
-	mat4 projMatrix = ewol::openGL::getMatrix();
-	mat4 camMatrix = ewol::openGL::getCameraMatrix();
+	mat4 projMatrix = gale::openGL::getMatrix();
+	mat4 camMatrix = gale::openGL::getCameraMatrix();
 	mat4 tmpMatrix = projMatrix * camMatrix;
 	m_GLprogram->uniformMatrix(m_GLMatrix, tmpMatrix);
 	m_GLprogram->uniformMatrix(m_GLMatrixPosition, _positionMatrix);
@@ -165,7 +165,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 		}
 		m_materials[m_listFaces.getKey(kkk)]->draw(m_GLprogram, m_GLMaterial);
 		if (m_checkNormal == false) {
-			ewol::openGL::drawElements(m_materials[m_listFaces.getKey(kkk)]->getRenderModeOpenGl(), m_listFaces.getValue(kkk).m_index);
+			gale::openGL::drawElements(m_materials[m_listFaces.getKey(kkk)]->getRenderModeOpenGl(), m_listFaces.getValue(kkk).m_index);
 			#ifdef DISPLAY_NB_VERTEX_DISPLAYED
 				nbElementDraw += m_listFaces.getValue(kkk).m_index.size();
 				nbElementDrawTheoric += m_listFaces.getValue(kkk).m_index.size();
@@ -211,7 +211,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 					}
 					break;
 			}
-			ewol::openGL::drawElements(m_materials[m_listFaces.getKey(kkk)]->getRenderModeOpenGl(), tmpIndexResult);
+			gale::openGL::drawElements(m_materials[m_listFaces.getKey(kkk)]->getRenderModeOpenGl(), tmpIndexResult);
 			#ifdef DISPLAY_NB_VERTEX_DISPLAYED
 				nbElementDraw += tmpIndexResult.size();
 				nbElementDrawTheoric += m_listFaces.getValue(kkk).m_index.size();
@@ -235,7 +235,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 		if (false == _enableDepthUpdate) {
 			glDepthMask(GL_TRUE);
 		}
-		ewol::openGL::disable(ewol::openGL::FLAG_DEPTH_TEST);
+		gale::openGL::disable(gale::openGL::flag_depthTest);
 	}
 	// TODO : UNDERSTAND why ... it is needed
 	glBindBuffer(GL_ARRAY_BUFFER,0);
@@ -247,11 +247,11 @@ void ege::resource::Mesh::calculateNormaleFace(const std::string& _materialName)
 	m_listFacesNormal.clear();
 	if (m_normalMode == ege::resource::Mesh::normalModeFace) {
 		EGE_INFO("calculateNormaleFace(" << _materialName << ")");
-		ewol::openGL::renderMode tmpRenderMode = m_materials[_materialName]->getRenderMode();
-		if (    tmpRenderMode == ewol::openGL::renderPoint
-		     || tmpRenderMode == ewol::openGL::renderLine
-		     || tmpRenderMode == ewol::openGL::renderLineStrip
-		     || tmpRenderMode == ewol::openGL::renderLineLoop) {
+		gale::openGL::renderMode tmpRenderMode = m_materials[_materialName]->getRenderMode();
+		if (    tmpRenderMode == gale::openGL::render_point
+		     || tmpRenderMode == gale::openGL::render_line
+		     || tmpRenderMode == gale::openGL::render_lineStrip
+		     || tmpRenderMode == gale::openGL::render_lineLoop) {
 			EGE_ERROR("calculateNormaleFace(" << _materialName << ") : can not calculate normal on lines ...");
 			m_normalMode = ege::resource::Mesh::normalModeNone;
 			return;
@@ -269,11 +269,11 @@ void ege::resource::Mesh::calculateNormaleEdge(const std::string& _materialName)
 	m_listVertexNormal.clear();
 	if (m_normalMode == ege::resource::Mesh::normalModeVertex) {
 		EGE_INFO("calculateNormaleEdge(" << _materialName << ")");
-		ewol::openGL::renderMode tmpRenderMode = m_materials[_materialName]->getRenderMode();
-		if (    tmpRenderMode == ewol::openGL::renderPoint
-		     || tmpRenderMode == ewol::openGL::renderLine
-		     || tmpRenderMode == ewol::openGL::renderLineStrip
-		     || tmpRenderMode == ewol::openGL::renderLineLoop) {
+		gale::openGL::renderMode tmpRenderMode = m_materials[_materialName]->getRenderMode();
+		if (    tmpRenderMode == gale::openGL::render_point
+		     || tmpRenderMode == gale::openGL::render_line
+		     || tmpRenderMode == gale::openGL::render_lineStrip
+		     || tmpRenderMode == gale::openGL::render_lineLoop) {
 			EGE_ERROR("calculateNormaleEdge(" << _materialName << ") :  can not calculate normal on lines ...");
 			m_normalMode = ege::resource::Mesh::normalModeNone;
 			return;
@@ -319,24 +319,24 @@ void ege::resource::Mesh::generateVBO() {
 		m_listFaces.getValue(kkk).m_index.clear();
 		int32_t nbIndicInFace = 3;
 		switch (m_materials[m_listFaces.getKey(kkk)]->getRenderMode()) {
-			case ewol::openGL::renderTriangle:
-			case ewol::openGL::renderTriangleStrip:
-			case ewol::openGL::renderTriangleFan:
+			case gale::openGL::render_triangle:
+			case gale::openGL::render_triangleStrip:
+			case gale::openGL::render_triangleFan:
 				nbIndicInFace = 3;
 				break;
-			case ewol::openGL::renderLine:
-			case ewol::openGL::renderLineStrip:
-			case ewol::openGL::renderLineLoop:
+			case gale::openGL::render_line:
+			case gale::openGL::render_lineStrip:
+			case gale::openGL::render_lineLoop:
 				nbIndicInFace = 2;
 				break;
-			case ewol::openGL::renderPoint:
+			case gale::openGL::render_point:
 				nbIndicInFace = 1;
 				break;
-			case ewol::openGL::renderQuad:
-			case ewol::openGL::renderQuadStrip:
+			case gale::openGL::render_quad:
+			case gale::openGL::render_quadStrip:
 				nbIndicInFace = 4;
 				break;
-			case ewol::openGL::renderPolygon:
+			case gale::openGL::render_polygon:
 				nbIndicInFace = 3;
 				break;
 		}
@@ -493,8 +493,8 @@ void ege::resource::Mesh::addPoint(const std::string& _layerName, const vec3& _p
 		EGE_ERROR("Mesh layer : " << _layerName << " does not exist in list faces=" << m_listFaces.exist(_layerName) << " materials=" << m_listFaces.exist(_layerName) << " ...");
 		return;
 	}
-	ewol::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
-	if (tmpRenderMode != ewol::openGL::renderPoint) {
+	gale::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
+	if (tmpRenderMode != gale::openGL::render_point) {
 		EGE_ERROR("try to add Point in a mesh material section that not support Point");
 		return;
 	}
@@ -514,10 +514,10 @@ void ege::resource::Mesh::addLine(const std::string& _layerName, const vec3& _po
 		EGE_ERROR("Mesh layer : " << _layerName << " does not exist in list faces=" << m_listFaces.exist(_layerName) << " materials=" << m_listFaces.exist(_layerName) << " ...");
 		return;
 	}
-	ewol::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
-	if (    tmpRenderMode != ewol::openGL::renderLine
-	     && tmpRenderMode != ewol::openGL::renderLineStrip
-	     && tmpRenderMode != ewol::openGL::renderLineLoop) {
+	gale::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
+	if (    tmpRenderMode != gale::openGL::render_line
+	     && tmpRenderMode != gale::openGL::render_lineStrip
+	     && tmpRenderMode != gale::openGL::render_lineLoop) {
 		EGE_ERROR("try to add Line in a mesh material section that not support Line");
 		return;
 	}
@@ -559,10 +559,10 @@ void ege::resource::Mesh::addTriangle(const std::string& _layerName,
 		EGE_ERROR("Mesh layer : " << _layerName << " does not exist in list faces=" << m_listFaces.exist(_layerName) << " materials=" << m_listFaces.exist(_layerName) << " ...");
 		return;
 	}
-	ewol::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
-	if (    tmpRenderMode != ewol::openGL::renderTriangle
-	     && tmpRenderMode != ewol::openGL::renderTriangleStrip
-	     && tmpRenderMode != ewol::openGL::renderTriangleFan) {
+	gale::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
+	if (    tmpRenderMode != gale::openGL::render_triangle
+	     && tmpRenderMode != gale::openGL::render_triangleStrip
+	     && tmpRenderMode != gale::openGL::render_triangleFan) {
 		EGE_ERROR("try to add Line in a mesh material section that not support Line");
 		return;
 	}
@@ -592,13 +592,13 @@ void ege::resource::Mesh::addTriangle(const std::string& _layerName, const vec3&
 		EGE_ERROR("Mesh layer : " << _layerName << " does not exist in list faces=" << m_listFaces.exist(_layerName) << " materials=" << m_listFaces.exist(_layerName) << " ...");
 		return;
 	}
-	ewol::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
-	if (    tmpRenderMode == ewol::openGL::renderQuad
-	     || tmpRenderMode == ewol::openGL::renderQuadStrip) {
+	gale::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
+	if (    tmpRenderMode == gale::openGL::render_quad
+	     || tmpRenderMode == gale::openGL::render_quadStrip) {
 		EGE_TODO("Create quad interface ...");
-	} else if (    tmpRenderMode == ewol::openGL::renderTriangle
-	            || tmpRenderMode == ewol::openGL::renderLineStrip
-	            || tmpRenderMode == ewol::openGL::renderTriangleFan) {
+	} else if (    tmpRenderMode == gale::openGL::render_triangle
+	            || tmpRenderMode == gale::openGL::render_lineStrip
+	            || tmpRenderMode == gale::openGL::render_triangleFan) {
 		
 		// try to find position:
 		int32_t pos1 = findPositionInList(_pos1);

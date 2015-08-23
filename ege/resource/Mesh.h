@@ -11,11 +11,11 @@
 
 #include <etk/types.h>
 #include <etk/Hash.h>
-#include <ewol/resource/Resource.h>
+#include <gale/resource/Resource.h>
 #include <ewol/resource/Image.h>
-#include <ewol/resource/Shader.h>
-#include <ewol/resource/Program.h>
-#include <ewol/resource/VirtualBufferObject.h>
+#include <gale/resource/Shader.h>
+#include <gale/resource/Program.h>
+#include <gale/resource/VirtualBufferObject.h>
 #include <ege/Light.h>
 #include <ege/Material.h>
 #include <ege/resource/tools/Face.h>
@@ -31,7 +31,7 @@
 
 namespace ege {
 	namespace resource {
-		class Mesh : public ewol::Resource {
+		class Mesh : public gale::Resource {
 			public:
 				static std::shared_ptr<ege::resource::Mesh> createGrid(int32_t _lineCount, const vec3& _position=vec3(0,0,0), float _size=1.0f, const std::string& _materialName="basics");
 				static std::shared_ptr<ege::resource::Mesh> createCube(float _size=1.0f, const std::string& _materialName="basics", const etk::Color<float>& _color=etk::color::white);
@@ -48,7 +48,7 @@ namespace ege {
 				enum normalMode m_normalMode; // select the normal mode of display
 				bool m_checkNormal; //!< when enable, this check the normal of the mesh before sending it at the 3d card
 			protected:
-				std::shared_ptr<ewol::resource::Program> m_GLprogram;
+				std::shared_ptr<gale::resource::Program> m_GLprogram;
 				int32_t m_GLPosition;
 				int32_t m_GLMatrix;
 				int32_t m_GLMatrixPosition;
@@ -70,7 +70,7 @@ namespace ege {
 				std::vector<std::shared_ptr<ege::PhysicsShape>> m_physics; //!< collision shape module ... (independent of bullet lib)
 				void clean();
 			protected:
-				std::shared_ptr<ewol::resource::VirtualBufferObject> m_verticesVBO;
+				std::shared_ptr<gale::resource::VirtualBufferObject> m_verticesVBO;
 			protected:
 				Mesh();
 				void init(const std::string& _fileName="---", const std::string& _shaderName="DATA:textured3D2.prog");

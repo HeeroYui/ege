@@ -10,7 +10,7 @@
 #include <ege/camera/Camera.h>
 #include <ege/debug.h>
 
-#include <ewol/openGL/openGL.h>
+#include <gale/renderer/openGL/openGL.h>
 
 #undef __class__
 #define __class__ "Camera"
@@ -62,8 +62,8 @@ void ege::Camera::updateProjectionMatrix() {
 }
 
 void ege::Camera::configureOpenGL() {
-	ewol::openGL::setCameraMatrix(getMatrixCamera());
-	ewol::openGL::setMatrix(getMatrixProjection());
+	gale::openGL::setCameraMatrix(getMatrixCamera());
+	gale::openGL::setMatrix(getMatrixProjection());
 }
 
 

@@ -19,7 +19,7 @@ std::shared_ptr<ege::resource::Mesh> ege::resource::Mesh::createCube(float _size
 		material->setDiffuseFactor(vec4(0,0,0,1));
 		material->setSpecularFactor(vec4(0,0,0,1));
 		material->setShininess(1);
-		material->setRenderMode(ewol::openGL::renderTriangle);
+		material->setRenderMode(gale::openGL::render_triangle);
 		out->addMaterial(_materialName, material);
 		
 		out->addFaceIndexing(_materialName);

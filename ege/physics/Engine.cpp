@@ -10,7 +10,7 @@
 
 #include <ege/debug.h>
 
-#include <ewol/openGL/openGL.h>
+#include <gale/renderer/openGL/openGL.h>
 #include <etk/math/Matrix4.h>
 #include <BulletDynamics/Dynamics/btRigidBody.h>
 #include <LinearMath/btDefaultMotionState.h>

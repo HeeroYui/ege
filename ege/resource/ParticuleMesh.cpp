@@ -8,10 +8,11 @@
 
 #include <ege/debug.h>
 #include <ege/resource/ParticuleMesh.h>
-#include <ewol/resource/Manager.h>
+#include <gale/resource/Manager.h>
+#include <gale/renderer/openGL/openGL-include.h>
 
 ege::resource::ParticuleMesh::ParticuleMesh() {
-	addObjectType("ege::resource::ParticuleMesh");
+	addResourceType("ege::resource::ParticuleMesh");
 }
 
 void ege::resource::ParticuleMesh::init(const std::string& _fileName, const std::string& _shaderName) {
@@ -36,18 +37,18 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 	}
 	//EGE_DEBUG(m_name << "  " << m_light);
 	if (_enableDepthTest == true) {
-		ewol::openGL::enable(ewol::openGL::FLAG_DEPTH_TEST);
+		gale::openGL::enable(gale::openGL::flag_depthTest);
 		if (false == _enableDepthUpdate) {
 			glDepthMask(GL_FALSE);
 		}
 	} else {
-		ewol::openGL::disable(ewol::openGL::FLAG_DEPTH_TEST);
+		gale::openGL::disable(gale::openGL::flag_depthTest);
 	}
 	//EGE_DEBUG("    display " << m_coord.size() << " elements" );
 	m_GLprogram->use();
 	// set Matrix : translation/positionMatrix
-	mat4 projMatrix = ewol::openGL::getMatrix();
-	mat4 camMatrix = ewol::openGL::getCameraMatrix();
+	mat4 projMatrix = gale::openGL::getMatrix();
+	mat4 camMatrix = gale::openGL::getCameraMatrix();
 	mat4 tmpMatrix = projMatrix * camMatrix;
 	m_GLprogram->uniformMatrix(m_GLMatrix, tmpMatrix);
 	m_GLprogram->uniformMatrix(m_GLMatrixPosition, _positionMatrix);
@@ -72,7 +73,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 		}
 		m_materials[m_listFaces.getKey(kkk)]->draw(m_GLprogram, m_GLMaterial);
 		if (m_checkNormal == false) {
-			ewol::openGL::drawElements(GL_TRIANGLES, m_listFaces.getValue(kkk).m_index);
+			gale::openGL::drawElements(gale::openGL::render_triangle, m_listFaces.getValue(kkk).m_index);
 			#ifdef DISPLAY_NB_VERTEX_DISPLAYED
 				nbElementDraw += m_listFaces.getValue(kkk).m_index.size();
 				nbElementDrawTheoric += m_listFaces.getValue(kkk).m_index.size();
@@ -108,7 +109,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 					}
 				}
 			}
-			ewol::openGL::drawElements(GL_TRIANGLES, tmpIndexResult);
+			gale::openGL::drawElements(gale::openGL::render_triangle, tmpIndexResult);
 			#ifdef DISPLAY_NB_VERTEX_DISPLAYED
 				nbElementDraw += tmpIndexResult.size();
 				nbElementDrawTheoric += m_listFaces.getValue(kkk).m_index.size();
@@ -123,7 +124,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 		if (false == _enableDepthUpdate) {
 			glDepthMask(GL_TRUE);
 		}
-		ewol::openGL::disable(ewol::openGL::FLAG_DEPTH_TEST);
+		gale::openGL::disable(gale::openGL::flag_depthTest);
 	}
 	glBindBuffer(GL_ARRAY_BUFFER,0);
 }
