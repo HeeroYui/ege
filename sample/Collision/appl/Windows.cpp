@@ -156,7 +156,7 @@ namespace appl {
 bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 	static float ploppp=1;
 	if (_event.getId() == 1) {
-		if (_event.getStatus() == ewol::key::statusDown) {
+		if (_event.getStatus() == gale::key::status_down) {
 			vec2 pos = relativePosition(_event.getPos());
 			ege::Ray ray = m_camera->getRayFromScreenPosition(pos, m_size);
 			
@@ -186,10 +186,10 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 		}
 		m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),80*std::cos(m_anglePsy))*ploppp);
 	} else if (_event.getId() == 3) {
-		if (_event.getStatus() == ewol::key::statusDown) {
+		if (_event.getStatus() == gale::key::status_down) {
 			m_oldScreenPos = relativePosition(_event.getPos());
 			return true;
-		} else if (_event.getStatus() == ewol::key::statusMove) {
+		} else if (_event.getStatus() == gale::key::status_move) {
 			vec2 pos = relativePosition(_event.getPos());
 			m_angleTetha -= (m_oldScreenPos.x()-pos.x())*0.05f;
 			m_anglePsy += (m_oldScreenPos.y()-pos.y())*0.01f;
@@ -198,10 +198,10 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 			return true;
 		}
 	} else if (_event.getId() == 2) {
-		if (_event.getStatus() == ewol::key::statusDown) {
+		if (_event.getStatus() == gale::key::status_down) {
 			m_oldScreenPos = relativePosition(_event.getPos());
 			return true;
-		} else if (_event.getStatus() == ewol::key::statusMove) {
+		} else if (_event.getStatus() == gale::key::status_move) {
 			vec2 pos = relativePosition(_event.getPos())*0.2;
 			pos -= m_oldScreenPos*0.2;
 			float cameraAngle = m_camera->getTetha();
