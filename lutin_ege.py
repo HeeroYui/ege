@@ -7,9 +7,9 @@ def get_desc():
 
 def create(target):
 	# module name is 'edn' and type binary.
-	myModule = module.Module(__file__, 'ege', 'LIBRARY')
+	my_module = module.Module(__file__, 'ege', 'LIBRARY')
 	# add the file to compile:
-	myModule.add_src_file([
+	my_module.add_src_file([
 		'ege/debug.cpp',
 		'ege/AudioElement.cpp',
 		'ege/AudioEngine.cpp',
@@ -47,15 +47,15 @@ def create(target):
 		'ege/physicsShape/PhysicsSphere.cpp',
 		'ege/Ray.cpp',
 		])
-	myModule.copy_folder('data/ParticuleMesh.*','')
+	my_module.copy_folder('data/ParticuleMesh.*','')
 	# name of the dependency
-	myModule.add_module_depend(['ewol', 'bullet-physics'])
-	myModule.compile_flags('c++', [
+	my_module.add_module_depend(['ewol', 'bullet-physics'])
+	my_module.compile_flags('c++', [
 		'-Wno-write-strings',
 		'-Wmissing-field-initializers',
 		'-Wall'])
-	myModule.add_export_path(tools.get_current_path(__file__))
+	my_module.add_export_path(tools.get_current_path(__file__))
 	# add the currrent module at the 
-	return myModule
+	return my_module
 
 
