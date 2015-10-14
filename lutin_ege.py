@@ -2,13 +2,30 @@
 import lutin.module as module
 import lutin.tools as tools
 
-def get_desc():
-	return "EGE : Ewol Game engine (based on bullet lib)"
 
-def create(target):
-	# module name is 'edn' and type binary.
-	my_module = module.Module(__file__, 'ege', 'LIBRARY')
-	# add the file to compile:
+def get_type():
+	return "LIBRARY"
+
+def get_desc():
+	return "Ewol Game engine (based on bullet lib)"
+
+def get_licence():
+	return "APACHE-2"
+
+def get_compagny_type():
+	return "com"
+
+def get_compagny_name():
+	return "atria-soft"
+
+def get_maintainer():
+	return ["Mr DUPIN Edouard <yui.heero@gmail.com>"]
+
+def get_version():
+	return [0,0,0]
+
+def create(target, module_name):
+	my_module = module.Module(__file__, module_name, get_type())
 	my_module.add_src_file([
 		'ege/debug.cpp',
 		'ege/AudioElement.cpp',
@@ -47,15 +64,49 @@ def create(target):
 		'ege/physicsShape/PhysicsSphere.cpp',
 		'ege/Ray.cpp',
 		])
-	my_module.copy_folder('data/ParticuleMesh.*','')
-	# name of the dependency
+	my_module.copy_path('data/ParticuleMesh.*')
 	my_module.add_module_depend(['ewol', 'bullet-physics'])
 	my_module.compile_flags('c++', [
 		'-Wno-write-strings',
 		'-Wmissing-field-initializers',
 		'-Wall'])
-	my_module.add_export_path(tools.get_current_path(__file__))
-	# add the currrent module at the 
+	my_module.add_header_file([
+		'ege/debug.h',
+		'ege/AudioElement.h',
+		'ege/AudioEngine.h',
+		'ege/camera/Camera.h',
+		'ege/camera/View.h',
+		'ege/camera/FPS.h',
+		'ege/CollisionShapeCreator.h',
+		'ege/physics/Engine.h',
+		'ege/elements/Element.h',
+		'ege/elements/ElementBase.h',
+		'ege/elements/ElementPhysic.h',
+		'ege/Particule.h',
+		'ege/ParticuleEngine.h',
+		'ege/ParticuleSimple.h',
+		'ege/widget/Mesh.h',
+		'ege/widget/Scene.h',
+		'ege/Environement.h',
+		'ege/resource/Mesh.h',
+		'ege/resource/ParticuleMesh.h',
+		'ege/resource/tools/icoSphere.h',
+		'ege/resource/tools/isoSphere.h',
+		'ege/resource/tools/viewBox.h',
+		'ege/resource/tools/Face.h',
+		'ege/resource/tools/FaceIndexing.h',
+		'ege/Light.h',
+		'ege/Material.h',
+		'ege/physicsShape/PhysicsShape.h',
+		'ege/physicsShape/PhysicsBox.h',
+		'ege/physicsShape/PhysicsCapsule.h',
+		'ege/physicsShape/PhysicsCone.h',
+		'ege/physicsShape/PhysicsConvexHull.h',
+		'ege/physicsShape/PhysicsCylinder.h',
+		'ege/physicsShape/PhysicsSphere.h',
+		'ege/Ray.h',
+		])
+	my_module.add_path(tools.get_current_path(__file__))
 	return my_module
 
 
