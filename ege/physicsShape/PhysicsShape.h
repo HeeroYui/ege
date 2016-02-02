@@ -5,10 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_PHYSICS_SHAPE_H__
-#define __EGE_PHYSICS_SHAPE_H__
-
+#pragma once
 
 #include <etk/types.h>
 #include <etk/types.h>
@@ -131,8 +128,5 @@ namespace ege {
 				return nullptr;
 			};
 	};
-};
-
-
-#endif
+}
 

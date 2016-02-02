@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_SCENE_H__
-#define __EGE_SCENE_H__
+#pragma once
 
 #include <etk/types.h>
 #include <etk/math/Vector3D.h>
@@ -49,9 +47,5 @@ namespace ege {
 			ege::PhysicEngine m_physicEngine; //!< physic engine interface
 			ege::AudioEngine m_AudioEngine; //!< physic engine interface
 			ege::IAEngine m_iAEngine; //!< physic engine interface
-		
 	}
 }
-
-
-#endif

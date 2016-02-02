@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_RESOURCE_PARTICULE_MESH_H__
-#define __EGE_RESOURCE_PARTICULE_MESH_H__
+#pragma once
 
 #include <ege/resource/Mesh.h>
 
@@ -28,8 +26,5 @@ namespace ege {
 				                  bool _enableDepthTest = true,
 				                  bool _enableDepthUpdate = true);
 		};
-	};
-};
-
-
-#endif
+	}
+}

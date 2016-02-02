@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_LIGHT_H__
-#define __EGE_LIGHT_H__
+#pragma once
 
 #include <etk/types.h>
 #include <etk/math/Vector3D.h>
@@ -54,8 +52,5 @@ namespace ege {
 		friend std::ostream& operator <<(std::ostream& _os, const ege::Light& _obj);
 	};
 	std::ostream& operator <<(std::ostream& _os, const ege::Light& _obj);
-};
-
-
-#endif
+}
 

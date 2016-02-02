@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EWOL_WIDGET_MESH_H__
-#define __EWOL_WIDGET_MESH_H__
+#pragma once
 
 #include <etk/types.h>
 #include <ewol/widget/Widget.h>
@@ -68,8 +66,5 @@ namespace ege {
 				 */
 				void setDistance(float _distance);
 		};
-	};
-};
-
-
-#endif
+	}
+}

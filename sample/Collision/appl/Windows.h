@@ -5,9 +5,7 @@
  * 
  * @license APACHE-2 (see license file)
  */
-
-#ifndef __APPL_WINDOWS_H__
-#define __APPL_WINDOWS_H__
+#pragma once
 
 #include <ewol/widget/Windows.h>
 #include <ege/Environement.h>
@@ -32,7 +30,5 @@ namespace appl {
 			vec2 m_oldScreenPos;
 			void onCallbackPeriodicCheckCollision(const ewol::event::Time& _event);
 	};
-};
+}
 
-
-#endif

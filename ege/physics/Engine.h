@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_PHYSICS_ENGINE_H__
-#define __EGE_PHYSICS_ENGINE_H__
+#pragma once
 
 namespace ege {
 	namespace physics {
@@ -99,7 +97,6 @@ namespace ege {
 				 */
 				std::vector<ege::physics::Engine::collisionPoints> getListOfCollision();
 		};
-	};
-};
+	}
+}
 
-#endif

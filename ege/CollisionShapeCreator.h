@@ -6,9 +6,7 @@
  * @license BSD v3 (see license file)
  * 
  */
-
-#ifndef __EGE_COLLISION_SHAPE_CREATOR_H__
-#define __EGE_COLLISION_SHAPE_CREATOR_H__
+#pragma once
 
 #include <etk/types.h>
 #include <ege/resource/Mesh.h>
@@ -17,7 +15,6 @@
 namespace ege {
 	namespace collision {
 		btCollisionShape* createShape(const std::shared_ptr<ege::resource::Mesh>& _mesh);
-	};
-};
-#endif
+	}
+}
 

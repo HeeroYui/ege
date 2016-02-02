@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_ELEMENT_H__
-#define __EGE_ELEMENT_H__
+#pragma once
 
 #include <etk/types.h>
 #include <etk/math/Vector3D.h>
@@ -230,8 +228,6 @@ namespace ege {
 			 */
 			virtual void dynamicDisable() {};
 	};
-};
-
-#endif
+}
 
 

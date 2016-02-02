@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_SCENE_H__
-#define __EGE_SCENE_H__
+#pragma once
 
 #include <etk/types.h>
 #include <etk/math/Vector3D.h>
@@ -116,9 +114,6 @@ namespace ege {
 					return m_debugApplication.get();
 				}
 		};
-	};
-};
-
-#endif
-
+	}
+}
 

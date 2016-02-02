@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_ENVIRONEMENT_H__
-#define __EGE_ENVIRONEMENT_H__
+#pragma once
 
 namespace ege {
 	class Environement;
@@ -276,8 +274,6 @@ namespace ege {
 			}
 			virtual void onParameterChangeValue(const ewol::parameter::Ref& _paramPointer);
 	};
-};
-
-#endif
+}
 
 

@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_ELEMENT_PHYSIC_H__
-#define __EGE_ELEMENT_PHYSIC_H__
+#pragma once
 
 #include <etk/types.h>
 #include <etk/math/Vector3D.h>
@@ -208,8 +206,6 @@ namespace ege {
 			 */
 			virtual void onCollisionDetected(const std::shared_ptr<ege::Element>& _obj, const vec3& _point, const vec3& _normal) {};
 	};
-};
-
-#endif
+}
 
 

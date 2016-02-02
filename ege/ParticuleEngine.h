@@ -7,9 +7,7 @@
  */
 
 #include <ege/Environement.h>
-
-#ifndef __EGE_PARTICULE_ENGINE_H__
-#define __EGE_PARTICULE_ENGINE_H__
+#pragma once
 
 namespace ege {
 	class ParticuleEngine;
@@ -66,8 +64,6 @@ namespace ege {
 			Particule* respown(const char* _particuleType);
 			
 	};
-};
-
-#endif
+}
 
 

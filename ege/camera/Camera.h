@@ -6,8 +6,7 @@
  * @license BSD v3 (see license file)
  */
 
-#ifndef __EGE_CAMERA_H__
-#define __EGE_CAMERA_H__
+#pragma once
 
 
 #include <etk/types.h>
@@ -173,9 +172,6 @@ namespace ege {
 			 * @param[in,out] draw Basic system to draw the debug shape and informations
 			 */
 			virtual void drawDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera) { }
-
 	};
-};
-
-#endif
+}
 

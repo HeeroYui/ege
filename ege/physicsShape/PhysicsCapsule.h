@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_PHYSICS_CAPSULE_H__
-#define __EGE_PHYSICS_CAPSULE_H__
+#pragma once
 
 
 #include <etk/types.h>
@@ -46,7 +44,5 @@ namespace ege {
 				return this;
 			};
 	};
-};
+}
 
-
-#endif

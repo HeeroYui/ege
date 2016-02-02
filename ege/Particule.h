@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_PARTICULE_H__
-#define __EGE_PARTICULE_H__
+#pragma once
 
 namespace ege {
 	class Particule;
@@ -76,8 +74,7 @@ namespace ege {
 			 */
 			virtual void onEnd() {};
 	};
-};
+}
 
-#endif
 
 

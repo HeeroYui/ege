@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_DEBUG_H__
-#define __EGE_DEBUG_H__
+#pragma once
 
 #include <etk/log.h>
 
@@ -39,5 +37,4 @@ namespace ege {
 		} \
 	} while (0)
 
-#endif
 

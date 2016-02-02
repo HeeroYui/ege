@@ -5,10 +5,7 @@
  * 
  * @license APACHE-2 (see license file)
  */
-
-
-#ifndef __APPL_DEBUG_H__
-#define __APPL_DEBUG_H__
+#pragma once
 
 #include <etk/log.h>
 
@@ -49,4 +46,3 @@ namespace appl {
 		} \
 	} while (0)
 
-#endif

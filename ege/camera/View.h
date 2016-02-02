@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_CAMERA_VIEW_H__
-#define __EGE_CAMERA_VIEW_H__
+#pragma once
 
 #include <ege/camera/Camera.h>
 
@@ -81,8 +79,6 @@ namespace ege {
 				virtual float getTetha();
 				virtual float getPsy();
 		};
-	};
-};
-
-#endif
+	}
+}
 

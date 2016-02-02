@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_ELEMENT_BASE_H__
-#define __EGE_ELEMENT_BASE_H__
+#pragma once
 
 #include <ege/elements/Element.h>
 
@@ -37,8 +35,5 @@ namespace ege {
 			virtual const vec3& getPosition();
 			virtual void setPosition(const vec3& _pos);
 	};
-};
-
-#endif
-
+}
 

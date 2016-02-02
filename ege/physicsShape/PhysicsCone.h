@@ -5,14 +5,10 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_PHYSICS_CONE_H__
-#define __EGE_PHYSICS_CONE_H__
-
+#pragma once
 
 #include <etk/types.h>
 #include <ege/physicsShape/PhysicsShape.h>
-
 
 namespace ege {
 	class PhysicsCone : public ege::PhysicsShape {
@@ -46,7 +42,5 @@ namespace ege {
 				return this;
 			};
 	};
-};
+}
 
-
-#endif

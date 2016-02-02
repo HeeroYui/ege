@@ -5,9 +5,7 @@
  * 
  * @license APACHE-2 (see license file)
  */
-
-#ifndef __APPL_WINDOWS_H__
-#define __APPL_WINDOWS_H__
+#pragma once
 
 #include <ewol/widget/Windows.h>
 #include <ege/Environement.h>
@@ -34,7 +32,5 @@ namespace appl {
 			vec2 m_oldScreenPos;
 			std::pair<vec3,vec3> m_destination;
 	};
-};
+}
 
-
-#endif

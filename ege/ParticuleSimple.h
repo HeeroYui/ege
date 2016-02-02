@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_PARTICULE_SIMPLE_H__
-#define __EGE_PARTICULE_SIMPLE_H__
+#pragma once
 
 namespace ege {
 	class ParticuleSimple;
@@ -65,8 +63,6 @@ namespace ege {
 			virtual void setScale(const vec3& _scale);
 			virtual void setScaleExpend(const vec3& _scaleExpand);
 	};
-};
-
-#endif
+}
 
 

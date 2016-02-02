@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_MESH_H__
-#define __EGE_MESH_H__
+#pragma once
 
 #include <etk/types.h>
 #include <etk/Hash.h>
@@ -298,8 +296,6 @@ namespace ege {
 				int32_t findTextureInList(const vec2& _uv);
 				int32_t findColorInList(const etk::Color<float>& _color);
 		};
-	};
-};
+	}
+}
 
-
-#endif

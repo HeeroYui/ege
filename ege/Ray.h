@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_RAY_H__
-#define __EGE_RAY_H__
+#pragma once
 
 #include <etk/math/Vector3D.h>
 namespace ege {
@@ -73,6 +71,5 @@ namespace ege {
 			vec3 testRayZeroPlane();
 	};
 	std::ostream& operator <<(std::ostream& _os, const ege::Ray& _obj);
-};
+}
 
-#endif

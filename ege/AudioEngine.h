@@ -5,14 +5,10 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_AUDIO_ENGINE_H__
-#define __EGE_AUDIO_ENGINE_H__
+#pragma once
 
 namespace ege {
 	
-};
-
-#endif
+}
 
 

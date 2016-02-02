@@ -5,9 +5,7 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#ifndef __EGE_FACE_H__
-#define __EGE_FACE_H__
+#pragma once
 
 namespace ege {
 	/**
@@ -101,6 +99,5 @@ namespace ege {
 				m_color[2] = _c3;
 			}
 	};
-};
+}
 
-#endif
