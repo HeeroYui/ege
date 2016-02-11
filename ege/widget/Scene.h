@@ -30,7 +30,7 @@ class btDynamicsWorld;
 #include <LinearMath/btScalar.h>
 class btVector3;
 #include <ewol/widget/Widget.h>
-#include <ewol/signal/Signal.h>
+#include <esignal/Signal.h>
 
 namespace ege {
 	namespace widget {
@@ -39,7 +39,7 @@ namespace ege {
 				std::shared_ptr<ege::Environement> m_env;
 				std::shared_ptr<ewol::resource::Colored3DObject> m_debugDrawProperty;
 			public:
-				ewol::Signal<std::shared_ptr<ewol::resource::Colored3DObject>/*, std::shared_ptr<ege::Camera>*/> signalDisplayDebug; //!< emit a signal to the application to draw the debug (@ref setDebugPhysic)
+				esignal::Signal<std::shared_ptr<ewol::resource::Colored3DObject>/*, std::shared_ptr<ege::Camera>*/> signalDisplayDebug; //!< emit a signal to the application to draw the debug (@ref setDebugPhysic)
 			protected:
 				/**
 				 * @brief Constructor of the widget classes
@@ -73,14 +73,14 @@ namespace ege {
 				std::vector<ege::Environement::ResultNearestElement> m_displayElementOrdered;
 			protected: // Derived function
 				virtual void onDraw();
-				virtual void onParameterChangeValue(const ewol::parameter::Ref& _paramPointer);
+				virtual void onPropertyChangeValue(const eproperty::Ref& _paramPointer);
 			public: // Derived function
 				virtual void systemDraw(const ewol::DrawProperty& _displayProp);
 				virtual void onRegenerateDisplay();
 				virtual void periodicCall(const ewol::event::Time& _event);
 				virtual void calculateSize(const vec2& _available);
 			protected:
-				ewol::parameter::Value<bool> m_debugPhysic; //!< display Physic Debug
+				eproperty::Value<bool> m_debugPhysic; //!< display Physic Debug
 			public:
 				/**
 				 * @brief Set the debug display of the physic engine
@@ -97,7 +97,7 @@ namespace ege {
 					return m_debugPhysic.get();
 				}
 			protected:
-				ewol::parameter::Value<bool> m_debugApplication; //!< display Application Debug
+				eproperty::Value<bool> m_debugApplication; //!< display Application Debug
 			public:
 				/**
 				 * @brief Set the debug display of the application

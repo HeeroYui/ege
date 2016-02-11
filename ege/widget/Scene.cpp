@@ -185,8 +185,8 @@ void ege::widget::Scene::systemDraw(const ewol::DrawProperty& _displayProp) {
 	#endif
 }
 
-void ege::widget::Scene::onParameterChangeValue(const ewol::parameter::Ref& _paramPointer) {
-	ewol::Widget::onParameterChangeValue(_paramPointer);
+void ege::widget::Scene::onPropertyChangeValue(const eproperty::Ref& _paramPointer) {
+	ewol::Widget::onPropertyChangeValue(_paramPointer);
 	/*
 	if (_paramPointer == m_isRunning) {
 		// nothing to do ...

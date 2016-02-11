@@ -388,7 +388,7 @@ std::shared_ptr<ege::Camera> ege::Environement::getCamera(const std::string& _na
 }
 
 
-void ege::Environement::onParameterChangeValue(const ewol::parameter::Ref& _paramPointer) {
+void ege::Environement::onPropertyChangeValue(const eproperty::Ref& _paramPointer) {
 	if (_paramPointer == m_status) {
 		if (m_status.get() == gameStart) {
 			getObjectManager().periodicCall.bind(shared_from_this(), &ege::Environement::periodicCall);

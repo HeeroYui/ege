@@ -23,7 +23,7 @@ class btDynamicsWorld;
 #include <exml/exml.h>
 #include <ege/ParticuleEngine.h>
 #include <ewol/object/Object.h>
-#include <ewol/signal/Signal.h>
+#include <esignal/Signal.h>
 #include <ewol/event/Time.h>
 #include <ewol/parameter/Value.h>
 #include <ege/resource/Mesh.h>
@@ -89,7 +89,7 @@ namespace ege {
 	class Environement : public ewol::Object {
 		public:
 			// extern event
-			ewol::Signal<float> signalPlayTimeChange;
+			esignal::Signal<float> signalPlayTimeChange;
 		private:
 			//std::shared_ptr<btDynamicsWorld> m_dynamicsWorld; //!< curent system world description
 			ege::physics::Engine m_physicEngine; //!< EGE physic engine interface.
@@ -101,7 +101,7 @@ namespace ege {
 			DECLARE_FACTORY(Environement);
 			virtual ~Environement() { };
 		protected:
-			ewol::parameter::List<enum gameStatus> m_status; //!< the display is running (not in pause)
+			eproperty::List<enum gameStatus> m_status; //!< the display is running (not in pause)
 		public:
 			/**
 			 * @brief Get the game status.
@@ -118,7 +118,7 @@ namespace ege {
 				m_status.set(_value);
 			}
 		protected:
-			ewol::parameter::Value<float> m_ratio; //!< Speed ratio
+			eproperty::Value<float> m_ratio; //!< Speed ratio
 		public:
 			/**
 			 * @brief Get the game speed ratio.
@@ -272,7 +272,7 @@ namespace ege {
 			const std::vector<std::shared_ptr<ege::resource::Mesh>>& getStaticMeshToDraw() {
 				return m_listMeshToDrawFirst;
 			}
-			virtual void onParameterChangeValue(const ewol::parameter::Ref& _paramPointer);
+			virtual void onPropertyChangeValue(const eproperty::Ref& _paramPointer);
 	};
 }
 
