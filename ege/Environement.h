@@ -12,6 +12,7 @@ namespace ege {
 	class ElementInteraction;
 };
 #include <ege/camera/Camera.h>
+#include <ege/ParticuleEngine.h>
 
 #include <etk/types.h>
 #include <BulletDynamics/Dynamics/btActionInterface.h>
@@ -21,11 +22,10 @@ class btDynamicsWorld;
 #include <etk/math/Vector3D.h>
 #include <ejson/ejson.h>
 #include <exml/exml.h>
-#include <ege/ParticuleEngine.h>
 #include <ewol/object/Object.h>
 #include <esignal/Signal.h>
 #include <ewol/event/Time.h>
-#include <ewol/parameter/Value.h>
+#include <eproperty/Value.h>
 #include <ege/resource/Mesh.h>
 #include <ege/physics/Engine.h>
 

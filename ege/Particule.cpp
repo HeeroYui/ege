@@ -8,13 +8,14 @@
 
 #include <ege/debug.h>
 #include <ege/Particule.h>
+#include <ege/ParticuleEngine.h>
 
 #undef __class__
 #define __class__	"Particule"
 
-ege::Particule::Particule(ege::ParticuleEngine& _particuleEngine, const char* _particuleType) :
+ege::Particule::Particule(ege::ParticuleEngine* _particuleEngine, const char* _particuleType) :
   m_particuleEngine(_particuleEngine),
   m_particuleType(_particuleType) {
-	m_particuleEngine.add(this);
+	m_particuleEngine->add(this);
 }
 

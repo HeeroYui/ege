@@ -293,7 +293,7 @@ ege::Environement::Environement() :
   m_listElement(),
   m_status(*this, "status", gameStop, "Satus of the activity of the Environement"),
   m_ratio(*this, "ratio", 1.0f, "game speed ratio"),
-  m_particuleEngine(*this) {
+  m_particuleEngine(this) {
 	// nothing to do ...
 	m_status.add(gameStart, "start", "Scene is started");
 	m_status.add(gamePause, "pause", "Scene is paused");

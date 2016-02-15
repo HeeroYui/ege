@@ -32,7 +32,7 @@ namespace ege {
 			 * @param[in] _name Name of the particule.
 			 * @param[in] _standalone The particule are created and have there own life (no dynamic control)
 			 */
-			ParticuleSimple(ege::ParticuleEngine& _particuleEngine, const char* _particuleType);
+			ParticuleSimple(ege::ParticuleEngine* _particuleEngine, const char* _particuleType);
 			/**
 			 * @brief Destructor.
 			 */

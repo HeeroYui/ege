@@ -8,7 +8,7 @@
 #pragma once
 
 namespace ege {
-	class Particule;
+	class ParticuleEngine;
 };
 
 #include <etk/types.h>
@@ -24,7 +24,7 @@ namespace ege {
 	 */
 	class Particule {
 		protected:
-			ege::ParticuleEngine& m_particuleEngine;
+			ege::ParticuleEngine* m_particuleEngine;
 			const char* m_particuleType;
 		public:
 			/**
@@ -32,7 +32,7 @@ namespace ege {
 			 * @param[in] _particuleEngine reference on the particule engine ...
 			 * @param[in] _particuleType Type of the particule (set nullptr if you did not want to use the respowner ...)
 			 */
-			Particule(ege::ParticuleEngine& _particuleEngine, const char* _particuleType = nullptr);
+			Particule(ege::ParticuleEngine* _particuleEngine, const char* _particuleType = nullptr);
 			/**
 			 * @brief Destructor.
 			 */

@@ -78,7 +78,7 @@ namespace ege {
 				virtual void systemDraw(const ewol::DrawProperty& _displayProp);
 				virtual void onRegenerateDisplay();
 				virtual void periodicCall(const ewol::event::Time& _event);
-				virtual void calculateSize(const vec2& _available);
+				virtual void calculateSize();
 			protected:
 				eproperty::Value<bool> m_debugPhysic; //!< display Physic Debug
 			public:

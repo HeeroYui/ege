@@ -8,11 +8,13 @@
 
 #include <ege/debug.h>
 #include <ege/ParticuleEngine.h>
+#include <ege/Environement.h>
+#include <ege/Particule.h>
 
 #undef __class__
 #define __class__ "ParticuleEngine"
 
-ege::ParticuleEngine::ParticuleEngine(ege::Environement& _env) :
+ege::ParticuleEngine::ParticuleEngine(ege::Environement* _env) :
   m_env(_env) {
 	
 }

@@ -5,24 +5,21 @@
  * 
  * @license BSD v3 (see license file)
  */
-
-#include <ege/Environement.h>
 #pragma once
-
 namespace ege {
-	class ParticuleEngine;
+	class Environement;
+	class Particule;
 };
-
 #include <etk/types.h>
 #include <vector>
-#include <ege/Particule.h>
+#include <ege/camera/Camera.h>
 
 namespace ege {
 	class ParticuleEngine {
 		private:
-			ege::Environement& m_env;
+			ege::Environement* m_env;
 		public:
-			ParticuleEngine(ege::Environement& _env); // note : need the engine to register has an dynamic element ... (the first ...)
+			ParticuleEngine(ege::Environement* _env); // note : need the engine to register has an dynamic element ... (the first ...)
 			~ParticuleEngine();
 		private:
 			std::vector<Particule*> m_particuleList; //!< all particule created and active

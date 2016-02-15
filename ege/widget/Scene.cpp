@@ -47,7 +47,7 @@ void ege::widget::Scene::init(std::shared_ptr<ege::Environement> _env) {
 	m_env = _env;
 	ewol::Widget::init();
 	setKeyboardRepeate(false);
-	setCanHaveFocus(true);
+	propertyCanFocus.set(true);
 	periodicCallEnable();
 	m_debugDrawProperty = ewol::resource::Colored3DObject::create();
 }
@@ -207,8 +207,8 @@ void ege::widget::Scene::setCamera(const std::string& _cameraName) {
 	}
 }
 
-void ege::widget::Scene::calculateSize(const vec2& _available) {
-	ewol::Widget::calculateSize(_available);
+void ege::widget::Scene::calculateSize() {
+	ewol::Widget::calculateSize();
 	// Update camera aspect ratio:
 	std::shared_ptr<ege::Camera> camera = m_env->getCamera(m_cameraName);
 	if (camera != nullptr) {
