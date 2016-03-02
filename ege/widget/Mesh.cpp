@@ -17,7 +17,7 @@
 
 
 ege::widget::Mesh::Mesh():
-  signalPressed(*this, "pressed"),
+  signalPressed(this, "pressed", ""),
   m_position(0,0,0),
   m_angle(0,0,0),
   m_angleSpeed(0,0,0),

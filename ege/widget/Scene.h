@@ -35,11 +35,16 @@ class btVector3;
 namespace ege {
 	namespace widget {
 		class Scene : public ewol::Widget {
+			public:
+				// signals
+				esignal::ISignal<std::shared_ptr<ewol::resource::Colored3DObject>/*, std::shared_ptr<ege::Camera>*/> signalDisplayDebug; //!< emit a signal to the application to draw the debug (@ref setDebugPhysic)
+				// properties
+				eproperty::Value<bool> propertyDebugPhysic; //!< display Physic Debug
+				eproperty::Value<bool> propertyDebugApplication; //!< display Application Debug
 			protected:
 				std::shared_ptr<ege::Environement> m_env;
 				std::shared_ptr<ewol::resource::Colored3DObject> m_debugDrawProperty;
 			public:
-				esignal::Signal<std::shared_ptr<ewol::resource::Colored3DObject>/*, std::shared_ptr<ege::Camera>*/> signalDisplayDebug; //!< emit a signal to the application to draw the debug (@ref setDebugPhysic)
 			protected:
 				/**
 				 * @brief Constructor of the widget classes
@@ -73,46 +78,11 @@ namespace ege {
 				std::vector<ege::Environement::ResultNearestElement> m_displayElementOrdered;
 			protected: // Derived function
 				virtual void onDraw();
-				virtual void onPropertyChangeValue(const eproperty::Ref& _paramPointer);
 			public: // Derived function
 				virtual void systemDraw(const ewol::DrawProperty& _displayProp);
 				virtual void onRegenerateDisplay();
 				virtual void periodicCall(const ewol::event::Time& _event);
 				virtual void calculateSize();
-			protected:
-				eproperty::Value<bool> m_debugPhysic; //!< display Physic Debug
-			public:
-				/**
-				 * @brief Set the debug display of the physic engine
-				 * @param[in] _status new status of the debug
-				 */
-				void setDebugPhysic(bool _status) {
-					m_debugPhysic.set(_status);
-				}
-				/**
-				 * @brief Get the debug display status of the physic engine
-				 * @return The current status of the debug.
-				 */
-				bool getDebugPhysic() {
-					return m_debugPhysic.get();
-				}
-			protected:
-				eproperty::Value<bool> m_debugApplication; //!< display Application Debug
-			public:
-				/**
-				 * @brief Set the debug display of the application
-				 * @param[in] _status new status of the debug
-				 */
-				void setDebugApplication(bool _status) {
-					m_debugApplication.set(_status);
-				}
-				/**
-				 * @brief Get the debug display status of the application
-				 * @return The current status of the debug.
-				 */
-				bool getDebugApplication() {
-					return m_debugApplication.get();
-				}
 		};
 	}
 }

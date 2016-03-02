@@ -289,15 +289,20 @@ void ege::Environement::generateInteraction(ege::ElementInteraction& _event) {
 }
 
 ege::Environement::Environement() :
-  signalPlayTimeChange(*this, "time-change"),
+  signalPlayTimeChange(this, "time-change", ""),
+  propertyStatus(this, "status",
+                       gameStop,
+                       "Satus of the activity of the Environement",
+                       &ege::Environement::onChangePropertyStatus),
+  propertyRatio(this, "ratio",
+                      1.0f,
+                      "game speed ratio"),
   m_listElement(),
-  m_status(*this, "status", gameStop, "Satus of the activity of the Environement"),
-  m_ratio(*this, "ratio", 1.0f, "game speed ratio"),
   m_particuleEngine(this) {
 	// nothing to do ...
-	m_status.add(gameStart, "start", "Scene is started");
-	m_status.add(gamePause, "pause", "Scene is paused");
-	m_status.add(gameStop, "stop", "Scene is stopped");
+	propertyStatus.add(gameStart, "start", "Scene is started");
+	propertyStatus.add(gamePause, "pause", "Scene is paused");
+	propertyStatus.add(gameStop, "stop", "Scene is stopped");
 }
 
 void ege::Environement::init(const std::string& _name) {
@@ -310,13 +315,13 @@ void ege::Environement::clear() {
 }
 
 
-void ege::Environement::periodicCall(const ewol::event::Time& _event) {
+void ege::Environement::onCallbackPeriodicCall(const ewol::event::Time& _event) {
 	float curentDelta = _event.getDeltaCall();
 	EGE_VERBOSE("periodic call : " << _event);
 	// small hack to change speed ...
-	curentDelta *= m_ratio;
+	curentDelta *= *propertyRatio;
 	// check if the processing is availlable
-	if (m_status.get() == gameStop) {
+	if (propertyStatus.get() == gameStop) {
 		return;
 	}
 	// update game time:
@@ -388,12 +393,12 @@ std::shared_ptr<ege::Camera> ege::Environement::getCamera(const std::string& _na
 }
 
 
-void ege::Environement::onPropertyChangeValue(const eproperty::Ref& _paramPointer) {
-	if (_paramPointer == m_status) {
-		if (m_status.get() == gameStart) {
-			getObjectManager().periodicCall.bind(shared_from_this(), &ege::Environement::periodicCall);
-		} else {
-			getObjectManager().periodicCall.release(shared_from_this());
-		}
+void ege::Environement::onChangePropertyStatus() {
+	if (propertyStatus.get() == gameStart) {
+		m_periodicCallConnection = getObjectManager().periodicCall.connect(this, &ege::Environement::onCallbackPeriodicCall);
+	} else {
+		m_periodicCallConnection.disconnect();
 	}
 }
+
+

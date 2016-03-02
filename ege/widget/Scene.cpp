@@ -36,10 +36,14 @@ namespace etk {
 };
 
 ege::widget::Scene::Scene() :
-  signalDisplayDebug(*this, "drawDebug", "Call to draw debug after all elements"),
-  m_cameraName("default"),
-  m_debugPhysic(*this, "debugPhysic", false, "Display debug of the physic interface"),
-  m_debugApplication(*this, "debugApplication", false, "Display debug of the application") {
+  signalDisplayDebug(this, "drawDebug", "Call to draw debug after all elements"),
+  propertyDebugPhysic(this, "debugPhysic",
+                            false,
+                            "Display debug of the physic interface"),
+  propertyDebugApplication(this, "debugApplication",
+                                 false,
+                                 "Display debug of the application"),
+  m_cameraName("default") {
 	addObjectType("ege::widget::Scene");
 }
 
@@ -118,7 +122,7 @@ void ege::widget::Scene::onDraw() {
 				m_displayElementOrdered[iii].element->draw(pass);
 			}
 		}
-		if (m_debugPhysic.get() == true) {
+		if (propertyDebugPhysic.get() == true) {
 			// Draw debug ... (Object)
 			for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
 				m_displayElementOrdered[iii].element->drawDebug(m_debugDrawProperty, camera);
@@ -131,7 +135,7 @@ void ege::widget::Scene::onDraw() {
 				}
 			}
 		}
-		if (m_debugApplication.get() == true) {
+		if (propertyDebugApplication.get() == true) {
 			// Draw debug ... (User)
 			signalDisplayDebug.emit(m_debugDrawProperty);
 		}
@@ -185,15 +189,6 @@ void ege::widget::Scene::systemDraw(const ewol::DrawProperty& _displayProp) {
 	#endif
 }
 
-void ege::widget::Scene::onPropertyChangeValue(const eproperty::Ref& _paramPointer) {
-	ewol::Widget::onPropertyChangeValue(_paramPointer);
-	/*
-	if (_paramPointer == m_isRunning) {
-		// nothing to do ...
-	}
-	*/
-}
-
 
 void ege::widget::Scene::setCamera(const std::string& _cameraName) {
 	if (m_cameraName == _cameraName) {
@@ -216,4 +211,6 @@ void ege::widget::Scene::calculateSize() {
 	}
 }
 
+#include <esignal/details/ISignal.hxx>
+template class esignal::ISignal<std::shared_ptr<ewol::resource::Colored3DObject>>;
 

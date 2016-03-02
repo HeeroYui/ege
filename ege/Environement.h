@@ -88,8 +88,11 @@ namespace ege {
 	
 	class Environement : public ewol::Object {
 		public:
-			// extern event
-			esignal::Signal<float> signalPlayTimeChange;
+			// Signals
+			esignal::ISignal<float> signalPlayTimeChange;
+			// properties:
+			eproperty::List<enum gameStatus> propertyStatus; //!< the display is running (not in pause)
+			eproperty::Value<float> propertyRatio; //!< Speed ratio
 		private:
 			//std::shared_ptr<btDynamicsWorld> m_dynamicsWorld; //!< curent system world description
 			ege::physics::Engine m_physicEngine; //!< EGE physic engine interface.
@@ -101,39 +104,6 @@ namespace ege {
 			DECLARE_FACTORY(Environement);
 			virtual ~Environement() { };
 		protected:
-			eproperty::List<enum gameStatus> m_status; //!< the display is running (not in pause)
-		public:
-			/**
-			 * @brief Get the game status.
-			 * @return the current status.
-			 */
-			enum gameStatus getGameStatus() {
-				return m_status.get();
-			}
-			/**
-			 * @brief Set the game status.
-			 * @param[in] _value New game status.
-			 */
-			void setGameStatus(enum gameStatus _value) {
-				m_status.set(_value);
-			}
-		protected:
-			eproperty::Value<float> m_ratio; //!< Speed ratio
-		public:
-			/**
-			 * @brief Get the game speed ratio.
-			 * @return the current ratio.
-			 */
-			float getSpeedRatio() {
-				return m_ratio.get();
-			}
-			/**
-			 * @brief Set the game ratio.
-			 * @param[in] _value New game ratio.
-			 */
-			void setSpeedRatio(float _value) {
-				m_ratio.set(_value);
-			}
 		protected:
 			std::map<std::string, std::shared_ptr<ege::Camera>> m_listCamera; //!< list of all camera in the world
 		public:
@@ -260,9 +230,9 @@ namespace ege {
 		protected:
 			int64_t m_gameTime; //!< time of the game running
 		public:
-			
+			esignal::Connection m_periodicCallConnection;
 		private:
-			void periodicCall(const ewol::event::Time& _event);
+			void onCallbackPeriodicCall(const ewol::event::Time& _event);
 		protected:
 			std::vector<std::shared_ptr<ege::resource::Mesh>> m_listMeshToDrawFirst;
 		public:
@@ -272,7 +242,7 @@ namespace ege {
 			const std::vector<std::shared_ptr<ege::resource::Mesh>>& getStaticMeshToDraw() {
 				return m_listMeshToDrawFirst;
 			}
-			virtual void onPropertyChangeValue(const eproperty::Ref& _paramPointer);
+			virtual void onChangePropertyStatus();
 	};
 }
 
