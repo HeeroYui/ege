@@ -9,7 +9,7 @@
 #include <ege/debug.h>
 
 int32_t ege::getLogId() {
-	static int32_t g_val = etk::log::registerInstance("ege");
+	static int32_t g_val = elog::registerInstance("ege");
 	return g_val;
 }
 

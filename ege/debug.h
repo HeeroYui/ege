@@ -7,12 +7,12 @@
  */
 #pragma once
 
-#include <etk/log.h>
+#include <elog/log.h>
 
 namespace ege {
 	int32_t getLogId();
 };
-#define EGE_BASE(info,data)  TK_LOG_BASE(ege::getLogId(),info,data)
+#define EGE_BASE(info,data)  ELOG_BASE(ege::getLogId(),info,data)
 
 #define EGE_CRITICAL(data)      EGE_BASE(1, data)
 #define EGE_ERROR(data)         EGE_BASE(2, data)
