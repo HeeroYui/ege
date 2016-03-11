@@ -25,12 +25,12 @@ ege::widget::Mesh::Mesh():
 	addObjectType("ege::widget::Mesh");
 }
 
-void ege::widget::Mesh::init(const std::string& _filename) {
-	ewol::Widget::init(_filename);
-	m_meshName = _filename;
+void ege::widget::Mesh::init() {
+	ewol::Widget::init();
+	m_meshName = *propertyName;
 	// Limit event at 1:
 	setMouseLimit(1);
-	if (_filename!="") {
+	if (*propertyName!="") {
 		m_object = ege::resource::Mesh::create(m_meshName);
 		if (nullptr == m_object) {
 			EGE_ERROR("Can not load the resource : \"" << m_meshName << "\"");

@@ -305,11 +305,6 @@ ege::Environement::Environement() :
 	propertyStatus.add(gameStop, "stop", "Scene is stopped");
 }
 
-void ege::Environement::init(const std::string& _name) {
-	ewol::Object::init(_name);
-	
-}
-
 void ege::Environement::clear() {
 	m_listElement.clear();
 }

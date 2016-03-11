@@ -47,8 +47,7 @@ ege::widget::Scene::Scene() :
 	addObjectType("ege::widget::Scene");
 }
 
-void ege::widget::Scene::init(std::shared_ptr<ege::Environement> _env) {
-	m_env = _env;
+void ege::widget::Scene::init() {
 	ewol::Widget::init();
 	setKeyboardRepeate(false);
 	propertyCanFocus.set(true);

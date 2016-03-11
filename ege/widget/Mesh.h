@@ -30,7 +30,7 @@ namespace ege {
 				float m_cameraDistance;
 			protected:
 				Mesh();
-				void init(const std::string& _filename); // automatic considering in the appl Data older
+				void init(); // automatic considering in the appl Data older
 			public:
 				virtual ~Mesh();
 			public: // Derived function

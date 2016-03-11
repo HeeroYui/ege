@@ -51,7 +51,11 @@ namespace ege {
 				 * @return (no execption generated (not managed in embended platform))
 				 */
 				Scene();
-				void init(std::shared_ptr<ege::Environement> _env);
+				void init();
+			public:
+				void setEnv(std::shared_ptr<ege::Environement> _env) {
+					m_env = _env;
+				}
 			public:
 				DECLARE_FACTORY(Scene);
 				/**

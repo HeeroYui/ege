@@ -99,7 +99,6 @@ namespace ege {
 			std::vector<std::shared_ptr<ege::Element>> m_listElement; //!< List of all element added in the Game
 		protected:
 			Environement();
-			void init(const std::string& _name="NoName");
 		public:
 			DECLARE_FACTORY(Environement);
 			virtual ~Environement() { };
