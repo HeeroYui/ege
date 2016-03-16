@@ -25,6 +25,7 @@
 
 appl::Windows::Windows() {
 	addObjectType("appl::Windows");
+	propertyTitle.setDirectCheck("example ege : DoubleView");
 }
 
 
@@ -69,7 +70,6 @@ static std::shared_ptr<ege::resource::Mesh> createViewBoxStar() {
 
 void appl::Windows::init() {
 	ewol::widget::Windows::init();
-	setTitle("example ege : DoubleView");
 	
 	m_env = ege::Environement::create();
 	// Create basic Camera
@@ -86,40 +86,45 @@ void appl::Windows::init() {
 	std::shared_ptr<ege::camera::View> camera4 = std::make_shared<ege::camera::View>(vec3(0,100,0), vec3(0,0,0));
 	m_env->addCamera("left", camera4);
 	
-	std::shared_ptr<ewol::widget::Sizer> tmpSizerVert = ewol::widget::Sizer::create(ewol::widget::Sizer::modeVert);
+	std::shared_ptr<ewol::widget::Sizer> tmpSizerVert = ewol::widget::Sizer::create();
 	if (tmpSizerVert == nullptr) {
 		APPL_CRITICAL("Can not allocate widget ==> display might be in error");
 	} else {
+		tmpSizerVert->propertyMode.set(ewol::widget::Sizer::modeVert);
 		setSubWidget(tmpSizerVert);
-		std::shared_ptr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create(m_env);
+		std::shared_ptr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create();
 		if (tmpWidget == nullptr) {
 			APPL_CRITICAL("Can not allocate widget ==> display might be in error");
 		} else {
-			tmpWidget->setExpand(bvec2(true,true));
-			tmpWidget->setFill(bvec2(true,true));
+			tmpWidget->setEnv(m_env);
+			tmpWidget->propertyExpand.set(bvec2(true,true));
+			tmpWidget->propertyFill.set(bvec2(true,true));
 			tmpWidget->setCamera("basic");
 			tmpSizerVert->subWidgetAdd(tmpWidget);
 		}
-		std::shared_ptr<ewol::widget::Sizer> tmpSizerHori = ewol::widget::Sizer::create(ewol::widget::Sizer::modeHori);
+		std::shared_ptr<ewol::widget::Sizer> tmpSizerHori = ewol::widget::Sizer::create();
 		if (tmpSizerHori == nullptr) {
 			APPL_CRITICAL("Can not allocate widget ==> display might be in error");
 		} else {
+			tmpSizerHori->propertyMode.set(ewol::widget::Sizer::modeHori);
 			tmpSizerVert->subWidgetAdd(tmpSizerHori);
-			tmpWidget = ege::widget::Scene::create(m_env);
+			tmpWidget = ege::widget::Scene::create();
 			if (tmpWidget == nullptr) {
 				APPL_CRITICAL("Can not allocate widget ==> display might be in error");
 			} else {
-				tmpWidget->setExpand(bvec2(true,true));
-				tmpWidget->setFill(bvec2(true,true));
+				tmpWidget->setEnv(m_env);
+				tmpWidget->propertyExpand.set(bvec2(true,true));
+				tmpWidget->propertyFill.set(bvec2(true,true));
 				tmpWidget->setCamera("front");
 				tmpSizerHori->subWidgetAdd(tmpWidget);
 			}
-			tmpWidget = ege::widget::Scene::create(m_env);
+			tmpWidget = ege::widget::Scene::create();
 			if (tmpWidget == nullptr) {
 				APPL_CRITICAL("Can not allocate widget ==> display might be in error");
 			} else {
-				tmpWidget->setExpand(bvec2(true,true));
-				tmpWidget->setFill(bvec2(true,true));
+				tmpWidget->setEnv(m_env);
+				tmpWidget->propertyExpand.set(bvec2(true,true));
+				tmpWidget->propertyFill.set(bvec2(true,true));
 				tmpWidget->setCamera("top");
 				tmpSizerHori->subWidgetAdd(tmpWidget);
 			}

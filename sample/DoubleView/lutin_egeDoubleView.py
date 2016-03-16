@@ -28,6 +28,9 @@ def get_compagny_name():
 def get_maintainer():
 	return ["Mr DUPIN Edouard <yui.heero@gmail.com>"]
 
+def get_version():
+	return [0,1]
+
 def create(target, module_name):
 	# module name is 'edn' and type binary.
 	my_module = module.Module(__file__, module_name, get_type())
@@ -44,8 +47,12 @@ def create(target, module_name):
 	
 	my_module.copy_path("data/*")
 	
-	# set the package properties :
-	my_module.pkg_set("VERSION", "0.0.0")
+	my_module.compile_flags('c++', [
+		"-DPROJECT_NAME=\"\\\"" + my_module.name + "\\\"\"",
+		"-DAPPL_VERSION=\"\\\"" + tools.version_to_string(get_version()) + "\\\"\""
+		])
+	
+	# set the package properties:
 	my_module.pkg_set("VERSION_CODE", "0")
 	my_module.pkg_set("COMPAGNY_TYPE", get_compagny_type())
 	my_module.pkg_set("COMPAGNY_NAME", get_compagny_name())

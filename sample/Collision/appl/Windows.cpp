@@ -25,6 +25,7 @@
 
 appl::Windows::Windows() {
 	addObjectType("appl::Windows");
+	propertyTitle.setDirectCheck("example ege : DoubleView");
 }
 
 
@@ -69,9 +70,8 @@ static std::shared_ptr<ege::resource::Mesh> createViewBoxStar() {
 
 void appl::Windows::init() {
 	ewol::widget::Windows::init();
-	setTitle("example ege : DoubleView");
 	
-	getObjectManager().periodicCall.bind(shared_from_this(), &appl::Windows::onCallbackPeriodicCheckCollision);
+	getObjectManager().periodicCall.connect(shared_from_this(), &appl::Windows::onCallbackPeriodicCheckCollision);
 	
 	m_env = ege::Environement::create();
 	// Create basic Camera
@@ -79,12 +79,13 @@ void appl::Windows::init() {
 	m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),40*std::cos(m_anglePsy)));
 	m_env->addCamera("basic", m_camera);
 	
-	std::shared_ptr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create(m_env);
+	std::shared_ptr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create();
 	if (tmpWidget == nullptr) {
 		APPL_CRITICAL("Can not allocate widget ==> display might be in error");
 	} else {
-		tmpWidget->setExpand(bvec2(true,true));
-		tmpWidget->setFill(bvec2(true,true));
+		tmpWidget->setEnv(m_env);
+		tmpWidget->propertyExpand.set(bvec2(true,true));
+		tmpWidget->propertyFill.set(bvec2(true,true));
 		tmpWidget->setCamera("basic");
 		setSubWidget(tmpWidget);
 	}
