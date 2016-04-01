@@ -35,7 +35,7 @@ namespace ege {
 				static std::shared_ptr<ege::resource::Mesh> createCube(float _size=1.0f, const std::string& _materialName="basics", const etk::Color<float>& _color=etk::color::white);
 			public:
 				/**
-				 * @not-in-doc
+				 * @not_in_doc
 				 */
 				enum normalMode {
 					normalModeNone,
@@ -154,7 +154,7 @@ namespace ege {
 				void addLines(const std::string& _layerName, const std::vector<vec3>& _list, const std::vector<etk::Color<float>>& _color);
 				
 				/**
-				 * @not-in-doc
+				 * @not_in_doc
 				 * @brief draw a colored triangle (usefull for debug and test)
 				 * @param[in] _layerName Material and face indexing layer name
 				 * @param[in] _pos1 First point position
@@ -168,7 +168,7 @@ namespace ege {
 					addTriangle(_layerName, _pos1, _pos2, _pos3, _color, _color, _color);
 				}
 				/**
-				 * @not-in-doc
+				 * @not_in_doc
 				 * @brief draw a colored triangle (usefull for debug and test)
 				 * @param[in] _layerName Material and face indexing layer name
 				 * @param[in] _pos1 First point position
@@ -181,7 +181,7 @@ namespace ege {
 				void addTriangle(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3,
 				                 const etk::Color<float>& _color1, const etk::Color<float>& _color2, const etk::Color<float>& _color3);
 				/**
-				 * @not-in-doc
+				 * @not_in_doc
 				 * @brief draw a colored quad (usefull for debug and test)
 				 * @param[in] _layerName Material and face indexing layer name
 				 * @param[in] _pos1 First point position
@@ -194,7 +194,7 @@ namespace ege {
 					addQuad(_layerName, _pos1, _pos2, _pos3, _pos4, _color, _color, _color, _color);
 				}
 				/**
-				 * @not-in-doc
+				 * @not_in_doc
 				 * @brief draw a colored quad (usefull for debug and test)
 				 * @param[in] _layerName Material and face indexing layer name
 				 * @param[in] _pos1 First point position
@@ -212,7 +212,7 @@ namespace ege {
 					addTriangle(_layerName, _pos1, _pos3, _pos4, _color1, _color3, _color4);
 				}
 				/**
-				 * @not-in-doc
+				 * @not_in_doc
 				 * @brief draw a textured colored triangle (usefull for debug and test)
 				 * @param[in] _layerName Material and face indexing layer name
 				 * @param[in] _pos1 First point position
@@ -230,7 +230,7 @@ namespace ege {
 					addTriangle(_layerName, _pos1, _pos2, _pos3, _uv1, _uv2, _uv3, _color, _color, _color);
 				}
 				/**
-				 * @not-in-doc
+				 * @not_in_doc
 				 * @brief draw a textured colored triangle (usefull for debug and test)
 				 * @param[in] _layerName Material and face indexing layer name
 				 * @param[in] _pos1 First point position
@@ -248,7 +248,7 @@ namespace ege {
 				                 const vec2& _uv1, const vec2& _uv2, const vec2& _uv3,
 				                 const etk::Color<float>& _color1=etk::color::white, const etk::Color<float>& _color2=etk::color::white, const etk::Color<float>& _color3=etk::color::white);
 				/**
-				 * @not-in-doc
+				 * @not_in_doc
 				 * @brief draw a textured colored quad (usefull for debug and test)
 				 * @param[in] _layerName Material and face indexing layer name
 				 * @param[in] _pos1 First point position
@@ -268,7 +268,7 @@ namespace ege {
 					addQuad(_layerName, _pos1, _pos2, _pos3, _pos4, _uv1, _uv2, _uv3, _uv4, _color, _color, _color, _color);
 				}
 				/**
-				 * @not-in-doc
+				 * @not_in_doc
 				 * @brief draw a textured quad (usefull for debug and test)
 				 * @param[in] _layerName Material and face indexing layer name
 				 * @param[in] _pos1 First point position

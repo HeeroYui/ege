@@ -72,7 +72,7 @@ namespace ege {
 				};
 			public:
 				// Define a collision point ==> for debug only ...
-				//! @not-in-doc
+				//! @not_in_doc
 				class collisionPoints {
 					public:
 						std::shared_ptr<ege::Element> elem1;

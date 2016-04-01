@@ -15,7 +15,7 @@
 
 namespace ege {
 	/**
-	 * @not-in-doc
+	 * @not_in_doc
 	 */
 	class MaterialGlId {
 		public:
