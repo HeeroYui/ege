@@ -48,7 +48,7 @@ static int32_t countIndent(etk::FSNode& _file) {
 		}
 	}
 	//EGE_DEBUG("indent : " << nbIndent);
-	_file.fileSeek(-nbChar, etk::FSN_SEEK_CURRENT);
+	_file.fileSeek(-nbChar, etk::seekNode_current);
 	return nbIndent;
 }
 
