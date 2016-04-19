@@ -140,7 +140,8 @@ void ege::Environement::addCreator(const std::string& _type, ege::createElement_
 	EGE_DEBUG("Add creator: " << _type << " (done)");
 }
 
-std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, bool _autoAddElement, enum ege::property _property, std::shared_ptr<void> _value) {
+
+std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, const std::string& _description, bool _autoAddElement) {
 	if (getHachTableCreating().exist(_type) == false) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return nullptr;
@@ -155,7 +156,7 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 		EGE_ERROR("allocation error '" << _type << "'");
 		return nullptr;
 	}
-	if (false == tmpElement->init(_property, _value)) {
+	if (false == tmpElement->initString(_description)) {
 		EGE_ERROR("Init error ... '" << _type << "'");
 		return nullptr;
 	}
@@ -165,18 +166,105 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 	return tmpElement;
 }
 
-std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, std::shared_ptr<std::string> _description, bool _autoAddElement) {
-	return createElement(_type, _autoAddElement, ege::typeString, std::static_pointer_cast<void>(_description));
+std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, const ejson::Value& _value, bool _autoAddElement) {
+	if (getHachTableCreating().exist(_type) == false) {
+		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
+		return nullptr;
+	}
+	ege::createElement_tf creatorPointer = getHachTableCreating()[_type];
+	if (creatorPointer == nullptr) {
+		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
+		return nullptr;
+	}
+	std::shared_ptr<ege::Element> tmpElement = creatorPointer(std::dynamic_pointer_cast<ege::Environement>(shared_from_this()));
+	if (tmpElement == nullptr) {
+		EGE_ERROR("allocation error '" << _type << "'");
+		return nullptr;
+	}
+	if (false == tmpElement->initJSON(_value)) {
+		EGE_ERROR("Init error ... '" << _type << "'");
+		return nullptr;
+	}
+	if (_autoAddElement == true) {
+		addElement(tmpElement);
+	}
+	return tmpElement;
 }
 
-std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, std::shared_ptr<ejson::Value> _value, bool _autoAddElement) {
-	return createElement(_type, _autoAddElement, ege::typeJson, std::static_pointer_cast<void>(_value));
+std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, const exml::Node& _node, bool _autoAddElement) {
+	if (getHachTableCreating().exist(_type) == false) {
+		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
+		return nullptr;
+	}
+	ege::createElement_tf creatorPointer = getHachTableCreating()[_type];
+	if (creatorPointer == nullptr) {
+		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
+		return nullptr;
+	}
+	std::shared_ptr<ege::Element> tmpElement = creatorPointer(std::dynamic_pointer_cast<ege::Environement>(shared_from_this()));
+	if (tmpElement == nullptr) {
+		EGE_ERROR("allocation error '" << _type << "'");
+		return nullptr;
+	}
+	if (false == tmpElement->initXML(_node)) {
+		EGE_ERROR("Init error ... '" << _type << "'");
+		return nullptr;
+	}
+	if (_autoAddElement == true) {
+		addElement(tmpElement);
+	}
+	return tmpElement;
 }
 
-std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, std::shared_ptr<exml::Node> _node, bool _autoAddElement) {
-	return createElement(_type, _autoAddElement, ege::typeXml, std::static_pointer_cast<void>(_node));
+std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, void* _data, bool _autoAddElement) {
+	if (getHachTableCreating().exist(_type) == false) {
+		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
+		return nullptr;
+	}
+	ege::createElement_tf creatorPointer = getHachTableCreating()[_type];
+	if (creatorPointer == nullptr) {
+		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
+		return nullptr;
+	}
+	std::shared_ptr<ege::Element> tmpElement = creatorPointer(std::dynamic_pointer_cast<ege::Environement>(shared_from_this()));
+	if (tmpElement == nullptr) {
+		EGE_ERROR("allocation error '" << _type << "'");
+		return nullptr;
+	}
+	if (false == tmpElement->initVoid(_data)) {
+		EGE_ERROR("Init error ... '" << _type << "'");
+		return nullptr;
+	}
+	if (_autoAddElement == true) {
+		addElement(tmpElement);
+	}
+	return tmpElement;
 }
 
+std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, bool _autoAddElement) {
+	if (getHachTableCreating().exist(_type) == false) {
+		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
+		return nullptr;
+	}
+	ege::createElement_tf creatorPointer = getHachTableCreating()[_type];
+	if (creatorPointer == nullptr) {
+		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
+		return nullptr;
+	}
+	std::shared_ptr<ege::Element> tmpElement = creatorPointer(std::dynamic_pointer_cast<ege::Environement>(shared_from_this()));
+	if (tmpElement == nullptr) {
+		EGE_ERROR("allocation error '" << _type << "'");
+		return nullptr;
+	}
+	if (false == tmpElement->init()) {
+		EGE_ERROR("Init error ... '" << _type << "'");
+		return nullptr;
+	}
+	if (_autoAddElement == true) {
+		addElement(tmpElement);
+	}
+	return tmpElement;
+}
 
 void ege::Environement::addElement(std::shared_ptr<ege::Element> _newElement) {
 	// prevent memory allocation and un allocation ...

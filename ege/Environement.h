@@ -30,14 +30,6 @@ class btDynamicsWorld;
 #include <ege/physics/Engine.h>
 
 namespace ege {
-	enum property {
-		typeNone, //!< no element property
-		typeString, //!< type element static_cast<std::string*>(xxxxxxx)
-		typeJson, //!< type element static_cast<ejson::Value*>(xxxxxxx)
-		typeXml, //!< type element static_cast<exml::Node*>(xxxxxxx)
-		typeUser1, //!< user type 1
-		typeUser2 //!< User type 2
-	};
 	class Element;
 	class Environement;
 	typedef std::shared_ptr<ege::Element> (*createElement_tf)(const std::shared_ptr<ege::Environement>& _env);
@@ -144,10 +136,11 @@ namespace ege {
 			 * @return nullptr if an error occured OR the pointer on the element and it is already added on the system.
 			 * @note Pointer is return in case of setting properties on it...
 			 */
-			std::shared_ptr<ege::Element> createElement(const std::string& _type, bool _autoAddElement=true, enum ege::property _property=ege::typeNone, std::shared_ptr<void> _value=nullptr);
-			std::shared_ptr<ege::Element> createElement(const std::string& _type, std::shared_ptr<std::string> _description, bool _autoAddElement=true);
-			std::shared_ptr<ege::Element> createElement(const std::string& _type, std::shared_ptr<ejson::Value> _value, bool _autoAddElement=true);
-			std::shared_ptr<ege::Element> createElement(const std::string& _type, std::shared_ptr<exml::Node> _node, bool _autoAddElement=true);
+			std::shared_ptr<ege::Element> createElement(const std::string& _type, const std::string& _description, bool _autoAddElement=true);
+			std::shared_ptr<ege::Element> createElement(const std::string& _type, const ejson::Value& _value, bool _autoAddElement=true);
+			std::shared_ptr<ege::Element> createElement(const std::string& _type, const exml::Node& _node, bool _autoAddElement=true);
+			std::shared_ptr<ege::Element> createElement(const std::string& _type, void* _data, bool _autoAddElement=true);
+			std::shared_ptr<ege::Element> createElement(const std::string& _type, bool _autoAddElement=true);
 		public:
 			class ResultNearestElement {
 				public:

@@ -25,8 +25,6 @@
 
 #include <ege/CollisionShapeCreator.h>
 
-#undef __class__
-#define __class__	"Element"
 
 const std::string& ege::Element::getType() const {
 	static const std::string nameType("----");
@@ -45,14 +43,40 @@ ege::Element::Element(const std::shared_ptr<ege::Environement>& _env) :
   m_radius(0) {
 	static uint32_t unique=0;
 	m_uID = unique;
-	EGE_DEBUG("Create element : uId=" << m_uID);
+	EGE_DEBUG("Create element: uId=" << m_uID);
 	m_debugText.setFontSize(12);
 	unique++;
 }
 
 ege::Element::~Element() {
-	EGE_DEBUG("Destroy element : uId=" << m_uID);
+	EGE_DEBUG("Destroy element: uId=" << m_uID);
 }
+
+
+bool ege::Element::init() {
+	EGE_WARNING("init() not implemented: uId=" << m_uID);
+	return false;
+}
+bool ege::Element::initString(const std::string& _description) {
+	EGE_WARNING("String Init not implemented: uId=" << m_uID);
+	return false;
+}
+bool ege::Element::initXML(const exml::Node& _node) {
+	EGE_WARNING("xml Init not implemented: uId=" << m_uID);
+	return false;
+}
+bool ege::Element::initJSON(const ejson::Value& _value) {
+	EGE_WARNING("JSON Init not implemented: uId=" << m_uID);
+	return false;
+}
+bool ege::Element::initVoid(void* _value) {
+	EGE_WARNING("joid* Init not implemented: uId=" << m_uID);
+	return false;
+}
+bool ege::Element::unInit() {
+	return true;
+}
+
 
 bool ege::Element::loadMesh(const std::string& _meshFileName) {
 	std::shared_ptr<ege::resource::Mesh> tmpMesh = ege::resource::Mesh::create(_meshFileName);

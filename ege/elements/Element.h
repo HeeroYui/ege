@@ -52,12 +52,12 @@ namespace ege {
 			 * @param[in] _value pointer on the value type
 			 * @return true, the element is corectly initialized.
 			 */
-			virtual bool init(enum property _property, std::shared_ptr<void> _value) {
-				return false;
-			};
-			virtual bool unInit() {
-				return true;
-			};
+			virtual bool init();
+			virtual bool initString(const std::string& _description);
+			virtual bool initXML(const exml::Node& _node);
+			virtual bool initJSON(const ejson::Value& _value);
+			virtual bool initVoid(void* _value);
+			virtual bool unInit();
 		private:
 			uint32_t m_uID; //!< This is a reference on a basic element ID
 		public:
