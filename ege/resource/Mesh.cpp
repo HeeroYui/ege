@@ -119,7 +119,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	//EGE_DEBUG(m_name << "  " << m_light);
 	if (_enableDepthTest == true) {
 		gale::openGL::enable(gale::openGL::flag_depthTest);
-		if (false == _enableDepthUpdate) {
+		if (_enableDepthUpdate == false) {
 			glDepthMask(GL_FALSE);
 		}
 	} else {
@@ -232,7 +232,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	m_GLprogram->unUse();
 
 	if (_enableDepthTest == true){
-		if (false == _enableDepthUpdate) {
+		if (_enableDepthUpdate == false) {
 			glDepthMask(GL_TRUE);
 		}
 		gale::openGL::disable(gale::openGL::flag_depthTest);

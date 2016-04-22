@@ -31,8 +31,13 @@ namespace ege {
 	namespace resource {
 		class Mesh : public gale::Resource {
 			public:
-				static std::shared_ptr<ege::resource::Mesh> createGrid(int32_t _lineCount, const vec3& _position=vec3(0,0,0), float _size=1.0f, const std::string& _materialName="basics");
-				static std::shared_ptr<ege::resource::Mesh> createCube(float _size=1.0f, const std::string& _materialName="basics", const etk::Color<float>& _color=etk::color::white);
+				static std::shared_ptr<ege::resource::Mesh> createGrid(int32_t _lineCount,
+				                                                       const vec3& _position=vec3(0,0,0),
+				                                                       float _size=1.0f,
+				                                                       const std::string& _materialName="basics");
+				static std::shared_ptr<ege::resource::Mesh> createCube(float _size=1.0f,
+				                                                       const std::string& _materialName="basics",
+				                                                       const etk::Color<float>& _color=etk::color::white);
 			public:
 				/**
 				 * @not_in_doc
