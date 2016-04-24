@@ -1,9 +1,7 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2011, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 #include <ege/debug.h>
 #include <ege/physicsShape/PhysicsCapsule.h>
@@ -11,15 +9,15 @@
 
 
 bool ege::PhysicsCapsule::parse(const char* _line) {
-	if (true == ege::PhysicsShape::parse(_line)) {
+	if (ege::PhysicsShape::parse(_line) == true) {
 		return true;
 	}
-	if(0 == strncmp(_line, "radius : ", 9) ) {
+	if(strncmp(_line, "radius : ", 9) == 0) {
 		sscanf(&_line[9], "%f", &m_radius );
 		EGE_VERBOSE("                radius=" << m_radius);
 		return true;
 	}
-	if(0 == strncmp(_line, "height : ", 9) ) {
+	if(strncmp(_line, "height : ", 9) == 0) {
 		sscanf(&_line[9], "%f", &m_height );
 		EGE_VERBOSE("                height=" << m_height);
 		return true;

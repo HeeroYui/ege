@@ -1,9 +1,7 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2013, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 
 
@@ -11,9 +9,6 @@
 #include <ege/debug.h>
 
 #include <gale/renderer/openGL/openGL.h>
-
-#undef __class__
-#define __class__ "Camera"
 
 ege::Camera::Camera() :
   m_aspectRatio(0.5),

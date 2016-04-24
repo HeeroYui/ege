@@ -1,9 +1,7 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2011, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 
 #include <ege/debug.h>
@@ -27,8 +25,6 @@
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/CollisionDispatch/btCollisionObject.h>
 
-#undef __class__
-#define __class__ "Scene"
 namespace etk {
 	template<> std::string to_string<std::shared_ptr<ewol::resource::Colored3DObject> >(const std::shared_ptr<ewol::resource::Colored3DObject>& _value) {
 		return "{{ERROR}}";
@@ -60,7 +56,7 @@ ege::widget::Scene::~Scene() {
 }
 
 void ege::widget::Scene::onRegenerateDisplay() {
-	if (true == needRedraw()) {
+	if (needRedraw() == true) {
 		
 	}
 }

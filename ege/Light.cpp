@@ -1,9 +1,7 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2011, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 
 #include <ege/Light.h>
@@ -28,7 +26,7 @@ ege::Light::~Light() {
 }
 
 void ege::Light::link(const std::shared_ptr<gale::resource::Program>& _prog, const std::string& _baseName) {
-	if (nullptr == _prog) {
+	if (_prog == nullptr) {
 		return;
 	}
 	m_GL_direction = _prog->getUniform(_baseName+".direction");

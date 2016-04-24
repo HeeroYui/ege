@@ -1,9 +1,7 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2011, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 #include <ege/debug.h>
 #include <ege/physicsShape/PhysicsShape.h>
@@ -42,12 +40,12 @@ std::shared_ptr<ege::PhysicsShape> ege::PhysicsShape::create(const std::string& 
 
 
 bool ege::PhysicsShape::parse(const char* _line) {
-	if(0 == strncmp(_line, "origin : ", 9) ) {
+	if(strncmp(_line, "origin : ", 9) == 0) {
 		sscanf(&_line[9], "%f %f %f", &m_origin.m_floats[0], &m_origin.m_floats[1], &m_origin.m_floats[2] );
 		EGE_VERBOSE("                Origin=" << m_origin);
 		return true;
 	}
-	if(0 == strncmp(_line, "rotate : ", 9) ) {
+	if(strncmp(_line, "rotate : ", 9) == 0) {
 		sscanf(&_line[9], "%f %f %f %f", &m_quaternion.m_floats[0], &m_quaternion.m_floats[1], &m_quaternion.m_floats[2], &m_quaternion.m_floats[3] );
 		EGE_VERBOSE("                rotate=" << m_quaternion);
 		return true;

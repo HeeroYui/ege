@@ -1,18 +1,13 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2013, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 
 
 #include <ege/camera/View.h>
 #include <ege/debug.h>
 #include <etk/math/Vector3D.h>
-
-#undef __class__
-#define __class__ "camera::View"
 
 void ege::camera::View::update() {
 	//m_matrix = etk::matLookAt(m_eye, m_target, m_up);

@@ -1,9 +1,7 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2011, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 
 #include <ege/debug.h>
@@ -25,10 +23,6 @@
 #include <LinearMath/btIDebugDraw.h>
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/CollisionDispatch/btCollisionObject.h>
-
-#undef __class__
-#define __class__ "Environement"
-
 
 std::shared_ptr<ege::Element> ege::Environement::getElementNearest(std::shared_ptr<ege::Element> _sourceRequest, float& _distance) {
 	if (_sourceRequest == nullptr) {
@@ -71,7 +65,7 @@ void ege::Environement::getElementNearest(const vec3& _sourcePosition,
 	for (size_t iii=0; iii<m_listElement.size() ; iii++) {
 		// chack nullptr  pointer
 		result.element = m_listElement[iii];
-		if (nullptr == result.element) {
+		if (result.element == nullptr) {
 			continue;
 		}
 		// check distance ...
@@ -156,7 +150,7 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 		EGE_ERROR("allocation error '" << _type << "'");
 		return nullptr;
 	}
-	if (false == tmpElement->initString(_description)) {
+	if (tmpElement->initString(_description) == false) {
 		EGE_ERROR("Init error ... '" << _type << "'");
 		return nullptr;
 	}
@@ -181,7 +175,7 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 		EGE_ERROR("allocation error '" << _type << "'");
 		return nullptr;
 	}
-	if (false == tmpElement->initJSON(_value)) {
+	if (tmpElement->initJSON(_value) == false) {
 		EGE_ERROR("Init error ... '" << _type << "'");
 		return nullptr;
 	}
@@ -206,7 +200,7 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 		EGE_ERROR("allocation error '" << _type << "'");
 		return nullptr;
 	}
-	if (false == tmpElement->initXML(_node)) {
+	if (tmpElement->initXML(_node) == false) {
 		EGE_ERROR("Init error ... '" << _type << "'");
 		return nullptr;
 	}
@@ -231,7 +225,7 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 		EGE_ERROR("allocation error '" << _type << "'");
 		return nullptr;
 	}
-	if (false == tmpElement->initVoid(_data)) {
+	if (tmpElement->initVoid(_data) == false) {
 		EGE_ERROR("Init error ... '" << _type << "'");
 		return nullptr;
 	}
@@ -256,7 +250,7 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 		EGE_ERROR("allocation error '" << _type << "'");
 		return nullptr;
 	}
-	if (false == tmpElement->init()) {
+	if (tmpElement->init() == false) {
 		EGE_ERROR("Init error ... '" << _type << "'");
 		return nullptr;
 	}
@@ -317,7 +311,7 @@ void ege::Environement::getOrderedElementForDisplay(std::vector<ege::Environemen
 	// for all element in the game we chek if it is needed to display it ...
 	for (size_t iii=0; iii<m_listElement.size() ; iii++) {
 		// chack nullptr  pointer
-		if (nullptr == m_listElement[iii]) {
+		if (m_listElement[iii] == nullptr) {
 			// no pointer null are set in the output list ...
 			continue;
 		}
@@ -360,7 +354,7 @@ void ege::Environement::getOrderedElementForDisplay(std::vector<ege::Environemen
 void ege::Environement::generateInteraction(ege::ElementInteraction& _event) {
 	// inform the element that an element has been removed  == > this permit to keep pointer on elements ...
 	for (size_t iii=0; iii<m_listElement.size() ; iii++) {
-		if (nullptr == m_listElement[iii]) {
+		if (m_listElement[iii] == nullptr) {
 			continue;
 		}
 		_event.applyEvent(*m_listElement[iii]);
@@ -456,7 +450,7 @@ void ege::Environement::onCallbackPeriodicCall(const ewol::event::Time& _event) 
 				++it;
 			}
 		}
-		if (0 != numberEnnemyKilled) {
+		if (numberEnnemyKilled != 0) {
 			//signalKillEnemy.emit(numberEnnemyKilled);
 		}
 	}

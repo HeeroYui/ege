@@ -1,9 +1,7 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2011, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 
 #include <etk/types.h>
@@ -24,9 +22,6 @@
 #include <BulletCollision/CollisionDispatch/btCollisionObject.h>
 
 #include <ege/CollisionShapeCreator.h>
-
-#undef __class__
-#define __class__	"ElementPhysic"
 
 const std::string& ege::ElementPhysic::getType() const {
 	static const std::string nameType("----");
@@ -117,7 +112,7 @@ bool ege::ElementPhysic::setShape(btCollisionShape* _shape) {
 
 void ege::ElementPhysic::removeShape() {
 	// no shape
-	if (nullptr == m_shape) {
+	if (m_shape == nullptr) {
 		return;
 	}
 	// need to chek if the shape is the same as the mesh shape ...

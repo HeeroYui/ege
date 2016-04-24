@@ -1,9 +1,7 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2011, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 
 #include <ege/debug.h>
@@ -20,14 +18,14 @@ bool ege::resource::Mesh::loadOBJ(const std::string& _fileName) {
 		EGE_ERROR("No data in the file named=\"" << fileName << "\"");
 		return false;
 	}
-	if(false == fileName.fileOpenRead() ) {
+	if (fileName.fileOpenRead() == false) {
 		EGE_ERROR("Can not find the file name=\"" << fileName << "\"");
 		return false;
 	}
 	char inputDataLine[2048];
 	
 	int32_t lineID = 0;
-	while (nullptr != fileName.fileGets(inputDataLine, 2048) )
+	while (fileName.fileGets(inputDataLine, 2048) != nullptr)
 	{
 		lineID++;
 		if (inputDataLine[0] == 'v') {
@@ -81,7 +79,7 @@ bool ege::resource::Mesh::loadOBJ(const std::string& _fileName) {
 					}
 				}
 			}
-			if (true == quadMode) {
+			if (quadMode == true) {
 				m_listFaces.push_back(Face(vertexIndex[0]-1, uvIndex[0]-1,
 				                          vertexIndex[1]-1, uvIndex[1]-1,
 				                          vertexIndex[2]-1, uvIndex[2]-1,

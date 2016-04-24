@@ -1,9 +1,7 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2011, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 
 #include <ege/debug.h>
@@ -38,7 +36,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 	//EGE_DEBUG(m_name << "  " << m_light);
 	if (_enableDepthTest == true) {
 		gale::openGL::enable(gale::openGL::flag_depthTest);
-		if (false == _enableDepthUpdate) {
+		if (_enableDepthUpdate == false) {
 			glDepthMask(GL_FALSE);
 		}
 	} else {
@@ -67,7 +65,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 	int32_t nbElementDraw = 0;
 	#endif
 	for (int32_t kkk=0; kkk<m_listFaces.size(); kkk++) {
-		if (false == m_materials.exist(m_listFaces.getKey(kkk))) {
+		if (m_materials.exist(m_listFaces.getKey(kkk)) == false) {
 			EGE_WARNING("missing materials : '" << m_listFaces.getKey(kkk) << "'");
 			continue;
 		}
@@ -121,7 +119,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 	#endif
 	m_GLprogram->unUse();
 	if (_enableDepthTest == true){
-		if (false == _enableDepthUpdate) {
+		if (_enableDepthUpdate == false) {
 			glDepthMask(GL_TRUE);
 		}
 		gale::openGL::disable(gale::openGL::flag_depthTest);

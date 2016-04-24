@@ -1,9 +1,7 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2011, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 
 #include <ege/debug.h>
@@ -14,9 +12,6 @@
 #include <ege/resource/tools/viewBox.h>
 #include <ege/resource/tools/isoSphere.h>
 #include <ege/resource/tools/icoSphere.h>
-
-#undef __class__
-#define __class__ "resource::Mesh"
 
 ege::resource::Mesh::Mesh() :
   m_normalMode(normalModeNone),
@@ -46,7 +41,7 @@ void ege::resource::Mesh::init(const std::string& _fileName, const std::string& 
 	m_light.setDiffuseColor(vec4(1.0f,1.0f,1.0f,1.0f));
 	m_light.setSpecularColor(vec4(0.0f,0.0f,0.0f,1.0f));
 	
-	//EGE_DEBUG(m_name << "  " << m_light);
+	EGE_ERROR(m_name << "  " << m_light << " shader=" << _shaderName);
 	m_GLprogram = gale::resource::Program::create(_shaderName);
 	if (m_GLprogram != nullptr) {
 		m_GLPosition = m_GLprogram->getAttribute("EW_coord3d");
@@ -89,7 +84,7 @@ void ege::resource::Mesh::init(const std::string& _fileName, const std::string& 
 
 ege::resource::Mesh::~Mesh() {
 	// remove dynamics dependencies :
-	if (m_functionFreeShape!=nullptr) {
+	if (m_functionFreeShape != nullptr) {
 		m_functionFreeShape(m_pointerShape);
 		m_pointerShape = nullptr;
 	}
@@ -110,8 +105,12 @@ void ege::resource::Mesh::clean() {
 //#define DISPLAY_NB_VERTEX_DISPLAYED
 
 void ege::resource::Mesh::draw(mat4& _positionMatrix,
-                                bool _enableDepthTest,
-                                bool _enableDepthUpdate) {
+                               bool _enableDepthTest,
+                               bool _enableDepthUpdate) {
+	
+	// TODO : Remove this, it is just for test the 23-04-2016
+	//m_checkNormal = false;
+	EGE_INFO("draw Mesh : " << m_name << " (start)");
 	if (m_GLprogram == nullptr) {
 		EGE_ERROR("No shader ...");
 		return;
@@ -159,7 +158,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	int32_t nbElementDraw = 0;
 	#endif
 	for (int32_t kkk=0; kkk<m_listFaces.size(); kkk++) {
-		if (false == m_materials.exist(m_listFaces.getKey(kkk))) {
+		if (m_materials.exist(m_listFaces.getKey(kkk)) == false) {
 			EGE_WARNING("missing materials : '" << m_listFaces.getKey(kkk) << "'");
 			continue;
 		}
@@ -239,6 +238,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	}
 	// TODO : UNDERSTAND why ... it is needed
 	glBindBuffer(GL_ARRAY_BUFFER,0);
+	EGE_INFO("draw Mesh : " << m_name << " ( end )");
 }
 
 // normal calculation of the normal face is really easy :
@@ -309,7 +309,7 @@ void ege::resource::Mesh::generateVBO() {
 		// when no normal detected  == > auto generate Face normal ....
 		calculateNormaleFace(m_listFaces.getKeys()[0]);
 	}
-	EGE_WARNING("Generate VBO for nb faces : " << m_listFaces.size());
+	EGE_WARNING("Generate VBO for nb faces layers: " << m_listFaces.size() << " list layer=" << etk::to_string(m_listFaces.getKeys()));
 	
 	// generate element in 2 pass : 
 	//    - create new index dependeng a vertex is a unique componenet of position, texture, normal
@@ -392,7 +392,7 @@ void ege::resource::Mesh::generateVBO() {
 					}
 				}
 				#endif
-				if (false == elementFind) {
+				if (elementFind == false) {
 					m_verticesVBO->pushOnBuffer(MESH_VBO_VERTICES, position);
 					if (m_normalMode != normalModeNone) {
 						m_verticesVBO->pushOnBuffer(MESH_VBO_VERTICES_NORMAL, normal);
@@ -431,7 +431,7 @@ void ege::resource::Mesh::createIcoSphere(const std::string& _materialName,float
 
 
 void ege::resource::Mesh::addMaterial(const std::string& _name, std::shared_ptr<ege::Material> _data) {
-	if (nullptr == _data) {
+	if (_data == nullptr) {
 		EGE_ERROR(" can not add material with null pointer");
 		return;
 	}
@@ -554,6 +554,7 @@ void ege::resource::Mesh::addTriangle(const std::string& _layerName,
                                       const vec3& _pos1, const vec3& _pos2, const vec3& _pos3,
                                       const vec2& _uv1, const vec2& _uv2, const vec2& _uv3,
                                       const etk::Color<float>& _color1, const etk::Color<float>& _color2, const etk::Color<float>& _color3) {
+	EGE_INFO("add Triangle: " << _layerName << " ...");
 	if (    m_listFaces.exist(_layerName) == false
 	     || m_materials.exist(_layerName) == false) {
 		EGE_ERROR("Mesh layer : " << _layerName << " does not exist in list faces=" << m_listFaces.exist(_layerName) << " materials=" << m_listFaces.exist(_layerName) << " ...");
@@ -583,6 +584,7 @@ void ege::resource::Mesh::addTriangle(const std::string& _layerName,
 	             pos3, uv3);
 	tmpFace.setColor(color1, color2, color3);
 	m_listFaces[_layerName].m_faces.push_back(tmpFace);
+	EGE_INFO("    nbFace: " << m_listFaces[_layerName].m_faces.size());
 }
 
 void ege::resource::Mesh::addTriangle(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3,

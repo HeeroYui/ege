@@ -1,9 +1,7 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2011, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 
 #include <ege/debug.h>
@@ -150,16 +148,16 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 		EGE_ERROR("No data in the file named=\"" << fileName << "\"");
 		return false;
 	}
-	if(false == fileName.fileOpenRead() ) {
+	if (fileName.fileOpenRead() == false) {
 		EGE_ERROR("Can not find the file name=\"" << fileName << "\"");
 		return false;
 	}
 	char inputDataLine[2048];
 	// load the first line :
 	fileName.fileGets(inputDataLine, 2048);
-	if(0 == strncmp(inputDataLine, "EMF(STRING)", 11)) {
+	if(strncmp(inputDataLine, "EMF(STRING)", 11) == 0) {
 		// parse in string mode ...
-	} else if (0 == strncmp(inputDataLine, "EMF(BINARY)", 11)) {
+	} else if (strncmp(inputDataLine, "EMF(BINARY)", 11) == 0) {
 		EGE_ERROR(" file binary mode is not supported now : 'EMF(BINARY)'");
 		return false;
 	} else {
@@ -176,18 +174,18 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 	std::shared_ptr<ege::Material> material;
 	// physical shape:
 	std::shared_ptr<ege::PhysicsShape> physics;
-	while(1) {
+	while (1) {
 		int32_t level = countIndent(fileName);
 		if (level == 0) {
 			// new section ...
-			if (nullptr == loadNextData(inputDataLine, 2048, fileName)) {
+			if (loadNextData(inputDataLine, 2048, fileName) == nullptr) {
 				// reach end of file ...
 				break;
 			}
-			if(0 == strncmp(inputDataLine, "Mesh :", 6) ) {
+			if(strncmp(inputDataLine, "Mesh :", 6) == 0) {
 				currentMode = EMFModuleMesh;
 				EGE_VERBOSE("Parse Mesh :");
-			} else if(0 == strncmp(inputDataLine, "Materials : ", 11) ) {
+			} else if(strncmp(inputDataLine, "Materials : ", 11) == 0) {
 				currentMode = EMFModuleMaterial;
 				EGE_VERBOSE("Parse Material :");
 			} else {
@@ -197,7 +195,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 			if (currentMode >= EMFModuleMesh && currentMode <= EMFModuleMesh_END) {
 				if (level == 1) {
 					//Find mesh name ...
-					if (nullptr == loadNextData(inputDataLine, 2048, fileName, true)) {
+					if (loadNextData(inputDataLine, 2048, fileName, true) == nullptr) {
 						// reach end of file ...
 						break;
 					}
@@ -209,27 +207,27 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 				}
 				if (level == 2) {
 					// In the mesh level 2 the line size must not exced 2048
-					if (nullptr == loadNextData(inputDataLine, 2048, fileName, true)) {
+					if (loadNextData(inputDataLine, 2048, fileName, true) == nullptr) {
 						// reach end of file ...
 						break;
 					}
 					removeEndLine(inputDataLine);
-					if(0 == strncmp(inputDataLine, "Vertex", 6) ) {
+					if(strncmp(inputDataLine, "Vertex", 6) == 0) {
 						currentMode = EMFModuleMeshVertex;
 						EGE_VERBOSE("        Vertex ...");
-					} else if(0 == strncmp(inputDataLine, "UV-mapping", 10) ) {
+					} else if(strncmp(inputDataLine, "UV-mapping", 10) == 0) {
 						currentMode = EMFModuleMeshUVMapping;
 						EGE_VERBOSE("        UV-mapping ...");
-					} else if(0 == strncmp(inputDataLine, "Normal(vertex)", 14) ) {
+					} else if(strncmp(inputDataLine, "Normal(vertex)", 14) == 0) {
 						currentMode = EMFModuleMeshNormalVertex;
 						EGE_VERBOSE("        Normal(vertex) ...");
-					} else if(0 == strncmp(inputDataLine, "Normal(face)", 12) ) {
+					} else if(strncmp(inputDataLine, "Normal(face)", 12) == 0) {
 						currentMode = EMFModuleMeshNormalFace;
 						EGE_VERBOSE("        Normal(face) ...");
-					} else if(0 == strncmp(inputDataLine, "Face", 4) ) {
+					} else if(strncmp(inputDataLine, "Face", 4) == 0) {
 						currentMode = EMFModuleMeshFace;
 						EGE_VERBOSE("        Face ...");
-					} else if(0 == strncmp(inputDataLine, "Physics", 7) ) {
+					} else if(strncmp(inputDataLine, "Physics", 7) == 0) {
 						currentMode = EMFModuleMeshPhysics;
 						EGE_VERBOSE("        Physics ...");
 					} else {
@@ -246,7 +244,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 						break;
 					case EMFModuleMeshVertex: {
 						vec3 vertex(0,0,0);
-						while (nullptr != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
+						while (loadNextData(inputDataLine, 2048, fileName, true, true) != nullptr) {
 							if (inputDataLine[0] == '\0') {
 								break;
 							}
@@ -263,7 +261,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 					}
 					case EMFModuleMeshUVMapping: {
 						vec2 uvMap(0,0);
-						while (nullptr != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
+						while (loadNextData(inputDataLine, 2048, fileName, true, true) != nullptr) {
 							if (inputDataLine[0] == '\0') {
 								break;
 							}
@@ -282,7 +280,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 						m_normalMode = normalModeVertex;
 						vec3 normal(0,0,0);
 						// find the vertex Normal list.
-						while (nullptr != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
+						while (loadNextData(inputDataLine, 2048, fileName, true, true) != nullptr) {
 							if (inputDataLine[0] == '\0') {
 								break;
 							}
@@ -301,7 +299,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 						m_normalMode = normalModeFace;
 						vec3 normal(0,0,0);
 						// find the face Normal list.
-						while (nullptr != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
+						while (loadNextData(inputDataLine, 2048, fileName, true, true) != nullptr) {
 							if (inputDataLine[0] == '\0') {
 								break;
 							}
@@ -320,7 +318,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 					case EMFModuleMeshFaceMaterial:
 						if (level == 3) {
 							//Find mesh name ...
-							if (nullptr == loadNextData(inputDataLine, 2048, fileName, true)) {
+							if (loadNextData(inputDataLine, 2048, fileName, true) == nullptr) {
 								// reach end of file ...
 								break;
 							}
@@ -332,7 +330,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 							meshFaceMaterialID = m_listFaces.getId(inputDataLine);
 							EGE_VERBOSE("            " << inputDataLine);
 						} else if (currentMode == EMFModuleMeshFaceMaterial) {
-							while (nullptr != loadNextData(inputDataLine, 2048, fileName, true, true) ) {
+							while (loadNextData(inputDataLine, 2048, fileName, true, true) != nullptr) {
 								if (inputDataLine[0] == '\0') {
 									// end of line
 									break;
@@ -377,7 +375,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 						break;
 					case EMFModuleMeshPhysics:
 					case EMFModuleMeshPhysicsNamed:
-						if (nullptr == loadNextData(inputDataLine, 2048, fileName, true, false, false)) {
+						if (loadNextData(inputDataLine, 2048, fileName, true, false, false) == nullptr) {
 							// reach end of file ...
 							break;
 						}
@@ -396,7 +394,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 								EGE_ERROR("Can not parse :'" << inputDataLine << "' in physical shape ...");
 								continue;
 							}
-							if (false == physics->parse(inputDataLine)) {
+							if (physics->parse(inputDataLine) == false) {
 								EGE_ERROR("ERROR when parsing :'" << inputDataLine << "' in physical shape ...");
 							}
 						}
@@ -405,7 +403,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 				continue;
 			} else if (currentMode >= EMFModuleMaterial && currentMode <= EMFModuleMaterial_END) {
 				// all material element is stored on 1 line (size < 2048)
-				if (nullptr == loadNextData(inputDataLine, 2048, fileName, true)) {
+				if (loadNextData(inputDataLine, 2048, fileName, true) == nullptr) {
 					// reach end of file ...
 					break;
 				}
@@ -413,7 +411,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 				if (level == 1) {
 					// add previous material :
 					if(    materialName != ""
-					    && material!=nullptr) {
+					    && material != nullptr) {
 						m_materials.add(materialName, material);
 						materialName = "";
 						material = nullptr;
@@ -430,17 +428,17 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 					jumpEndLine(fileName);
 					continue;
 				}
-				if (nullptr == material) {
+				if (material == nullptr) {
 					EGE_ERROR("material allocation error");
 					jumpEndLine(fileName);
 					continue;
 				}
-				if(0 == strncmp(inputDataLine,"Ns ",3)) {
+				if(strncmp(inputDataLine,"Ns ",3) == 0) {
 					float tmpVal=0;
 					sscanf(&inputDataLine[3], "%f", &tmpVal);
 					material->setShininess(tmpVal);
 					EGE_VERBOSE("        Shininess " << tmpVal);
-				} else if(0 == strncmp(inputDataLine,"Ka ",3)) {
+				} else if(strncmp(inputDataLine,"Ka ",3) == 0) {
 					float tmpVal1=0;
 					float tmpVal2=0;
 					float tmpVal3=0;
@@ -448,7 +446,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 					vec4 tmp(tmpVal1, tmpVal2, tmpVal3, 1);
 					material->setAmbientFactor(tmp);
 					EGE_VERBOSE("        AmbientFactor " << tmp);
-				} else if(0 == strncmp(inputDataLine,"Kd ",3)) {
+				} else if(strncmp(inputDataLine,"Kd ",3) == 0) {
 					float tmpVal1=0;
 					float tmpVal2=0;
 					float tmpVal3=0;
@@ -456,7 +454,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 					vec4 tmp(tmpVal1, tmpVal2, tmpVal3, 1);
 					material->setDiffuseFactor(tmp);
 					EGE_VERBOSE("        DiffuseFactor " << tmp);
-				} else if(0 == strncmp(inputDataLine,"Ks ",3)) {
+				} else if(strncmp(inputDataLine,"Ks ",3) == 0) {
 					float tmpVal1=0;
 					float tmpVal2=0;
 					float tmpVal3=0;
@@ -464,25 +462,25 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 					vec4 tmp(tmpVal1, tmpVal2, tmpVal3, 1);
 					material->setSpecularFactor(tmp);
 					EGE_VERBOSE("        SpecularFactor " << tmp);
-				} else if(0 == strncmp(inputDataLine,"Ni ",3)) {
+				} else if(strncmp(inputDataLine,"Ni ",3) == 0) {
 					float tmpVal=0;
 					sscanf(&inputDataLine[3], "%f", &tmpVal);
 					// TODO : ...
 					EGE_VERBOSE("        Ni " << tmpVal);
-				} else if(0 == strncmp(inputDataLine,"d ",2)) {
+				} else if(strncmp(inputDataLine,"d ",2) == 0) {
 					float tmpVal=0;
 					sscanf(&inputDataLine[2], "%f", &tmpVal);
 					// TODO : ...
 					EGE_VERBOSE("        d " << tmpVal);
-				} else if(0 == strncmp(inputDataLine,"illum ",6)) {
+				} else if(strncmp(inputDataLine,"illum ",6) == 0) {
 					int tmpVal=0;
 					sscanf(&inputDataLine[6], "%d", &tmpVal);
 					// TODO : ...
 					EGE_VERBOSE("        illum " << tmpVal);
-				} else if(0 == strncmp(inputDataLine,"map_Kd ",7)) {
+				} else if(strncmp(inputDataLine,"map_Kd ",7) == 0) {
 					material->setTexture0(fileName.getRelativeFolder() + &inputDataLine[7]);
 					EGE_VERBOSE("        Texture " << &inputDataLine[7]);
-				} else if(0 == strncmp(inputDataLine,"renderMode ",11)) {
+				} else if(strncmp(inputDataLine,"renderMode ",11) == 0) {
 					gale::openGL::renderMode mode;
 					etk::from_string(mode, &inputDataLine[11]);
 					material->setRenderMode(mode);
@@ -499,7 +497,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 	}
 	// add last material ...
 	if(    materialName != ""
-	    && material!=nullptr) {
+	    && material != nullptr) {
 		m_materials.add(materialName, material);
 		materialName = "";
 		material.reset();

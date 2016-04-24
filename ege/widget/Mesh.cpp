@@ -1,20 +1,13 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2011, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 
 #include <ege/widget/Mesh.h>
 #include <ewol/widget/Manager.h>
 #include <gale/resource/Manager.h>
 #include <ege/debug.h>
-
-#undef __class__
-#define __class__ "Mesh"
-
-
 
 ege::widget::Mesh::Mesh():
   signalPressed(this, "pressed", ""),
@@ -30,9 +23,9 @@ void ege::widget::Mesh::init() {
 	m_meshName = *propertyName;
 	// Limit event at 1:
 	setMouseLimit(1);
-	if (*propertyName!="") {
+	if (*propertyName != "") {
 		m_object = ege::resource::Mesh::create(m_meshName);
-		if (nullptr == m_object) {
+		if (m_object == nullptr) {
 			EGE_ERROR("Can not load the resource : \"" << m_meshName << "\"");
 		}
 	}
@@ -48,7 +41,7 @@ void ege::widget::Mesh::onDraw() {
 	                            * etk::matRotate(vec3(1,0,0),m_angle.x())
 	                            * etk::matRotate(vec3(0,1,0),m_angle.y())
 	                            * etk::matRotate(vec3(0,0,1),m_angle.z());
-	if (nullptr != m_object) {
+	if (m_object != nullptr) {
 		m_object->draw(transformationMatrix);
 	}
 }
@@ -70,7 +63,7 @@ void ege::widget::Mesh::systemDraw(const ewol::DrawProperty& _displayProp) {
 }
 
 void ege::widget::Mesh::onRegenerateDisplay() {
-	if (true == needRedraw()) {
+	if (needRedraw() == true) {
 		
 	}
 }
@@ -96,7 +89,7 @@ void ege::widget::Mesh::setFile(const std::string& _filename) {
 	    && m_meshName != _filename ) {
 		m_meshName = _filename;
 		m_object = ege::resource::Mesh::create(m_meshName);
-		if (nullptr == m_object) {
+		if (m_object == nullptr) {
 			EGE_ERROR("Can not load the resource : \"" << m_meshName << "\"");
 		}
 	}
@@ -114,7 +107,7 @@ void ege::widget::Mesh::setAngle(const vec3& _angle) {
 }
 
 void ege::widget::Mesh::setAngleSpeed(const vec3& _speed) {
-	if (_speed!=vec3(0,0,0)) {
+	if (_speed != vec3(0,0,0)) {
 		periodicCallEnable();
 	} else {
 		periodicCallDisable();

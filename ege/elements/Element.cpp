@@ -1,9 +1,7 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2011, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 
 #include <etk/types.h>
@@ -80,7 +78,7 @@ bool ege::Element::unInit() {
 
 bool ege::Element::loadMesh(const std::string& _meshFileName) {
 	std::shared_ptr<ege::resource::Mesh> tmpMesh = ege::resource::Mesh::create(_meshFileName);
-	if(nullptr == tmpMesh) {
+	if(tmpMesh == nullptr) {
 		EGE_ERROR("can not load the resources : " << _meshFileName);
 		return false;
 	}
@@ -88,7 +86,7 @@ bool ege::Element::loadMesh(const std::string& _meshFileName) {
 }
 
 bool ege::Element::setMesh(const std::shared_ptr<ege::resource::Mesh>& _mesh) {
-	if (nullptr!=m_mesh) {
+	if (m_mesh != nullptr) {
 		m_mesh.reset();
 	}
 	m_mesh = _mesh;
@@ -114,7 +112,7 @@ void ege::Element::setFireOn(int32_t _groupIdSource, int32_t _type, float _power
 	if (m_life <= 0) {
 		EGE_DEBUG("[" << getUID() << "] element is killed ..." << getType());
 	}
-	if (m_life!=previousLife) {
+	if (m_life != previousLife) {
 		onLifeChange();
 	}
 }
@@ -132,7 +130,7 @@ const float lifeWidth = 2.0f;
 const float lifeYPos = 1.7f;
 
 void ege::Element::drawLife(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera) {
-	if (nullptr == _draw) {
+	if (_draw == nullptr) {
 		return;
 	}
 	float ratio = getLifeRatio();

@@ -1,18 +1,13 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2011, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 
 #include <ege/debug.h>
 #include <ege/ParticuleEngine.h>
 #include <ege/Environement.h>
 #include <ege/Particule.h>
-
-#undef __class__
-#define __class__ "ParticuleEngine"
 
 ege::ParticuleEngine::ParticuleEngine(ege::Environement* _env) :
   m_env(_env) {

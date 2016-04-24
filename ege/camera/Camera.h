@@ -1,13 +1,10 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2013, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 
 #pragma once
-
 
 #include <etk/types.h>
 #include <etk/math/Vector3D.h>

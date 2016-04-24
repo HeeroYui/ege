@@ -1,9 +1,7 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2011, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 #include <ege/debug.h>
 #include <ege/physicsShape/PhysicsConvexHull.h>
@@ -11,10 +9,10 @@
 
 
 bool ege::PhysicsConvexHull::parse(const char* _line) {
-	if (true == ege::PhysicsShape::parse(_line)) {
+	if (ege::PhysicsShape::parse(_line) == true) {
 		return true;
 	}
-	if(0 == strncmp(_line, "points : ", 8) ) {
+	if(strncmp(_line, "points : ", 8) == 0) {
 		//EGE_DEBUG("convex hull point parsing " << _line);
 		char* base = (char*)(&_line[8]);
 		char* tmp= strchr(base, '|');
@@ -35,7 +33,7 @@ bool ege::PhysicsConvexHull::parse(const char* _line) {
 		*/
 		return true;
 	}
-	if(0 == strncmp(_line, "scale : ", 8) ) {
+	if(strncmp(_line, "scale : ", 8) == 0) {
 		sscanf(&_line[8], "%f %f %f", &m_scale.m_floats[0], &m_scale.m_floats[1], &m_scale.m_floats[2] );
 		EGE_VERBOSE("                scale=" << m_scale);
 		return true;

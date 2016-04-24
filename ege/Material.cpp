@@ -1,9 +1,7 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2011, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 
 #include <gale/resource/Manager.h>
@@ -20,7 +18,7 @@ ege::MaterialGlId::MaterialGlId() :
 }
 
 void ege::MaterialGlId::link(const std::shared_ptr<gale::resource::Program>& _prog, const std::string& _baseName) {
-	if (nullptr == _prog) {
+	if (_prog == nullptr) {
 		return;
 	}
 	m_GL_ambientFactor = _prog->getUniform(_baseName+".ambientFactor");
@@ -45,12 +43,14 @@ ege::Material::~Material() {
 }
 
 void ege::Material::draw(const std::shared_ptr<gale::resource::Program>& _prog, const MaterialGlId& _glID) {
+	EGE_INFO("draw Material : (start)");
 	_prog->uniform4(_glID.m_GL_ambientFactor, m_ambientFactor);
 	_prog->uniform4(_glID.m_GL_diffuseFactor, m_diffuseFactor);
 	_prog->uniform4(_glID.m_GL_specularFactor, m_specularFactor);
 	_prog->uniform1f(_glID.m_GL_shininess, m_shininess);
-	if (nullptr != m_texture0) {
-		_prog->setTexture0(_glID.m_GL_texture0, m_texture0->getId());
+	if (m_texture0 != nullptr) {
+		EGE_INFO("    set texture: " << _glID.m_GL_texture0 << " " << m_texture0->getId());
+		_prog->setTexture0(_glID.m_GL_texture0, m_texture0->getRendererId());
 		#if DEBUG
 			if (_prog->checkIdValidity(_glID.m_GL_texture0) == false) {
 				EGE_ERROR("try to set texture on a unexistant shader interface (wrong ID)");
@@ -63,6 +63,7 @@ void ege::Material::draw(const std::shared_ptr<gale::resource::Program>& _prog, 
 			}
 		#endif
 	}
+	EGE_INFO("draw Material: ( end )");
 }
 
 void ege::Material::setTexture0(const std::string& _filename) {

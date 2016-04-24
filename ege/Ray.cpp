@@ -1,9 +1,7 @@
-/**
+/** @file
  * @author Edouard DUPIN
- * 
  * @copyright 2011, Edouard DUPIN, all right reserved
- * 
- * @license BSD v3 (see license file)
+ * @license APACHE v2.0 (see license file)
  */
 #include <etk/types.h>
 #include <ege/Ray.h>
@@ -12,9 +10,6 @@
 
 #include <BulletDynamics/Dynamics/btDynamicsWorld.h>
 #include <BulletCollision/CollisionDispatch/btCollisionWorld.h>
-
-#undef __class__
-#define __class__ "Ray"
 
 ege::Ray::Ray(const vec3& _origin, const vec3& _direction) :
   m_origin(_origin),
