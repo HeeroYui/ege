@@ -158,10 +158,10 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 		}
 		m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),40*std::cos(m_anglePsy))*ploppp);
 	} else if (_event.getId() == 3) {
-		if (_event.getStatus() == gale::key::status_down) {
+		if (_event.getStatus() == gale::key::status::down) {
 			m_oldScreenPos = relativePosition(_event.getPos());
 			return true;
-		} else if (_event.getStatus() == gale::key::status_move) {
+		} else if (_event.getStatus() == gale::key::status::move) {
 			vec2 pos = relativePosition(_event.getPos());
 			m_angleTetha -= (m_oldScreenPos.x()-pos.x())*0.05f;
 			m_anglePsy += (m_oldScreenPos.y()-pos.y())*0.05f;

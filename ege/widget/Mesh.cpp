@@ -76,7 +76,7 @@ void ege::widget::Mesh::periodicCall(const ewol::event::Time& _event) {
 bool ege::widget::Mesh::onEventInput(const ewol::event::Input& _event) {
 	//EGE_DEBUG("Event on BT ...");
 	if (_event.getId() == 1) {
-		if(_event.getStatus() == gale::key::status_single) {
+		if(_event.getStatus() == gale::key::status::pressSingle) {
 			signalPressed.emit();
 			return true;
 		}

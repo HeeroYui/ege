@@ -16,8 +16,8 @@ std::shared_ptr<ege::resource::Mesh> ege::resource::Mesh::createGrid(int32_t _li
 		material->setDiffuseFactor(vec4(0,0,0,1));
 		material->setSpecularFactor(vec4(0,0,0,1));
 		material->setShininess(1);
-		material->setRenderMode(gale::openGL::render_line);
-		//material->setRenderMode(gale::openGL::render_point);
+		material->setRenderMode(gale::openGL::renderMode::line);
+		//material->setRenderMode(gale::openGL::renderMode::point);
 		out->addMaterial(_materialName, material);
 		
 		out->addFaceIndexing(_materialName);

@@ -248,10 +248,10 @@ void ege::resource::Mesh::calculateNormaleFace(const std::string& _materialName)
 	if (m_normalMode == ege::resource::Mesh::normalModeFace) {
 		EGE_INFO("calculateNormaleFace(" << _materialName << ")");
 		gale::openGL::renderMode tmpRenderMode = m_materials[_materialName]->getRenderMode();
-		if (    tmpRenderMode == gale::openGL::render_point
-		     || tmpRenderMode == gale::openGL::render_line
-		     || tmpRenderMode == gale::openGL::render_lineStrip
-		     || tmpRenderMode == gale::openGL::render_lineLoop) {
+		if (    tmpRenderMode == gale::openGL::renderMode::point
+		     || tmpRenderMode == gale::openGL::renderMode::line
+		     || tmpRenderMode == gale::openGL::renderMode::lineStrip
+		     || tmpRenderMode == gale::openGL::renderMode::lineLoop) {
 			EGE_ERROR("calculateNormaleFace(" << _materialName << ") : can not calculate normal on lines ...");
 			m_normalMode = ege::resource::Mesh::normalModeNone;
 			return;
@@ -270,10 +270,10 @@ void ege::resource::Mesh::calculateNormaleEdge(const std::string& _materialName)
 	if (m_normalMode == ege::resource::Mesh::normalModeVertex) {
 		EGE_INFO("calculateNormaleEdge(" << _materialName << ")");
 		gale::openGL::renderMode tmpRenderMode = m_materials[_materialName]->getRenderMode();
-		if (    tmpRenderMode == gale::openGL::render_point
-		     || tmpRenderMode == gale::openGL::render_line
-		     || tmpRenderMode == gale::openGL::render_lineStrip
-		     || tmpRenderMode == gale::openGL::render_lineLoop) {
+		if (    tmpRenderMode == gale::openGL::renderMode::point
+		     || tmpRenderMode == gale::openGL::renderMode::line
+		     || tmpRenderMode == gale::openGL::renderMode::lineStrip
+		     || tmpRenderMode == gale::openGL::renderMode::lineLoop) {
 			EGE_ERROR("calculateNormaleEdge(" << _materialName << ") :  can not calculate normal on lines ...");
 			m_normalMode = ege::resource::Mesh::normalModeNone;
 			return;
@@ -319,24 +319,24 @@ void ege::resource::Mesh::generateVBO() {
 		m_listFaces.getValue(kkk).m_index.clear();
 		int32_t nbIndicInFace = 3;
 		switch (m_materials[m_listFaces.getKey(kkk)]->getRenderMode()) {
-			case gale::openGL::render_triangle:
-			case gale::openGL::render_triangleStrip:
-			case gale::openGL::render_triangleFan:
+			case gale::openGL::renderMode::triangle:
+			case gale::openGL::renderMode::triangleStrip:
+			case gale::openGL::renderMode::triangleFan:
 				nbIndicInFace = 3;
 				break;
-			case gale::openGL::render_line:
-			case gale::openGL::render_lineStrip:
-			case gale::openGL::render_lineLoop:
+			case gale::openGL::renderMode::line:
+			case gale::openGL::renderMode::lineStrip:
+			case gale::openGL::renderMode::lineLoop:
 				nbIndicInFace = 2;
 				break;
-			case gale::openGL::render_point:
+			case gale::openGL::renderMode::point:
 				nbIndicInFace = 1;
 				break;
-			case gale::openGL::render_quad:
-			case gale::openGL::render_quadStrip:
+			case gale::openGL::renderMode::quad:
+			case gale::openGL::renderMode::quadStrip:
 				nbIndicInFace = 4;
 				break;
-			case gale::openGL::render_polygon:
+			case gale::openGL::renderMode::polygon:
 				nbIndicInFace = 3;
 				break;
 		}
@@ -494,7 +494,7 @@ void ege::resource::Mesh::addPoint(const std::string& _layerName, const vec3& _p
 		return;
 	}
 	gale::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
-	if (tmpRenderMode != gale::openGL::render_point) {
+	if (tmpRenderMode != gale::openGL::renderMode::point) {
 		EGE_ERROR("try to add Point in a mesh material section that not support Point");
 		return;
 	}
@@ -515,9 +515,9 @@ void ege::resource::Mesh::addLine(const std::string& _layerName, const vec3& _po
 		return;
 	}
 	gale::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
-	if (    tmpRenderMode != gale::openGL::render_line
-	     && tmpRenderMode != gale::openGL::render_lineStrip
-	     && tmpRenderMode != gale::openGL::render_lineLoop) {
+	if (    tmpRenderMode != gale::openGL::renderMode::line
+	     && tmpRenderMode != gale::openGL::renderMode::lineStrip
+	     && tmpRenderMode != gale::openGL::renderMode::lineLoop) {
 		EGE_ERROR("try to add Line in a mesh material section that not support Line");
 		return;
 	}
@@ -561,9 +561,9 @@ void ege::resource::Mesh::addTriangle(const std::string& _layerName,
 		return;
 	}
 	gale::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
-	if (    tmpRenderMode != gale::openGL::render_triangle
-	     && tmpRenderMode != gale::openGL::render_triangleStrip
-	     && tmpRenderMode != gale::openGL::render_triangleFan) {
+	if (    tmpRenderMode != gale::openGL::renderMode::triangle
+	     && tmpRenderMode != gale::openGL::renderMode::triangleStrip
+	     && tmpRenderMode != gale::openGL::renderMode::triangleFan) {
 		EGE_ERROR("try to add Line in a mesh material section that not support Line");
 		return;
 	}
@@ -595,12 +595,12 @@ void ege::resource::Mesh::addTriangle(const std::string& _layerName, const vec3&
 		return;
 	}
 	gale::openGL::renderMode tmpRenderMode = m_materials[_layerName]->getRenderMode();
-	if (    tmpRenderMode == gale::openGL::render_quad
-	     || tmpRenderMode == gale::openGL::render_quadStrip) {
+	if (    tmpRenderMode == gale::openGL::renderMode::quad
+	     || tmpRenderMode == gale::openGL::renderMode::quadStrip) {
 		EGE_TODO("Create quad interface ...");
-	} else if (    tmpRenderMode == gale::openGL::render_triangle
-	            || tmpRenderMode == gale::openGL::render_lineStrip
-	            || tmpRenderMode == gale::openGL::render_triangleFan) {
+	} else if (    tmpRenderMode == gale::openGL::renderMode::triangle
+	            || tmpRenderMode == gale::openGL::renderMode::lineStrip
+	            || tmpRenderMode == gale::openGL::renderMode::triangleFan) {
 		
 		// try to find position:
 		int32_t pos1 = findPositionInList(_pos1);

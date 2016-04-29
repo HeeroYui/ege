@@ -33,7 +33,7 @@ ege::Material::Material() :
   m_diffuseFactor(0,0,0,1),
   m_specularFactor(0,0,0,1),
   m_shininess(1),
-  m_renderMode(gale::openGL::render_triangle),
+  m_renderMode(gale::openGL::renderMode::triangle),
   m_texture0(nullptr) {
 	// nothing to do else ...
 }
@@ -107,39 +107,39 @@ enum gale::openGL::renderMode ege::Material::getRenderModeOpenGl() {
 
 void ege::Material::setRenderMode(enum gale::openGL::renderMode _val) {
 	switch (_val) {
-		case gale::openGL::render_point:
+		case gale::openGL::renderMode::point:
 			break;
-		case gale::openGL::render_line:
+		case gale::openGL::renderMode::line:
 			break;
-		case gale::openGL::render_lineStrip:
+		case gale::openGL::renderMode::lineStrip:
 			EGE_INFO("Does not support " << _val << " auto convert it in 'LINE'");
-			_val = gale::openGL::render_line;
+			_val = gale::openGL::renderMode::line;
 			break;
-		case gale::openGL::render_lineLoop:
+		case gale::openGL::renderMode::lineLoop:
 			EGE_INFO("Does not support " << _val << " auto convert it in 'LINE'");
-			_val = gale::openGL::render_line;
+			_val = gale::openGL::renderMode::line;
 			break;
-		case gale::openGL::render_triangle:
+		case gale::openGL::renderMode::triangle:
 			break;
-		case gale::openGL::render_triangleStrip:
+		case gale::openGL::renderMode::triangleStrip:
 			EGE_INFO("Does not support " << _val << " auto convert it in 'TRIANGLE'");
-			_val = gale::openGL::render_triangle;
+			_val = gale::openGL::renderMode::triangle;
 			break;
-		case gale::openGL::render_triangleFan:
+		case gale::openGL::renderMode::triangleFan:
 			EGE_INFO("Does not support " << _val << " auto convert it in 'TRIANGLE'");
-			_val = gale::openGL::render_triangle;
+			_val = gale::openGL::renderMode::triangle;
 			break;
-		case gale::openGL::render_quad:
+		case gale::openGL::renderMode::quad:
 			EGE_INFO("Does not support " << _val << " auto convert it in 'TRIANGLE'");
-			_val = gale::openGL::render_triangle;
+			_val = gale::openGL::renderMode::triangle;
 			break;
-		case gale::openGL::render_quadStrip:
+		case gale::openGL::renderMode::quadStrip:
 			EGE_INFO("Does not support " << _val << " auto convert it in 'TRIANGLE'");
-			_val = gale::openGL::render_triangle;
+			_val = gale::openGL::renderMode::triangle;
 			break;
-		case gale::openGL::render_polygon:
+		case gale::openGL::renderMode::polygon:
 			EGE_ERROR("Does not support " << _val << " try convert it in 'TRIANGLE'");
-			_val = gale::openGL::render_triangle;
+			_val = gale::openGL::renderMode::triangle;
 			break;
 	}
 	m_renderMode = _val;

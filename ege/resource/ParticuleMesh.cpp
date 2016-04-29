@@ -71,7 +71,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 		}
 		m_materials[m_listFaces.getKey(kkk)]->draw(m_GLprogram, m_GLMaterial);
 		if (m_checkNormal == false) {
-			gale::openGL::drawElements(gale::openGL::render_triangle, m_listFaces.getValue(kkk).m_index);
+			gale::openGL::drawElements(gale::openGL::renderMode::triangle, m_listFaces.getValue(kkk).m_index);
 			#ifdef DISPLAY_NB_VERTEX_DISPLAYED
 				nbElementDraw += m_listFaces.getValue(kkk).m_index.size();
 				nbElementDrawTheoric += m_listFaces.getValue(kkk).m_index.size();
@@ -107,7 +107,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 					}
 				}
 			}
-			gale::openGL::drawElements(gale::openGL::render_triangle, tmpIndexResult);
+			gale::openGL::drawElements(gale::openGL::renderMode::triangle, tmpIndexResult);
 			#ifdef DISPLAY_NB_VERTEX_DISPLAYED
 				nbElementDraw += tmpIndexResult.size();
 				nbElementDrawTheoric += m_listFaces.getValue(kkk).m_index.size();
