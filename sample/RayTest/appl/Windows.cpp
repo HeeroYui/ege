@@ -19,9 +19,6 @@
 #include <ege/physicsShape/PhysicsBox.h>
 #include <ege/physicsShape/PhysicsSphere.h>
 
-#undef __class__
-#define __class__ "Windows"
-
 appl::Windows::Windows() :
   m_angleTetha(0),
   m_anglePsy(0) {

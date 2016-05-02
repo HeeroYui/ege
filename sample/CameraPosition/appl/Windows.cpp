@@ -17,9 +17,6 @@
 #include <ege/elements/ElementBase.h>
 #include <ege/elements/ElementPhysic.h>
 
-#undef __class__
-#define __class__ "Windows"
-
 appl::Windows::Windows() {
 	addObjectType("appl::Windows");
 	propertyTitle.setDirectCheck("example ege : CameraPosirion");
