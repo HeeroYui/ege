@@ -26,7 +26,7 @@
 #include <BulletCollision/CollisionDispatch/btCollisionObject.h>
 
 namespace etk {
-	template<> std::string to_string<std::shared_ptr<ewol::resource::Colored3DObject> >(const std::shared_ptr<ewol::resource::Colored3DObject>& _value) {
+	template<> std::string to_string<ememory::SharedPtr<ewol::resource::Colored3DObject> >(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _value) {
 		return "{{ERROR}}";
 	}
 };
@@ -89,14 +89,14 @@ void ege::widget::Scene::onDraw() {
 	}
 	
 	// get camera :
-	std::shared_ptr<ege::Camera> camera = m_env->getCamera(m_cameraName);
+	ememory::SharedPtr<ege::Camera> camera = m_env->getCamera(m_cameraName);
 	if (camera == nullptr) {
 		EGE_ERROR(" can not get camera named: '" << m_cameraName << "'");
 		return;
 	}
 	//EGE_DEBUG("Draw (start)");
 	mat4 tmpMatrix;
-	std::shared_ptr<btDynamicsWorld> world = m_env->getPhysicEngine().getDynamicWorld();
+	ememory::SharedPtr<btDynamicsWorld> world = m_env->getPhysicEngine().getDynamicWorld();
 	if (world != nullptr) {
 		
 		m_env->getOrderedElementForDisplay(m_displayElementOrdered, camera->getEye(), camera->getViewVector());
@@ -123,7 +123,7 @@ void ege::widget::Scene::onDraw() {
 				m_displayElementOrdered[iii].element->drawDebug(m_debugDrawProperty, camera);
 			}
 			// Draw debug ... (Camera)
-			std::map<std::string, std::shared_ptr<ege::Camera>> listCamera = m_env->getCameraList();
+			std::map<std::string, ememory::SharedPtr<ege::Camera>> listCamera = m_env->getCameraList();
 			for (auto &itCam : listCamera) {
 				if (itCam.second != nullptr) {
 					itCam.second->drawDebug(m_debugDrawProperty, camera);
@@ -172,7 +172,7 @@ void ege::widget::Scene::systemDraw(const ewol::DrawProperty& _displayProp) {
 	// here we invert the reference of the standard openGl view because the reference in the common display is Top left and not buttom left
 	gale::openGL::setViewPort(m_origin, m_size);
 	// configure render with the camera...
-	std::shared_ptr<ege::Camera> camera = m_env->getCamera(m_cameraName);
+	ememory::SharedPtr<ege::Camera> camera = m_env->getCamera(m_cameraName);
 	if (camera != nullptr) {
 		camera->configureOpenGL();
 	}
@@ -191,7 +191,7 @@ void ege::widget::Scene::setCamera(const std::string& _cameraName) {
 	}
 	m_cameraName = _cameraName;
 	// Update camera aspect ratio:
-	std::shared_ptr<ege::Camera> camera = m_env->getCamera(m_cameraName);
+	ememory::SharedPtr<ege::Camera> camera = m_env->getCamera(m_cameraName);
 	if (camera != nullptr) {
 		camera->setSceenSize(m_size);
 	}
@@ -200,12 +200,12 @@ void ege::widget::Scene::setCamera(const std::string& _cameraName) {
 void ege::widget::Scene::calculateSize() {
 	ewol::Widget::calculateSize();
 	// Update camera aspect ratio:
-	std::shared_ptr<ege::Camera> camera = m_env->getCamera(m_cameraName);
+	ememory::SharedPtr<ege::Camera> camera = m_env->getCamera(m_cameraName);
 	if (camera != nullptr) {
 		camera->setSceenSize(m_size);
 	}
 }
 
 #include <esignal/details/ISignal.hxx>
-template class esignal::ISignal<std::shared_ptr<ewol::resource::Colored3DObject>>;
+template class esignal::ISignal<ememory::SharedPtr<ewol::resource::Colored3DObject>>;
 

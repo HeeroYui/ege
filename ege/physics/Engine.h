@@ -41,31 +41,31 @@ namespace ege {
 		class Engine {
 			private:
 				///this is the most important class
-				std::shared_ptr<btDefaultCollisionConfiguration> m_collisionConfiguration;
-				std::shared_ptr<btCollisionDispatcher> m_dispatcher;
-				std::shared_ptr<btBroadphaseInterface> m_broadphase;
-				std::shared_ptr<btConstraintSolver> m_solver;
-				std::shared_ptr<btDynamicsWorld> m_dynamicsWorld;
+				ememory::SharedPtr<btDefaultCollisionConfiguration> m_collisionConfiguration;
+				ememory::SharedPtr<btCollisionDispatcher> m_dispatcher;
+				ememory::SharedPtr<btBroadphaseInterface> m_broadphase;
+				ememory::SharedPtr<btConstraintSolver> m_solver;
+				ememory::SharedPtr<btDynamicsWorld> m_dynamicsWorld;
 			public:
 				Engine();
 				~Engine();
-				void setBulletConfig(std::shared_ptr<btDefaultCollisionConfiguration> _collisionConfiguration=nullptr,
-				                     std::shared_ptr<btCollisionDispatcher> _dispatcher=nullptr,
-				                     std::shared_ptr<btBroadphaseInterface> _broadphase=nullptr,
-				                     std::shared_ptr<btConstraintSolver> _solver=nullptr,
-				                     std::shared_ptr<btDynamicsWorld> _dynamicsWorld=nullptr);
+				void setBulletConfig(ememory::SharedPtr<btDefaultCollisionConfiguration> _collisionConfiguration=nullptr,
+				                     ememory::SharedPtr<btCollisionDispatcher> _dispatcher=nullptr,
+				                     ememory::SharedPtr<btBroadphaseInterface> _broadphase=nullptr,
+				                     ememory::SharedPtr<btConstraintSolver> _solver=nullptr,
+				                     ememory::SharedPtr<btDynamicsWorld> _dynamicsWorld=nullptr);
 				/**
 				 * @brief set the curent world
 				 * @param[in] _newWorld Pointer on the current world
 				 */
-				void setDynamicWorld(const std::shared_ptr<btDynamicsWorld>& _newWorld) {
+				void setDynamicWorld(const ememory::SharedPtr<btDynamicsWorld>& _newWorld) {
 					m_dynamicsWorld=_newWorld;
 				};
 				/**
 				 * @brief get the curent world
 				 * @return pointer on the current world
 				 */
-				std::shared_ptr<btDynamicsWorld> getDynamicWorld() {
+				ememory::SharedPtr<btDynamicsWorld> getDynamicWorld() {
 					return m_dynamicsWorld;
 				};
 			public:
@@ -73,13 +73,13 @@ namespace ege {
 				//! @not_in_doc
 				class collisionPoints {
 					public:
-						std::shared_ptr<ege::Element> elem1;
-						std::shared_ptr<ege::Element> elem2;
+						ememory::SharedPtr<ege::Element> elem1;
+						ememory::SharedPtr<ege::Element> elem2;
 						vec3 positionElem1;
 						vec3 positionElem2;
 						vec3 normalElem2;
-						collisionPoints(const std::shared_ptr<ege::Element>& _elem1,
-						                const std::shared_ptr<ege::Element>& _elem2,
+						collisionPoints(const ememory::SharedPtr<ege::Element>& _elem1,
+						                const ememory::SharedPtr<ege::Element>& _elem2,
 						                const vec3& _pos1,
 						                const vec3& _pos2,
 						                const vec3& _normal) :

@@ -43,7 +43,7 @@ namespace ege {
 			 * @param[in] _env glabal ege environement
 			 * @param[in] _autoRigidBody add a basic rigid body (not availlable after befor setting a shape)
 			 */
-			ElementPhysic(const std::shared_ptr<ege::Environement>& _env, bool _autoRigidBody=true);
+			ElementPhysic(const ememory::SharedPtr<ege::Environement>& _env, bool _autoRigidBody=true);
 			/**
 			 * @brief Destructor
 			 */
@@ -76,7 +76,7 @@ namespace ege {
 			 */
 			void removeShape();
 		public:
-			virtual bool setMesh(const std::shared_ptr<ege::resource::Mesh>& _mesh);
+			virtual bool setMesh(const ememory::SharedPtr<ege::resource::Mesh>& _mesh);
 			/**
 			 * @brief draw the curent element (can have multiple display)
 			 * @param[in] pass Id of the current pass : [0..?]
@@ -86,7 +86,7 @@ namespace ege {
 			/**
 			 * @brief draw the current life of the element
 			 */
-			// virtual void drawLife(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera);
+			// virtual void drawLife(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _draw, const ememory::SharedPtr<ege::Camera>& _camera);
 		// TODO : Remove this ...
 		protected:
 			vec3 m_theoricPosition;
@@ -175,10 +175,10 @@ namespace ege {
 			virtual void onDestroy() {};
 			virtual const vec3& getPosition();
 			virtual void setPosition(const vec3& _pos);
-			virtual void drawDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera);
+			virtual void drawDebug(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _draw, const ememory::SharedPtr<ege::Camera>& _camera);
 		protected:
 			void drawShape(const btCollisionShape* _shape,
-			               const std::shared_ptr<ewol::resource::Colored3DObject>& _draw,
+			               const ememory::SharedPtr<ewol::resource::Colored3DObject>& _draw,
 			               mat4 _transformationMatrix,
 			               std::vector<vec3> _tmpVertices);
 		protected:
@@ -202,7 +202,7 @@ namespace ege {
 			 * @param[in] _point Position of the impact in the global world
 			 * @param[in] _normal Normal of the impact
 			 */
-			virtual void onCollisionDetected(const std::shared_ptr<ege::Element>& _obj, const vec3& _point, const vec3& _normal) {};
+			virtual void onCollisionDetected(const ememory::SharedPtr<ege::Element>& _obj, const vec3& _point, const vec3& _normal) {};
 	};
 }
 

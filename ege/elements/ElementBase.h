@@ -16,7 +16,7 @@ namespace ege {
 			 * The objest will be stored in a pool of element and keep a second time if needed  == > redure memory allocation,
 			 * when needed, the system will call the init and un-init function...
 			 */
-			ElementBase(const std::shared_ptr<ege::Environement>& _env);
+			ElementBase(const ememory::SharedPtr<ege::Environement>& _env);
 			/**
 			 * @brief Destructor
 			 */

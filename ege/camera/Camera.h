@@ -15,7 +15,7 @@
 
 
 namespace ege {
-	class Camera : public std::enable_shared_from_this<Camera>{
+	class Camera : public ememory::EnableSharedFromThis<Camera>{
 		public:
 			/**
 			 * @brief Constructor.
@@ -168,7 +168,7 @@ namespace ege {
 			 * @brief Debug display of the current element
 			 * @param[in,out] draw Basic system to draw the debug shape and informations
 			 */
-			virtual void drawDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera) { }
+			virtual void drawDebug(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _draw, const ememory::SharedPtr<ege::Camera>& _camera) { }
 	};
 }
 

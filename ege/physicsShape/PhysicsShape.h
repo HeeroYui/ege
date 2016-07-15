@@ -9,7 +9,7 @@
 #include <etk/types.h>
 #include <etk/math/Vector4D.h>
 #include <etk/math/Vector3D.h>
-#include <memory>
+#include <ememory/memory.h>
 
 
 namespace ege {
@@ -22,7 +22,7 @@ namespace ege {
 	
 	class PhysicsShape {
 		public:
-			static std::shared_ptr<ege::PhysicsShape> create(const std::string& _name);
+			static ememory::SharedPtr<ege::PhysicsShape> create(const std::string& _name);
 		public:
 			enum type {
 				unknow,

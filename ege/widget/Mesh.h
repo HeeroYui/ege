@@ -20,7 +20,7 @@ namespace ege {
 			private:
 				// mesh name :
 				std::string m_meshName;
-				std::shared_ptr<ege::resource::Mesh> m_object;
+				ememory::SharedPtr<ege::resource::Mesh> m_object;
 				// mesh display properties:
 				vec3 m_position;
 				vec3 m_angle;

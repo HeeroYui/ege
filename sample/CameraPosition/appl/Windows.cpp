@@ -23,10 +23,10 @@ appl::Windows::Windows() {
 }
 
 
-static std::shared_ptr<ege::resource::Mesh> createViewBoxStar() {
-	std::shared_ptr<ege::resource::Mesh> out = ege::resource::Mesh::create("viewBoxStar", "DATA:texturedNoMaterial.prog");
+static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
+	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("viewBoxStar", "DATA:texturedNoMaterial.prog");
 	if (out != nullptr) {
-		std::shared_ptr<ege::Material> material = std::make_shared<ege::Material>();
+		ememory::SharedPtr<ege::Material> material = ememory::makeShared<ege::Material>();
 		// set the element material properties :
 		material->setAmbientFactor(vec4(1,1,1,1));
 		material->setDiffuseFactor(vec4(0,0,0,1));
@@ -65,14 +65,14 @@ static std::shared_ptr<ege::resource::Mesh> createViewBoxStar() {
 void appl::Windows::init() {
 	ewol::widget::Windows::init();
 	
-	getObjectManager().periodicCall.connect(shared_from_this(), &appl::Windows::onCallbackPeriodicUpdateCamera);
+	getObjectManager().periodicCall.connect(sharedFromThis(), &appl::Windows::onCallbackPeriodicUpdateCamera);
 	
 	m_env = ege::Environement::create();
 	// Create basic Camera
-	m_camera = std::make_shared<ege::camera::View>(vec3(30,30,-100), vec3(0,0,0));
+	m_camera = ememory::makeShared<ege::camera::View>(vec3(30,30,-100), vec3(0,0,0));
 	m_env->addCamera("basic", m_camera);
 	
-	std::shared_ptr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create();
+	ememory::SharedPtr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create();
 	if (tmpWidget == nullptr) {
 		APPL_ERROR("Can not allocate widget ==> display might be in error");
 	} else {
@@ -82,7 +82,7 @@ void appl::Windows::init() {
 		tmpWidget->setCamera("basic");
 		setSubWidget(tmpWidget);
 	}
-	std::shared_ptr<ege::resource::Mesh> myMesh;
+	ememory::SharedPtr<ege::resource::Mesh> myMesh;
 	// Create an external box :
 	myMesh = createViewBoxStar();
 	if (myMesh != nullptr) {

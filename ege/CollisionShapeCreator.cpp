@@ -22,12 +22,12 @@
 // Documentetion of bullet library :
 // http://bulletphysics.org/mediawiki-1.5.8/index.php/Collision_Shapes
 
-btCollisionShape* ege::collision::createShape(const std::shared_ptr<ege::resource::Mesh>& _mesh) {
+btCollisionShape* ege::collision::createShape(const ememory::SharedPtr<ege::resource::Mesh>& _mesh) {
 	if (_mesh == nullptr) {
 		EGE_DEBUG("Create empty shape (no mesh)");
 		return new btEmptyShape();;
 	}
-	const std::vector<std::shared_ptr<ege::PhysicsShape>>& physiqueProperty = _mesh->getPhysicalProperties();
+	const std::vector<ememory::SharedPtr<ege::PhysicsShape>>& physiqueProperty = _mesh->getPhysicalProperties();
 	if (physiqueProperty.size() == 0) {
 		EGE_DEBUG("Create empty shape (no default shape)");
 		return new btEmptyShape();;

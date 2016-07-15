@@ -29,11 +29,11 @@ namespace ege {
 	namespace resource {
 		class Mesh : public gale::Resource {
 			public:
-				static std::shared_ptr<ege::resource::Mesh> createGrid(int32_t _lineCount,
+				static ememory::SharedPtr<ege::resource::Mesh> createGrid(int32_t _lineCount,
 				                                                       const vec3& _position=vec3(0,0,0),
 				                                                       float _size=1.0f,
 				                                                       const std::string& _materialName="basics");
-				static std::shared_ptr<ege::resource::Mesh> createCube(float _size=1.0f,
+				static ememory::SharedPtr<ege::resource::Mesh> createCube(float _size=1.0f,
 				                                                       const std::string& _materialName="basics",
 				                                                       const etk::Color<float>& _color=etk::color::white);
 			public:
@@ -49,7 +49,7 @@ namespace ege {
 				enum normalMode m_normalMode; // select the normal mode of display
 				bool m_checkNormal; //!< when enable, this check the normal of the mesh before sending it at the 3d card
 			protected:
-				std::shared_ptr<gale::resource::Program> m_GLprogram;
+				ememory::SharedPtr<gale::resource::Program> m_GLprogram;
 				int32_t m_GLPosition;
 				int32_t m_GLMatrix;
 				int32_t m_GLMatrixPosition;
@@ -67,11 +67,11 @@ namespace ege {
 				std::vector<vec3> m_listFacesNormal; //!< List of all Face normal, when calculated
 				std::vector<vec3> m_listVertexNormal; //!< List of all Face normal, when calculated
 				etk::Hash<FaceIndexing> m_listFaces; //!< List of all Face for the mesh
-				etk::Hash<std::shared_ptr<ege::Material>> m_materials;
-				std::vector<std::shared_ptr<ege::PhysicsShape>> m_physics; //!< collision shape module ... (independent of bullet lib)
+				etk::Hash<ememory::SharedPtr<ege::Material>> m_materials;
+				std::vector<ememory::SharedPtr<ege::PhysicsShape>> m_physics; //!< collision shape module ... (independent of bullet lib)
 				void clean();
 			protected:
-				std::shared_ptr<gale::resource::VirtualBufferObject> m_verticesVBO;
+				ememory::SharedPtr<gale::resource::VirtualBufferObject> m_verticesVBO;
 			protected:
 				Mesh();
 				void init(const std::string& _fileName="---", const std::string& _shaderName="DATA:textured3D2.prog");
@@ -97,7 +97,7 @@ namespace ege {
 				bool loadOBJ(const std::string& _fileName);
 				bool loadEMF(const std::string& _fileName);
 			public:
-				void addMaterial(const std::string& _name, std::shared_ptr<ege::Material> _data);
+				void addMaterial(const std::string& _name, ememory::SharedPtr<ege::Material> _data);
 			public:
 				/**
 				 * @brief set the check of normal position befor sending it to the openGl card
@@ -113,10 +113,10 @@ namespace ege {
 				bool getCheckNormal() {
 					return m_checkNormal;
 				};
-				const std::vector<std::shared_ptr<ege::PhysicsShape>>& getPhysicalProperties() const {
+				const std::vector<ememory::SharedPtr<ege::PhysicsShape>>& getPhysicalProperties() const {
 					return m_physics;
 				};
-				void addPhysicElement(const std::shared_ptr<ege::PhysicsShape>& _shape) {
+				void addPhysicElement(const ememory::SharedPtr<ege::PhysicsShape>& _shape) {
 					m_physics.push_back(_shape);
 				}
 			private:

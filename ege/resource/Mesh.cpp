@@ -430,7 +430,7 @@ void ege::resource::Mesh::createIcoSphere(const std::string& _materialName,float
 }
 
 
-void ege::resource::Mesh::addMaterial(const std::string& _name, std::shared_ptr<ege::Material> _data) {
+void ege::resource::Mesh::addMaterial(const std::string& _name, ememory::SharedPtr<ege::Material> _data) {
 	if (_data == nullptr) {
 		EGE_ERROR(" can not add material with null pointer");
 		return;

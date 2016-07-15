@@ -15,8 +15,8 @@
 namespace appl {
 	class Windows : public ewol::widget::Windows {
 		private:
-			std::shared_ptr<ege::Environement> m_env;
-			std::shared_ptr<ege::camera::View> m_camera;
+			ememory::SharedPtr<ege::Environement> m_env;
+			ememory::SharedPtr<ege::camera::View> m_camera;
 		protected:
 			Windows();
 			void init();
@@ -25,7 +25,7 @@ namespace appl {
 			virtual ~Windows() { };
 		private:
 			bool onEventInput(const ewol::event::Input& _event);
-			void onCallbackDisplayDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _obj);
+			void onCallbackDisplayDebug(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _obj);
 			ege::Ray m_ray;
 			float m_angleTetha;
 			float m_anglePsy;

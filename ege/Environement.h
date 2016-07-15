@@ -30,7 +30,7 @@ class btDynamicsWorld;
 namespace ege {
 	class Element;
 	class Environement;
-	typedef std::shared_ptr<ege::Element> (*createElement_tf)(const std::shared_ptr<ege::Environement>& _env);
+	typedef ememory::SharedPtr<ege::Element> (*createElement_tf)(const ememory::SharedPtr<ege::Environement>& _env);
 	
 	enum gameStatus {
 		gameStart,
@@ -84,9 +84,9 @@ namespace ege {
 			eproperty::List<enum gameStatus> propertyStatus; //!< the display is running (not in pause)
 			eproperty::Value<float> propertyRatio; //!< Speed ratio
 		private:
-			//std::shared_ptr<btDynamicsWorld> m_dynamicsWorld; //!< curent system world description
+			//ememory::SharedPtr<btDynamicsWorld> m_dynamicsWorld; //!< curent system world description
 			ege::physics::Engine m_physicEngine; //!< EGE physic engine interface.
-			std::vector<std::shared_ptr<ege::Element>> m_listElement; //!< List of all element added in the Game
+			std::vector<ememory::SharedPtr<ege::Element>> m_listElement; //!< List of all element added in the Game
 		protected:
 			Environement();
 		public:
@@ -94,25 +94,25 @@ namespace ege {
 			virtual ~Environement() { };
 		protected:
 		protected:
-			std::map<std::string, std::shared_ptr<ege::Camera>> m_listCamera; //!< list of all camera in the world
+			std::map<std::string, ememory::SharedPtr<ege::Camera>> m_listCamera; //!< list of all camera in the world
 		public:
 			/**
 			 * @brief Add a camera in the camera pool.
 			 * @param[in] _name Name of the camera.
 			 * @param[in] _camera Pointer on the camera to add.
 			 */
-			void addCamera(const std::string& _name, const std::shared_ptr<ege::Camera>& _camera);
+			void addCamera(const std::string& _name, const ememory::SharedPtr<ege::Camera>& _camera);
 			/**
 			 * @brief Get a specific camera.
 			 * @param[in] _name Name of the camera.
 			 * @return A pointer on the camera requested.
 			 */
-			std::shared_ptr<ege::Camera> getCamera(const std::string& _name);
+			ememory::SharedPtr<ege::Camera> getCamera(const std::string& _name);
 			/**
 			 * @brief Get List of all camera.
 			 * @return All the camera registerred.
 			 */
-			std::map<std::string, std::shared_ptr<ege::Camera>> getCameraList() const {
+			std::map<std::string, ememory::SharedPtr<ege::Camera>> getCameraList() const {
 				return m_listCamera;
 			}
 		public:
@@ -134,15 +134,15 @@ namespace ege {
 			 * @return nullptr if an error occured OR the pointer on the element and it is already added on the system.
 			 * @note Pointer is return in case of setting properties on it...
 			 */
-			std::shared_ptr<ege::Element> createElement(const std::string& _type, const std::string& _description, bool _autoAddElement=true);
-			std::shared_ptr<ege::Element> createElement(const std::string& _type, const ejson::Value& _value, bool _autoAddElement=true);
-			std::shared_ptr<ege::Element> createElement(const std::string& _type, const exml::Node& _node, bool _autoAddElement=true);
-			std::shared_ptr<ege::Element> createElement(const std::string& _type, void* _data, bool _autoAddElement=true);
-			std::shared_ptr<ege::Element> createElement(const std::string& _type, bool _autoAddElement=true);
+			ememory::SharedPtr<ege::Element> createElement(const std::string& _type, const std::string& _description, bool _autoAddElement=true);
+			ememory::SharedPtr<ege::Element> createElement(const std::string& _type, const ejson::Value& _value, bool _autoAddElement=true);
+			ememory::SharedPtr<ege::Element> createElement(const std::string& _type, const exml::Node& _node, bool _autoAddElement=true);
+			ememory::SharedPtr<ege::Element> createElement(const std::string& _type, void* _data, bool _autoAddElement=true);
+			ememory::SharedPtr<ege::Element> createElement(const std::string& _type, bool _autoAddElement=true);
 		public:
 			class ResultNearestElement {
 				public:
-					std::shared_ptr<ege::Element> element;
+					ememory::SharedPtr<ege::Element> element;
 					float dist;
 			};
 			#if 0
@@ -150,14 +150,14 @@ namespace ege {
 			 * @brief set the curent world
 			 * @param[in] _newWorld Pointer on the current world
 			 */
-			void setDynamicWorld(const std::shared_ptr<btDynamicsWorld>& _newWorld) {
+			void setDynamicWorld(const ememory::SharedPtr<btDynamicsWorld>& _newWorld) {
 				m_dynamicsWorld=_newWorld;
 			};
 			/**
 			 * @brief get the curent world
 			 * @return pointer on the current world
 			 */
-			std::shared_ptr<btDynamicsWorld> getDynamicWorld() {
+			ememory::SharedPtr<btDynamicsWorld> getDynamicWorld() {
 				return m_dynamicsWorld;
 			};
 			#endif
@@ -168,7 +168,7 @@ namespace ege {
 			 * @breif get a reference on the curent list of element games
 			 * @return all element list
 			 */
-			std::vector<std::shared_ptr<ege::Element>>& getElement() {
+			std::vector<ememory::SharedPtr<ege::Element>>& getElement() {
 				return m_listElement;
 			};
 			/**
@@ -177,7 +177,7 @@ namespace ege {
 			 * @param[in] _distance Maximum distance search  == > return the element distance
 			 * @return Pointer on the neares element OR nullptr
 			 */
-			std::shared_ptr<ege::Element> getElementNearest(std::shared_ptr<ege::Element> _sourceRequest, float& _distance);
+			ememory::SharedPtr<ege::Element> getElementNearest(ememory::SharedPtr<ege::Element> _sourceRequest, float& _distance);
 			
 			void getElementNearest(const vec3& _sourcePosition,
 			                       float _distanceMax,
@@ -189,12 +189,12 @@ namespace ege {
 			 * @brief add an element on the list availlable.
 			 * @param[in] _newElement Element to add.
 			 */
-			void addElement(std::shared_ptr<ege::Element> _newElement);
+			void addElement(ememory::SharedPtr<ege::Element> _newElement);
 			/**
 			 * @brief remove an element on the list availlable.
 			 * @param[in] _removeElement Element to remove.
 			 */
-			void rmElement(std::shared_ptr<ege::Element> _removeElement);
+			void rmElement(ememory::SharedPtr<ege::Element> _removeElement);
 			/**
 			 * @brief get the element order from the nearest to the farest, and remove all element that are not in the camera angle and axes.
 			 * @param[in,out] _resultList List of the element ordered.
@@ -224,12 +224,12 @@ namespace ege {
 		private:
 			void onCallbackPeriodicCall(const ewol::event::Time& _event);
 		protected:
-			std::vector<std::shared_ptr<ege::resource::Mesh>> m_listMeshToDrawFirst;
+			std::vector<ememory::SharedPtr<ege::resource::Mesh>> m_listMeshToDrawFirst;
 		public:
-			void addStaticMeshToDraw(const std::shared_ptr<ege::resource::Mesh>& _mesh) {
+			void addStaticMeshToDraw(const ememory::SharedPtr<ege::resource::Mesh>& _mesh) {
 				m_listMeshToDrawFirst.push_back(_mesh);
 			}
-			const std::vector<std::shared_ptr<ege::resource::Mesh>>& getStaticMeshToDraw() {
+			const std::vector<ememory::SharedPtr<ege::resource::Mesh>>& getStaticMeshToDraw() {
 				return m_listMeshToDrawFirst;
 			}
 			virtual void onChangePropertyStatus();

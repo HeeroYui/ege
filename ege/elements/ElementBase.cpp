@@ -8,7 +8,7 @@
 #include <ege/elements/ElementBase.h>
 #include <ege/debug.h>
 
-ege::ElementBase::ElementBase(const std::shared_ptr<ege::Environement>& _env) : 
+ege::ElementBase::ElementBase(const ememory::SharedPtr<ege::Environement>& _env) : 
   ege::Element(_env),
   m_position(0,0,0) {
 	

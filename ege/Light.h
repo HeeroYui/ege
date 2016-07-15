@@ -29,8 +29,8 @@ namespace ege {
 		public:
 			Light();
 			~Light();
-			void link(const std::shared_ptr<gale::resource::Program>& _prog, const std::string& _baseName);
-			void draw(const std::shared_ptr<gale::resource::Program>& _prog);
+			void link(const ememory::SharedPtr<gale::resource::Program>& _prog, const std::string& _baseName);
+			void draw(const ememory::SharedPtr<gale::resource::Program>& _prog);
 			void setDirection(const vec3& val) {
 				m_direction = val;
 			}

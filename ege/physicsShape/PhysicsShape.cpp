@@ -13,21 +13,21 @@
 #include <ege/physicsShape/PhysicsSphere.h>
 
 
-std::shared_ptr<ege::PhysicsShape> ege::PhysicsShape::create(const std::string& _name) {
-	std::shared_ptr<ege::PhysicsShape> tmpp = nullptr;
+ememory::SharedPtr<ege::PhysicsShape> ege::PhysicsShape::create(const std::string& _name) {
+	ememory::SharedPtr<ege::PhysicsShape> tmpp = nullptr;
 	std::string name = etk::tolower(_name);
 	if (name == "box") {
-		tmpp = std::make_shared<ege::PhysicsBox>();
+		tmpp = ememory::makeShared<ege::PhysicsBox>();
 	} else if (name == "sphere") {
-		tmpp = std::make_shared<ege::PhysicsSphere>();
+		tmpp = ememory::makeShared<ege::PhysicsSphere>();
 	} else if (name == "cone") {
-		tmpp = std::make_shared<ege::PhysicsCone>();
+		tmpp = ememory::makeShared<ege::PhysicsCone>();
 	} else if (name == "cylinder") {
-		tmpp = std::make_shared<ege::PhysicsCylinder>();
+		tmpp = ememory::makeShared<ege::PhysicsCylinder>();
 	} else if (name == "capsule") {
-		tmpp = std::make_shared<ege::PhysicsCapsule>();
+		tmpp = ememory::makeShared<ege::PhysicsCapsule>();
 	} else if (name == "convexhull") {
-		tmpp = std::make_shared<ege::PhysicsConvexHull>();
+		tmpp = ememory::makeShared<ege::PhysicsConvexHull>();
 	} else {
 		EGE_ERROR("Create an unknow element : '" << _name << "' availlable : [BOX,SPHERE,CONE,CYLINDER,CAPSULE,CONVEXHULL]");
 		return nullptr;

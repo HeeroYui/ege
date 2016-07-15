@@ -171,9 +171,9 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 	int32_t meshFaceMaterialID = -1;
 	// material global param :
 	std::string materialName = "";
-	std::shared_ptr<ege::Material> material;
+	ememory::SharedPtr<ege::Material> material;
 	// physical shape:
-	std::shared_ptr<ege::PhysicsShape> physics;
+	ememory::SharedPtr<ege::PhysicsShape> physics;
 	while (1) {
 		int32_t level = countIndent(fileName);
 		if (level == 0) {
@@ -416,7 +416,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 						materialName = "";
 						material = nullptr;
 					}
-					material = std::make_shared<ege::Material>();
+					material = ememory::makeShared<ege::Material>();
 					materialName = inputDataLine;
 					currentMode = EMFModuleMaterialNamed;
 					EGE_VERBOSE("    "<< materialName);

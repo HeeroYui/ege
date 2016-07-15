@@ -24,12 +24,12 @@
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/CollisionDispatch/btCollisionObject.h>
 
-std::shared_ptr<ege::Element> ege::Environement::getElementNearest(std::shared_ptr<ege::Element> _sourceRequest, float& _distance) {
+ememory::SharedPtr<ege::Element> ege::Environement::getElementNearest(ememory::SharedPtr<ege::Element> _sourceRequest, float& _distance) {
 	if (_sourceRequest == nullptr) {
 		return nullptr;
 	}
 	vec3 sourcePosition = _sourceRequest->getPosition();
-	std::shared_ptr<ege::Element> result = nullptr;
+	ememory::SharedPtr<ege::Element> result = nullptr;
 	for (size_t iii=0; iii<m_listElement.size() ; iii++) {
 		// chack nullptr  pointer
 		if (m_listElement[iii] == nullptr) {
@@ -135,7 +135,7 @@ void ege::Environement::addCreator(const std::string& _type, ege::createElement_
 }
 
 
-std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, const std::string& _description, bool _autoAddElement) {
+ememory::SharedPtr<ege::Element> ege::Environement::createElement(const std::string& _type, const std::string& _description, bool _autoAddElement) {
 	if (getHachTableCreating().exist(_type) == false) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return nullptr;
@@ -145,7 +145,7 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
 		return nullptr;
 	}
-	std::shared_ptr<ege::Element> tmpElement = creatorPointer(std::dynamic_pointer_cast<ege::Environement>(shared_from_this()));
+	ememory::SharedPtr<ege::Element> tmpElement = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
 	if (tmpElement == nullptr) {
 		EGE_ERROR("allocation error '" << _type << "'");
 		return nullptr;
@@ -160,7 +160,7 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 	return tmpElement;
 }
 
-std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, const ejson::Value& _value, bool _autoAddElement) {
+ememory::SharedPtr<ege::Element> ege::Environement::createElement(const std::string& _type, const ejson::Value& _value, bool _autoAddElement) {
 	if (getHachTableCreating().exist(_type) == false) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return nullptr;
@@ -170,7 +170,7 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
 		return nullptr;
 	}
-	std::shared_ptr<ege::Element> tmpElement = creatorPointer(std::dynamic_pointer_cast<ege::Environement>(shared_from_this()));
+	ememory::SharedPtr<ege::Element> tmpElement = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
 	if (tmpElement == nullptr) {
 		EGE_ERROR("allocation error '" << _type << "'");
 		return nullptr;
@@ -185,7 +185,7 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 	return tmpElement;
 }
 
-std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, const exml::Node& _node, bool _autoAddElement) {
+ememory::SharedPtr<ege::Element> ege::Environement::createElement(const std::string& _type, const exml::Node& _node, bool _autoAddElement) {
 	if (getHachTableCreating().exist(_type) == false) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return nullptr;
@@ -195,7 +195,7 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
 		return nullptr;
 	}
-	std::shared_ptr<ege::Element> tmpElement = creatorPointer(std::dynamic_pointer_cast<ege::Environement>(shared_from_this()));
+	ememory::SharedPtr<ege::Element> tmpElement = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
 	if (tmpElement == nullptr) {
 		EGE_ERROR("allocation error '" << _type << "'");
 		return nullptr;
@@ -210,7 +210,7 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 	return tmpElement;
 }
 
-std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, void* _data, bool _autoAddElement) {
+ememory::SharedPtr<ege::Element> ege::Environement::createElement(const std::string& _type, void* _data, bool _autoAddElement) {
 	if (getHachTableCreating().exist(_type) == false) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return nullptr;
@@ -220,7 +220,7 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
 		return nullptr;
 	}
-	std::shared_ptr<ege::Element> tmpElement = creatorPointer(std::dynamic_pointer_cast<ege::Environement>(shared_from_this()));
+	ememory::SharedPtr<ege::Element> tmpElement = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
 	if (tmpElement == nullptr) {
 		EGE_ERROR("allocation error '" << _type << "'");
 		return nullptr;
@@ -235,7 +235,7 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 	return tmpElement;
 }
 
-std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string& _type, bool _autoAddElement) {
+ememory::SharedPtr<ege::Element> ege::Environement::createElement(const std::string& _type, bool _autoAddElement) {
 	if (getHachTableCreating().exist(_type) == false) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return nullptr;
@@ -245,7 +245,7 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
 		return nullptr;
 	}
-	std::shared_ptr<ege::Element> tmpElement = creatorPointer(std::dynamic_pointer_cast<ege::Environement>(shared_from_this()));
+	ememory::SharedPtr<ege::Element> tmpElement = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
 	if (tmpElement == nullptr) {
 		EGE_ERROR("allocation error '" << _type << "'");
 		return nullptr;
@@ -260,7 +260,7 @@ std::shared_ptr<ege::Element> ege::Environement::createElement(const std::string
 	return tmpElement;
 }
 
-void ege::Environement::addElement(std::shared_ptr<ege::Element> _newElement) {
+void ege::Environement::addElement(ememory::SharedPtr<ege::Element> _newElement) {
 	// prevent memory allocation and un allocation ...
 	if (_newElement == nullptr) {
 		return;
@@ -276,7 +276,7 @@ void ege::Environement::addElement(std::shared_ptr<ege::Element> _newElement) {
 	_newElement->dynamicEnable();
 }
 
-void ege::Environement::rmElement(std::shared_ptr<ege::Element> _removeElement) {
+void ege::Environement::rmElement(ememory::SharedPtr<ege::Element> _removeElement) {
 	if (_removeElement == nullptr) {
 		return;
 	}
@@ -457,11 +457,11 @@ void ege::Environement::onCallbackPeriodicCall(const ewol::event::Time& _event) 
 }
 
 
-void ege::Environement::addCamera(const std::string& _name, const std::shared_ptr<ege::Camera>& _camera) {
+void ege::Environement::addCamera(const std::string& _name, const ememory::SharedPtr<ege::Camera>& _camera) {
 	m_listCamera.insert(std::make_pair(_name, _camera));
 }
 
-std::shared_ptr<ege::Camera> ege::Environement::getCamera(const std::string& _name) {
+ememory::SharedPtr<ege::Camera> ege::Environement::getCamera(const std::string& _name) {
 	auto cameraIt = m_listCamera.find(_name);
 	if (cameraIt != m_listCamera.end()) {
 		return cameraIt->second;

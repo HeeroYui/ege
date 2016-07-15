@@ -7,11 +7,11 @@
 #include <ege/debug.h>
 #include <ege/resource/Mesh.h>
 
-std::shared_ptr<ege::resource::Mesh> ege::resource::Mesh::createCube(float _size, const std::string& _materialName, const etk::Color<float>& _color) {
+ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createCube(float _size, const std::string& _materialName, const etk::Color<float>& _color) {
 	EGE_ERROR(" create a cube _size=" << _size << " _materialName=" << _materialName << " _color=" << _color);
-	std::shared_ptr<ege::resource::Mesh> out = ege::resource::Mesh::create("---", "DATA:color3.prog");
+	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("---", "DATA:color3.prog");
 	if (out != nullptr) {
-		std::shared_ptr<ege::Material> material = std::make_shared<ege::Material>();
+		ememory::SharedPtr<ege::Material> material = ememory::makeShared<ege::Material>();
 		// set the element material properties :
 		material->setAmbientFactor(vec4(1,1,1,1));
 		material->setDiffuseFactor(vec4(0,0,0,1));

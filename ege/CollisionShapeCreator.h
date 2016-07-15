@@ -11,7 +11,7 @@
 
 namespace ege {
 	namespace collision {
-		btCollisionShape* createShape(const std::shared_ptr<ege::resource::Mesh>& _mesh);
+		btCollisionShape* createShape(const ememory::SharedPtr<ege::resource::Mesh>& _mesh);
 	}
 }
 

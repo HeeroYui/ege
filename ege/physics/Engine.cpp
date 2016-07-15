@@ -40,10 +40,10 @@ static bool handleContactsProcess(btManifoldPoint& _point, btCollisionObject* _b
 	}
 	EGE_VERBOSE("collision process between " << elem0->getUID() << " && " << elem1->getUID() << " pos=" << _point.getPositionWorldOnA() << " norm=" << _point.m_normalWorldOnB);
 	if (elem0->getCollisionDetectionStatus() == true) {
-		elem0->onCollisionDetected(elem1->shared_from_this(), _point.getPositionWorldOnA(), -_point.m_normalWorldOnB);
+		elem0->onCollisionDetected(elem1->sharedFromThis(), _point.getPositionWorldOnA(), -_point.m_normalWorldOnB);
 	}
 	if (elem1->getCollisionDetectionStatus() == true) {
-		elem1->onCollisionDetected(elem0->shared_from_this(), _point.getPositionWorldOnA(), _point.m_normalWorldOnB);
+		elem1->onCollisionDetected(elem0->sharedFromThis(), _point.getPositionWorldOnA(), _point.m_normalWorldOnB);
 	}
 	return true;
 }
@@ -65,39 +65,39 @@ ege::physics::Engine::~Engine() {
 	*/
 }
 
-void ege::physics::Engine::setBulletConfig(std::shared_ptr<btDefaultCollisionConfiguration> _collisionConfiguration,
-                                           std::shared_ptr<btCollisionDispatcher> _dispatcher,
-                                           std::shared_ptr<btBroadphaseInterface> _broadphase,
-                                           std::shared_ptr<btConstraintSolver> _solver,
-                                           std::shared_ptr<btDynamicsWorld> _dynamicsWorld) {
+void ege::physics::Engine::setBulletConfig(ememory::SharedPtr<btDefaultCollisionConfiguration> _collisionConfiguration,
+                                           ememory::SharedPtr<btCollisionDispatcher> _dispatcher,
+                                           ememory::SharedPtr<btBroadphaseInterface> _broadphase,
+                                           ememory::SharedPtr<btConstraintSolver> _solver,
+                                           ememory::SharedPtr<btDynamicsWorld> _dynamicsWorld) {
 	if (_collisionConfiguration != nullptr) {
 		m_collisionConfiguration = _collisionConfiguration;
 	} else {
-		m_collisionConfiguration = std::make_shared<btDefaultCollisionConfiguration>();
+		m_collisionConfiguration = ememory::makeShared<btDefaultCollisionConfiguration>();
 	}
 	///use the default collision dispatcher.
 	if (_dispatcher != nullptr) {
 		m_dispatcher = _dispatcher;
 	} else {
-		m_dispatcher = std::make_shared<btCollisionDispatcher>(m_collisionConfiguration.get());
+		m_dispatcher = ememory::makeShared<btCollisionDispatcher>(m_collisionConfiguration.get());
 	}
 	if (_broadphase != nullptr) {
 		m_broadphase = _broadphase;
 	} else {
-		m_broadphase = std::make_shared<btDbvtBroadphase>();
+		m_broadphase = ememory::makeShared<btDbvtBroadphase>();
 	}
 	
 	///the default constraint solver.
 	if (_solver != nullptr) {
 		m_solver = _solver;
 	} else {
-		m_solver = std::make_shared<btSequentialImpulseConstraintSolver>();
+		m_solver = ememory::makeShared<btSequentialImpulseConstraintSolver>();
 	}
 	
 	if (_dynamicsWorld != nullptr) {
 		m_dynamicsWorld = _dynamicsWorld;
 	} else {
-		m_dynamicsWorld = std::make_shared<btDiscreteDynamicsWorld>(m_dispatcher.get(),m_broadphase.get(),m_solver.get(),m_collisionConfiguration.get());
+		m_dynamicsWorld = ememory::makeShared<btDiscreteDynamicsWorld>(m_dispatcher.get(),m_broadphase.get(),m_solver.get(),m_collisionConfiguration.get());
 		// By default we set no gravity
 		m_dynamicsWorld->setGravity(btVector3(0,0,0));
 	}
@@ -127,7 +127,7 @@ std::vector<ege::physics::Engine::collisionPoints> ege::physics::Engine::getList
 			for (int j=0;j<numContacts;j++) {
 				btManifoldPoint& pt = contactManifold->getContactPoint(j);
 				if (pt.getDistance()<0.f) {
-					out.push_back(collisionPoints(elem0->shared_from_this(), elem1->shared_from_this(), pt.getPositionWorldOnA(), pt.getPositionWorldOnB(), pt.m_normalWorldOnB));
+					out.push_back(collisionPoints(elem0->sharedFromThis(), elem1->sharedFromThis(), pt.getPositionWorldOnA(), pt.getPositionWorldOnB(), pt.m_normalWorldOnB));
 				}
 			}
 		}

@@ -56,7 +56,7 @@ std::pair<vec3,vec3> ege::Ray::testRay(ege::physics::Engine& _engine) {
 }
 
 
-std::pair<std::shared_ptr<ege::Element>, std::pair<vec3,vec3>> ege::Ray::testRayObject(ege::physics::Engine& _engine) {
+std::pair<ememory::SharedPtr<ege::Element>, std::pair<vec3,vec3>> ege::Ray::testRayObject(ege::physics::Engine& _engine) {
 	vec3 start = m_origin;
 	vec3 stop = m_origin+m_direction*1000.0f;
 	// Start and End are vectors
@@ -70,14 +70,14 @@ std::pair<std::shared_ptr<ege::Element>, std::pair<vec3,vec3>> ege::Ray::testRay
 		ege::Element* elem = static_cast<ege::Element*>(rayCallback.m_collisionObject->getUserPointer());
 		if (elem != nullptr) {
 			EGE_VERBOSE("    hit at point=" << end << " normal=" << normal);
-			return std::pair<std::shared_ptr<ege::Element>, std::pair<vec3,vec3>>(elem->shared_from_this(), std::pair<vec3,vec3>(end,normal));
+			return std::pair<ememory::SharedPtr<ege::Element>, std::pair<vec3,vec3>>(elem->sharedFromThis(), std::pair<vec3,vec3>(end,normal));
 		}
 		EGE_VERBOSE("    Can not get the element pointer");
-		return std::pair<std::shared_ptr<ege::Element>, std::pair<vec3,vec3>>(nullptr, std::pair<vec3,vec3>(end,normal));
+		return std::pair<ememory::SharedPtr<ege::Element>, std::pair<vec3,vec3>>(nullptr, std::pair<vec3,vec3>(end,normal));
 	} else {
 		EGE_VERBOSE("    No Hit");
 	}
-	return std::pair<std::shared_ptr<ege::Element>, std::pair<vec3,vec3>>(nullptr, std::pair<vec3,vec3>(vec3(0,0,0),vec3(0,0,0)));
+	return std::pair<ememory::SharedPtr<ege::Element>, std::pair<vec3,vec3>>(nullptr, std::pair<vec3,vec3>(vec3(0,0,0),vec3(0,0,0)));
 }
 
 vec3 ege::Ray::testRayZeroPlane() {

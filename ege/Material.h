@@ -24,7 +24,7 @@ namespace ege {
 			int32_t m_GL_shininess;
 			int32_t m_GL_texture0;
 			MaterialGlId();
-			void link(const std::shared_ptr<gale::resource::Program>& _prog, const std::string& _baseName);
+			void link(const ememory::SharedPtr<gale::resource::Program>& _prog, const std::string& _baseName);
 	};
 	
 	
@@ -36,13 +36,13 @@ namespace ege {
 			vec4 m_specularFactor;
 			float m_shininess;
 			enum gale::openGL::renderMode m_renderMode; // Select Render mode (triangle/Line/point ...)
-			std::shared_ptr<ewol::resource::Texture> m_texture0;
+			ememory::SharedPtr<ewol::resource::Texture> m_texture0;
 		public:
 			std::vector<uint32_t> m_listIndexFaces;
 		public:
 			Material();
 			~Material();
-			void draw(const std::shared_ptr<gale::resource::Program>& _prog, const ege::MaterialGlId& _glID);
+			void draw(const ememory::SharedPtr<gale::resource::Program>& _prog, const ege::MaterialGlId& _glID);
 			void setAmbientFactor(const vec4& _val) {
 				m_ambientFactor = _val;
 			}

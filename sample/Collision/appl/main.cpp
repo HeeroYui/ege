@@ -37,7 +37,7 @@ class MainApplication : public ewol::context::Application {
 			_context.getFontDefault().setUseExternal(true);
 			_context.getFontDefault().set("FreeSerif;DejaVuSansMono", 19);
 			
-			std::shared_ptr<ewol::widget::Windows> basicWindows = appl::Windows::create();
+			ememory::SharedPtr<ewol::widget::Windows> basicWindows = appl::Windows::create();
 			// create the specific windows
 			_context.setWindows(basicWindows);
 			APPL_INFO("==> CREATE ... " PROJECT_NAME " (END)");

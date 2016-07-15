@@ -25,16 +25,16 @@
 #define ELEMENT_SCALE     (1.0f/8.0f)
 
 namespace ege {
-	class Element : public std::enable_shared_from_this<Element> {
+	class Element : public ememory::EnableSharedFromThis<Element> {
 		protected:
-			std::shared_ptr<ege::Environement> m_env;
+			ememory::SharedPtr<ege::Environement> m_env;
 		public:
 			/**
 			 * @brief Constructor (when constructer is called just add element that did not change.
 			 * The objest will be stored in a pool of element and keep a second time if needed  == > redure memory allocation,
 			 * when needed, the system will call the init and un-init function...
 			 */
-			Element(const std::shared_ptr<ege::Environement>& _env);
+			Element(const ememory::SharedPtr<ege::Environement>& _env);
 			/**
 			 * @brief Destructor
 			 */
@@ -67,7 +67,7 @@ namespace ege {
 				return m_uID;
 			};
 		protected:
-			std::shared_ptr<ege::resource::Mesh> m_mesh; //!< Mesh of the Element (can be nullptr)
+			ememory::SharedPtr<ege::resource::Mesh> m_mesh; //!< Mesh of the Element (can be nullptr)
 		public:
 			/**
 			 * @brief Select a mesh with a specific name.
@@ -82,12 +82,12 @@ namespace ege {
 			 * @note : this remove the shape and the mesh properties.
 			 * @return true if no error occured
 			 */
-			virtual bool setMesh(const std::shared_ptr<ege::resource::Mesh>& _mesh);
+			virtual bool setMesh(const ememory::SharedPtr<ege::resource::Mesh>& _mesh);
 			/**
 			 * @brief get a pointer on the Mesh file.
 			 * @return the mesh pointer.
 			 */
-			inline const std::shared_ptr<ege::resource::Mesh>& getMesh() {
+			inline const ememory::SharedPtr<ege::resource::Mesh>& getMesh() {
 				return m_mesh;
 			};
 		protected:
@@ -159,7 +159,7 @@ namespace ege {
 			 * @brief draw the current life of the element
 			 */
 			// TODO : Remove this ...
-			virtual void drawLife(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera);
+			virtual void drawLife(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _draw, const ememory::SharedPtr<ege::Camera>& _camera);
 			
 		protected:
 			// For debug only ...
@@ -169,7 +169,7 @@ namespace ege {
 			 * @brief Debug display of the current element
 			 * @param[in,out] draw Basic system to draw the debug shape and informations
 			 */
-			virtual void drawDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _draw, const std::shared_ptr<ege::Camera>& _camera);
+			virtual void drawDebug(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _draw, const ememory::SharedPtr<ege::Camera>& _camera);
 			
 			/**
 			 * @brief get the theoric position. Sometimes, the element has move due to an explosion or something else, then its real position in not the one that woult it be at the end ...
@@ -192,7 +192,7 @@ namespace ege {
 			 * @brief Event arrive when an element has been remove from the system  == > this permit to keep pointer of ennemy, and not search them every cycle ...
 			 * @param[in] _removedElement Pointer on the element removed.
 			 */
-			virtual void elementIsRemoved(std::shared_ptr<ege::Element> _removedElement) { };
+			virtual void elementIsRemoved(ememory::SharedPtr<ege::Element> _removedElement) { };
 		protected:
 			bool m_fixe; //!< is a fixed element  == > used for placement of every elements
 		public:

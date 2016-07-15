@@ -26,10 +26,10 @@ appl::Windows::Windows() {
 }
 
 
-static std::shared_ptr<ege::resource::Mesh> createViewBoxStar() {
-	std::shared_ptr<ege::resource::Mesh> out = ege::resource::Mesh::create("viewBoxStar", "DATA:texturedNoMaterial.prog");
+static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
+	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("viewBoxStar", "DATA:texturedNoMaterial.prog");
 	if (out != nullptr) {
-		std::shared_ptr<ege::Material> material = std::make_shared<ege::Material>();
+		ememory::SharedPtr<ege::Material> material = ememory::makeShared<ege::Material>();
 		// set the element material properties :
 		material->setAmbientFactor(vec4(1,1,1,1));
 		material->setDiffuseFactor(vec4(0,0,0,1));
@@ -68,15 +68,15 @@ static std::shared_ptr<ege::resource::Mesh> createViewBoxStar() {
 void appl::Windows::init() {
 	ewol::widget::Windows::init();
 	
-	getObjectManager().periodicCall.connect(shared_from_this(), &appl::Windows::onCallbackPeriodicCheckCollision);
+	getObjectManager().periodicCall.connect(sharedFromThis(), &appl::Windows::onCallbackPeriodicCheckCollision);
 	
 	m_env = ege::Environement::create();
 	// Create basic Camera
-	m_camera = std::make_shared<ege::camera::View>(vec3(30,30,-100), vec3(0,0,0));
+	m_camera = ememory::makeShared<ege::camera::View>(vec3(30,30,-100), vec3(0,0,0));
 	m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),40*std::cos(m_anglePsy)));
 	m_env->addCamera("basic", m_camera);
 	
-	std::shared_ptr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create();
+	ememory::SharedPtr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create();
 	if (tmpWidget == nullptr) {
 		APPL_CRITICAL("Can not allocate widget ==> display might be in error");
 	} else {
@@ -87,7 +87,7 @@ void appl::Windows::init() {
 		setSubWidget(tmpWidget);
 	}
 	
-	std::shared_ptr<ege::resource::Mesh> myMesh;
+	ememory::SharedPtr<ege::resource::Mesh> myMesh;
 	// Create an external box :
 	myMesh = createViewBoxStar();
 	if (myMesh != nullptr) {
@@ -100,10 +100,10 @@ void appl::Windows::init() {
 	}
 	myMesh = ege::resource::Mesh::createCube(3);
 	if (myMesh != nullptr) {
-		//std::shared_ptr<ege::ElementBase> element = std::make_shared<ege::ElementBase>(m_env);
-		std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);
+		//ememory::SharedPtr<ege::ElementBase> element = ememory::makeShared<ege::ElementBase>(m_env);
+		ememory::SharedPtr<ege::ElementPhysic> element = ememory::makeShared<ege::ElementPhysic>(m_env);
 		// add physic interface:
-		std::shared_ptr<ege::PhysicsBox> physic = std::make_shared<ege::PhysicsBox>();
+		ememory::SharedPtr<ege::PhysicsBox> physic = ememory::makeShared<ege::PhysicsBox>();
 		physic->setSize(vec3(3.2,3.2,3.2));
 		myMesh->addPhysicElement(physic);
 		
@@ -116,11 +116,11 @@ void appl::Windows::init() {
 	}
 	myMesh = ege::resource::Mesh::createCube(3);
 	if (myMesh != nullptr) {
-		//element = std::make_shared<ege::ElementBase>(m_env);
-		std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);
+		//element = ememory::makeShared<ege::ElementBase>(m_env);
+		ememory::SharedPtr<ege::ElementPhysic> element = ememory::makeShared<ege::ElementPhysic>(m_env);
 		
 		// add physic interface:
-		std::shared_ptr<ege::PhysicsSphere> physic = std::make_shared<ege::PhysicsSphere>();
+		ememory::SharedPtr<ege::PhysicsSphere> physic = ememory::makeShared<ege::PhysicsSphere>();
 		physic->setRadius(4.5f);
 		myMesh->addPhysicElement(physic);
 		
@@ -140,11 +140,11 @@ void appl::Windows::init() {
 namespace appl {
 	class ElementHerit : public ege::ElementPhysic {
 		public:
-			ElementHerit(const std::shared_ptr<ege::Environement>& _env, bool _autoRigidBody=true) :
+			ElementHerit(const ememory::SharedPtr<ege::Environement>& _env, bool _autoRigidBody=true) :
 			  ege::ElementPhysic(_env, _autoRigidBody) {
 				setCollisionDetectionStatus(true);
 			}
-			virtual void onCollisionDetected(const std::shared_ptr<ege::Element>& _obj, const vec3& _point, const vec3& _normal) {
+			virtual void onCollisionDetected(const ememory::SharedPtr<ege::Element>& _obj, const vec3& _point, const vec3& _normal) {
 				APPL_WARNING("[" << getUID() << "] collision : pos=" << _point << " norm=" <<_normal);
 			}
 	};
@@ -158,11 +158,11 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 			vec2 pos = relativePosition(_event.getPos());
 			ege::Ray ray = m_camera->getRayFromScreenPosition(pos, m_size);
 			
-			std::shared_ptr<ege::resource::Mesh> myMesh;
+			ememory::SharedPtr<ege::resource::Mesh> myMesh;
 			myMesh = ege::resource::Mesh::createCube(1, "basics", etk::color::green);
 			if (myMesh != nullptr) {
-				std::shared_ptr<appl::ElementHerit> element = std::make_shared<appl::ElementHerit>(m_env);
-				std::shared_ptr<ege::PhysicsBox> physic = std::make_shared<ege::PhysicsBox>();
+				ememory::SharedPtr<appl::ElementHerit> element = ememory::makeShared<appl::ElementHerit>(m_env);
+				ememory::SharedPtr<ege::PhysicsBox> physic = ememory::makeShared<ege::PhysicsBox>();
 				physic->setSize(vec3(1.01,1.01,1.01));
 				myMesh->addPhysicElement(physic);
 				element->setMesh(myMesh);

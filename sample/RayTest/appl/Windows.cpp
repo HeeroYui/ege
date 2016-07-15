@@ -26,10 +26,10 @@ appl::Windows::Windows() :
 	propertyTitle.setDirectCheck("example ege: RayTest");
 }
 
-static std::shared_ptr<ege::resource::Mesh> createViewBoxStar() {
-	std::shared_ptr<ege::resource::Mesh> out = ege::resource::Mesh::create("viewBoxStar", "DATA:texturedNoMaterial.prog");
+static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
+	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("viewBoxStar", "DATA:texturedNoMaterial.prog");
 	if (out != nullptr) {
-		std::shared_ptr<ege::Material> material = std::make_shared<ege::Material>();
+		ememory::SharedPtr<ege::Material> material = ememory::makeShared<ege::Material>();
 		// set the element material properties :
 		material->setAmbientFactor(vec4(1,1,1,1));
 		material->setDiffuseFactor(vec4(0,0,0,1));
@@ -69,11 +69,11 @@ void appl::Windows::init() {
 	
 	m_env = ege::Environement::create();
 	// Create basic Camera
-	m_camera = std::make_shared<ege::camera::View>(vec3(30,30,-100), vec3(0,0,0));
+	m_camera = ememory::makeShared<ege::camera::View>(vec3(30,30,-100), vec3(0,0,0));
 	m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),40*std::cos(m_anglePsy)));
 	m_env->addCamera("basic", m_camera);
 	
-	std::shared_ptr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create();
+	ememory::SharedPtr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create();
 	if (tmpWidget == nullptr) {
 		APPL_ERROR("Can not allocate widget ==> display might be in error");
 	} else {
@@ -82,9 +82,9 @@ void appl::Windows::init() {
 		tmpWidget->propertyFill.set(bvec2(true,true));
 		tmpWidget->setCamera("basic");
 		setSubWidget(tmpWidget);
-		tmpWidget->signalDisplayDebug.connect(shared_from_this(), &appl::Windows::onCallbackDisplayDebug);
+		tmpWidget->signalDisplayDebug.connect(sharedFromThis(), &appl::Windows::onCallbackDisplayDebug);
 	}
-	std::shared_ptr<ege::resource::Mesh> myMesh;
+	ememory::SharedPtr<ege::resource::Mesh> myMesh;
 	// Create an external box :
 	myMesh = createViewBoxStar();
 	if (myMesh != nullptr) {
@@ -97,10 +97,10 @@ void appl::Windows::init() {
 	}
 	myMesh = ege::resource::Mesh::createCube(3);
 	if (myMesh != nullptr) {
-		//std::shared_ptr<ege::ElementBase> element = std::make_shared<ege::ElementBase>(m_env);
-		std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);
+		//ememory::SharedPtr<ege::ElementBase> element = ememory::makeShared<ege::ElementBase>(m_env);
+		ememory::SharedPtr<ege::ElementPhysic> element = ememory::makeShared<ege::ElementPhysic>(m_env);
 		// add physic interface:
-		std::shared_ptr<ege::PhysicsBox> physic = std::make_shared<ege::PhysicsBox>();
+		ememory::SharedPtr<ege::PhysicsBox> physic = ememory::makeShared<ege::PhysicsBox>();
 		physic->setSize(vec3(3.2,3.2,3.2));
 		myMesh->addPhysicElement(physic);
 		
@@ -112,11 +112,11 @@ void appl::Windows::init() {
 	}
 	myMesh = ege::resource::Mesh::createCube(3);
 	if (myMesh != nullptr) {
-		//element = std::make_shared<ege::ElementBase>(m_env);
-		std::shared_ptr<ege::ElementPhysic> element = std::make_shared<ege::ElementPhysic>(m_env);
+		//element = ememory::makeShared<ege::ElementBase>(m_env);
+		ememory::SharedPtr<ege::ElementPhysic> element = ememory::makeShared<ege::ElementPhysic>(m_env);
 		
 		// add physic interface:
-		std::shared_ptr<ege::PhysicsSphere> physic = std::make_shared<ege::PhysicsSphere>();
+		ememory::SharedPtr<ege::PhysicsSphere> physic = ememory::makeShared<ege::PhysicsSphere>();
 		physic->setRadius(4.5f);
 		myMesh->addPhysicElement(physic);
 		
@@ -140,7 +140,7 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 		m_ray = ray;
 		APPL_DEBUG("pos=" << pos << " ray = " << ray);
 		m_destination = ray.testRay(m_env->getPhysicEngine());
-		std::pair<std::shared_ptr<ege::Element>, std::pair<vec3,vec3>> result = ray.testRayObject(m_env->getPhysicEngine());
+		std::pair<ememory::SharedPtr<ege::Element>, std::pair<vec3,vec3>> result = ray.testRayObject(m_env->getPhysicEngine());
 		if (result.first != nullptr) {
 			APPL_INFO("Select Object :" << result.first->getUID());
 		}
@@ -170,7 +170,7 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 	return false;
 }
 
-void appl::Windows::onCallbackDisplayDebug(const std::shared_ptr<ewol::resource::Colored3DObject>& _obj) {
+void appl::Windows::onCallbackDisplayDebug(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _obj) {
 	mat4 mat;
 	mat.identity();
 	// Display ray line

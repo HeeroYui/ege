@@ -12,7 +12,7 @@
 
 namespace ege {
 	namespace isoSphere {
-		void create(etk::Hash<std::shared_ptr<ege::Material>>& _materials, etk::Hash<FaceIndexing>& _listFaces, std::vector<vec3>& _listVertex, std::vector<vec2>& _listUV,
+		void create(etk::Hash<ememory::SharedPtr<ege::Material>>& _materials, etk::Hash<FaceIndexing>& _listFaces, std::vector<vec3>& _listVertex, std::vector<vec2>& _listUV,
 		            const std::string& _materialName, int32_t _recursionLevel);
 	}
 }

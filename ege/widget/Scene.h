@@ -35,13 +35,13 @@ namespace ege {
 		class Scene : public ewol::Widget {
 			public:
 				// signals
-				esignal::ISignal<std::shared_ptr<ewol::resource::Colored3DObject>/*, std::shared_ptr<ege::Camera>*/> signalDisplayDebug; //!< emit a signal to the application to draw the debug (@ref setDebugPhysic)
+				esignal::ISignal<ememory::SharedPtr<ewol::resource::Colored3DObject>/*, ememory::SharedPtr<ege::Camera>*/> signalDisplayDebug; //!< emit a signal to the application to draw the debug (@ref setDebugPhysic)
 				// properties
 				eproperty::Value<bool> propertyDebugPhysic; //!< display Physic Debug
 				eproperty::Value<bool> propertyDebugApplication; //!< display Application Debug
 			protected:
-				std::shared_ptr<ege::Environement> m_env;
-				std::shared_ptr<ewol::resource::Colored3DObject> m_debugDrawProperty;
+				ememory::SharedPtr<ege::Environement> m_env;
+				ememory::SharedPtr<ewol::resource::Colored3DObject> m_debugDrawProperty;
 			public:
 			protected:
 				/**
@@ -51,7 +51,7 @@ namespace ege {
 				Scene();
 				void init();
 			public:
-				void setEnv(std::shared_ptr<ege::Environement> _env) {
+				void setEnv(ememory::SharedPtr<ege::Environement> _env) {
 					m_env = _env;
 				}
 			public:

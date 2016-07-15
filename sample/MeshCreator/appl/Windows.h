@@ -14,8 +14,8 @@
 namespace appl {
 	class Windows : public ewol::widget::Windows {
 		private:
-			std::shared_ptr<ege::Environement> m_env;
-			std::shared_ptr<ege::camera::View> m_camera;
+			ememory::SharedPtr<ege::Environement> m_env;
+			ememory::SharedPtr<ege::camera::View> m_camera;
 		protected:
 			Windows();
 			void init();

@@ -7,10 +7,10 @@
 #include <ege/debug.h>
 #include <ege/resource/Mesh.h>
 
-std::shared_ptr<ege::resource::Mesh> ege::resource::Mesh::createGrid(int32_t _lineCount, const vec3& _position, float _size, const std::string& _materialName) {
-	std::shared_ptr<ege::resource::Mesh> out = ege::resource::Mesh::create("---", "DATA:color3.prog");
+ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createGrid(int32_t _lineCount, const vec3& _position, float _size, const std::string& _materialName) {
+	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("---", "DATA:color3.prog");
 	if (out != nullptr) {
-		std::shared_ptr<ege::Material> material = std::make_shared<ege::Material>();
+		ememory::SharedPtr<ege::Material> material = ememory::makeShared<ege::Material>();
 		// set the element material properties :
 		material->setAmbientFactor(vec4(1,1,1,1));
 		material->setDiffuseFactor(vec4(0,0,0,1));
