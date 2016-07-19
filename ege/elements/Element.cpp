@@ -85,7 +85,7 @@ bool ege::Element::loadMesh(const std::string& _meshFileName) {
 	return setMesh(tmpMesh);
 }
 
-bool ege::Element::setMesh(const ememory::SharedPtr<ege::resource::Mesh>& _mesh) {
+bool ege::Element::setMesh(ememory::SharedPtr<ege::resource::Mesh> _mesh) {
 	if (m_mesh != nullptr) {
 		m_mesh.reset();
 	}
@@ -129,7 +129,7 @@ const float lifeHeight = 0.3f;
 const float lifeWidth = 2.0f;
 const float lifeYPos = 1.7f;
 
-void ege::Element::drawLife(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _draw, const ememory::SharedPtr<ege::Camera>& _camera) {
+void ege::Element::drawLife(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
 	if (_draw == nullptr) {
 		return;
 	}
@@ -168,7 +168,7 @@ void ege::Element::drawLife(const ememory::SharedPtr<ewol::resource::Colored3DOb
 	#endif
 }
 
-void ege::Element::drawDebug(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _draw, const ememory::SharedPtr<ege::Camera>& _camera) {
+void ege::Element::drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
 	m_debugText.clear();
 	m_debugText.setColor(etk::Color<>(0x00, 0xFF, 0x00, 0xFF));
 	m_debugText.setPos(vec3(-20,32,0));

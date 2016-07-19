@@ -229,7 +229,7 @@ namespace ege {
 			void addStaticMeshToDraw(const ememory::SharedPtr<ege::resource::Mesh>& _mesh) {
 				m_listMeshToDrawFirst.push_back(_mesh);
 			}
-			const std::vector<ememory::SharedPtr<ege::resource::Mesh>>& getStaticMeshToDraw() {
+			std::vector<ememory::SharedPtr<ege::resource::Mesh>>& getStaticMeshToDraw() {
 				return m_listMeshToDrawFirst;
 			}
 			virtual void onChangePropertyStatus();

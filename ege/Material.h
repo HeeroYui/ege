@@ -24,7 +24,7 @@ namespace ege {
 			int32_t m_GL_shininess;
 			int32_t m_GL_texture0;
 			MaterialGlId();
-			void link(const ememory::SharedPtr<gale::resource::Program>& _prog, const std::string& _baseName);
+			void link(ememory::SharedPtr<gale::resource::Program> _prog, const std::string& _baseName);
 	};
 	
 	
@@ -42,7 +42,7 @@ namespace ege {
 		public:
 			Material();
 			~Material();
-			void draw(const ememory::SharedPtr<gale::resource::Program>& _prog, const ege::MaterialGlId& _glID);
+			void draw(ememory::SharedPtr<gale::resource::Program> _prog, const ege::MaterialGlId& _glID);
 			void setAmbientFactor(const vec4& _val) {
 				m_ambientFactor = _val;
 			}

@@ -82,12 +82,12 @@ namespace ege {
 			 * @note : this remove the shape and the mesh properties.
 			 * @return true if no error occured
 			 */
-			virtual bool setMesh(const ememory::SharedPtr<ege::resource::Mesh>& _mesh);
+			virtual bool setMesh(ememory::SharedPtr<ege::resource::Mesh> _mesh);
 			/**
 			 * @brief get a pointer on the Mesh file.
 			 * @return the mesh pointer.
 			 */
-			inline const ememory::SharedPtr<ege::resource::Mesh>& getMesh() {
+			inline ememory::SharedPtr<ege::resource::Mesh> getMesh() {
 				return m_mesh;
 			};
 		protected:
@@ -159,7 +159,7 @@ namespace ege {
 			 * @brief draw the current life of the element
 			 */
 			// TODO : Remove this ...
-			virtual void drawLife(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _draw, const ememory::SharedPtr<ege::Camera>& _camera);
+			virtual void drawLife(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
 			
 		protected:
 			// For debug only ...
@@ -169,7 +169,7 @@ namespace ege {
 			 * @brief Debug display of the current element
 			 * @param[in,out] draw Basic system to draw the debug shape and informations
 			 */
-			virtual void drawDebug(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _draw, const ememory::SharedPtr<ege::Camera>& _camera);
+			virtual void drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
 			
 			/**
 			 * @brief get the theoric position. Sometimes, the element has move due to an explosion or something else, then its real position in not the one that woult it be at the end ...

@@ -90,7 +90,7 @@ ege::Ray ege::camera::View::getRayFromScreen(const vec2& _offset) {
 	return out;
 }
 
-void ege::camera::View::drawDebug(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _draw, const ememory::SharedPtr<ege::Camera>& _camera) {
+void ege::camera::View::drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
 	mat4 mat;
 	if (_camera != sharedFromThis()) {
 		mat.identity();

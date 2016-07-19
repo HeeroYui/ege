@@ -25,7 +25,7 @@ ege::Light::~Light() {
 	
 }
 
-void ege::Light::link(const ememory::SharedPtr<gale::resource::Program>& _prog, const std::string& _baseName) {
+void ege::Light::link(ememory::SharedPtr<gale::resource::Program> _prog, const std::string& _baseName) {
 	if (_prog == nullptr) {
 		return;
 	}
@@ -36,7 +36,7 @@ void ege::Light::link(const ememory::SharedPtr<gale::resource::Program>& _prog, 
 	m_GL_specularColor = _prog->getUniform(_baseName+".specularColor");
 }
 
-void ege::Light::draw(const ememory::SharedPtr<gale::resource::Program>& _prog) {
+void ege::Light::draw(ememory::SharedPtr<gale::resource::Program> _prog) {
 	_prog->uniform3(m_GL_direction, m_direction);
 	_prog->uniform3(m_GL_halfplane, m_halfplane);
 	_prog->uniform4(m_GL_ambientColor, m_ambientColor);

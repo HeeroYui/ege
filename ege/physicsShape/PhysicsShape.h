@@ -43,7 +43,7 @@ namespace ege {
 				
 			};
 		public:
-			virtual enum ege::PhysicsShape::type getType() {
+			virtual enum ege::PhysicsShape::type getType() const {
 				return ege::PhysicsShape::unknow;
 			};
 			

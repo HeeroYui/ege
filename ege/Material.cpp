@@ -17,7 +17,7 @@ ege::MaterialGlId::MaterialGlId() :
 	// nothing to do else ...
 }
 
-void ege::MaterialGlId::link(const ememory::SharedPtr<gale::resource::Program>& _prog, const std::string& _baseName) {
+void ege::MaterialGlId::link(ememory::SharedPtr<gale::resource::Program> _prog, const std::string& _baseName) {
 	if (_prog == nullptr) {
 		return;
 	}
@@ -42,7 +42,7 @@ ege::Material::~Material() {
 	
 }
 
-void ege::Material::draw(const ememory::SharedPtr<gale::resource::Program>& _prog, const MaterialGlId& _glID) {
+void ege::Material::draw(ememory::SharedPtr<gale::resource::Program> _prog, const MaterialGlId& _glID) {
 	EGE_INFO("draw Material : (start)");
 	_prog->uniform4(_glID.m_GL_ambientFactor, m_ambientFactor);
 	_prog->uniform4(_glID.m_GL_diffuseFactor, m_diffuseFactor);

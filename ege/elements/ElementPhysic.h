@@ -76,7 +76,7 @@ namespace ege {
 			 */
 			void removeShape();
 		public:
-			virtual bool setMesh(const ememory::SharedPtr<ege::resource::Mesh>& _mesh);
+			virtual bool setMesh(ememory::SharedPtr<ege::resource::Mesh> _mesh);
 			/**
 			 * @brief draw the curent element (can have multiple display)
 			 * @param[in] pass Id of the current pass : [0..?]
@@ -175,10 +175,10 @@ namespace ege {
 			virtual void onDestroy() {};
 			virtual const vec3& getPosition();
 			virtual void setPosition(const vec3& _pos);
-			virtual void drawDebug(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _draw, const ememory::SharedPtr<ege::Camera>& _camera);
+			virtual void drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
 		protected:
 			void drawShape(const btCollisionShape* _shape,
-			               const ememory::SharedPtr<ewol::resource::Colored3DObject>& _draw,
+			               ememory::SharedPtr<ewol::resource::Colored3DObject> _draw,
 			               mat4 _transformationMatrix,
 			               std::vector<vec3> _tmpVertices);
 		protected:

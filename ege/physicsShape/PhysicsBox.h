@@ -18,7 +18,7 @@ namespace ege {
 			virtual bool parse(const char* _line);
 			virtual void display() {};
 		public:
-			virtual enum ege::PhysicsShape::type getType() {
+			virtual enum ege::PhysicsShape::type getType() const {
 				return ege::PhysicsShape::box;
 			};
 		private:

@@ -72,9 +72,9 @@ void ege::ElementPhysic::createRigidBody(float _mass) {
 }
 
 
-bool ege::ElementPhysic::setMesh(const ememory::SharedPtr<ege::resource::Mesh>& _mesh) {
+bool ege::ElementPhysic::setMesh(ememory::SharedPtr<ege::resource::Mesh> _mesh) {
 	EGE_WARNING("Set Mesh");
-	if (nullptr!=m_mesh) {
+	if (m_mesh != nullptr) {
 		removeShape();
 	}
 	ege::Element::setMesh(_mesh);
@@ -170,7 +170,7 @@ const float ege::ElementPhysic::getInvMass() {
 };
 
 void ege::ElementPhysic::drawShape(const btCollisionShape* _shape,
-                                   const ememory::SharedPtr<ewol::resource::Colored3DObject>& _draw,
+                                   ememory::SharedPtr<ewol::resource::Colored3DObject> _draw,
                                    mat4 _transformationMatrix,
                                    std::vector<vec3> _tmpVertices) {
 	if(    _draw == nullptr
@@ -316,7 +316,7 @@ void ege::ElementPhysic::drawShape(const btCollisionShape* _shape,
 	}
 }
 
-void ege::ElementPhysic::drawDebug(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _draw, const ememory::SharedPtr<ege::Camera>& _camera) {
+void ege::ElementPhysic::drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
 	ege::Element::drawDebug(_draw, _camera);
 	btScalar mmm[16];
 	btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
