@@ -171,6 +171,7 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 }
 
 void appl::Windows::onCallbackDisplayDebug(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _obj) {
+	ememory::SharedPtr<ewol::resource::Colored3DObject> obj = ememory::constPointerCast<ewol::resource::Colored3DObject>(_obj);
 	mat4 mat;
 	mat.identity();
 	// Display ray line
@@ -185,7 +186,7 @@ void appl::Windows::onCallbackDisplayDebug(const ememory::SharedPtr<ewol::resour
 		if (vertices.size() > 250) {
 			vertices.erase(vertices.begin(), vertices.begin()+vertices.size()-250);
 		}
-		_obj->drawLine(vertices, etk::Color<float>(0.0, 1.0, 0.0, 0.8), mat);
+		obj->drawLine(vertices, etk::Color<float>(0.0, 1.0, 0.0, 0.8), mat);
 	}
 	// display normal impact line
 	if (true) {
@@ -198,7 +199,7 @@ void appl::Windows::onCallbackDisplayDebug(const ememory::SharedPtr<ewol::resour
 		if (vertices.size() > 250) {
 			vertices.erase(vertices.begin(), vertices.begin()+vertices.size()-250);
 		}
-		_obj->drawLine(vertices, etk::Color<float>(1.0, 0.0, 0.0, 0.8), mat);
+		obj->drawLine(vertices, etk::Color<float>(1.0, 0.0, 0.0, 0.8), mat);
 	}
 }
 
