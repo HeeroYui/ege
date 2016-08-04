@@ -43,13 +43,13 @@ ege::Material::~Material() {
 }
 
 void ege::Material::draw(ememory::SharedPtr<gale::resource::Program> _prog, const MaterialGlId& _glID) {
-	EGE_INFO("draw Material : (start)");
+	EGE_VERBOSE("draw Material : (start)");
 	_prog->uniform4(_glID.m_GL_ambientFactor, m_ambientFactor);
 	_prog->uniform4(_glID.m_GL_diffuseFactor, m_diffuseFactor);
 	_prog->uniform4(_glID.m_GL_specularFactor, m_specularFactor);
 	_prog->uniform1f(_glID.m_GL_shininess, m_shininess);
 	if (m_texture0 != nullptr) {
-		EGE_INFO("    set texture: " << _glID.m_GL_texture0 << " " << m_texture0->getId());
+		EGE_VERBOSE("    set texture: " << _glID.m_GL_texture0 << " " << m_texture0->getId());
 		_prog->setTexture0(_glID.m_GL_texture0, m_texture0->getRendererId());
 		#if DEBUG
 			if (_prog->checkIdValidity(_glID.m_GL_texture0) == false) {
@@ -63,7 +63,7 @@ void ege::Material::draw(ememory::SharedPtr<gale::resource::Program> _prog, cons
 			}
 		#endif
 	}
-	EGE_INFO("draw Material: ( end )");
+	EGE_VERBOSE("draw Material: ( end )");
 }
 
 void ege::Material::setTexture0(const std::string& _filename) {

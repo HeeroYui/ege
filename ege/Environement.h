@@ -79,7 +79,7 @@ namespace ege {
 	class Environement : public ewol::Object {
 		public:
 			// Signals
-			esignal::ISignal<float> signalPlayTimeChange;
+			esignal::Signal<float> signalPlayTimeChange;
 			// properties:
 			eproperty::List<enum gameStatus> propertyStatus; //!< the display is running (not in pause)
 			eproperty::Value<float> propertyRatio; //!< Speed ratio

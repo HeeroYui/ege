@@ -100,7 +100,7 @@ void ege::widget::Scene::onDraw() {
 	if (world != nullptr) {
 		
 		m_env->getOrderedElementForDisplay(m_displayElementOrdered, camera->getEye(), camera->getViewVector());
-		EGE_DEBUG("DRAW : " << m_displayElementOrdered.size() << "/" << m_env->getElement().size() << " elements");
+		EGE_VERBOSE("DRAW : " << m_displayElementOrdered.size() << "/" << m_env->getElement().size() << " elements");
 		
 		// TODO : remove this  == > no more needed ==> checked in the generate the list of the element ordered
 		for (size_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
@@ -206,6 +206,6 @@ void ege::widget::Scene::calculateSize() {
 	}
 }
 
-#include <esignal/details/ISignal.hxx>
-template class esignal::ISignal<ememory::SharedPtr<ewol::resource::Colored3DObject>>;
+#include <esignal/details/Signal.hxx>
+ESIGNAL_DECLARE_SIGNAL(ememory::SharedPtr<ewol::resource::Colored3DObject>);
 

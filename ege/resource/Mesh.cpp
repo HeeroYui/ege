@@ -41,7 +41,7 @@ void ege::resource::Mesh::init(const std::string& _fileName, const std::string& 
 	m_light.setDiffuseColor(vec4(1.0f,1.0f,1.0f,1.0f));
 	m_light.setSpecularColor(vec4(0.0f,0.0f,0.0f,1.0f));
 	
-	EGE_ERROR(m_name << "  " << m_light << " shader=" << _shaderName);
+	EGE_VERBOSE(m_name << "  " << m_light << " shader=" << _shaderName);
 	m_GLprogram = gale::resource::Program::create(_shaderName);
 	if (m_GLprogram != nullptr) {
 		m_GLPosition = m_GLprogram->getAttribute("EW_coord3d");
@@ -107,10 +107,9 @@ void ege::resource::Mesh::clean() {
 void ege::resource::Mesh::draw(mat4& _positionMatrix,
                                bool _enableDepthTest,
                                bool _enableDepthUpdate) {
-	
 	// TODO : Remove this, it is just for test the 23-04-2016
 	//m_checkNormal = false;
-	EGE_INFO("draw Mesh : " << m_name << " (start)");
+	EGE_VERBOSE("draw Mesh : " << m_name << " (start)");
 	if (m_GLprogram == nullptr) {
 		EGE_ERROR("No shader ...");
 		return;
@@ -238,7 +237,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	}
 	// TODO : UNDERSTAND why ... it is needed
 	glBindBuffer(GL_ARRAY_BUFFER,0);
-	EGE_INFO("draw Mesh : " << m_name << " ( end )");
+	EGE_VERBOSE("draw Mesh : " << m_name << " ( end )");
 }
 
 // normal calculation of the normal face is really easy :
@@ -246,7 +245,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 void ege::resource::Mesh::calculateNormaleFace(const std::string& _materialName) {
 	m_listFacesNormal.clear();
 	if (m_normalMode == ege::resource::Mesh::normalModeFace) {
-		EGE_INFO("calculateNormaleFace(" << _materialName << ")");
+		EGE_VERBOSE("calculateNormaleFace(" << _materialName << ")");
 		gale::openGL::renderMode tmpRenderMode = m_materials[_materialName]->getRenderMode();
 		if (    tmpRenderMode == gale::openGL::renderMode::point
 		     || tmpRenderMode == gale::openGL::renderMode::line

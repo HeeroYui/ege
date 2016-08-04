@@ -35,7 +35,7 @@ namespace ege {
 		class Scene : public ewol::Widget {
 			public:
 				// signals
-				esignal::ISignal<ememory::SharedPtr<ewol::resource::Colored3DObject>/*, ememory::SharedPtr<ege::Camera>*/> signalDisplayDebug; //!< emit a signal to the application to draw the debug (@ref setDebugPhysic)
+				esignal::Signal<ememory::SharedPtr<ewol::resource::Colored3DObject>/*, ememory::SharedPtr<ege::Camera>*/> signalDisplayDebug; //!< emit a signal to the application to draw the debug (@ref setDebugPhysic)
 				// properties
 				eproperty::Value<bool> propertyDebugPhysic; //!< display Physic Debug
 				eproperty::Value<bool> propertyDebugApplication; //!< display Application Debug
