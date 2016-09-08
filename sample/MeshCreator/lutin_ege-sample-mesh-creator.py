@@ -41,26 +41,26 @@ def create(target, module_name):
 		'appl/Windows.cpp'
 		])
 	
-	my_module.add_module_depend('ege')
+	my_module.add_depend('ege')
 	
 	my_module.add_path(tools.get_current_path(__file__))
 	
 	my_module.copy_path("data/*")
 	
-	my_module.compile_flags('c++', [
-		"-DPROJECT_NAME=\"\\\"" + my_module.name + "\\\"\"",
+	my_module.add_flag('c++', [
+		"-DPROJECT_NAME=\"\\\"" + my_module.get_name() + "\\\"\"",
 		"-DAPPL_VERSION=\"\\\"" + tools.version_to_string(get_version()) + "\\\"\""
 		])
 	
 	# set the package properties:
-	my_module.pkg_set("VERSION_CODE", "0")
-	my_module.pkg_set("COMPAGNY_TYPE", get_compagny_type())
-	my_module.pkg_set("COMPAGNY_NAME", get_compagny_name())
-	my_module.pkg_set("MAINTAINER", get_maintainer())
-	my_module.pkg_set("SECTION", ["Game"])
-	my_module.pkg_set("PRIORITY", "optional")
-	my_module.pkg_set("DESCRIPTION", get_desc())
-	my_module.pkg_set("NAME", get_name())
+	my_module.set_pkg("VERSION_CODE", "0")
+	my_module.set_pkg("COMPAGNY_TYPE", get_compagny_type())
+	my_module.set_pkg("COMPAGNY_NAME", get_compagny_name())
+	my_module.set_pkg("MAINTAINER", get_maintainer())
+	my_module.set_pkg("SECTION", ["Game"])
+	my_module.set_pkg("PRIORITY", "optional")
+	my_module.set_pkg("DESCRIPTION", get_desc())
+	my_module.set_pkg("NAME", get_name())
 	
 	return my_module
 

@@ -65,8 +65,8 @@ def create(target, module_name):
 		'ege/Ray.cpp',
 		])
 	my_module.copy_path('data/ParticuleMesh.*')
-	my_module.add_module_depend(['ewol', 'bullet-physics'])
-	my_module.compile_flags('c++', [
+	my_module.add_depend(['ewol', 'bullet-physics'])
+	my_module.add_flag('c++', [
 		'-Wno-write-strings',
 		'-Wmissing-field-initializers',
 		'-Wall'])
