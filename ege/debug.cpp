@@ -4,7 +4,7 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/debug.h>
+#include <ege/debug.hpp>
 
 int32_t ege::getLogId() {
 	static int32_t g_val = elog::registerInstance("ege");

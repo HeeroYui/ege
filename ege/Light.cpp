@@ -4,8 +4,8 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/Light.h>
-#include <ege/debug.h>
+#include <ege/Light.hpp>
+#include <ege/debug.hpp>
 
 ege::Light::Light() :
   m_direction(0,0,0),

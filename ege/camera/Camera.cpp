@@ -5,10 +5,10 @@
  */
 
 
-#include <ege/camera/Camera.h>
-#include <ege/debug.h>
+#include <ege/camera/Camera.hpp>
+#include <ege/debug.hpp>
 
-#include <gale/renderer/openGL/openGL.h>
+#include <gale/renderer/openGL/openGL.hpp>
 
 ege::Camera::Camera() :
   m_aspectRatio(0.5),

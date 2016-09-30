@@ -4,12 +4,12 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/physics/Engine.h>
+#include <ege/physics/Engine.hpp>
 
-#include <ege/debug.h>
+#include <ege/debug.hpp>
 
-#include <gale/renderer/openGL/openGL.h>
-#include <etk/math/Matrix4.h>
+#include <gale/renderer/openGL/openGL.hpp>
+#include <etk/math/Matrix4.hpp>
 #include <BulletDynamics/Dynamics/btRigidBody.h>
 #include <LinearMath/btDefaultMotionState.h>
 #include <BulletDynamics/Dynamics/btDynamicsWorld.h>
@@ -23,7 +23,7 @@
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/CollisionDispatch/btCollisionObject.h>
 
-#include <ege/elements/ElementPhysic.h>
+#include <ege/elements/ElementPhysic.hpp>
 
 
 // unique callback function :

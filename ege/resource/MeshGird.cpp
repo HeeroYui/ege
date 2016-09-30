@@ -4,8 +4,8 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/debug.h>
-#include <ege/resource/Mesh.h>
+#include <ege/debug.hpp>
+#include <ege/resource/Mesh.hpp>
 
 ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createGrid(int32_t _lineCount, const vec3& _position, float _size, const std::string& _materialName) {
 	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("---", "DATA:color3.prog");

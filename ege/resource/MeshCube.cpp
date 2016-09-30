@@ -4,8 +4,8 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/debug.h>
-#include <ege/resource/Mesh.h>
+#include <ege/debug.hpp>
+#include <ege/resource/Mesh.hpp>
 
 ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createCube(float _size, const std::string& _materialName, const etk::Color<float>& _color) {
 	EGE_ERROR(" create a cube _size=" << _size << " _materialName=" << _materialName << " _color=" << _color);

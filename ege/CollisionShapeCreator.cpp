@@ -4,20 +4,20 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/debug.h>
-#include <ege/CollisionShapeCreator.h>
+#include <ege/debug.hpp>
+#include <ege/CollisionShapeCreator.hpp>
 
-#include <btBulletCollisionCommon.h>
+#include <btBulletCollisionCommon.hpp>
 #include <BulletCollision/CollisionShapes/btConvexPolyhedron.h>
 #include <BulletCollision/CollisionShapes/btShapeHull.h>
 #include <BulletCollision/CollisionDispatch/btCollisionObject.h>
-#include <ege/physicsShape/PhysicsShape.h>
-#include <ege/physicsShape/PhysicsBox.h>
-#include <ege/physicsShape/PhysicsCapsule.h>
-#include <ege/physicsShape/PhysicsCone.h>
-#include <ege/physicsShape/PhysicsConvexHull.h>
-#include <ege/physicsShape/PhysicsCylinder.h>
-#include <ege/physicsShape/PhysicsSphere.h>
+#include <ege/physicsShape/PhysicsShape.hpp>
+#include <ege/physicsShape/PhysicsBox.hpp>
+#include <ege/physicsShape/PhysicsCapsule.hpp>
+#include <ege/physicsShape/PhysicsCone.hpp>
+#include <ege/physicsShape/PhysicsConvexHull.hpp>
+#include <ege/physicsShape/PhysicsCylinder.hpp>
+#include <ege/physicsShape/PhysicsSphere.hpp>
 
 // Documentetion of bullet library :
 // http://bulletphysics.org/mediawiki-1.5.8/index.php/Collision_Shapes

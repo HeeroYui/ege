@@ -5,9 +5,9 @@
  */
 
 
-#include <ege/camera/View.h>
-#include <ege/debug.h>
-#include <etk/math/Vector3D.h>
+#include <ege/camera/View.hpp>
+#include <ege/debug.hpp>
+#include <etk/math/Vector3D.hpp>
 
 void ege::camera::View::update() {
 	//m_matrix = etk::matLookAt(m_eye, m_target, m_up);

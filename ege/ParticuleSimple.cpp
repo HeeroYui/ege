@@ -4,8 +4,8 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/debug.h>
-#include <ege/ParticuleSimple.h>
+#include <ege/debug.hpp>
+#include <ege/ParticuleSimple.hpp>
 
 ege::ParticuleSimple::ParticuleSimple(ege::ParticuleEngine* _particuleEngine, const char* _particuleType) :
   Particule(_particuleEngine, _particuleType) {

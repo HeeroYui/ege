@@ -4,6 +4,6 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/debug.h>
-#include <ege/AudioElement.h>
+#include <ege/debug.hpp>
+#include <ege/AudioElement.hpp>
 

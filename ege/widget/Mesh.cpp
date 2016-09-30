@@ -4,10 +4,10 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/widget/Mesh.h>
-#include <ewol/widget/Manager.h>
-#include <gale/resource/Manager.h>
-#include <ege/debug.h>
+#include <ege/widget/Mesh.hpp>
+#include <ewol/widget/Manager.hpp>
+#include <gale/resource/Manager.hpp>
+#include <ege/debug.hpp>
 
 ege::widget::Mesh::Mesh():
   signalPressed(this, "pressed", ""),

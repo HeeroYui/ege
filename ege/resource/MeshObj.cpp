@@ -4,8 +4,8 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/debug.h>
-#include <ege/resource/Mesh.h>
+#include <ege/debug.hpp>
+#include <ege/resource/Mesh.hpp>
 
 
 bool ege::resource::Mesh::loadOBJ(const std::string& _fileName) {

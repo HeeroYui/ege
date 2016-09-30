@@ -3,8 +3,8 @@
  * @copyright 2011, Edouard DUPIN, all right reserved
  * @license APACHE v2.0 (see license file)
  */
-#include <ege/debug.h>
-#include <ege/physicsShape/PhysicsCapsule.h>
+#include <ege/debug.hpp>
+#include <ege/physicsShape/PhysicsCapsule.hpp>
 
 
 

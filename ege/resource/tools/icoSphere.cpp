@@ -4,8 +4,8 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/debug.h>
-#include <ege/resource/tools/icoSphere.h>
+#include <ege/debug.hpp>
+#include <ege/resource/tools/icoSphere.hpp>
 #include <math.h>
 
 // return index of point in the middle of p1 and p2

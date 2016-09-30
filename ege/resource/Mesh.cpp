@@ -4,14 +4,14 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/debug.h>
-#include <ege/resource/Mesh.h>
-#include <gale/resource/Manager.h>
-#include <gale/renderer/openGL/openGL-include.h>
-#include <etk/os/FSNode.h>
-#include <ege/resource/tools/viewBox.h>
-#include <ege/resource/tools/isoSphere.h>
-#include <ege/resource/tools/icoSphere.h>
+#include <ege/debug.hpp>
+#include <ege/resource/Mesh.hpp>
+#include <gale/resource/Manager.hpp>
+#include <gale/renderer/openGL/openGL-include.hpp>
+#include <etk/os/FSNode.hpp>
+#include <ege/resource/tools/viewBox.hpp>
+#include <ege/resource/tools/isoSphere.hpp>
+#include <ege/resource/tools/icoSphere.hpp>
 
 ege::resource::Mesh::Mesh() :
   m_normalMode(normalModeNone),

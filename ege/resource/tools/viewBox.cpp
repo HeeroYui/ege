@@ -4,8 +4,8 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/debug.h>
-#include <ege/resource/tools/viewBox.h>
+#include <ege/debug.hpp>
+#include <ege/resource/tools/viewBox.hpp>
 
 
 

@@ -3,14 +3,14 @@
  * @copyright 2011, Edouard DUPIN, all right reserved
  * @license APACHE v2.0 (see license file)
  */
-#include <ege/debug.h>
-#include <ege/physicsShape/PhysicsShape.h>
-#include <ege/physicsShape/PhysicsBox.h>
-#include <ege/physicsShape/PhysicsCapsule.h>
-#include <ege/physicsShape/PhysicsCone.h>
-#include <ege/physicsShape/PhysicsConvexHull.h>
-#include <ege/physicsShape/PhysicsCylinder.h>
-#include <ege/physicsShape/PhysicsSphere.h>
+#include <ege/debug.hpp>
+#include <ege/physicsShape/PhysicsShape.hpp>
+#include <ege/physicsShape/PhysicsBox.hpp>
+#include <ege/physicsShape/PhysicsCapsule.hpp>
+#include <ege/physicsShape/PhysicsCone.hpp>
+#include <ege/physicsShape/PhysicsConvexHull.hpp>
+#include <ege/physicsShape/PhysicsCylinder.hpp>
+#include <ege/physicsShape/PhysicsSphere.hpp>
 
 
 ememory::SharedPtr<ege::PhysicsShape> ege::PhysicsShape::create(const std::string& _name) {

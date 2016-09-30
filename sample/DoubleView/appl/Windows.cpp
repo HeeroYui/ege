@@ -6,19 +6,19 @@
  * @license APACHE-2 (see license file)
  */
 
-#include <ewol/ewol.h>
-#include <appl/debug.h>
-#include <appl/Windows.h>
-#include <ewol/widget/Label.h>
-#include <ewol/widget/Sizer.h>
-#include <ewol/object/Manager.h>
-#include <ege/widget/Scene.h>
-#include <ege/camera/View.h>
-#include <etk/tool.h>
-#include <ege/elements/ElementBase.h>
-#include <ege/elements/ElementPhysic.h>
-#include <ege/physicsShape/PhysicsBox.h>
-#include <ege/physicsShape/PhysicsSphere.h>
+#include <ewol/ewol.hpp>
+#include <appl/debug.hpp>
+#include <appl/Windows.hpp>
+#include <ewol/widget/Label.hpp>
+#include <ewol/widget/Sizer.hpp>
+#include <ewol/object/Manager.hpp>
+#include <ege/widget/Scene.hpp>
+#include <ege/camera/View.hpp>
+#include <etk/tool.hpp>
+#include <ege/elements/ElementBase.hpp>
+#include <ege/elements/ElementPhysic.hpp>
+#include <ege/physicsShape/PhysicsBox.hpp>
+#include <ege/physicsShape/PhysicsSphere.hpp>
 
 appl::Windows::Windows() {
 	addObjectType("appl::Windows");

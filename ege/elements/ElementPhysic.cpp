@@ -4,10 +4,10 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <etk/types.h>
-#include <ege/debug.h>
-#include <ege/elements/ElementPhysic.h>
-#include <ege/Environement.h>
+#include <etk/types.hpp>
+#include <ege/debug.hpp>
+#include <ege/elements/ElementPhysic.hpp>
+#include <ege/Environement.hpp>
 #include <BulletDynamics/Dynamics/btRigidBody.h>
 #include <LinearMath/btDefaultMotionState.h>
 #include <BulletDynamics/Dynamics/btDynamicsWorld.h>
@@ -21,7 +21,7 @@
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/CollisionDispatch/btCollisionObject.h>
 
-#include <ege/CollisionShapeCreator.h>
+#include <ege/CollisionShapeCreator.hpp>
 
 const std::string& ege::ElementPhysic::getType() const {
 	static const std::string nameType("----");

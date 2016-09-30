@@ -3,10 +3,10 @@
  * @copyright 2011, Edouard DUPIN, all right reserved
  * @license APACHE v2.0 (see license file)
  */
-#include <etk/types.h>
-#include <ege/Ray.h>
-#include <ege/debug.h>
-#include <ege/elements/Element.h>
+#include <etk/types.hpp>
+#include <ege/Ray.hpp>
+#include <ege/debug.hpp>
+#include <ege/elements/Element.hpp>
 
 #include <BulletDynamics/Dynamics/btDynamicsWorld.h>
 #include <BulletCollision/CollisionDispatch/btCollisionWorld.h>

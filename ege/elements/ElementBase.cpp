@@ -5,8 +5,8 @@
  */
 
 
-#include <ege/elements/ElementBase.h>
-#include <ege/debug.h>
+#include <ege/elements/ElementBase.hpp>
+#include <ege/debug.hpp>
 
 ege::ElementBase::ElementBase(const ememory::SharedPtr<ege::Environement>& _env) : 
   ege::Element(_env),

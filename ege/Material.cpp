@@ -4,9 +4,9 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <gale/resource/Manager.h>
-#include <ege/Material.h>
-#include <ege/debug.h>
+#include <gale/resource/Manager.hpp>
+#include <ege/Material.hpp>
+#include <ege/debug.hpp>
 
 ege::MaterialGlId::MaterialGlId() :
   m_GL_ambientFactor(0),

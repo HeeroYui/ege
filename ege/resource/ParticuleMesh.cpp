@@ -4,10 +4,10 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/debug.h>
-#include <ege/resource/ParticuleMesh.h>
-#include <gale/resource/Manager.h>
-#include <gale/renderer/openGL/openGL-include.h>
+#include <ege/debug.hpp>
+#include <ege/resource/ParticuleMesh.hpp>
+#include <gale/resource/Manager.hpp>
+#include <gale/renderer/openGL/openGL-include.hpp>
 
 ege::resource::ParticuleMesh::ParticuleMesh() {
 	addResourceType("ege::resource::ParticuleMesh");

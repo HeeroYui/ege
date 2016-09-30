@@ -4,10 +4,10 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/debug.h>
-#include <ege/ParticuleEngine.h>
-#include <ege/Environement.h>
-#include <ege/Particule.h>
+#include <ege/debug.hpp>
+#include <ege/ParticuleEngine.hpp>
+#include <ege/Environement.hpp>
+#include <ege/Particule.hpp>
 
 ege::ParticuleEngine::ParticuleEngine(ege::Environement* _env) :
   m_env(_env) {

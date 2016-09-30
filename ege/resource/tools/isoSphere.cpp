@@ -4,8 +4,8 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/debug.h>
-#include <ege/resource/tools/isoSphere.h>
+#include <ege/debug.hpp>
+#include <ege/resource/tools/isoSphere.hpp>
 
 void ege::isoSphere::create(etk::Hash<ememory::SharedPtr<ege::Material>>& _materials, etk::Hash<FaceIndexing>& _listFaces, std::vector<vec3>& _listVertex, std::vector<vec2>& _listUV,
                             const std::string& _materialName, int32_t _recursionLevel) {

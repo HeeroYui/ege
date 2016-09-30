@@ -4,9 +4,9 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/debug.h>
-#include <ege/resource/Mesh.h>
-#include <etk/os/FSNode.h>
+#include <ege/debug.hpp>
+#include <ege/resource/Mesh.hpp>
+#include <etk/os/FSNode.hpp>
 
 
 

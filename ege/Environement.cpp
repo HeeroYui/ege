@@ -4,13 +4,13 @@
  * @license APACHE v2.0 (see license file)
  */
 
-#include <ege/debug.h>
-#include <ege/Environement.h>
-#include <ege/elements/Element.h>
-#include <ewol/object/Manager.h>
+#include <ege/debug.hpp>
+#include <ege/Environement.hpp>
+#include <ege/elements/Element.hpp>
+#include <ewol/object/Manager.hpp>
 
-#include <gale/renderer/openGL/openGL.h>
-#include <etk/math/Matrix4.h>
+#include <gale/renderer/openGL/openGL.hpp>
+#include <etk/math/Matrix4.hpp>
 #include <BulletDynamics/Dynamics/btRigidBody.h>
 #include <LinearMath/btDefaultMotionState.h>
 #include <BulletDynamics/Dynamics/btDynamicsWorld.h>
