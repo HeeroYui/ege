@@ -6,7 +6,7 @@
 
 #include <ege/debug.hpp>
 #include <ege/resource/tools/icoSphere.hpp>
-#include <math.h>
+#include <cmath>
 
 // return index of point in the middle of p1 and p2
 static int32_t getMiddlePoint(std::vector<vec3>& _listVertex, int32_t _p1, int32_t _p2) {

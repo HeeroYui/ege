@@ -7,7 +7,7 @@
 #include <ege/debug.hpp>
 #include <ege/CollisionShapeCreator.hpp>
 
-#include <btBulletCollisionCommon.hpp>
+#include <btBulletCollisionCommon.h>
 #include <BulletCollision/CollisionShapes/btConvexPolyhedron.h>
 #include <BulletCollision/CollisionShapes/btShapeHull.h>
 #include <BulletCollision/CollisionDispatch/btCollisionObject.h>

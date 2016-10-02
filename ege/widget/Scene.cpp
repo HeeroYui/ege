@@ -7,7 +7,7 @@
 #include <ege/debug.hpp>
 #include <ege/widget/Scene.hpp>
 
-#include <math.h>
+#include <cmath>
 #include <ege/debug.hpp>
 #include <ewol/ewol.hpp>
 #include <gale/renderer/openGL/openGL.hpp>
