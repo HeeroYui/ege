@@ -78,13 +78,18 @@ namespace ege {
 			protected:
 				// Note : This is only for temporary elements : on the display
 				std::vector<ege::Environement::ResultNearestElement> m_displayElementOrdered;
-			protected: // Derived function
-				virtual void onDraw();
-			public: // Derived function
-				virtual void systemDraw(const ewol::DrawProperty& _displayProp);
-				virtual void onRegenerateDisplay();
+			protected:
+				esignal::Connection m_PCH; //!< Periodic call handle to remove it when needed
+				/**
+				 * @brief Periodic call to update grapgic display
+				 * @param[in] _event Time generic event
+				 */
 				virtual void periodicCall(const ewol::event::Time& _event);
-				virtual void calculateSize();
+			protected:
+				void onDraw() override;
+				void systemDraw(const ewol::DrawProperty& _displayProp) override;
+				void onRegenerateDisplay() override;
+				void calculateSize() override;
 		};
 	}
 }

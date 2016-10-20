@@ -10,6 +10,7 @@
 #include <cmath>
 #include <ege/debug.hpp>
 #include <ewol/ewol.hpp>
+#include <ewol/object/Manager.hpp>
 #include <gale/renderer/openGL/openGL.hpp>
 #include <etk/math/Matrix4.hpp>
 #include <BulletDynamics/Dynamics/btRigidBody.h>
@@ -47,7 +48,7 @@ void ege::widget::Scene::init() {
 	ewol::Widget::init();
 	setKeyboardRepeate(false);
 	propertyCanFocus.set(true);
-	periodicCallEnable();
+	m_PCH = getObjectManager().periodicCall.connect(this, &ege::widget::Scene::periodicCall);
 	m_debugDrawProperty = ewol::resource::Colored3DObject::create();
 }
 

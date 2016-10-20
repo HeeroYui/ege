@@ -5,6 +5,7 @@
  */
 
 #include <ege/widget/Mesh.hpp>
+#include <ewol/object/Manager.hpp>
 #include <ewol/widget/Manager.hpp>
 #include <gale/resource/Manager.hpp>
 #include <ege/debug.hpp>
@@ -108,9 +109,9 @@ void ege::widget::Mesh::setAngle(const vec3& _angle) {
 
 void ege::widget::Mesh::setAngleSpeed(const vec3& _speed) {
 	if (_speed != vec3(0,0,0)) {
-		periodicCallEnable();
+		m_PCH = getObjectManager().periodicCall.connect(this, &ege::widget::Mesh::periodicCall);
 	} else {
-		periodicCallDisable();
+		m_PCH.disconnect();
 	}
 	m_angleSpeed = _speed;
 	markToRedraw();

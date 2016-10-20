@@ -31,12 +31,18 @@ namespace ege {
 				void init(); // automatic considering in the appl Data older
 			public:
 				virtual ~Mesh();
-			public: // Derived function
-				virtual void onRegenerateDisplay();
-				virtual void systemDraw(const ewol::DrawProperty& _displayProp);
-				virtual void onDraw();
-				virtual bool onEventInput(const ewol::event::Input& _event);
-				virtual void periodicCall(const ewol::event::Time& _event);
+			public:
+				void onRegenerateDisplay() override;
+				void systemDraw(const ewol::DrawProperty& _displayProp) override;
+				void onDraw() override;
+				bool onEventInput(const ewol::event::Input& _event) override;
+			protected:
+				esignal::Connection m_PCH; //!< Periodic call handle to remove it when needed
+				/**
+				 * @brief Periodic call to update grapgic display
+				 * @param[in] _event Time generic event
+				 */
+				void periodicCall(const ewol::event::Time& _event);
 			public:
 				/**
 				 * @brief set a mesh name file
