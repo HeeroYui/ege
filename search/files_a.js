@@ -11,5 +11,5 @@ var searchData=
   ['physicscylinder_2ehpp',['PhysicsCylinder.hpp',['../_physics_cylinder_8hpp.html',1,'']]],
   ['physicsshape_2ehpp',['PhysicsShape.hpp',['../_physics_shape_8hpp.html',1,'']]],
   ['physicssphere_2ehpp',['PhysicsSphere.hpp',['../_physics_sphere_8hpp.html',1,'']]],
-  ['plane_2ehpp',['Plane.hpp',['http://atria-soft.github.io/etk/_plane_8hpp.html',1,'']]]
+  ['plane_2ehpp',['Plane.hpp',['http://atria-soft.github.io/etk/__plane__8hpp.html',1,'']]]
 ];
