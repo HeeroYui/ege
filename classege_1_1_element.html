@@ -1,0 +1,1279 @@
+<!-- HTML header for doxygen 1.8.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- For Mobile Devices -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+        <meta name="generator" content="Doxygen 1.8.11"/>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <title>Ewol Game engine (based on bullet lib): ege::Element Class Reference</title>
+        <!--<link href="tabs.css" rel="stylesheet" type="text/css"/>-->
+        <script type="text/javascript" src="dynsections.js"></script>
+        <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+        <link href="doxygen.css" rel="stylesheet" type="text/css" />
+        <link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="doxy-boot.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand">Ewol Game engine (based on bullet lib) 0.3.0</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="index.html">Main&nbsp;Page</a></li>
+                        <li><a href="pages.html">Related&nbsp;Pages</a></li>
+                        <li><a href="namespaces.html">Namespaces</a></li>
+                        <li><a href="annotated.html">Classes</a></li>
+                        <li><a href="files.html">Files</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Link-libs<span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="http://HeeroYui.github.io/lutin">lutin</a></li>
+                                <li><a href="http://atria-soft.github.io/ewol">ewol</a></li>
+                                <li><a href="http://atria-soft.github.io/etk">etk</a></li>
+                                <li><a href="http://atria-soft.github.io/ejson">ejson</a></li>
+                                <li><a href="http://atria-soft.github.io/exml">exml</a></li>
+                                <li><a href="http://atria-soft.github.io/esvg">esvg</a></li>
+                                <li><a href="http://atria-soft.github.io/egami">egami</a></li>
+                                <li><a href="http://atria-soft.github.io/gale">gale</a></li>
+                                <li><a href="http://atria-soft.github.io/ege">ege</a></li>
+                                <li><a href="http://atria-soft.github.io/elog">elog</a></li>
+                                <li><a href="http://atria-soft.github.io/ememory">ememory</a></li>
+                                <li><a href="http://atria-soft.github.io/enet">enet</a></li>
+                                <li><a href="http://atria-soft.github.io/eproperty">eproperty</a></li>
+                                <li><a href="http://atria-soft.github.io/esignal">esignal</a></li>
+                                <li><a href="http://atria-soft.github.io/zeus">zeus</a></li>
+                                <li><a href="http://atria-soft.github.io/audio-ess">audio-ess</a></li>
+                                <li><a href="http://musicdsp.github.io/audio">audio</a></li>
+                                <li><a href="http://musicdsp.github.io/audio-drain">audio-drain</a></li>
+                                <li><a href="http://musicdsp.github.io/audio-orchestra">audio-orchestra</a></li>
+                                <li><a href="http://musicdsp.github.io/audio-river">audio-river</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div id="search-box" class="input-group">
+                        <div class="input-group-btn">
+                            <button aria-expanded="false" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                <span class="glyphicon glyphicon-search"></span>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">All</a></li>
+                                <li><a href="#">Classes</a></li>
+                                <li><a href="#">Namespaces</a></li>
+                                <li><a href="#">Files</a></li>
+                                <li><a href="#">Functions</a></li>
+                                <li><a href="#">Variables</a></li>
+                                <li><a href="#">Typedefs</a></li>
+                                <li><a href="#">Enumerations</a></li>
+                                <li><a href="#">Enumerator</a></li>
+                                <li><a href="#">Friends</a></li>
+                                <li><a href="#">Macros</a></li>
+                                <li><a href="#">Pages</a></li>
+                            </ul>
+                        </div>
+                        <button id="search-close" type="button" class="close" aria-label="Close">
+                            <span aria-hidden="true"></span>
+                        </button>
+                        <input id="search-field" class="form-control" accesskey="S" onkeydown="searchBox.OnSearchFieldChange(event);" placeholder="Search ..." type="text">
+                    </div>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+        <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+            <div class="content" id="content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 panel panel-default" style="padding-bottom: 15px;">
+                            <div style="margin-bottom: 15px;">
+<!-- end header part -->
+<!-- Generated by Doxygen 1.8.11 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Search');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
+    </ul>
+  </div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>ege</b></li><li class="navelem"><a class="el" href="classege_1_1_element.html">Element</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="classege_1_1_element-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">ege::Element Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="dynheader">
+Inheritance diagram for ege::Element:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classege_1_1_element.png" usemap="#ege::Element_map" alt=""/>
+  <map id="ege::Element_map" name="ege::Element_map">
+<area doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_enable_shared_from_this.html" alt="ememory::EnableSharedFromThis&lt; Element &gt;" shape="rect" coords="139,56,408,80"/>
+<area doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_enable_shared_from_this_base.html" alt="ememory::EnableSharedFromThisBase" shape="rect" coords="139,0,408,24"/>
+<area href="classege_1_1_element_base.html" alt="ege::ElementBase" shape="rect" coords="0,168,269,192"/>
+<area href="classege_1_1_element_physic.html" alt="ege::ElementPhysic" shape="rect" coords="279,168,548,192"/>
+</map>
+ </div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a0c423f7c9c39e1de6c7ab20b14af6153"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a0c423f7c9c39e1de6c7ab20b14af6153">Element</a> (const <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; <a class="el" href="classege_1_1_environement.html">ege::Environement</a> &gt; &amp;_env)</td></tr>
+<tr class="separator:a0c423f7c9c39e1de6c7ab20b14af6153"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bf7c8407d13ce8e60f7de46d96bbe75"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a7bf7c8407d13ce8e60f7de46d96bbe75">~Element</a> ()</td></tr>
+<tr class="separator:a7bf7c8407d13ce8e60f7de46d96bbe75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f906ef13d5602414539cb86ddb51956"><td class="memItemLeft" align="right" valign="top">virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a1f906ef13d5602414539cb86ddb51956">getType</a> () const </td></tr>
+<tr class="separator:a1f906ef13d5602414539cb86ddb51956"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adddca0a376cd6180ec019354271c6e75"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#adddca0a376cd6180ec019354271c6e75">init</a> ()</td></tr>
+<tr class="separator:adddca0a376cd6180ec019354271c6e75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab03e99c3f467aa9b13c19d6ae66ac5b4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab03e99c3f467aa9b13c19d6ae66ac5b4"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>initString</b> (const std::string &amp;_description)</td></tr>
+<tr class="separator:ab03e99c3f467aa9b13c19d6ae66ac5b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a045fa4ec6eb7790aa9de288c513808ef"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a045fa4ec6eb7790aa9de288c513808ef"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>initXML</b> (const exml::Node &amp;_node)</td></tr>
+<tr class="separator:a045fa4ec6eb7790aa9de288c513808ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ae59b0c04b7b7d60bd22c48dee490a5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ae59b0c04b7b7d60bd22c48dee490a5"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>initJSON</b> (const ejson::Value &amp;_value)</td></tr>
+<tr class="separator:a3ae59b0c04b7b7d60bd22c48dee490a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af410855bc288a6ad3bb64c6454d1516b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af410855bc288a6ad3bb64c6454d1516b"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>initVoid</b> (void *_value)</td></tr>
+<tr class="separator:af410855bc288a6ad3bb64c6454d1516b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a737c16b6094844158cb7d06ae4b4ac9b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a737c16b6094844158cb7d06ae4b4ac9b"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>unInit</b> ()</td></tr>
+<tr class="separator:a737c16b6094844158cb7d06ae4b4ac9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44d7eecd40816afb2c457ed310b1add4"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a44d7eecd40816afb2c457ed310b1add4">getUID</a> () const </td></tr>
+<tr class="separator:a44d7eecd40816afb2c457ed310b1add4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d0005ff32e71f4f78a84b9db44ca738"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a9d0005ff32e71f4f78a84b9db44ca738">loadMesh</a> (const std::string &amp;_meshFileName)</td></tr>
+<tr class="separator:a9d0005ff32e71f4f78a84b9db44ca738"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17750b333551fcd6d27eaf8e6c1f989d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a17750b333551fcd6d27eaf8e6c1f989d">setMesh</a> (<a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; <a class="el" href="classege_1_1resource_1_1_mesh.html">ege::resource::Mesh</a> &gt; _mesh)</td></tr>
+<tr class="separator:a17750b333551fcd6d27eaf8e6c1f989d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17714d73b34e2b80661c2857f4eaf5fc"><td class="memItemLeft" align="right" valign="top"><a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; <a class="el" href="classege_1_1resource_1_1_mesh.html">ege::resource::Mesh</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a17714d73b34e2b80661c2857f4eaf5fc">getMesh</a> ()</td></tr>
+<tr class="separator:a17714d73b34e2b80661c2857f4eaf5fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a735360c14d24f44ae80d1eda79b8d9ba"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a735360c14d24f44ae80d1eda79b8d9ba">getLifeRatio</a> ()</td></tr>
+<tr class="separator:a735360c14d24f44ae80d1eda79b8d9ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a559abf49122b0fc3f6017dbd0833bbaa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a559abf49122b0fc3f6017dbd0833bbaa">isDead</a> ()</td></tr>
+<tr class="separator:a559abf49122b0fc3f6017dbd0833bbaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82026099ab84264553cf8e81999fa6ee"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a82026099ab84264553cf8e81999fa6ee">needToRemove</a> ()</td></tr>
+<tr class="separator:a82026099ab84264553cf8e81999fa6ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4df60dc1fbda8aed4c35d511b754a8e4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a4df60dc1fbda8aed4c35d511b754a8e4">setFireOn</a> (int32_t _groupIdSource, int32_t _type, float _power, const <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/etk.tag:http://atria-soft.github.io/etk/" href="http://atria-soft.github.io/etk/_vector3_d_8hpp.html#a65b33f8f48df3f057393b2b09211829f">vec3</a> &amp;_center=<a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/etk.tag:http://atria-soft.github.io/etk/" href="http://atria-soft.github.io/etk/_vector3_d_8hpp.html#a65b33f8f48df3f057393b2b09211829f">vec3</a>(0, 0, 0))</td></tr>
+<tr class="separator:a4df60dc1fbda8aed4c35d511b754a8e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b02bf058b400eac8684413a84246414"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a3b02bf058b400eac8684413a84246414">onLifeChange</a> ()</td></tr>
+<tr class="separator:a3b02bf058b400eac8684413a84246414"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85dbc9be1096178d2db590093a5e59e4"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a85dbc9be1096178d2db590093a5e59e4">getGroup</a> () const </td></tr>
+<tr class="separator:a85dbc9be1096178d2db590093a5e59e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82c3669cee85b50861d59958efae4d65"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a82c3669cee85b50861d59958efae4d65">setGroup</a> (int32_t _newGroup)</td></tr>
+<tr class="separator:a82c3669cee85b50861d59958efae4d65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4229c88810397ed29a0ea6d712fcec6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#ac4229c88810397ed29a0ea6d712fcec6">preCalculationDraw</a> (const <a class="el" href="classege_1_1_camera.html">ege::Camera</a> &amp;_camera)</td></tr>
+<tr class="separator:ac4229c88810397ed29a0ea6d712fcec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27f141940924deffc942ee7da9c81a6d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a27f141940924deffc942ee7da9c81a6d">draw</a> (int32_t _pass=0)=0</td></tr>
+<tr class="separator:a27f141940924deffc942ee7da9c81a6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40f64c38bd7b501f0d26d84ebd31a90f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a40f64c38bd7b501f0d26d84ebd31a90f">drawLife</a> (<a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; ewol::resource::Colored3DObject &gt; _draw, <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; <a class="el" href="classege_1_1_camera.html">ege::Camera</a> &gt; _camera)</td></tr>
+<tr class="separator:a40f64c38bd7b501f0d26d84ebd31a90f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ebbf862116f1adc9e892c8982f0c43d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a2ebbf862116f1adc9e892c8982f0c43d">drawDebug</a> (<a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; ewol::resource::Colored3DObject &gt; _draw, <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; <a class="el" href="classege_1_1_camera.html">ege::Camera</a> &gt; _camera)</td></tr>
+<tr class="separator:a2ebbf862116f1adc9e892c8982f0c43d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cca65e9f2c04f8422d550640bacf79f"><td class="memItemLeft" align="right" valign="top">virtual <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/etk.tag:http://atria-soft.github.io/etk/" href="http://atria-soft.github.io/etk/_vector3_d_8hpp.html#a65b33f8f48df3f057393b2b09211829f">vec3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a1cca65e9f2c04f8422d550640bacf79f">getPositionTheoric</a> ()</td></tr>
+<tr class="separator:a1cca65e9f2c04f8422d550640bacf79f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed5ac44770598a731fc249f497828838"><td class="memItemLeft" align="right" valign="top">virtual const <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/etk.tag:http://atria-soft.github.io/etk/" href="http://atria-soft.github.io/etk/_vector3_d_8hpp.html#a65b33f8f48df3f057393b2b09211829f">vec3</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#aed5ac44770598a731fc249f497828838">getPosition</a> ()</td></tr>
+<tr class="separator:aed5ac44770598a731fc249f497828838"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52bdd3e2cdec9583d7305222c7c2a566"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a52bdd3e2cdec9583d7305222c7c2a566">setPosition</a> (const <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/etk.tag:http://atria-soft.github.io/etk/" href="http://atria-soft.github.io/etk/_vector3_d_8hpp.html#a65b33f8f48df3f057393b2b09211829f">vec3</a> &amp;_pos)</td></tr>
+<tr class="separator:a52bdd3e2cdec9583d7305222c7c2a566"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a196cab38ec45d4b67226c37cf1106f9b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a196cab38ec45d4b67226c37cf1106f9b">elementIsRemoved</a> (<a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; <a class="el" href="classege_1_1_element.html">ege::Element</a> &gt; _removedElement)</td></tr>
+<tr class="separator:a196cab38ec45d4b67226c37cf1106f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d4fda8e94150af75ab469ec6a852dfd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a5d4fda8e94150af75ab469ec6a852dfd">isFixed</a> ()</td></tr>
+<tr class="separator:a5d4fda8e94150af75ab469ec6a852dfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44f6fd56f441342775a9d30087ee948e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a44f6fd56f441342775a9d30087ee948e">getRadius</a> ()</td></tr>
+<tr class="separator:a44f6fd56f441342775a9d30087ee948e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3017f319cc91694c18307585925b9f5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#ae3017f319cc91694c18307585925b9f5">onDestroy</a> ()</td></tr>
+<tr class="separator:ae3017f319cc91694c18307585925b9f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabfffdad12c95deeffa0c13f9c6f4630"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#aabfffdad12c95deeffa0c13f9c6f4630">dynamicEnable</a> ()</td></tr>
+<tr class="separator:aabfffdad12c95deeffa0c13f9c6f4630"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad18a09caf8b1ea06296e464d86807432"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#ad18a09caf8b1ea06296e464d86807432">dynamicDisable</a> ()</td></tr>
+<tr class="separator:ad18a09caf8b1ea06296e464d86807432"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classememory_1_1_enable_shared_from_this"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classememory_1_1_enable_shared_from_this')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="http://atria-soft.github.io/ememory/classememory_1_1_enable_shared_from_this.html">ememory::EnableSharedFromThis&lt; Element &gt;</a></td></tr>
+<tr class="memitem:ab9c576f893c44cbf8163b1ddf6f86b38 inherit pub_methods_classememory_1_1_enable_shared_from_this"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9c576f893c44cbf8163b1ddf6f86b38"></a>
+<a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; EMEMORY_TYPE &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_enable_shared_from_this.html#ab9c576f893c44cbf8163b1ddf6f86b38">sharedFromThis</a> ()</td></tr>
+<tr class="separator:ab9c576f893c44cbf8163b1ddf6f86b38 inherit pub_methods_classememory_1_1_enable_shared_from_this"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a908e55c7fbc20a24a0fc1ad4b93eaace inherit pub_methods_classememory_1_1_enable_shared_from_this"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a908e55c7fbc20a24a0fc1ad4b93eaace"></a>
+const <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; EMEMORY_TYPE &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_enable_shared_from_this.html#a908e55c7fbc20a24a0fc1ad4b93eaace">sharedFromThis</a> () const</td></tr>
+<tr class="separator:a908e55c7fbc20a24a0fc1ad4b93eaace inherit pub_methods_classememory_1_1_enable_shared_from_this"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2ce5703d70b211bae31fd40a5514c19 inherit pub_methods_classememory_1_1_enable_shared_from_this"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa2ce5703d70b211bae31fd40a5514c19"></a>
+<a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_weak_ptr.html">ememory::WeakPtr</a>&lt; EMEMORY_TYPE &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_enable_shared_from_this.html#aa2ce5703d70b211bae31fd40a5514c19">weakFromThis</a> ()</td></tr>
+<tr class="separator:aa2ce5703d70b211bae31fd40a5514c19 inherit pub_methods_classememory_1_1_enable_shared_from_this"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8ec20a3eb1db0add6d9c69e5b1a0903 inherit pub_methods_classememory_1_1_enable_shared_from_this"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8ec20a3eb1db0add6d9c69e5b1a0903"></a>
+const <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_weak_ptr.html">ememory::WeakPtr</a>&lt; EMEMORY_TYPE &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_enable_shared_from_this.html#af8ec20a3eb1db0add6d9c69e5b1a0903">weakFromThis</a> () const</td></tr>
+<tr class="separator:af8ec20a3eb1db0add6d9c69e5b1a0903 inherit pub_methods_classememory_1_1_enable_shared_from_this"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a5bcb74474775ce073770590e930e919a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5bcb74474775ce073770590e930e919a"></a>
+<a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; <a class="el" href="classege_1_1_environement.html">ege::Environement</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_env</b></td></tr>
+<tr class="separator:a5bcb74474775ce073770590e930e919a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bdf8a4eb8c9e0043df4af30471db711"><td class="memItemLeft" align="right" valign="top"><a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; <a class="el" href="classege_1_1resource_1_1_mesh.html">ege::resource::Mesh</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a6bdf8a4eb8c9e0043df4af30471db711">m_mesh</a></td></tr>
+<tr class="separator:a6bdf8a4eb8c9e0043df4af30471db711"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a830f935e09dc7f950b2d75d378e34cc7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a830f935e09dc7f950b2d75d378e34cc7">m_life</a></td></tr>
+<tr class="separator:a830f935e09dc7f950b2d75d378e34cc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af436f27b779bdb10389d484313d3bbc0"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#af436f27b779bdb10389d484313d3bbc0">m_lifeMax</a></td></tr>
+<tr class="separator:af436f27b779bdb10389d484313d3bbc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae13b4ad8b1753e8205d7f167894fc3d7"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#ae13b4ad8b1753e8205d7f167894fc3d7">m_group</a></td></tr>
+<tr class="separator:ae13b4ad8b1753e8205d7f167894fc3d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7aa343fbdf7a3b09372c93d57a40b26"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7aa343fbdf7a3b09372c93d57a40b26"></a>
+ewol::compositing::Text&#160;</td><td class="memItemRight" valign="bottom"><b>m_debugText</b></td></tr>
+<tr class="separator:ac7aa343fbdf7a3b09372c93d57a40b26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad67c30a23d11ae67bdc3e4ab4fe1042e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#ad67c30a23d11ae67bdc3e4ab4fe1042e">m_fixe</a></td></tr>
+<tr class="separator:ad67c30a23d11ae67bdc3e4ab4fe1042e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f285710820c75ad5339d54e27d0471c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1_element.html#a1f285710820c75ad5339d54e27d0471c">m_radius</a></td></tr>
+<tr class="separator:a1f285710820c75ad5339d54e27d0471c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a0c423f7c9c39e1de6c7ab20b14af6153"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ege::Element::Element </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; <a class="el" href="classege_1_1_environement.html">ege::Environement</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>_env</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor (when constructer is called just add element that did not change. The objest will be stored in a pool of element and keep a second time if needed == &gt; redure memory allocation, when needed, the system will call the init and un-init function... </p>
+
+</div>
+</div>
+<a class="anchor" id="a7bf7c8407d13ce8e60f7de46d96bbe75"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual ege::Element::~Element </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a27f141940924deffc942ee7da9c81a6d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ege::Element::draw </td>
+          <td>(</td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>_pass</em> = <code>0</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>draw the curent element (can have multiple display) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pass</td><td>Id of the current pass : [0..?] </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="classege_1_1_element_physic.html#af28e2e370657d6d502444b4c8e418453">ege::ElementPhysic</a>, and <a class="el" href="classege_1_1_element_base.html#ac80aa8d182ceac9fdf7c9052cd35e927">ege::ElementBase</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2ebbf862116f1adc9e892c8982f0c43d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ege::Element::drawDebug </td>
+          <td>(</td>
+          <td class="paramtype"><a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; ewol::resource::Colored3DObject &gt;&#160;</td>
+          <td class="paramname"><em>_draw</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; <a class="el" href="classege_1_1_camera.html">ege::Camera</a> &gt;&#160;</td>
+          <td class="paramname"><em>_camera</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Debug display of the current element. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">draw</td><td>Basic system to draw the debug shape and informations </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="classege_1_1_element_physic.html#a3fcd92a93fb30556a573cf8400d1af47">ege::ElementPhysic</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a40f64c38bd7b501f0d26d84ebd31a90f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ege::Element::drawLife </td>
+          <td>(</td>
+          <td class="paramtype"><a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; ewol::resource::Colored3DObject &gt;&#160;</td>
+          <td class="paramname"><em>_draw</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; <a class="el" href="classege_1_1_camera.html">ege::Camera</a> &gt;&#160;</td>
+          <td class="paramname"><em>_camera</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>draw the current life of the element </p>
+
+</div>
+</div>
+<a class="anchor" id="ad18a09caf8b1ea06296e464d86807432"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ege::Element::dynamicDisable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>remove this element from the physique engine </p>
+
+<p>Reimplemented in <a class="el" href="classege_1_1_element_physic.html#a70d9ccb01b09d4ae55d19b06425db401">ege::ElementPhysic</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aabfffdad12c95deeffa0c13f9c6f4630"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ege::Element::dynamicEnable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>set the elment in the physique engine </p>
+
+<p>Reimplemented in <a class="el" href="classege_1_1_element_physic.html#ad3862301875751917aabea411d4f7538">ege::ElementPhysic</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a196cab38ec45d4b67226c37cf1106f9b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ege::Element::elementIsRemoved </td>
+          <td>(</td>
+          <td class="paramtype"><a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; <a class="el" href="classege_1_1_element.html">ege::Element</a> &gt;&#160;</td>
+          <td class="paramname"><em>_removedElement</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Event arrive when an element has been remove from the system == &gt; this permit to keep pointer of ennemy, and not search them every cycle ... </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">_removedElement</td><td>Pointer on the element removed. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a85dbc9be1096178d2db590093a5e59e4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t ege::Element::getGroup </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>get the Group of the element. </p>
+<dl class="section return"><dt>Returns</dt><dd>The group ID </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a735360c14d24f44ae80d1eda79b8d9ba"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ege::Element::getLifeRatio </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>get the curent life ratio [0..1] </p>
+<dl class="section return"><dt>Returns</dt><dd>The proportionnal life </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a17714d73b34e2b80661c2857f4eaf5fc"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt;<a class="el" href="classege_1_1resource_1_1_mesh.html">ege::resource::Mesh</a>&gt; ege::Element::getMesh </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>get a pointer on the Mesh file. </p>
+<dl class="section return"><dt>Returns</dt><dd>the mesh pointer. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aed5ac44770598a731fc249f497828838"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/etk.tag:http://atria-soft.github.io/etk/" href="http://atria-soft.github.io/etk/_vector3_d_8hpp.html#a65b33f8f48df3f057393b2b09211829f">vec3</a>&amp; ege::Element::getPosition </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>get the current position of the element </p>
+<dl class="section return"><dt>Returns</dt><dd>the 3D position. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classege_1_1_element_physic.html#a13dd2387bd2ad3fef57dd5c754081832">ege::ElementPhysic</a>, and <a class="el" href="classege_1_1_element_base.html#aeb281d2ab12623788727ca0c633ae198">ege::ElementBase</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1cca65e9f2c04f8422d550640bacf79f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/etk.tag:http://atria-soft.github.io/etk/" href="http://atria-soft.github.io/etk/_vector3_d_8hpp.html#a65b33f8f48df3f057393b2b09211829f">vec3</a> ege::Element::getPositionTheoric </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>get the theoric position. Sometimes, the element has move due to an explosion or something else, then its real position in not the one that woult it be at the end ... </p>
+<dl class="section return"><dt>Returns</dt><dd>the theoric position </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classege_1_1_element_physic.html#a76b5500e1e5139d278dbddacf84a7703">ege::ElementPhysic</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a44f6fd56f441342775a9d30087ee948e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ege::Element::getRadius </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>get the current space needed by the element in the workspace </p>
+<dl class="section return"><dt>Returns</dt><dd>The dimention needed. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a1f906ef13d5602414539cb86ddb51956"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const std::string&amp; ege::Element::getType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>get the element Type description string. </p>
+<dl class="section return"><dt>Returns</dt><dd>A reference on the descriptive string. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classege_1_1_element_physic.html#addaee7586673441ec64956f99e6381b3">ege::ElementPhysic</a>, and <a class="el" href="classege_1_1_element_base.html#a114887e1928b31fa774f4590d23a03c6">ege::ElementBase</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a44d7eecd40816afb2c457ed310b1add4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t ege::Element::getUID </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>get the curent <a class="el" href="classege_1_1_element.html">Element</a> Unique ID in the all <a class="el" href="classege_1_1_game.html">Game</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>The requested Unique ID. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="adddca0a376cd6180ec019354271c6e75"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool ege::Element::init </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>init the element with the defined properties </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">_property</td><td>Type of the next element </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">_value</td><td>pointer on the value type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true, the element is corectly initialized. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a559abf49122b0fc3f6017dbd0833bbaa"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ege::Element::isDead </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if the element is dead. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if the element does not exist anymore, false otherwise. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a5d4fda8e94150af75ab469ec6a852dfd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ege::Element::isFixed </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>get the element if it is fixed or not. if the element is fixed this is for tower, and all thing does not really move </p>
+<dl class="section return"><dt>Returns</dt><dd>true : The element is fixed. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a9d0005ff32e71f4f78a84b9db44ca738"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool ege::Element::loadMesh </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>_meshFileName</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Select a mesh with a specific name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">_meshFileName</td><td>filename of the Mesh. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Automaticly load the shape if it is specify in the mesh file </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if no error occured </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a82026099ab84264553cf8e81999fa6ee"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool ege::Element::needToRemove </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Request if the element might be removed from the system. </p>
+<dl class="section return"><dt>Returns</dt><dd>true == &gt; the object is removed </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ae3017f319cc91694c18307585925b9f5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ege::Element::onDestroy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>, call when the element is removed (call only one time) </p>
+
+<p>Reimplemented in <a class="el" href="classege_1_1_element_physic.html#ae36813ed7411673cdb6e53e260eda16c">ege::ElementPhysic</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3b02bf058b400eac8684413a84246414"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ege::Element::onLifeChange </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Call when the element life change. </p>
+
+</div>
+</div>
+<a class="anchor" id="ac4229c88810397ed29a0ea6d712fcec6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ege::Element::preCalculationDraw </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classege_1_1_camera.html">ege::Camera</a> &amp;&#160;</td>
+          <td class="paramname"><em>_camera</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Can be call tu opdate the list of the element displayed on the scren (example : no display of the hiden triangle) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">the</td><td>camera properties @ note by default nothing to do ... </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a4df60dc1fbda8aed4c35d511b754a8e4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ege::Element::setFireOn </td>
+          <td>(</td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>_groupIdSource</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>_power</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/etk.tag:http://atria-soft.github.io/etk/" href="http://atria-soft.github.io/etk/_vector3_d_8hpp.html#a65b33f8f48df3f057393b2b09211829f">vec3</a> &amp;&#160;</td>
+          <td class="paramname"><em>_center</em> = <code><a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/etk.tag:http://atria-soft.github.io/etk/" href="http://atria-soft.github.io/etk/_vector3_d_8hpp.html#a65b33f8f48df3f057393b2b09211829f">vec3</a>(0,&#160;0,&#160;0)</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>apply a fire on the element at a current power and a specific power. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">_groupIdSource</td><td>Source Id of the group, by default all event arrive at all group, buf some event can not be obviously apply at the ennemy like reparing .... </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">_type</td><td>Type of event on the life propertied </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">_power</td><td>Power of the event (can be &gt;0 for adding life). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">_center</td><td>Some fire decrease in function of space distance... </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a82c3669cee85b50861d59958efae4d65"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ege::Element::setGroup </td>
+          <td>(</td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>_newGroup</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>set the group of the curent element </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">newGroup</td><td>The new Group ID of the element. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a17750b333551fcd6d27eaf8e6c1f989d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool ege::Element::setMesh </td>
+          <td>(</td>
+          <td class="paramtype"><a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; <a class="el" href="classege_1_1resource_1_1_mesh.html">ege::resource::Mesh</a> &gt;&#160;</td>
+          <td class="paramname"><em>_mesh</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>set the the Mesh properties. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">_mesh</td><td>The mesh pointer. (nullptr to force the mesh remove ...) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>: this remove the shape and the mesh properties. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if no error occured </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classege_1_1_element_physic.html#ab40625af2799ce42f2db6b3407d802d5">ege::ElementPhysic</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a52bdd3e2cdec9583d7305222c7c2a566"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ege::Element::setPosition </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/etk.tag:http://atria-soft.github.io/etk/" href="http://atria-soft.github.io/etk/_vector3_d_8hpp.html#a65b33f8f48df3f057393b2b09211829f">vec3</a> &amp;&#160;</td>
+          <td class="paramname"><em>_pos</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>set the current position of the element </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">_pos</td><td>set the 3D position. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="classege_1_1_element_physic.html#a62e71f81e5177cf40ea39af3055ad536">ege::ElementPhysic</a>, and <a class="el" href="classege_1_1_element_base.html#a46ca31946b00485a154f22628500d6c1">ege::ElementBase</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="ad67c30a23d11ae67bdc3e4ab4fe1042e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ege::Element::m_fixe</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>is a fixed element == &gt; used for placement of every elements </p>
+
+</div>
+</div>
+<a class="anchor" id="ae13b4ad8b1753e8205d7f167894fc3d7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t ege::Element::m_group</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Every element has a generic group. </p>
+
+</div>
+</div>
+<a class="anchor" id="a830f935e09dc7f950b2d75d378e34cc7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ege::Element::m_life</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Current life of the object. </p>
+
+</div>
+</div>
+<a class="anchor" id="af436f27b779bdb10389d484313d3bbc0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ege::Element::m_lifeMax</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Maximum possible life of the element. </p>
+
+</div>
+</div>
+<a class="anchor" id="a6bdf8a4eb8c9e0043df4af30471db711"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt;<a class="el" href="classege_1_1resource_1_1_mesh.html">ege::resource::Mesh</a>&gt; ege::Element::m_mesh</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mesh of the <a class="el" href="classege_1_1_element.html">Element</a> (can be nullptr) </p>
+
+</div>
+</div>
+<a class="anchor" id="a1f285710820c75ad5339d54e27d0471c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float ege::Element::m_radius</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Radius of the element (all element have a radius, if == 0 ==&gt; then ghost ... </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>framework/atria-soft/ege/ege/elements/<a class="el" href="_element_8hpp_source.html">Element.hpp</a></li>
+</ul>
+</div><!-- contents -->
+<!-- HTML footer for doxygen 1.8.8-->
+<!-- start footer part -->
+</div>
+</div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>
+Generated on Sun Oct 23 2016 22:01:42 for Ewol Game engine (based on bullet lib) by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.11
+</small></address>
+</body>
+</html>

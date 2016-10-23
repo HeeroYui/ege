@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.11"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>Ewol Game engine (based on bullet lib): EGE library</title>
+        <title>Ewol Game engine (based on bullet lib): Build lib &amp; build sample</title>
         <!--<link href="tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="dynsections.js"></script>
         <link href="search/search.css" rel="stylesheet" type="text/css"/>
@@ -108,8 +108,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
   <div id="navrow1" class="tabs">
     <ul class="tablist">
-      <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li class="current"><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -130,7 +130,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
-</div><!-- top -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -145,51 +144,48 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">EGE library </div>  </div>
+<div class="title">Build lib &amp; build sample </div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#ege_mainpage_what">What is EGE:                               </a><ul><li class="level2"><a href="#ege_mainpage_what_it_does">What it does:                               </a></li>
-<li class="level2"><a href="#ege_mainpage_what_it_not_does">What it doesn&#39;t do:                          </a></li>
+<ul><li class="level1"><a href="#ege_build_download">Download:                                          </a><ul><li class="level2"><a href="#ege_build_download_repo">need google repo:                                  </a></li>
+<li class="level2"><a href="#ege_build_download_lutin">lutin (build-system):                              </a></li>
+<li class="level2"><a href="#ege_build_download_dependency">dependency:                                        </a></li>
+<li class="level2"><a href="#ege_build_download_sources">sources:                                           </a></li>
 </ul>
 </li>
-<li class="level1"><a href="#ege_mainpage_language">What languages are supported?                    </a></li>
-<li class="level1"><a href="#ege_mainpage_license_restriction">Are there any licensing restrictions?            </a></li>
-<li class="level1"><a href="#ege_mainpage_license">License (APACHE-2.0)                             </a></li>
-<li class="level1"><a href="#ege_mainpage_sub_page">Other pages                              </a></li>
+<li class="level1"><a href="#ege_build_build">Build:                                             </a><ul><li class="level2"><a href="#ege_build_build_library">library:                                           </a></li>
+<li class="level2"><a href="#ege_build_build_sample">Sample:                                            </a></li>
+</ul>
+</li>
+<li class="level1"><a href="#ege_build_run_sample">Run sample:                                        </a></li>
 </ul>
 </div>
-<div class="textblock"><h1><a class="anchor" id="ege_mainpage_what"></a>
-What is EGE:                               </h1>
-<p>EGE, or Ewol Game Engine. It is a prototype to lean how to use the bullet lib and how can I create a simple game engine.</p>
-<h2><a class="anchor" id="ege_mainpage_what_it_does"></a>
-What it does:                               </h2>
-<p>EGE does not do many things (not enouth dev time)</p>
-<p>EGE is dependent of the STL (compatible with MacOs stl (CXX))</p>
-<h2><a class="anchor" id="ege_mainpage_what_it_not_does"></a>
-What it doesn't do:                          </h2>
-<p>a good game</p>
-<h1><a class="anchor" id="ege_mainpage_language"></a>
-What languages are supported?                    </h1>
-<p>EGE is written in C++.</p>
-<h1><a class="anchor" id="ege_mainpage_license_restriction"></a>
-Are there any licensing restrictions?            </h1>
-<p>EGE is <b>FREE software</b> and <em>all sub-library are FREE and staticly linkable !!!</em></p>
-<h1><a class="anchor" id="ege_mainpage_license"></a>
-License (APACHE-2.0)                             </h1>
-<p>Copyright EGE Edouard DUPIN</p>
-<p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
-<p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
-<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
-<h1><a class="anchor" id="ege_mainpage_sub_page"></a>
-Other pages                              </h1>
-<ul>
-<li><a class="el" href="ege_build.html">Build lib &amp; build sample</a></li>
-<li><a href="http://atria-soft.github.io/ewol/ewol_coding_style.html"><b>ewol coding style</b></a> </li>
-</ul>
-</div></div><!-- contents -->
+<div class="textblock"><h1><a class="anchor" id="ege_build_download"></a>
+Download:                                          </h1>
+<p>ege use some tools to manage source and build it:</p>
+<h2><a class="anchor" id="ege_build_download_repo"></a>
+need google repo:                                  </h2>
+<p>see: <a href="http://source.android.com/source/downloading.html#installing-repo">http://source.android.com/source/downloading.html#installing-repo</a></p>
+<p>On all platform: </p><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;mkdir ~/.bin</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;PATH=~/.bin:$PATH</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;curl https://storage.googleapis.com/git-repo-downloads/repo &gt; ~/.bin/repo</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;chmod a+x ~/.bin/repo</div></div><!-- fragment --><p>On ubuntu </p><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;sudo apt-get install repo</div></div><!-- fragment --><p>On archlinux </p><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;sudo pacman -S repo</div></div><!-- fragment --><h2><a class="anchor" id="ege_build_download_lutin"></a>
+lutin (build-system):                              </h2>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;pip install lutin --user</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;# optionnal dependency of lutin (manage image changing size for application release)</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;pip install pillow --user</div></div><!-- fragment --><h2><a class="anchor" id="ege_build_download_dependency"></a>
+dependency:                                        </h2>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;mkdir -p WORKING_DIRECTORY/framework</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;cd WORKING_DIRECTORY/framework</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;repo init -u git://github.com/atria-soft/manifest.git</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;repo sync -j8</div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;cd ../..</div></div><!-- fragment --><h2><a class="anchor" id="ege_build_download_sources"></a>
+sources:                                           </h2>
+<p>They are already download in the repo manifest in:</p>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;cd WORKING_DIRECTORY/framework/atria-soft/ege</div></div><!-- fragment --><h1><a class="anchor" id="ege_build_build"></a>
+Build:                                             </h1>
+<h2><a class="anchor" id="ege_build_build_library"></a>
+library:                                           </h2>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;lutin -mdebug ege</div></div><!-- fragment --><h2><a class="anchor" id="ege_build_build_sample"></a>
+Sample:                                            </h2>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;lutin -mdebug ege-sample-double-view</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;lutin -mdebug ege-sample-raytracing</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;lutin -mdebug ege-sample-collision</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;lutin -mdebug ege-sample-camera-position</div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;lutin -mdebug ege-sample-mesh-creator</div></div><!-- fragment --><h1><a class="anchor" id="ege_build_run_sample"></a>
+Run sample:                                        </h1>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;lutin -mdebug ege-sample-double-view?run</div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;lutin -mdebug ege-sample-raytracing?run</div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;lutin -mdebug ege-sample-collision?run</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;lutin -mdebug ege-sample-camera-position?run</div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;lutin -mdebug ege-sample-mesh-creator?run</div></div><!-- fragment --> </div></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->
 <!-- start footer part -->
 </div>

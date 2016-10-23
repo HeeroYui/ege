@@ -1,0 +1,426 @@
+<!-- HTML header for doxygen 1.8.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- For Mobile Devices -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+        <meta name="generator" content="Doxygen 1.8.11"/>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <title>Ewol Game engine (based on bullet lib): ege::widget::Scene Class Reference</title>
+        <!--<link href="tabs.css" rel="stylesheet" type="text/css"/>-->
+        <script type="text/javascript" src="dynsections.js"></script>
+        <link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+        <link href="doxygen.css" rel="stylesheet" type="text/css" />
+        <link href="customdoxygen.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="doxy-boot.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand">Ewol Game engine (based on bullet lib) 0.3.0</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="index.html">Main&nbsp;Page</a></li>
+                        <li><a href="pages.html">Related&nbsp;Pages</a></li>
+                        <li><a href="namespaces.html">Namespaces</a></li>
+                        <li><a href="annotated.html">Classes</a></li>
+                        <li><a href="files.html">Files</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Link-libs<span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="http://HeeroYui.github.io/lutin">lutin</a></li>
+                                <li><a href="http://atria-soft.github.io/ewol">ewol</a></li>
+                                <li><a href="http://atria-soft.github.io/etk">etk</a></li>
+                                <li><a href="http://atria-soft.github.io/ejson">ejson</a></li>
+                                <li><a href="http://atria-soft.github.io/exml">exml</a></li>
+                                <li><a href="http://atria-soft.github.io/esvg">esvg</a></li>
+                                <li><a href="http://atria-soft.github.io/egami">egami</a></li>
+                                <li><a href="http://atria-soft.github.io/gale">gale</a></li>
+                                <li><a href="http://atria-soft.github.io/ege">ege</a></li>
+                                <li><a href="http://atria-soft.github.io/elog">elog</a></li>
+                                <li><a href="http://atria-soft.github.io/ememory">ememory</a></li>
+                                <li><a href="http://atria-soft.github.io/enet">enet</a></li>
+                                <li><a href="http://atria-soft.github.io/eproperty">eproperty</a></li>
+                                <li><a href="http://atria-soft.github.io/esignal">esignal</a></li>
+                                <li><a href="http://atria-soft.github.io/zeus">zeus</a></li>
+                                <li><a href="http://atria-soft.github.io/audio-ess">audio-ess</a></li>
+                                <li><a href="http://musicdsp.github.io/audio">audio</a></li>
+                                <li><a href="http://musicdsp.github.io/audio-drain">audio-drain</a></li>
+                                <li><a href="http://musicdsp.github.io/audio-orchestra">audio-orchestra</a></li>
+                                <li><a href="http://musicdsp.github.io/audio-river">audio-river</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div id="search-box" class="input-group">
+                        <div class="input-group-btn">
+                            <button aria-expanded="false" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                <span class="glyphicon glyphicon-search"></span>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">All</a></li>
+                                <li><a href="#">Classes</a></li>
+                                <li><a href="#">Namespaces</a></li>
+                                <li><a href="#">Files</a></li>
+                                <li><a href="#">Functions</a></li>
+                                <li><a href="#">Variables</a></li>
+                                <li><a href="#">Typedefs</a></li>
+                                <li><a href="#">Enumerations</a></li>
+                                <li><a href="#">Enumerator</a></li>
+                                <li><a href="#">Friends</a></li>
+                                <li><a href="#">Macros</a></li>
+                                <li><a href="#">Pages</a></li>
+                            </ul>
+                        </div>
+                        <button id="search-close" type="button" class="close" aria-label="Close">
+                            <span aria-hidden="true"></span>
+                        </button>
+                        <input id="search-field" class="form-control" accesskey="S" onkeydown="searchBox.OnSearchFieldChange(event);" placeholder="Search ..." type="text">
+                    </div>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+        <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+            <div class="content" id="content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 panel panel-default" style="padding-bottom: 15px;">
+                            <div style="margin-bottom: 15px;">
+<!-- end header part -->
+<!-- Generated by Doxygen 1.8.11 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Search');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Search" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
+    </ul>
+  </div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>ege</b></li><li class="navelem"><b>widget</b></li><li class="navelem"><a class="el" href="classege_1_1widget_1_1_scene.html">Scene</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="classege_1_1widget_1_1_scene-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">ege::widget::Scene Class Reference</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="dynheader">
+Inheritance diagram for ege::widget::Scene:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classege_1_1widget_1_1_scene.png" usemap="#ege::widget::Scene_map" alt=""/>
+  <map id="ege::widget::Scene_map" name="ege::widget::Scene_map">
+</map>
+ </div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a409b21bb537356791269f683fe2f3fb2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a409b21bb537356791269f683fe2f3fb2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setEnv</b> (<a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; <a class="el" href="classege_1_1_environement.html">ege::Environement</a> &gt; _env)</td></tr>
+<tr class="separator:a409b21bb537356791269f683fe2f3fb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07a931c19c3c2c87e1953ff7fe97c334"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a07a931c19c3c2c87e1953ff7fe97c334"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DECLARE_FACTORY</b> (<a class="el" href="classege_1_1widget_1_1_scene.html">Scene</a>)</td></tr>
+<tr class="separator:a07a931c19c3c2c87e1953ff7fe97c334"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc289a5ea9b7bc53ed45de110de427d4"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1widget_1_1_scene.html#adc289a5ea9b7bc53ed45de110de427d4">~Scene</a> ()</td></tr>
+<tr class="separator:adc289a5ea9b7bc53ed45de110de427d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71f5302c44c6a6cdffc2eca42586037d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1widget_1_1_scene.html#a71f5302c44c6a6cdffc2eca42586037d">setCamera</a> (const std::string &amp;_cameraName)</td></tr>
+<tr class="separator:a71f5302c44c6a6cdffc2eca42586037d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3ca59ff592ba8dd8bd9b626a055f2df"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1widget_1_1_scene.html#ae3ca59ff592ba8dd8bd9b626a055f2df">getCamera</a> () const </td></tr>
+<tr class="separator:ae3ca59ff592ba8dd8bd9b626a055f2df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a578cd0c466bee8745dfe857552b2d0ab"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a578cd0c466bee8745dfe857552b2d0ab"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>systemDraw</b> (const ewol::DrawProperty &amp;_displayProp)</td></tr>
+<tr class="separator:a578cd0c466bee8745dfe857552b2d0ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54dce348933b091005b257c8d91c407f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a54dce348933b091005b257c8d91c407f"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>onRegenerateDisplay</b> ()</td></tr>
+<tr class="separator:a54dce348933b091005b257c8d91c407f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbddc4cb9281c354bd09cbcc74e61628"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acbddc4cb9281c354bd09cbcc74e61628"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>periodicCall</b> (const ewol::event::Time &amp;_event)</td></tr>
+<tr class="separator:acbddc4cb9281c354bd09cbcc74e61628"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb4dde8f3573a3c833ee70bba88b42d9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abb4dde8f3573a3c833ee70bba88b42d9"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>calculateSize</b> ()</td></tr>
+<tr class="separator:abb4dde8f3573a3c833ee70bba88b42d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a389ba8efd200612cca52f848408c34f2"><td class="memItemLeft" align="right" valign="top">esignal::Signal&lt; <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; ewol::resource::Colored3DObject &gt;&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1widget_1_1_scene.html#a389ba8efd200612cca52f848408c34f2">signalDisplayDebug</a></td></tr>
+<tr class="separator:a389ba8efd200612cca52f848408c34f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fd68138b6724d7e1f485508c62b0952"><td class="memItemLeft" align="right" valign="top">eproperty::Value&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1widget_1_1_scene.html#a4fd68138b6724d7e1f485508c62b0952">propertyDebugPhysic</a></td></tr>
+<tr class="separator:a4fd68138b6724d7e1f485508c62b0952"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25c8b39174b01d82986eb21b1b669df5"><td class="memItemLeft" align="right" valign="top">eproperty::Value&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1widget_1_1_scene.html#a25c8b39174b01d82986eb21b1b669df5">propertyDebugApplication</a></td></tr>
+<tr class="separator:a25c8b39174b01d82986eb21b1b669df5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a06408ffe3a64cada0814e0c38fd7c76c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1widget_1_1_scene.html#a06408ffe3a64cada0814e0c38fd7c76c">Scene</a> ()</td></tr>
+<tr class="separator:a06408ffe3a64cada0814e0c38fd7c76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e4ce042b45894eaa8d7bc1100697bd2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e4ce042b45894eaa8d7bc1100697bd2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> ()</td></tr>
+<tr class="separator:a3e4ce042b45894eaa8d7bc1100697bd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f673665e9ab124b7c2cd1c33f9ee2df"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1f673665e9ab124b7c2cd1c33f9ee2df"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>onDraw</b> ()</td></tr>
+<tr class="separator:a1f673665e9ab124b7c2cd1c33f9ee2df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:aa00d3cb90e0c25afb5f21b4e8d7c04c2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa00d3cb90e0c25afb5f21b4e8d7c04c2"></a>
+<a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; <a class="el" href="classege_1_1_environement.html">ege::Environement</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_env</b></td></tr>
+<tr class="separator:aa00d3cb90e0c25afb5f21b4e8d7c04c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a4634cf9dfe4de06e781889ddc9c5fc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a4634cf9dfe4de06e781889ddc9c5fc"></a>
+<a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; ewol::resource::Colored3DObject &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_debugDrawProperty</b></td></tr>
+<tr class="separator:a9a4634cf9dfe4de06e781889ddc9c5fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bb266eb6db5f3a00910f5f6d9e48c31"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classege_1_1widget_1_1_scene.html#a8bb266eb6db5f3a00910f5f6d9e48c31">m_cameraName</a></td></tr>
+<tr class="separator:a8bb266eb6db5f3a00910f5f6d9e48c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bbdc43a8eee66dd2f1192f320a1e619"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7bbdc43a8eee66dd2f1192f320a1e619"></a>
+std::vector&lt; <a class="el" href="classege_1_1_environement_1_1_result_nearest_element.html">ege::Environement::ResultNearestElement</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_displayElementOrdered</b></td></tr>
+<tr class="separator:a7bbdc43a8eee66dd2f1192f320a1e619"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a06408ffe3a64cada0814e0c38fd7c76c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ege::widget::Scene::Scene </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor of the widget classes. </p>
+<dl class="section return"><dt>Returns</dt><dd>(no execption generated (not managed in embended platform)) </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="adc289a5ea9b7bc53ed45de110de427d4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual ege::widget::Scene::~Scene </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Destructor of the widget classes. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ae3ca59ff592ba8dd8bd9b626a055f2df"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string&amp; ege::widget::Scene::getCamera </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the current camera name to display the environnement. </p>
+<dl class="section return"><dt>Returns</dt><dd>the current camera name. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a71f5302c44c6a6cdffc2eca42586037d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ege::widget::Scene::setCamera </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>_cameraName</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Select a <a class="el" href="classege_1_1_camera.html">Camera</a> for the display. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">_cameraName</td><td>New name of the camera. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a8bb266eb6db5f3a00910f5f6d9e48c31"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string ege::widget::Scene::m_cameraName</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>current camera name </p>
+
+</div>
+</div>
+<a class="anchor" id="a25c8b39174b01d82986eb21b1b669df5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">eproperty::Value&lt;bool&gt; ege::widget::Scene::propertyDebugApplication</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>display Application Debug </p>
+
+</div>
+</div>
+<a class="anchor" id="a4fd68138b6724d7e1f485508c62b0952"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">eproperty::Value&lt;bool&gt; ege::widget::Scene::propertyDebugPhysic</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>display Physic Debug </p>
+
+</div>
+</div>
+<a class="anchor" id="a389ba8efd200612cca52f848408c34f2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">esignal::Signal&lt;<a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt;ewol::resource::Colored3DObject&gt;&gt; ege::widget::Scene::signalDisplayDebug</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>emit a signal to the application to draw the debug (setDebugPhysic) </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>framework/atria-soft/ege/ege/widget/<a class="el" href="_scene_8hpp_source.html">Scene.hpp</a></li>
+</ul>
+</div><!-- contents -->
+<!-- HTML footer for doxygen 1.8.8-->
+<!-- start footer part -->
+</div>
+</div>
+</div>
+</div>
+</div>
+<hr class="footer"/><address class="footer"><small>
+Generated on Sun Oct 23 2016 22:01:42 for Ewol Game engine (based on bullet lib) by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.11
+</small></address>
+</body>
+</html>

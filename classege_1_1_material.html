@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.11"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>Ewol Game engine (based on bullet lib): EGE library</title>
+        <title>Ewol Game engine (based on bullet lib): ege::Material Class Reference</title>
         <!--<link href="tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="dynsections.js"></script>
         <link href="search/search.css" rel="stylesheet" type="text/css"/>
@@ -108,9 +108,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
   <div id="navrow1" class="tabs">
     <ul class="tablist">
-      <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li><a href="annotated.html"><span>Classes</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -130,7 +130,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
-</div><!-- top -->
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
+    </ul>
+  </div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -145,51 +152,73 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><b>ege</b></li><li class="navelem"><a class="el" href="classege_1_1_material.html">Material</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="classege_1_1_material-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">EGE library </div>  </div>
+<div class="title">ege::Material Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#ege_mainpage_what">What is EGE:                               </a><ul><li class="level2"><a href="#ege_mainpage_what_it_does">What it does:                               </a></li>
-<li class="level2"><a href="#ege_mainpage_what_it_not_does">What it doesn&#39;t do:                          </a></li>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a0e01aca06fcb242f2ee6e16a9427d0eb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0e01aca06fcb242f2ee6e16a9427d0eb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>draw</b> (<a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/ememory.tag:http://atria-soft.github.io/ememory/" href="http://atria-soft.github.io/ememory/classememory_1_1_shared_ptr.html">ememory::SharedPtr</a>&lt; gale::resource::Program &gt; _prog, const <a class="el" href="classege_1_1_material_gl_id.html">ege::MaterialGlId</a> &amp;_glID)</td></tr>
+<tr class="separator:a0e01aca06fcb242f2ee6e16a9427d0eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac667281a65160c23b8a575b9f7b81b9c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac667281a65160c23b8a575b9f7b81b9c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setAmbientFactor</b> (const <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/etk.tag:http://atria-soft.github.io/etk/" href="http://atria-soft.github.io/etk/_vector4_d_8hpp.html#a165b7cd0af7b9df5b05f131f1d4d544b">vec4</a> &amp;_val)</td></tr>
+<tr class="separator:ac667281a65160c23b8a575b9f7b81b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeaeff62c061d7162aaf1fd49a6608b09"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeaeff62c061d7162aaf1fd49a6608b09"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setDiffuseFactor</b> (const <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/etk.tag:http://atria-soft.github.io/etk/" href="http://atria-soft.github.io/etk/_vector4_d_8hpp.html#a165b7cd0af7b9df5b05f131f1d4d544b">vec4</a> &amp;_val)</td></tr>
+<tr class="separator:aeaeff62c061d7162aaf1fd49a6608b09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6500f917fdcbf37977a46d34899936f4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6500f917fdcbf37977a46d34899936f4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setSpecularFactor</b> (const <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/etk.tag:http://atria-soft.github.io/etk/" href="http://atria-soft.github.io/etk/_vector4_d_8hpp.html#a165b7cd0af7b9df5b05f131f1d4d544b">vec4</a> &amp;_val)</td></tr>
+<tr class="separator:a6500f917fdcbf37977a46d34899936f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f668c746f2ad8f32e46e937c4132999"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1f668c746f2ad8f32e46e937c4132999"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setShininess</b> (float _val)</td></tr>
+<tr class="separator:a1f668c746f2ad8f32e46e937c4132999"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8054fd60b49cf169336118634af42804"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8054fd60b49cf169336118634af42804"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setRenderMode</b> (enum gale::openGL::renderMode _val)</td></tr>
+<tr class="separator:a8054fd60b49cf169336118634af42804"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb0b154e19cd9393271bd4f165d7783b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb0b154e19cd9393271bd4f165d7783b"></a>
+enum gale::openGL::renderMode&#160;</td><td class="memItemRight" valign="bottom"><b>getRenderModeOpenGl</b> ()</td></tr>
+<tr class="separator:aeb0b154e19cd9393271bd4f165d7783b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa89453914cb41e92a3c6733e6726d346"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa89453914cb41e92a3c6733e6726d346"></a>
+enum gale::openGL::renderMode&#160;</td><td class="memItemRight" valign="bottom"><b>getRenderMode</b> ()</td></tr>
+<tr class="separator:aa89453914cb41e92a3c6733e6726d346"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad51955786ba4d5a865c9ae05c000b55d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad51955786ba4d5a865c9ae05c000b55d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setTexture0</b> (const std::string &amp;_filename)</td></tr>
+<tr class="separator:ad51955786ba4d5a865c9ae05c000b55d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20aa3f90dc736834beb2fbc7934ab7ea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a20aa3f90dc736834beb2fbc7934ab7ea"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setTexture0Magic</b> (const <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/etk.tag:http://atria-soft.github.io/etk/" href="http://atria-soft.github.io/etk/_vector2_d_8hpp.html#a920aac35b92f04facb6f3e01b9b3670b">ivec2</a> &amp;_size)</td></tr>
+<tr class="separator:a20aa3f90dc736834beb2fbc7934ab7ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a676e949731d639fbe8057fbf3c32d6d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a676e949731d639fbe8057fbf3c32d6d7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setImageSize</b> (const <a class="elRef" doxygen="/home/heero/dev/perso/out/doc/release/etk.tag:http://atria-soft.github.io/etk/" href="http://atria-soft.github.io/etk/_vector2_d_8hpp.html#a920aac35b92f04facb6f3e01b9b3670b">ivec2</a> &amp;_newSize)</td></tr>
+<tr class="separator:a676e949731d639fbe8057fbf3c32d6d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabd08a900bd6c17b08b2194c1fde78c3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aabd08a900bd6c17b08b2194c1fde78c3"></a>
+egami::Image *&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> ()</td></tr>
+<tr class="separator:aabd08a900bd6c17b08b2194c1fde78c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51ee0e71695f5ee657b1b072246b5ffa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a51ee0e71695f5ee657b1b072246b5ffa"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>flush</b> ()</td></tr>
+<tr class="separator:a51ee0e71695f5ee657b1b072246b5ffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a73821feb3b972bdcc3c27970667e6526"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a73821feb3b972bdcc3c27970667e6526"></a>
+std::vector&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m_listIndexFaces</b></td></tr>
+<tr class="separator:a73821feb3b972bdcc3c27970667e6526"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>framework/atria-soft/ege/ege/<a class="el" href="_material_8hpp_source.html">Material.hpp</a></li>
 </ul>
-</li>
-<li class="level1"><a href="#ege_mainpage_language">What languages are supported?                    </a></li>
-<li class="level1"><a href="#ege_mainpage_license_restriction">Are there any licensing restrictions?            </a></li>
-<li class="level1"><a href="#ege_mainpage_license">License (APACHE-2.0)                             </a></li>
-<li class="level1"><a href="#ege_mainpage_sub_page">Other pages                              </a></li>
-</ul>
-</div>
-<div class="textblock"><h1><a class="anchor" id="ege_mainpage_what"></a>
-What is EGE:                               </h1>
-<p>EGE, or Ewol Game Engine. It is a prototype to lean how to use the bullet lib and how can I create a simple game engine.</p>
-<h2><a class="anchor" id="ege_mainpage_what_it_does"></a>
-What it does:                               </h2>
-<p>EGE does not do many things (not enouth dev time)</p>
-<p>EGE is dependent of the STL (compatible with MacOs stl (CXX))</p>
-<h2><a class="anchor" id="ege_mainpage_what_it_not_does"></a>
-What it doesn't do:                          </h2>
-<p>a good game</p>
-<h1><a class="anchor" id="ege_mainpage_language"></a>
-What languages are supported?                    </h1>
-<p>EGE is written in C++.</p>
-<h1><a class="anchor" id="ege_mainpage_license_restriction"></a>
-Are there any licensing restrictions?            </h1>
-<p>EGE is <b>FREE software</b> and <em>all sub-library are FREE and staticly linkable !!!</em></p>
-<h1><a class="anchor" id="ege_mainpage_license"></a>
-License (APACHE-2.0)                             </h1>
-<p>Copyright EGE Edouard DUPIN</p>
-<p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
-<p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
-<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
-<h1><a class="anchor" id="ege_mainpage_sub_page"></a>
-Other pages                              </h1>
-<ul>
-<li><a class="el" href="ege_build.html">Build lib &amp; build sample</a></li>
-<li><a href="http://atria-soft.github.io/ewol/ewol_coding_style.html"><b>ewol coding style</b></a> </li>
-</ul>
-</div></div><!-- contents -->
+</div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->
 <!-- start footer part -->
 </div>
