@@ -207,6 +207,6 @@ void ege::widget::Scene::calculateSize() {
 	}
 }
 
-#include <esignal/details/Signal.hxx>
-ESIGNAL_DECLARE_SIGNAL(ememory::SharedPtr<ewol::resource::Colored3DObject>);
+//#include <esignal/details/Signal.hxx>
+//ESIGNAL_DECLARE_SIGNAL(ememory::SharedPtr<ewol::resource::Colored3DObject>);
 
