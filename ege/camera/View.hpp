@@ -73,7 +73,9 @@ namespace ege {
 				virtual vec3 getViewVector() const;
 			public:
 				virtual ege::Ray getRayFromScreen(const vec2& _offset);
+				#ifndef __TARGET_OS__Web
 				virtual void drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
+				#endif
 				virtual float getTetha();
 				virtual float getPsy();
 		};

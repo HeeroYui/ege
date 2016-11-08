@@ -60,7 +60,7 @@ void ege::resource::Mesh::init(const std::string& _fileName, const std::string& 
 		EGE_ERROR("can not instanciate VBO ...");
 		return;
 	}
-	// TO facilitate some debugs we add a name of the VBO :
+	// TO facilitate some debugs we add a name of the VBO:
 	m_verticesVBO->setName("[VBO] of " + _fileName);
 	// load the curent file :
 	std::string tmpName = etk::tolower(_fileName);
@@ -148,7 +148,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	#else
 		}
 	#endif
-	// position :
+	// colors :
 	m_GLprogram->sendAttributePointer(m_GLColor, m_verticesVBO, MESH_VBO_COLOR);
 	// draw lights :
 	m_light.draw(m_GLprogram);

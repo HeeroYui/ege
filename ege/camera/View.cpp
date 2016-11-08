@@ -90,36 +90,38 @@ ege::Ray ege::camera::View::getRayFromScreen(const vec2& _offset) {
 	return out;
 }
 
-void ege::camera::View::drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
-	mat4 mat;
-	if (_camera != sharedFromThis()) {
+#ifndef __TARGET_OS__Web
+	void ege::camera::View::drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
+		mat4 mat;
+		if (_camera != sharedFromThis()) {
+			mat.identity();
+			vec2 angles = tansformPositionToAngle(-getViewVector());
+			mat.rotate(vec3(0,0,1), angles.x() - M_PI/2.0f);
+			mat.rotate(vec3(1,0,0), -M_PI*0.5f + angles.y());
+			mat.translate(vec3(0,0,getViewVector().length()));
+			mat.rotate(vec3(0,0,1), m_angle);
+			//mat.translate(vec3(m_eye.x(), m_eye.y(), m_eye.z()));
+			_draw->drawSquare(vec3(2,2,2), mat, etk::Color<float>(0.0f, 0.0f, 1.0f, 1.0f));
+			std::vector<vec3> EwolVertices;
+			EwolVertices.push_back(vec3(0,0,0));
+			EwolVertices.push_back(vec3(-5,-5,-5));
+			EwolVertices.push_back(vec3(5,-5,-5));
+			
+			EwolVertices.push_back(vec3(0,0,0));
+			EwolVertices.push_back(vec3(5,-5,-5));
+			EwolVertices.push_back(vec3(5,5,-5));
+			
+			EwolVertices.push_back(vec3(0,0,0));
+			EwolVertices.push_back(vec3(5,5,-5));
+			EwolVertices.push_back(vec3(-5,5,-5));
+			
+			EwolVertices.push_back(vec3(0,0,0));
+			EwolVertices.push_back(vec3(-5,5,-5));
+			EwolVertices.push_back(vec3(-5,-5,-5));
+			_draw->draw(EwolVertices, etk::Color<float>(0.0f, 0.0f, 1.0f, 0.5f), mat);
+		}
 		mat.identity();
-		vec2 angles = tansformPositionToAngle(-getViewVector());
-		mat.rotate(vec3(0,0,1), angles.x() - M_PI/2.0f);
-		mat.rotate(vec3(1,0,0), -M_PI*0.5f + angles.y());
-		mat.translate(vec3(0,0,getViewVector().length()));
-		mat.rotate(vec3(0,0,1), m_angle);
-		//mat.translate(vec3(m_eye.x(), m_eye.y(), m_eye.z()));
-		_draw->drawSquare(vec3(2,2,2), mat, etk::Color<float>(0.0f, 0.0f, 1.0f, 1.0f));
-		std::vector<vec3> EwolVertices;
-		EwolVertices.push_back(vec3(0,0,0));
-		EwolVertices.push_back(vec3(-5,-5,-5));
-		EwolVertices.push_back(vec3(5,-5,-5));
-		
-		EwolVertices.push_back(vec3(0,0,0));
-		EwolVertices.push_back(vec3(5,-5,-5));
-		EwolVertices.push_back(vec3(5,5,-5));
-		
-		EwolVertices.push_back(vec3(0,0,0));
-		EwolVertices.push_back(vec3(5,5,-5));
-		EwolVertices.push_back(vec3(-5,5,-5));
-		
-		EwolVertices.push_back(vec3(0,0,0));
-		EwolVertices.push_back(vec3(-5,5,-5));
-		EwolVertices.push_back(vec3(-5,-5,-5));
-		_draw->draw(EwolVertices, etk::Color<float>(0.0f, 0.0f, 1.0f, 0.5f), mat);
+		mat.translate(m_target);
+		_draw->drawSphere(1, 3, 3, mat, etk::Color<float>(0.0f, 0.0f, 1.0f, 1.0f));
 	}
-	mat.identity();
-	mat.translate(m_target);
-	_draw->drawSphere(1, 3, 3, mat, etk::Color<float>(0.0f, 0.0f, 1.0f, 1.0f));
-}
+#endif
