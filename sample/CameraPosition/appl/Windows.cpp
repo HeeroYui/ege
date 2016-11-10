@@ -92,6 +92,7 @@ void appl::Windows::init() {
 	if (myMesh != nullptr) {
 		m_env->addStaticMeshToDraw(myMesh);
 	}
+	m_env->propertyStatus.set(ege::gameStart);
 }
 
 

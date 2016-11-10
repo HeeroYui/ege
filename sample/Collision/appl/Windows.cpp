@@ -22,43 +22,44 @@
 
 appl::Windows::Windows() {
 	addObjectType("appl::Windows");
-	propertyTitle.setDirectCheck("example ege : DoubleView");
+	propertyTitle.setDirectCheck("example ege : Collision");
 }
 
 
 static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
 	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("viewBoxStar", "DATA:texturedNoMaterial.prog");
-	if (out != nullptr) {
-		ememory::SharedPtr<ege::Material> material = ememory::makeShared<ege::Material>();
-		// set the element material properties :
-		material->setAmbientFactor(vec4(1,1,1,1));
-		material->setDiffuseFactor(vec4(0,0,0,1));
-		material->setSpecularFactor(vec4(0,0,0,1));
-		material->setShininess(1);
-		// 1024  == > 1<<9
-		// 2048  == > 1<<10
-		// 4096  == > 1<<11
-		int32_t size = 1<<11;
-		//material->setTexture0(""); //"
-		material->setTexture0Magic(ivec2(size,size));
-		out->addMaterial("basics", material);
-		//material->setImageSize(ivec2(size,size));
-		egami::Image* myImage = material->get();
-		if (nullptr == myImage) {
-			return out;
-		}
-		myImage->clear(etk::color::black);
-		ivec2 tmpPos;
-		for (int32_t iii=0; iii<6000; iii++) {
-			tmpPos.setValue(etk::tool::frand(0,size), etk::tool::frand(0,size)) ;
-			myImage->set(tmpPos, etk::color::white);
-		}
-		material->flush();
-		// basis on cube :
-		out->createViewBox("basics", 1000/* distance */);
-		// generate the VBO
-		out->generateVBO();
+	if (out == nullptr) {
+		return out;
 	}
+	ememory::SharedPtr<ege::Material> material = ememory::makeShared<ege::Material>();
+	// set the element material properties :
+	material->setAmbientFactor(vec4(1,1,1,1));
+	material->setDiffuseFactor(vec4(0,0,0,1));
+	material->setSpecularFactor(vec4(0,0,0,1));
+	material->setShininess(1);
+	// 1024  == > 1<<9
+	// 2048  == > 1<<10
+	// 4096  == > 1<<11
+	int32_t size = 1<<11;
+	//material->setTexture0(""); //"
+	material->setTexture0Magic(ivec2(size,size));
+	out->addMaterial("basics", material);
+	//material->setImageSize(ivec2(size,size));
+	egami::Image* myImage = material->get();
+	if (myImage == nullptr) {
+		return out;
+	}
+	myImage->clear(etk::color::black);
+	ivec2 tmpPos;
+	for (int32_t iii=0; iii<6000; iii++) {
+		tmpPos.setValue(etk::tool::frand(0,size), etk::tool::frand(0,size)) ;
+		myImage->set(tmpPos, etk::color::white);
+	}
+	material->flush();
+	// basis on cube :
+	out->createViewBox("basics", 1000/* distance */);
+	// generate the VBO
+	out->generateVBO();
 	return out;
 }
 
@@ -133,8 +134,8 @@ void appl::Windows::init() {
 		element->iaEnable();
 		
 		m_env->addElement(element);
-		
 	}
+	m_env->propertyStatus.set(ege::gameStart);
 }
 
 namespace appl {
@@ -171,6 +172,7 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 				element->setMass(20);
 				element->setLinearVelocity(ray.getDirection()*100);
 				m_env->addElement(element);
+				APPL_INFO("Create cube at position " << ray.getOrigin() << " velocity: " << ray.getDirection()*100);
 			}
 			return true;
 		}

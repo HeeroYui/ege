@@ -6,6 +6,8 @@
 
 #include <ege/debug.hpp>
 #include <ege/widget/Scene.hpp>
+#include <echrono/Steady.hpp>
+#include <echrono/Duration.hpp>
 
 #include <cmath>
 #include <ege/debug.hpp>
@@ -66,7 +68,7 @@ void ege::widget::Scene::onRegenerateDisplay() {
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 #ifdef SCENE_DISPLAY_SPEED
-	static int64_t g_startTime = 0;
+	static echrono::Steady g_startTime;
 	static int32_t g_counterNbTimeDisplay = 0;
 #endif
 
@@ -76,7 +78,7 @@ void ege::widget::Scene::onRegenerateDisplay() {
 void ege::widget::Scene::onDraw() {
 	#ifdef SCENE_DISPLAY_SPEED
 		g_counterNbTimeDisplay++;
-		g_startTime = ewol::getTime();
+		g_startTime = echrono::Steady::now();
 	#endif
 	
 	// draw constant object :
@@ -142,11 +144,11 @@ void ege::widget::Scene::onDraw() {
 		m_env->getParticuleEngine().draw(*camera);
 	}
 	#ifdef SCENE_DISPLAY_SPEED
-		float localTime = (float)(ewol::getTime() - g_startTime) / 1000.0f;
+		echrono::Duration localTime = echrono::Steady::now() - g_startTime;
 		if (localTime>1) {
-			EWOL_ERROR("      scene : " << localTime << "ms " << g_counterNbTimeDisplay);
+			EWOL_ERROR("      scene : " << localTime << " " << g_counterNbTimeDisplay);
 		} else {
-			EWOL_DEBUG("      scene : " << localTime << "ms " << g_counterNbTimeDisplay);
+			EWOL_DEBUG("      scene : " << localTime << " " << g_counterNbTimeDisplay);
 		}
 	#endif
 }
@@ -168,6 +170,7 @@ void ege::widget::Scene::systemDraw(const ewol::DrawProperty& _displayProp) {
 	#ifdef SCENE_BRUT_PERFO_TEST
 		int64_t tmp___startTime0 = ewol::getTime();
 	#endif
+	//EGE_INFO("DRAW ...");
 	gale::openGL::bindBuffer(0);
 	gale::openGL::push();
 	// here we invert the reference of the standard openGl view because the reference in the common display is Top left and not buttom left

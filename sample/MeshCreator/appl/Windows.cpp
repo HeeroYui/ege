@@ -113,6 +113,7 @@ void appl::Windows::init() {
 			m_env->addElement(element);
 		}
 	}
+	m_env->propertyStatus.set(ege::gameStart);
 }
 
 
