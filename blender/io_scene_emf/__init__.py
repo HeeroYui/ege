@@ -122,7 +122,7 @@ class ExportEMF(bpy.types.Operator, ExportHelper):
 	# generate binary file
 	use_binary = BoolProperty(
 	    name="Binary",
-	    description="Export the filein binary mode",
+	    description="Export the file in binary mode",
 	    default=False,
 	    )
 	

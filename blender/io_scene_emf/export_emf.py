@@ -423,8 +423,8 @@ def write_file(filepath,
 			###########################################################
 			## UV
 			###########################################################
-			fw('\t\tUV-mapping :\n\t\t\t')
 			if faceuv:
+				fw('\t\tUV-mapping :\n\t\t\t')
 				# in case removing some of these dont get defined.
 				uv = uvkey = uv_dict = f_index = uv_index = None
 				uv_face_mapping = [None] * len(face_index_pairs)
@@ -443,12 +443,17 @@ def write_file(filepath,
 				uv_unique_count = len(uv_dict)
 				del uv, uvkey, uv_dict, f_index, uv_index, uv_ls, uv_k
 				# Only need uv_unique_count and uv_face_mapping
-			fw('\n')
+				fw('\n')
+			else:
+				print("does not use UV-MAPPING")
 			###########################################################
 			## NORMAL
 			###########################################################
-			if f.use_smooth:
-				localIsSmooth = 'vertex'
+			if len(face_index_pairs) > 0:
+				if face_index_pairs[0][0].use_smooth:
+					localIsSmooth = 'vertex'
+				else:
+					localIsSmooth = 'face'
 			else:
 				localIsSmooth = 'face'
 			fw('\t\tNormal(%s) : %d\n\t\t\t' % (localIsSmooth, len(face_index_pairs)) )
@@ -606,18 +611,18 @@ def _write(context,
            ):
 	# 
 	base_name, ext = os.path.splitext(filepath)
-	# create the output name : 
+	# create the output name:
 	context_name = [base_name, '', '', ext]  # Base name, scene name, frame number, extension
-	# get the curent scene :
+	# get the curent scene:
 	scene = context.scene
 	# Exit edit mode before exporting, so current object states are exported properly.
 	if bpy.ops.object.mode_set.poll():
 		bpy.ops.object.mode_set(mode='OBJECT')
-	# get the curent frame selected :
+	# get the curent frame selected:
 	frame = scene.frame_current
 	# Loop through all frames in the scene and export.
 	scene.frame_set(frame, 0.0)
-	# get only the object that are selected or all ...
+	# get only the object that are selected or all...
 	if EXPORT_SEL_ONLY:
 		objects = context.selected_objects
 	else:
