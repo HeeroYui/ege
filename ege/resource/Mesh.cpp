@@ -133,8 +133,10 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	m_GLprogram->uniformMatrix(m_GLMatrixPosition, _positionMatrix);
 	// position :
 	m_GLprogram->sendAttributePointer(m_GLPosition, m_verticesVBO, MESH_VBO_VERTICES);
-	// Texture :
-	m_GLprogram->sendAttributePointer(m_GLtexture, m_verticesVBO, MESH_VBO_TEXTURE);
+	// Texture (if needed):
+	if (m_listUV.size() != 0) {
+		m_GLprogram->sendAttributePointer(m_GLtexture, m_verticesVBO, MESH_VBO_TEXTURE);
+	}
 	// position :
 	if (m_normalMode != normalModeNone) {
 		m_GLprogram->sendAttributePointer(m_GLNormal, m_verticesVBO, MESH_VBO_VERTICES_NORMAL);
@@ -162,7 +164,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 			continue;
 		}
 		m_materials[m_listFaces.getKey(kkk)]->draw(m_GLprogram, m_GLMaterial);
-		if (m_checkNormal == false) {
+		if (true) { // TODO : understand why the optimisation does not work at all ... : if (m_checkNormal == false) {
 			gale::openGL::drawElements(m_materials[m_listFaces.getKey(kkk)]->getRenderModeOpenGl(), m_listFaces.getValue(kkk).m_index);
 			#ifdef DISPLAY_NB_VERTEX_DISPLAYED
 				nbElementDraw += m_listFaces.getValue(kkk).m_index.size();
@@ -240,6 +242,71 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	EGE_VERBOSE("draw Mesh : " << m_name << " ( end )");
 }
 
+void ege::resource::Mesh::drawNormal(mat4& _positionMatrix,
+                                     ememory::SharedPtr<ewol::resource::Colored3DObject> _draw) {
+	etk::Color<float> tmpColor(0.0, 1.0, 0.0, 1.0);
+	std::vector<vec3> vertices;
+	// generate element in 2 pass : 
+	//    - create new index dependeng a vertex is a unique componenet of position, texture, normal
+	//    - the index list generation (can be dynamic ... (TODO later)
+	for (int32_t kkk=0; kkk<m_listFaces.size(); kkk++) {
+		// clean faces indexes :
+		int32_t nbIndicInFace = 3;
+		switch (m_materials[m_listFaces.getKey(kkk)]->getRenderMode()) {
+			case gale::openGL::renderMode::triangle:
+			case gale::openGL::renderMode::triangleStrip:
+			case gale::openGL::renderMode::triangleFan:
+				nbIndicInFace = 3;
+				break;
+			case gale::openGL::renderMode::line:
+			case gale::openGL::renderMode::lineStrip:
+			case gale::openGL::renderMode::lineLoop:
+				nbIndicInFace = 2;
+				break;
+			case gale::openGL::renderMode::point:
+				nbIndicInFace = 1;
+				break;
+			case gale::openGL::renderMode::quad:
+			case gale::openGL::renderMode::quadStrip:
+				nbIndicInFace = 4;
+				break;
+			case gale::openGL::renderMode::polygon:
+				nbIndicInFace = 3;
+				break;
+		}
+		FaceIndexing& tmpFaceList = m_listFaces.getValue(kkk);
+		for (size_t iii=0; iii<tmpFaceList.m_faces.size() ; iii++) {
+			switch(m_normalMode) {
+				case normalModeVertex:
+					{
+						// dsplay normal for each vertice ... (TODO: not tested ...)
+						for(size_t indice=0 ; indice<nbIndicInFace; indice++) {
+							vec3 position = m_listVertex[tmpFaceList.m_faces[iii].m_vertex[indice]];
+							vec3 normal = m_listVertexNormal[tmpFaceList.m_faces[iii].m_normal[indice]];
+							vertices.push_back(position);
+							vertices.push_back(position+normal/4);
+						}
+					} break;
+				case normalModeFace:
+					{
+						vec3 center(0,0,0);
+						for(size_t indice=0 ; indice<nbIndicInFace; indice++) {
+							vec3 position = m_listVertex[tmpFaceList.m_faces[iii].m_vertex[indice]];
+							center += position;
+						}
+						center /= float(nbIndicInFace);
+						vec3 normal = m_listFacesNormal[tmpFaceList.m_faces[iii].m_normal[0]];
+						vertices.push_back(center);
+						vertices.push_back(center+normal/4);
+					} break;
+				case normalModeNone:
+					break;
+			}
+		}
+	}
+	_draw->drawLine(vertices, tmpColor, _positionMatrix);
+}
+
 // normal calculation of the normal face is really easy :
 // TODO : Use it for multiple Material interface
 void ege::resource::Mesh::calculateNormaleFace(const std::string& _materialName) {
@@ -259,7 +326,12 @@ void ege::resource::Mesh::calculateNormaleFace(const std::string& _materialName)
 			// for all case, We use only the 3 vertex for quad element, in theory 3D modeler export element in triangle if it is not a real plane.
 			vec3 normal = btCross(m_listVertex[it.m_vertex[0]]-m_listVertex[it.m_vertex[1]],
 			                      m_listVertex[it.m_vertex[1]]-m_listVertex[it.m_vertex[2]]);
-			m_listFacesNormal.push_back(normal.normalized());
+			if (normal == vec3(0,0,0)) {
+				EGE_ERROR("Null vertor for a face ... " << m_listVertex[it.m_vertex[0]] << " " << m_listVertex[it.m_vertex[1]] << " " << m_listVertex[it.m_vertex[2]]);
+				m_listFacesNormal.push_back(vec3(1,0,0));
+			} else {
+				m_listFacesNormal.push_back(normal.normalized());
+			}
 		}
 	}
 }
@@ -304,8 +376,10 @@ void ege::resource::Mesh::calculateNormaleEdge(const std::string& _materialName)
 
 void ege::resource::Mesh::generateVBO() {
 	// calculate the normal of all faces if needed
-	if (m_normalMode != ege::resource::Mesh::normalModeNone) {
+	if (    m_normalMode != ege::resource::Mesh::normalModeNone
+	     && m_listFacesNormal.size() == 0) {
 		// when no normal detected  == > auto generate Face normal ....
+		EGE_ERROR("Calculate normal face ... in case ????");
 		calculateNormaleFace(m_listFaces.getKeys()[0]);
 	}
 	EGE_WARNING("Generate VBO for nb faces layers: " << m_listFaces.size() << " list layer=" << etk::to_string(m_listFaces.getKeys()));
@@ -355,7 +429,7 @@ void ege::resource::Mesh::generateVBO() {
 				} else {
 					color = etk::color::white;
 				}
-				// get µNormal
+				// get Normal
 				vec3 normal;
 				switch(m_normalMode) {
 					case normalModeVertex:

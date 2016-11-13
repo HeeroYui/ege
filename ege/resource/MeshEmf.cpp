@@ -145,11 +145,11 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 	// get the fileSize ...
 	int32_t size = fileName.fileSize();
 	if (size == 0 ) {
-		EGE_ERROR("No data in the file named=\"" << fileName << "\"");
+		EGE_ERROR("No data in the file named='" << fileName << "'");
 		return false;
 	}
 	if (fileName.fileOpenRead() == false) {
-		EGE_ERROR("Can not find the file name=\"" << fileName << "\"");
+		EGE_ERROR("Can not find the file name='" << fileName << "'");
 		return false;
 	}
 	char inputDataLine[2048];
@@ -174,6 +174,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 	ememory::SharedPtr<ege::Material> material;
 	// physical shape:
 	ememory::SharedPtr<ege::PhysicsShape> physics;
+	bool haveUVMapping = false;
 	while (1) {
 		int32_t level = countIndent(fileName);
 		if (level == 0) {
@@ -217,6 +218,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 						EGE_VERBOSE("        Vertex ...");
 					} else if(strncmp(inputDataLine, "UV-mapping", 10) == 0) {
 						currentMode = EMFModuleMeshUVMapping;
+						haveUVMapping = true;
 						EGE_VERBOSE("        UV-mapping ...");
 					} else if(strncmp(inputDataLine, "Normal(vertex)", 14) == 0) {
 						currentMode = EMFModuleMeshNormalVertex;
@@ -296,6 +298,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 						break;
 					}
 					case EMFModuleMeshNormalFace: {
+						EGE_ERROR("Change mode in face mode ...");
 						m_normalMode = normalModeFace;
 						vec3 normal(0,0,0);
 						// find the face Normal list.
@@ -342,19 +345,26 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 								vertexIndex[0] = 0;
 								vertexIndex[1] = 0;
 								vertexIndex[2] = 0;
-								uvIndex[0] = 0;
-								uvIndex[1] = 0;
-								uvIndex[2] = 0;
+								uvIndex[0] = -1;
+								uvIndex[1] = -1;
+								uvIndex[2] = -1;
 								normalIndex[0] = 0;
 								normalIndex[1] = 0;
 								normalIndex[2] = 0;
-								sscanf(inputDataLine, "%d/%d/%d %d/%d/%d %d/%d/%d",
-								       &vertexIndex[0], &uvIndex[0], &normalIndex[0],
-								       &vertexIndex[1], &uvIndex[1], &normalIndex[1],
-								       &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
+								if (haveUVMapping == true) {
+									sscanf(inputDataLine, "%d/%d/%d %d/%d/%d %d/%d/%d",
+									       &vertexIndex[0], &uvIndex[0], &normalIndex[0],
+									       &vertexIndex[1], &uvIndex[1], &normalIndex[1],
+									       &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
+								} else {
+									sscanf(inputDataLine, "%d/%d %d/%d %d/%d",
+									       &vertexIndex[0], &normalIndex[0],
+									       &vertexIndex[1], &normalIndex[1],
+									       &vertexIndex[2], &normalIndex[2] );
+								}
 								m_listFaces.getValue(meshFaceMaterialID).m_faces.push_back(Face(vertexIndex[0], uvIndex[0], normalIndex[0],
-								                                                               vertexIndex[1], uvIndex[1], normalIndex[1],
-								                                                               vertexIndex[2], uvIndex[2], normalIndex[2]));
+								                                                                vertexIndex[1], uvIndex[1], normalIndex[1],
+								                                                                vertexIndex[2], uvIndex[2], normalIndex[2]));
 								/*
 								EGE_DEBUG("face :" << vertexIndex[0] << "/" << uvIndex[0] << "/" << normalIndex[0] <<
 								           " " << vertexIndex[1] << "/" << uvIndex[1] << "/" << normalIndex[1] <<

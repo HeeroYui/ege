@@ -167,9 +167,16 @@ namespace ege {
 		public:
 			/**
 			 * @brief Debug display of the current element
-			 * @param[in,out] draw Basic system to draw the debug shape and informations
+			 * @param[in,out] _draw Basic system to draw the debug shape and informations
+			 * @param[in] _camera Current camera for display
 			 */
 			virtual void drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
+			/**
+			 * @brief Debug display of the current element normal face
+			 * @param[in,out] _draw Basic system to draw the debug shape and informations
+			 * @param[in] _camera Current camera for display
+			 */
+			virtual void drawNormalDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
 			
 			/**
 			 * @brief get the theoric position. Sometimes, the element has move due to an explosion or something else, then its real position in not the one that woult it be at the end ...

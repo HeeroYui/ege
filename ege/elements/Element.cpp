@@ -184,6 +184,10 @@ void ege::Element::drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject>
 	*/
 }
 
+void ege::Element::drawNormalDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
+	// nothing to do ...
+}
+
 
 
 

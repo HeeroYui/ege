@@ -24,6 +24,10 @@ namespace appl {
 			virtual ~Windows() { };
 		private:
 			void onCallbackPeriodicUpdateCamera(const ewol::event::Time& _event);
+			bool onEventInput(const ewol::event::Input& _event);
+			float m_angleTetha;
+			float m_anglePsy;
+			vec2 m_oldScreenPos;
 	};
 }
 

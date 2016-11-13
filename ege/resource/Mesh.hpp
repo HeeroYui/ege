@@ -12,6 +12,7 @@
 #include <gale/resource/Shader.hpp>
 #include <gale/resource/Program.hpp>
 #include <gale/resource/VirtualBufferObject.hpp>
+#include <ewol/resource/Colored3DObject.hpp>
 #include <ege/Light.hpp>
 #include <ege/Material.hpp>
 #include <ege/resource/tools/Face.hpp>
@@ -30,12 +31,12 @@ namespace ege {
 		class Mesh : public gale::Resource {
 			public:
 				static ememory::SharedPtr<ege::resource::Mesh> createGrid(int32_t _lineCount,
-				                                                       const vec3& _position=vec3(0,0,0),
-				                                                       float _size=1.0f,
-				                                                       const std::string& _materialName="basics");
+				                                                          const vec3& _position=vec3(0,0,0),
+				                                                          float _size=1.0f,
+				                                                          const std::string& _materialName="basics");
 				static ememory::SharedPtr<ege::resource::Mesh> createCube(float _size=1.0f,
-				                                                       const std::string& _materialName="basics",
-				                                                       const etk::Color<float>& _color=etk::color::white);
+				                                                          const std::string& _materialName="basics",
+				                                                          const etk::Color<float>& _color=etk::color::white);
 			public:
 				/**
 				 * @not_in_doc
@@ -74,7 +75,10 @@ namespace ege {
 				ememory::SharedPtr<gale::resource::VirtualBufferObject> m_verticesVBO;
 			protected:
 				Mesh();
-				void init(const std::string& _fileName="---", const std::string& _shaderName="DATA:textured3D2.prog");
+				void init(const std::string& _fileName="---",
+				          //const std::string& _shaderName="DATA:textured3D2.prog"
+				          const std::string& _shaderName="DATA:material3D.prog"
+				          );
 			public:
 				virtual ~Mesh();
 				DECLARE_RESOURCE_NAMED_FACTORY(Mesh);
@@ -86,6 +90,9 @@ namespace ege {
 				                  bool _enableDepthUpdate = true) {
 					draw(_positionMatrix, _enableDepthTest, _enableDepthUpdate);
 				}
+				// For debug only ...
+				void drawNormal(mat4& _positionMatrix,
+				                ememory::SharedPtr<ewol::resource::Colored3DObject> _draw);
 				void generateVBO();
 			private:
 				void calculateNormaleFace(const std::string& _materialName);

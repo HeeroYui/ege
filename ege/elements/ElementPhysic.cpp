@@ -330,6 +330,22 @@ void ege::ElementPhysic::drawDebug(ememory::SharedPtr<ewol::resource::Colored3DO
 	drawShape(m_shape, _draw, transformationMatrix, EwolVertices);
 }
 
+void ege::ElementPhysic::drawNormalDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
+	if(    m_body != nullptr
+	    && m_mesh != nullptr
+	    && m_body->getMotionState() ) {
+		//EGE_INFO("element pos = " << getPosition());
+		btScalar mmm[16];
+		btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
+		myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(mmm);
+		
+		mat4 transformationMatrix(mmm);
+		transformationMatrix.transpose();
+		m_mesh->drawNormal(transformationMatrix, _draw);
+	}
+}
+
+
 void ege::ElementPhysic::draw(int32_t _pass) {
 	if (m_elementInPhysicsSystem == false) {
 		return;

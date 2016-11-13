@@ -39,6 +39,9 @@ ege::widget::Scene::Scene() :
   propertyDebugPhysic(this, "debugPhysic",
                             false,
                             "Display debug of the physic interface"),
+  propertyDebugNormal(this, "debugMeshNormal",
+                            false,
+                            "Display debug of the mesh normal of each face"),
   propertyDebugApplication(this, "debugApplication",
                                  false,
                                  "Display debug of the application"),
@@ -133,6 +136,13 @@ void ege::widget::Scene::onDraw() {
 				}
 			}
 		}
+		if (propertyDebugNormal.get() == true) {
+			// Draw debug ... (Object)
+			for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
+				m_displayElementOrdered[iii].element->drawNormalDebug(m_debugDrawProperty, camera);
+			}
+		}
+		
 		if (propertyDebugApplication.get() == true) {
 			// Draw debug ... (User)
 			signalDisplayDebug.emit(m_debugDrawProperty);

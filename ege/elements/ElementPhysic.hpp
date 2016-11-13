@@ -87,6 +87,7 @@ namespace ege {
 			 * @brief draw the current life of the element
 			 */
 			// virtual void drawLife(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _draw, const ememory::SharedPtr<ege::Camera>& _camera);
+			virtual void drawNormalDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
 		// TODO : Remove this ...
 		protected:
 			vec3 m_theoricPosition;

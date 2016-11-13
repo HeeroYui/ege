@@ -545,17 +545,17 @@ def write_file(filepath,
 							   ))  # vert, uv, normal
 					face_vert_index += len(f_v)
 				else:  # No UV's
-					# export the normals :
+					# export the normals:
 					if f_smooth:  # Smoothed, use vertex normals
 						for vi, v in f_v:
-							fw(" %d//%d" % (
+							fw(" %d/%d" % (
 									   v.index + totverts-1,
 									   globalNormals[veckey3d(v.normal)]-1,
 									   ))
 					else:  # No smoothing, face normals
 						no = globalNormals[veckey3d(f.normal)]
 						for vi, v in f_v:
-							fw(" %d//%d" % (v.index + totverts-1, no-1))
+							fw(" %d/%d" % (v.index + totverts-1, no-1))
 				fw('|')
 			fw('\n')
 			# Write edges. ==> did not know what it is ...
