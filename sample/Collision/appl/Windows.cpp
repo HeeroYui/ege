@@ -3,7 +3,7 @@
  * 
  * @copyright 2010, Edouard DUPIN, all right reserved
  * 
- * @license APACHE-2 (see license file)
+ * @license MPL v2.0 (see license file)
  */
 
 #include <ewol/ewol.hpp>
