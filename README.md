@@ -22,6 +22,11 @@ create user addon directory: (replace 2.xx with the blender version)
 - Select "Addons" tab
 - Enable "Import-export: Ewol Mesh file format emf"
 
+Some error classile with awesome and blender
+============================================
+
+- file -> user preferences -> system -> Windows draw methode: triple bufferings
+
 
 License (MPL v2.0)
 =====================

@@ -183,17 +183,18 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 				// reach end of file ...
 				break;
 			}
-			if(strncmp(inputDataLine, "Mesh :", 6) == 0) {
+			if(strncmp(inputDataLine, "Mesh:", 5) == 0) {
 				currentMode = EMFModuleMesh;
 				EGE_VERBOSE("Parse Mesh :");
-			} else if(strncmp(inputDataLine, "Materials : ", 11) == 0) {
+			} else if(strncmp(inputDataLine, "Materials:", 9) == 0) {
 				currentMode = EMFModuleMaterial;
 				EGE_VERBOSE("Parse Material :");
 			} else {
 				currentMode = EMFModuleNone;
 			}
 		} else {
-			if (currentMode >= EMFModuleMesh && currentMode <= EMFModuleMesh_END) {
+			if (    currentMode >= EMFModuleMesh
+			     && currentMode <= EMFModuleMesh_END) {
 				if (level == 1) {
 					//Find mesh name ...
 					if (loadNextData(inputDataLine, 2048, fileName, true) == nullptr) {
