@@ -185,10 +185,14 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 			}
 			if(strncmp(inputDataLine, "Mesh:", 5) == 0) {
 				currentMode = EMFModuleMesh;
-				EGE_VERBOSE("Parse Mesh :");
+				removeEndLine(inputDataLine);
+				currentMeshName = inputDataLine + 5;
+				currentMode = EMFModuleMeshNamed;
+				EGE_VERBOSE("Parse Mesh :" << currentMeshName);
 			} else if(strncmp(inputDataLine, "Materials:", 9) == 0) {
 				currentMode = EMFModuleMaterial;
 				EGE_VERBOSE("Parse Material :");
+				
 			} else {
 				currentMode = EMFModuleNone;
 			}
@@ -196,18 +200,6 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 			if (    currentMode >= EMFModuleMesh
 			     && currentMode <= EMFModuleMesh_END) {
 				if (level == 1) {
-					//Find mesh name ...
-					if (loadNextData(inputDataLine, 2048, fileName, true) == nullptr) {
-						// reach end of file ...
-						break;
-					}
-					removeEndLine(inputDataLine);
-					currentMeshName = inputDataLine;
-					currentMode = EMFModuleMeshNamed;
-					EGE_VERBOSE("    "<< currentMeshName);
-					continue;
-				}
-				if (level == 2) {
 					// In the mesh level 2 the line size must not exced 2048
 					if (loadNextData(inputDataLine, 2048, fileName, true) == nullptr) {
 						// reach end of file ...
@@ -239,7 +231,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 					}
 					continue;
 				}
-				// level > 2
+				// level > 1
 				switch (currentMode) {
 					default:
 						EGE_ERROR("Unknow ... "<< level);
@@ -320,7 +312,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 					}
 					case EMFModuleMeshFace:
 					case EMFModuleMeshFaceMaterial:
-						if (level == 3) {
+						if (level == 2) {
 							//Find mesh name ...
 							if (loadNextData(inputDataLine, 2048, fileName, true) == nullptr) {
 								// reach end of file ...
@@ -391,7 +383,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 							break;
 						}
 						removeEndLine(inputDataLine);
-						if (level == 3) {
+						if (level == 2) {
 							physics = ege::PhysicsShape::create(inputDataLine);
 							if (physics == nullptr) {
 								EGE_ERROR("Allocation error when creating physical shape ...");
