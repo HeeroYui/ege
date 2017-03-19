@@ -40,12 +40,12 @@ ememory::SharedPtr<ege::PhysicsShape> ege::PhysicsShape::create(const std::strin
 
 
 bool ege::PhysicsShape::parse(const char* _line) {
-	if(strncmp(_line, "origin : ", 9) == 0) {
+	if(strncmp(_line, "origin:", 7) == 0) {
 		sscanf(&_line[9], "%f %f %f", &m_origin.m_floats[0], &m_origin.m_floats[1], &m_origin.m_floats[2] );
 		EGE_VERBOSE("                Origin=" << m_origin);
 		return true;
 	}
-	if(strncmp(_line, "rotate : ", 9) == 0) {
+	if(strncmp(_line, "rotate:", 7) == 0) {
 		sscanf(&_line[9], "%f %f %f %f", &m_quaternion.m_floats[0], &m_quaternion.m_floats[1], &m_quaternion.m_floats[2], &m_quaternion.m_floats[3] );
 		EGE_VERBOSE("                rotate=" << m_quaternion);
 		return true;

@@ -122,7 +122,6 @@ static void removeEndLine(char* _val) {
 enum emfModuleMode {
 	EMFModuleNone,
 	EMFModuleMesh,
-	EMFModuleMeshNamed,
 	EMFModuleMeshVertex,
 	EMFModuleMeshUVMapping,
 	EMFModuleMeshNormalVertex,
@@ -133,8 +132,10 @@ enum emfModuleMode {
 	EMFModuleMeshPhysicsNamed,
 	EMFModuleMesh_END,
 	EMFModuleMaterial,
-	EMFModuleMaterialNamed,
 	EMFModuleMaterial_END,
+	EMFModulePhysics,
+	EMFModulePhysicsNamed,
+	EMFModulePhysics_END,
 };
 
 // TODO : rework with string line extractor
@@ -175,6 +176,10 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 	// physical shape:
 	ememory::SharedPtr<ege::PhysicsShape> physics;
 	bool haveUVMapping = false;
+	size_t offsetVertexId = 0;
+	size_t offsetUV = 0;
+	size_t offsetFaceNormal = 0;
+	size_t offsetVertexNormal = 0;
 	while (1) {
 		int32_t level = countIndent(fileName);
 		if (level == 0) {
@@ -186,13 +191,30 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 			if(strncmp(inputDataLine, "Mesh:", 5) == 0) {
 				currentMode = EMFModuleMesh;
 				removeEndLine(inputDataLine);
-				currentMeshName = inputDataLine + 5;
-				currentMode = EMFModuleMeshNamed;
-				EGE_VERBOSE("Parse Mesh :" << currentMeshName);
+				currentMeshName = inputDataLine + 6;
+				EGE_VERBOSE("Parse Mesh: " << currentMeshName);
+				offsetVertexId = m_listVertex.size();
+				offsetUV = m_listUV.size();
+				offsetFaceNormal = m_listFacesNormal.size();
+				offsetVertexNormal = m_listVertexNormal.size();
+				
 			} else if(strncmp(inputDataLine, "Materials:", 9) == 0) {
 				currentMode = EMFModuleMaterial;
-				EGE_VERBOSE("Parse Material :");
-				
+				// add previous material:
+				if(    materialName != ""
+				    && material != nullptr) {
+					m_materials.add(materialName, material);
+					materialName = "";
+					material = nullptr;
+				}
+				material = ememory::makeShared<ege::Material>();
+				removeEndLine(inputDataLine);
+				materialName = inputDataLine + 10;
+				EGE_VERBOSE("Parse Material: " << materialName);
+			} else if(strncmp(inputDataLine, "Physics:", 8) == 0) {
+				currentMode = EMFModulePhysics;
+				removeEndLine(inputDataLine);
+				EGE_VERBOSE("Parse global Physics: ");
 			} else {
 				currentMode = EMFModuleNone;
 			}
@@ -227,7 +249,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 						EGE_VERBOSE("        Physics ...");
 					} else {
 						EGE_ERROR("        Unknow mesh property '"<<inputDataLine<<"'");
-						currentMode = EMFModuleMeshNamed;
+						currentMode = EMFModuleMesh;
 					}
 					continue;
 				}
@@ -292,7 +314,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 					}
 					case EMFModuleMeshNormalFace: {
 						EGE_ERROR("Change mode in face mode ...");
-						m_normalMode = normalModeFace;
+						m_normalMode = normalModeFace; // TODO : check if it is the same mode of display the normal  from the start of the file
 						vec3 normal(0,0,0);
 						// find the face Normal list.
 						while (loadNextData(inputDataLine, 2048, fileName, true, true) != nullptr) {
@@ -349,11 +371,38 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 									       &vertexIndex[0], &uvIndex[0], &normalIndex[0],
 									       &vertexIndex[1], &uvIndex[1], &normalIndex[1],
 									       &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
+									vertexIndex[0] += offsetVertexId;
+									vertexIndex[1] += offsetVertexId;
+									vertexIndex[2] += offsetVertexId;
+									uvIndex[0] += offsetUV;
+									uvIndex[1] += offsetUV;
+									uvIndex[2] += offsetUV;
+									if (m_normalMode == normalModeFace) {
+										normalIndex[0] += offsetFaceNormal;
+										normalIndex[1] += offsetFaceNormal;
+										normalIndex[2] += offsetFaceNormal;
+									} else {
+										normalIndex[0] += offsetVertexNormal;
+										normalIndex[1] += offsetVertexNormal;
+										normalIndex[2] += offsetVertexNormal;
+									}
 								} else {
 									sscanf(inputDataLine, "%d/%d %d/%d %d/%d",
 									       &vertexIndex[0], &normalIndex[0],
 									       &vertexIndex[1], &normalIndex[1],
 									       &vertexIndex[2], &normalIndex[2] );
+									vertexIndex[0] += offsetVertexId;
+									vertexIndex[1] += offsetVertexId;
+									vertexIndex[2] += offsetVertexId;
+									if (m_normalMode == normalModeFace) {
+										normalIndex[0] += offsetFaceNormal;
+										normalIndex[1] += offsetFaceNormal;
+										normalIndex[2] += offsetFaceNormal;
+									} else {
+										normalIndex[0] += offsetVertexNormal;
+										normalIndex[1] += offsetVertexNormal;
+										normalIndex[2] += offsetVertexNormal;
+									}
 								}
 								m_listFaces.getValue(meshFaceMaterialID).m_faces.push_back(Face(vertexIndex[0], uvIndex[0], normalIndex[0],
 								                                                                vertexIndex[1], uvIndex[1], normalIndex[1],
@@ -404,33 +453,14 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 						break;
 				}
 				continue;
-			} else if (currentMode >= EMFModuleMaterial && currentMode <= EMFModuleMaterial_END) {
+			} else if (    currentMode >= EMFModuleMaterial
+			            && currentMode <= EMFModuleMaterial_END) {
 				// all material element is stored on 1 line (size < 2048)
 				if (loadNextData(inputDataLine, 2048, fileName, true) == nullptr) {
 					// reach end of file ...
 					break;
 				}
 				removeEndLine(inputDataLine);
-				if (level == 1) {
-					// add previous material :
-					if(    materialName != ""
-					    && material != nullptr) {
-						m_materials.add(materialName, material);
-						materialName = "";
-						material = nullptr;
-					}
-					material = ememory::makeShared<ege::Material>();
-					materialName = inputDataLine;
-					currentMode = EMFModuleMaterialNamed;
-					EGE_VERBOSE("    "<< materialName);
-					continue;
-				}
-				// level >1
-				if (currentMode != EMFModuleMaterialNamed) {
-					EGE_WARNING("        Unknow element ..."<< level);
-					jumpEndLine(fileName);
-					continue;
-				}
 				if (material == nullptr) {
 					EGE_ERROR("material allocation error");
 					jumpEndLine(fileName);
@@ -491,9 +521,35 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 				} else {
 					EGE_ERROR("unknow material property ... : '" << inputDataLine << "'");
 				}
+			} else if (    currentMode >= EMFModulePhysics
+			            && currentMode <= EMFModulePhysics_END) {
+				if (loadNextData(inputDataLine, 2048, fileName, true, false, false) == nullptr) {
+					// reach end of file ...
+					break;
+				}
+				removeEndLine(inputDataLine);
+				if (level == 1) {
+					EGE_ERROR("Load shape : " << inputDataLine);
+					physics = ege::PhysicsShape::create(inputDataLine);
+					if (physics == nullptr) {
+						EGE_ERROR("Allocation error when creating physical shape ...");
+						continue;
+					}
+					addPhysicElement(physics);
+					EGE_VERBOSE("            " << m_physics.size() << " " << inputDataLine);
+					currentMode = EMFModulePhysicsNamed;
+				} else if (currentMode == EMFModulePhysicsNamed) {
+					if (physics == nullptr) {
+						EGE_ERROR("Can not parse :'" << inputDataLine << "' in physical shape ...");
+						continue;
+					}
+					if (physics->parse(inputDataLine) == false) {
+						EGE_ERROR("ERROR when parsing :'" << inputDataLine << "' in physical shape ...");
+					}
+				}
 			} else {
 				// unknow ...
-				EGE_WARNING("Unknow type of line  == > jump end of line ... ");
+				EGE_WARNING("Unknow type of line  == > jump end of line ... " << inputDataLine);
 				jumpEndLine(fileName);
 			}
 		}

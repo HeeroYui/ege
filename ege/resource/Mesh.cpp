@@ -102,7 +102,7 @@ void ege::resource::Mesh::clean() {
 }
 
 
-//#define DISPLAY_NB_VERTEX_DISPLAYED
+#define DISPLAY_NB_VERTEX_DISPLAYED
 
 void ege::resource::Mesh::draw(mat4& _positionMatrix,
                                bool _enableDepthTest,
@@ -391,6 +391,10 @@ void ege::resource::Mesh::generateVBO() {
 		// clean faces indexes :
 		m_listFaces.getValue(kkk).m_index.clear();
 		int32_t nbIndicInFace = 3;
+		if (m_materials[m_listFaces.getKey(kkk)] == nullptr) {
+			EGE_ERROR("Can not get material : " << m_listFaces.getKey(kkk) << " pointer value: " << size_t(m_materials[m_listFaces.getKey(kkk)].get()));
+			continue;
+		}
 		switch (m_materials[m_listFaces.getKey(kkk)]->getRenderMode()) {
 			case gale::openGL::renderMode::triangle:
 			case gale::openGL::renderMode::triangleStrip:
