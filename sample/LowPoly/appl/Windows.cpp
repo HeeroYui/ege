@@ -79,7 +79,7 @@ namespace appl {
 				
 			}
 			void onLifeChange() {
-				APPL_DEBUG("Looze life " << m_life);
+				APPL_DEBUG("Loose life " << m_life);
 			}
 	};
 }

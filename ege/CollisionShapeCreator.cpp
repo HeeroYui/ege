@@ -67,6 +67,8 @@ btCollisionShape* ege::collision::createShape(const ememory::SharedPtr<ege::reso
 						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
 						outputShape->addChildShape(localTransform, tmpShape);
 					}
+				} else {
+					EGE_ERROR("Allocation shape error BOX");
 				}
 				break;
 			}

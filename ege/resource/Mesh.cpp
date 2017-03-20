@@ -102,7 +102,7 @@ void ege::resource::Mesh::clean() {
 }
 
 
-#define DISPLAY_NB_VERTEX_DISPLAYED
+//#define DISPLAY_NB_VERTEX_DISPLAYED
 
 void ege::resource::Mesh::draw(mat4& _positionMatrix,
                                bool _enableDepthTest,
@@ -223,9 +223,9 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 			EGE_ERROR(" !!!! No Face to display elements [" << m_name << "]");
 		} else {
 			if (nbElementDrawTheoric != 0) {
-				EGE_DEBUG(((float)nbElementDraw/(float)nbElementDrawTheoric*100.0f) << "% Request draw : " << m_listFaces.size() << ":" << nbElementDraw << "/" << nbElementDrawTheoric << " elements [" << m_name << "]");
+				EGE_WARNING(((float)nbElementDraw/(float)nbElementDrawTheoric*100.0f) << "% Request draw : " << m_listFaces.size() << ":" << nbElementDraw << "/" << nbElementDrawTheoric << " elements [" << m_name << "]");
 			} else {
-				EGE_DEBUG("0% Request draw : " << m_listFaces.size() << ":" << nbElementDraw << "/" << nbElementDrawTheoric << " elements [" << m_name << "]");
+				EGE_WARNING("0% Request draw : " << m_listFaces.size() << ":" << nbElementDraw << "/" << nbElementDrawTheoric << " elements [" << m_name << "]");
 			}
 		}
 	#endif

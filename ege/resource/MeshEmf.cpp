@@ -197,7 +197,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 				offsetUV = m_listUV.size();
 				offsetFaceNormal = m_listFacesNormal.size();
 				offsetVertexNormal = m_listVertexNormal.size();
-				
+				//EGE_ERROR("new offset: " << offsetVertexId << " " << offsetUV << " " << offsetFaceNormal << " " << offsetVertexNormal);
 			} else if(strncmp(inputDataLine, "Materials:", 9) == 0) {
 				currentMode = EMFModuleMaterial;
 				// add previous material:
@@ -344,7 +344,9 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 							// new maretial selection
 							currentMode = EMFModuleMeshFaceMaterial;
 							FaceIndexing empty;
-							m_listFaces.add(inputDataLine, empty);
+							if (m_listFaces.exist(inputDataLine) == false) {
+								m_listFaces.add(inputDataLine, empty);
+							}
 							meshFaceMaterialID = m_listFaces.getId(inputDataLine);
 							EGE_VERBOSE("            " << inputDataLine);
 						} else if (currentMode == EMFModuleMeshFaceMaterial) {
@@ -564,6 +566,17 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 	EGE_VERBOSE("Stop parsing Mesh file");
 	
 	fileName.fileClose();
+	
+	EGE_VERBOSE("New mesh : ");
+	EGE_VERBOSE("        nb vertex: " << m_listVertex.size());
+	EGE_VERBOSE("        nb UV: " << m_listUV.size());
+	EGE_VERBOSE("        nb Colors: " << m_listColor.size());
+	EGE_VERBOSE("        nb Normal Face: " << m_listFacesNormal.size());
+	EGE_VERBOSE("        nb vertex Face: " << m_listVertexNormal.size());
+	EGE_VERBOSE("        nb Faces: " << m_listFaces.size());
+	EGE_VERBOSE("        nb material: " << m_materials.size());
+	EGE_VERBOSE("        nb physic: " << m_physics.size());
 	generateVBO();
+	
 	return true;
 }

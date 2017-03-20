@@ -14,8 +14,10 @@ varying vec3 v_ecNormal;
 void main(void) {
 	gl_Position = EW_MatrixTransformation * EW_MatrixPosition * vec4(EW_coord3d, 1.0);
 	mat4 MatrixPosition = EW_MatrixPosition;
+	/*
 	MatrixPosition[3][0] = 0.0;
 	MatrixPosition[3][1] = 0.0;
 	MatrixPosition[3][2] = 0.0;
+	*/
 	v_ecNormal = vec3(MatrixPosition * vec4(EW_normal, 1.0) );
 }
