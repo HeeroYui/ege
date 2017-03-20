@@ -18,7 +18,7 @@ namespace appl {
 			ememory::SharedPtr<ege::camera::View> m_camera;
 		protected:
 			Windows();
-			void init();
+			void init() override;
 		public:
 			DECLARE_FACTORY(Windows);
 			virtual ~Windows() { };

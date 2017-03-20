@@ -60,9 +60,11 @@ void ege::ElementPhysic::createRigidBody(float _mass) {
 	startTransform.setIdentity();
 	vec3 localInertia(0,0,0);
 	//rigidbody is dynamic if and only if mass is non zero, otherwise static
-	if (_mass != 0.0f && getShape()!=nullptr) {
+	if (    _mass != 0.0f
+	     && getShape()!=nullptr) {
 		getShape()->calculateLocalInertia(_mass, localInertia);
 	}
+	EGE_ERROR("Create The RIGID body ...");
 	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 	btDefaultMotionState* motionState = new btDefaultMotionState(startTransform);
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(_mass, motionState, getShape(), localInertia);
@@ -355,12 +357,15 @@ void ege::ElementPhysic::draw(int32_t _pass) {
 		if(    m_body != nullptr
 		    && m_mesh != nullptr
 		    && m_body->getMotionState() ) {
-			//EGE_INFO("element pos = " << getPosition());
+			EGE_INFO("element pos = " << getPosition());
 			btScalar mmm[16];
 			btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
 			myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(mmm);
 			
-			mat4 transformationMatrix(mmm);
+			
+			EGE_INFO("    mat = " << mat4(mmm));
+			//mat4 transformationMatrix(mmm);
+			mat4 transformationMatrix = mat4(mmm) * etk::matScale(vec3(20,20,20));
 			transformationMatrix.transpose();
 			m_mesh->draw(transformationMatrix);
 		}
