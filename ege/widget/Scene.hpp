@@ -50,7 +50,7 @@ namespace ege {
 				 * @return (no execption generated (not managed in embended platform))
 				 */
 				Scene();
-				void init();
+				void init() override;
 			public:
 				void setEnv(ememory::SharedPtr<ege::Environement> _env) {
 					m_env = _env;

@@ -45,7 +45,8 @@ btCollisionShape* ege::collision::createShape(const ememory::SharedPtr<ege::reso
 		outputShape = new btCompoundShape();
 	} else {
 		EGE_ERROR("Create simple shape");
-		//outputShape = new btCompoundShape();
+		// TODO : Remove this line ==> it is bad but it correct a bug of a single shape that has no more display
+		outputShape = new btCompoundShape();
 	}
 	for (size_t iii=0; iii<physiqueProperty.size(); iii++) {
 		if (physiqueProperty[iii] == nullptr) {

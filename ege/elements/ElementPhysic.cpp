@@ -357,15 +357,15 @@ void ege::ElementPhysic::draw(int32_t _pass) {
 		if(    m_body != nullptr
 		    && m_mesh != nullptr
 		    && m_body->getMotionState() ) {
-			EGE_INFO("element pos = " << getPosition());
+			//EGE_INFO("element pos = " << getPosition());
 			btScalar mmm[16];
 			btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
 			myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(mmm);
 			
 			
-			EGE_INFO("    mat = " << mat4(mmm));
-			//mat4 transformationMatrix(mmm);
-			mat4 transformationMatrix = mat4(mmm) * etk::matScale(vec3(20,20,20));
+			//EGE_INFO("    mat = " << mat4(mmm));
+			mat4 transformationMatrix(mmm);
+			//mat4 transformationMatrix = mat4(mmm) * etk::matScale(vec3(20,20,20));
 			transformationMatrix.transpose();
 			m_mesh->draw(transformationMatrix);
 		}

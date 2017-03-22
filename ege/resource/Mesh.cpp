@@ -35,11 +35,11 @@ void ege::resource::Mesh::init(const std::string& _fileName, const std::string& 
 	// get the shader resource :
 	m_GLPosition = 0;
 	
-	m_light.setDirection(vec3(0.0f,-cos(M_PI/4),0.0f));
+	m_light.setDirection(vec3(0.0f,0.0f,10));
 	m_light.setHalfPlane(vec3(1.0f,0.0f,0.0f));
-	m_light.setAmbientColor(vec4(1.0f,1.0f,1.0f,1.0f));
-	m_light.setDiffuseColor(vec4(1.0f,1.0f,1.0f,1.0f));
-	m_light.setSpecularColor(vec4(0.0f,0.0f,0.0f,1.0f));
+	m_light.setAmbientColor(vec4(1.0f,1.0f,1.0f,1.0f)); // Global anbiant color of the scene
+	m_light.setDiffuseColor(vec4(1.0f,1.0f,1.0f,1.0f)); // Color of the object
+	m_light.setSpecularColor(vec4(0.0f,0.0f,0.0f,1.0f)); // Light color reflection
 	
 	EGE_VERBOSE(m_name << "  " << m_light << " shader=" << _shaderName);
 	m_GLprogram = gale::resource::Program::create(_shaderName);
@@ -153,6 +153,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	// colors :
 	m_GLprogram->sendAttributePointer(m_GLColor, m_verticesVBO, MESH_VBO_COLOR);
 	// draw lights :
+	//EGE_INFO("light : " << m_light);
 	m_light.draw(m_GLprogram);
 	#ifdef DISPLAY_NB_VERTEX_DISPLAYED
 	int32_t nbElementDrawTheoric = 0;
