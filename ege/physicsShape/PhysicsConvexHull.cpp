@@ -12,9 +12,9 @@ bool ege::PhysicsConvexHull::parse(const char* _line) {
 	if (ege::PhysicsShape::parse(_line) == true) {
 		return true;
 	}
-	if(strncmp(_line, "points : ", 8) == 0) {
+	if(strncmp(_line, "points:", 6) == 0) {
 		//EGE_DEBUG("convex hull point parsing " << _line);
-		char* base = (char*)(&_line[8]);
+		char* base = (char*)(&_line[6]);
 		char* tmp= strchr(base, '|');
 		vec3 pos(0,0,0);
 		while (tmp != nullptr) {
@@ -33,8 +33,8 @@ bool ege::PhysicsConvexHull::parse(const char* _line) {
 		*/
 		return true;
 	}
-	if(strncmp(_line, "scale : ", 8) == 0) {
-		sscanf(&_line[8], "%f %f %f", &m_scale.m_floats[0], &m_scale.m_floats[1], &m_scale.m_floats[2] );
+	if(strncmp(_line, "scale:", 6) == 0) {
+		sscanf(&_line[6], "%f %f %f", &m_scale.m_floats[0], &m_scale.m_floats[1], &m_scale.m_floats[2] );
 		EGE_VERBOSE("                scale=" << m_scale);
 		return true;
 	}

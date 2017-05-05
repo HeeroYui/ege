@@ -104,6 +104,12 @@ void ege::physics::Engine::setBulletConfig(ememory::SharedPtr<btDefaultCollision
 	//m_env.setDynamicWorld(m_dynamicsWorld);
 }
 
+void ege::physics::Engine::setGravity(const vec3& _axePower) {
+	if (m_dynamicsWorld != nullptr) {
+		m_dynamicsWorld->setGravity(_axePower);
+	}
+}
+
 // some doccumantation : http://www.bulletphysics.org/mediawiki-1.5.8/index.php?title=Collision_Callbacks_and_Triggers
 std::vector<ege::physics::Engine::collisionPoints> ege::physics::Engine::getListOfCollision() {
 	std::vector<collisionPoints> out;

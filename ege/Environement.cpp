@@ -310,7 +310,7 @@ void ege::Environement::getOrderedElementForDisplay(std::vector<ege::Environemen
 	result.element = nullptr;
 	// for all element in the game we chek if it is needed to display it ...
 	for (size_t iii=0; iii<m_listElement.size() ; iii++) {
-		// chack nullptr  pointer
+		// check nullptr  pointer
 		if (m_listElement[iii] == nullptr) {
 			// no pointer null are set in the output list ...
 			continue;

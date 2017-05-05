@@ -94,6 +94,11 @@ namespace ege {
 				 * @return the requested list of points
 				 */
 				std::vector<ege::physics::Engine::collisionPoints> getListOfCollision();
+				/**
+				 * @brief Set the gravity axis of the physic engine
+				 * @param[in] _axePower energy of this gravity
+				 */
+				void setGravity(const vec3& _axePower);
 		};
 	}
 }

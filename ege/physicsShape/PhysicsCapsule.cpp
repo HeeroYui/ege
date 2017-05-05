@@ -12,13 +12,13 @@ bool ege::PhysicsCapsule::parse(const char* _line) {
 	if (ege::PhysicsShape::parse(_line) == true) {
 		return true;
 	}
-	if(strncmp(_line, "radius : ", 9) == 0) {
-		sscanf(&_line[9], "%f", &m_radius );
+	if(strncmp(_line, "radius:", 7) == 0) {
+		sscanf(&_line[7], "%f", &m_radius );
 		EGE_VERBOSE("                radius=" << m_radius);
 		return true;
 	}
-	if(strncmp(_line, "height : ", 9) == 0) {
-		sscanf(&_line[9], "%f", &m_height );
+	if(strncmp(_line, "height:", 7) == 0) {
+		sscanf(&_line[7], "%f", &m_height );
 		EGE_VERBOSE("                height=" << m_height);
 		return true;
 	}

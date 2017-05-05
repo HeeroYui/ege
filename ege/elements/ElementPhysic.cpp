@@ -54,7 +54,7 @@ ege::ElementPhysic::~ElementPhysic() {
 }
 
 
-void ege::ElementPhysic::createRigidBody(float _mass) {
+void ege::ElementPhysic::createRigidBody(float _mass, bool _static) {
 	/// Create Dynamic Objects
 	btTransform startTransform;
 	startTransform.setIdentity();
@@ -71,8 +71,10 @@ void ege::ElementPhysic::createRigidBody(float _mass) {
 	m_body = new btRigidBody(rbInfo);
 	m_body->setUserPointer((void*)this);
 	m_body->setAngularVelocity(vec3(0,0,0));
+	if (_static == true) {
+		m_body->setCollisionFlags(m_body->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
+	}
 }
-
 
 bool ege::ElementPhysic::setMesh(ememory::SharedPtr<ege::resource::Mesh> _mesh) {
 	EGE_WARNING("Set Mesh");
@@ -80,7 +82,7 @@ bool ege::ElementPhysic::setMesh(ememory::SharedPtr<ege::resource::Mesh> _mesh) 
 		removeShape();
 	}
 	ege::Element::setMesh(_mesh);
-	// auto load the shape :
+	// auto load the shape:
 	if (m_mesh == nullptr) {
 		return true;
 	}
@@ -321,6 +323,9 @@ void ege::ElementPhysic::drawShape(const btCollisionShape* _shape,
 void ege::ElementPhysic::drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
 	ege::Element::drawDebug(_draw, _camera);
 	btScalar mmm[16];
+	if (m_body == nullptr) {
+		return;
+	}
 	btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
 	myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(mmm);
 	
@@ -346,7 +351,6 @@ void ege::ElementPhysic::drawNormalDebug(ememory::SharedPtr<ewol::resource::Colo
 		m_mesh->drawNormal(transformationMatrix, _draw);
 	}
 }
-
 
 void ege::ElementPhysic::draw(int32_t _pass) {
 	if (m_elementInPhysicsSystem == false) {

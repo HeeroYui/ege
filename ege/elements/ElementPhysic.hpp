@@ -34,7 +34,7 @@ namespace ege {
 		protected:
 			btRigidBody* m_body; //!< all the element have a body  == > otherwise it will be not manage with this system...
 		public:
-			void createRigidBody(float _mass=400000000.0f);
+			void createRigidBody(float _mass=400000000.0f, bool _static=false);
 		public:
 			/**
 			 * @brief Constructor (when constructer is called just add element that did not change.

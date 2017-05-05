@@ -25,7 +25,7 @@
 btCollisionShape* ege::collision::createShape(const ememory::SharedPtr<ege::resource::Mesh>& _mesh) {
 	if (_mesh == nullptr) {
 		EGE_ERROR("Create empty shape (no mesh)");
-		return new btEmptyShape();;
+		return new btEmptyShape();
 	}
 	const std::vector<ememory::SharedPtr<ege::PhysicsShape>>& physiqueProperty = _mesh->getPhysicalProperties();
 	if (physiqueProperty.size() == 0) {

@@ -7,7 +7,7 @@ def get_type():
 	return "LIBRARY"
 
 def get_desc():
-	return "Ewol Game engine (based on bullet lib)"
+	return "Ewol Game engine"
 
 def get_licence():
 	return "MPL-2"

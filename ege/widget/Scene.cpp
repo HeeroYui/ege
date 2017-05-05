@@ -129,12 +129,14 @@ void ege::widget::Scene::onDraw() {
 				m_displayElementOrdered[iii].element->drawDebug(m_debugDrawProperty, camera);
 			}
 			// Draw debug ... (Camera)
+			/*
 			std::map<std::string, ememory::SharedPtr<ege::Camera>> listCamera = m_env->getCameraList();
 			for (auto &itCam : listCamera) {
 				if (itCam.second != nullptr) {
 					itCam.second->drawDebug(m_debugDrawProperty, camera);
 				}
 			}
+			*/
 		}
 		if (propertyDebugNormal.get() == true) {
 			// Draw debug ... (Object)
