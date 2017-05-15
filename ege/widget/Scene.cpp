@@ -15,18 +15,6 @@
 #include <ewol/object/Manager.hpp>
 #include <gale/renderer/openGL/openGL.hpp>
 #include <etk/math/Matrix4.hpp>
-#include <BulletDynamics/Dynamics/btRigidBody.h>
-#include <LinearMath/btDefaultMotionState.h>
-#include <BulletDynamics/Dynamics/btDynamicsWorld.h>
-#include <BulletCollision/CollisionShapes/btCollisionShape.h>
-#include <LinearMath/btIDebugDraw.h>
-#include <btBulletCollisionCommon.h>
-#include <BulletCollision/CollisionShapes/btConvexPolyhedron.h>
-#include <BulletCollision/CollisionShapes/btShapeHull.h>
-#include <LinearMath/btTransformUtil.h>
-#include <LinearMath/btIDebugDraw.h>
-#include <btBulletDynamicsCommon.h>
-#include <BulletCollision/CollisionDispatch/btCollisionObject.h>
 
 namespace etk {
 	template<> std::string to_string<ememory::SharedPtr<ewol::resource::Colored3DObject> >(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _value) {
@@ -84,7 +72,7 @@ void ege::widget::Scene::onDraw() {
 		g_startTime = echrono::Steady::now();
 	#endif
 	
-	// draw constant object :
+	// draw constant object:
 	{
 		mat4 tmpMatrix;
 		for (auto &it : m_env->getStaticMeshToDraw()) {
@@ -102,55 +90,49 @@ void ege::widget::Scene::onDraw() {
 	}
 	//EGE_DEBUG("Draw (start)");
 	mat4 tmpMatrix;
-	ememory::SharedPtr<btDynamicsWorld> world = m_env->getPhysicEngine().getDynamicWorld();
-	if (world != nullptr) {
-		
-		m_env->getOrderedElementForDisplay(m_displayElementOrdered, camera->getEye(), camera->getViewVector());
-		EGE_VERBOSE("DRAW : " << m_displayElementOrdered.size() << "/" << m_env->getElement().size() << " elements");
-		
-		// TODO : remove this  == > no more needed ==> checked in the generate the list of the element ordered
+	m_env->getOrderedElementForDisplay(m_displayElementOrdered, camera->getEye(), camera->getViewVector());
+	EGE_VERBOSE("DRAW : " << m_displayElementOrdered.size() << "/" << m_env->getElement().size() << " elements");
+	
+	// TODO : remove this  == > no more needed ==> checked in the generate the list of the element ordered
+	for (size_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
+		m_displayElementOrdered[iii].element->preCalculationDraw(*camera);
+	}
+	// note :  the first pass is done at the reverse way to prevent multiple display od the same point in the screen 
+	//         (and we remember that the first pass is to display all the non transparent elements)
+	for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
+		m_displayElementOrdered[iii].element->draw(0);
+	}
+	// for the other pass the user can draw transparent elements ...
+	for (int32_t pass=1; pass <= NUMBER_OF_SUB_PASS+1; pass++) {
 		for (size_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
-			m_displayElementOrdered[iii].element->preCalculationDraw(*camera);
+			m_displayElementOrdered[iii].element->draw(pass);
 		}
-		// note :  the first pass is done at the reverse way to prevent multiple display od the same point in the screen 
-		//         (and we remember that the first pass is to display all the non transparent elements)
+	}
+	if (propertyDebugPhysic.get() == true) {
+		// Draw debug ... (Object)
 		for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
-			m_displayElementOrdered[iii].element->draw(0);
+			m_displayElementOrdered[iii].element->drawDebug(m_debugDrawProperty, camera);
 		}
-		// for the other pass the user can draw transparent elements ...
-		for (int32_t pass=1; pass <= NUMBER_OF_SUB_PASS+1; pass++) {
-			for (size_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
-				m_displayElementOrdered[iii].element->draw(pass);
+		// Draw debug ... (Camera)
+		/*
+		std::map<std::string, ememory::SharedPtr<ege::Camera>> listCamera = m_env->getCameraList();
+		for (auto &itCam : listCamera) {
+			if (itCam.second != nullptr) {
+				itCam.second->drawDebug(m_debugDrawProperty, camera);
 			}
 		}
-		if (propertyDebugPhysic.get() == true) {
-			// Draw debug ... (Object)
-			for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
-				m_displayElementOrdered[iii].element->drawDebug(m_debugDrawProperty, camera);
-			}
-			// Draw debug ... (Camera)
-			/*
-			std::map<std::string, ememory::SharedPtr<ege::Camera>> listCamera = m_env->getCameraList();
-			for (auto &itCam : listCamera) {
-				if (itCam.second != nullptr) {
-					itCam.second->drawDebug(m_debugDrawProperty, camera);
-				}
-			}
-			*/
+		*/
+	}
+	if (propertyDebugNormal.get() == true) {
+		// Draw debug ... (Object)
+		for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
+			m_displayElementOrdered[iii].element->drawNormalDebug(m_debugDrawProperty, camera);
 		}
-		if (propertyDebugNormal.get() == true) {
-			// Draw debug ... (Object)
-			for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
-				m_displayElementOrdered[iii].element->drawNormalDebug(m_debugDrawProperty, camera);
-			}
-		}
-		
-		if (propertyDebugApplication.get() == true) {
-			// Draw debug ... (User)
-			signalDisplayDebug.emit(m_debugDrawProperty);
-		}
-	} else {
-		EGE_WARNING("No Dynamic world ...");
+	}
+	
+	if (propertyDebugApplication.get() == true) {
+		// Draw debug ... (User)
+		signalDisplayDebug.emit(m_debugDrawProperty);
 	}
 	if (camera != nullptr) {
 		m_env->getParticuleEngine().draw(*camera);
@@ -163,13 +145,6 @@ void ege::widget::Scene::onDraw() {
 			EWOL_DEBUG("      scene : " << localTime << " " << g_counterNbTimeDisplay);
 		}
 	#endif
-}
-
-// I really does not know what is this ...
-btRigidBody& btActionInterface::getFixedBody() {
-	static btRigidBody s_fixed(0, 0,0);
-	s_fixed.setMassProps(btScalar(0.),btVector3(btScalar(0.),btScalar(0.),btScalar(0.)));
-	return s_fixed;
 }
 
 void ege::widget::Scene::periodicCall(const ewol::event::Time& _event) {

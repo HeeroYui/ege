@@ -49,30 +49,28 @@ ege::ElementPhysic::~ElementPhysic() {
 	// same ...
 	dynamicDisable();
 	removeShape();
-	delete m_body;
+	// Destroy the rigid body
+	m_dynamicsWorld->destroyRigidBody(m_body);
 	m_body = nullptr;
 }
 
 
 void ege::ElementPhysic::createRigidBody(float _mass, bool _static) {
-	/// Create Dynamic Objects
-	btTransform startTransform;
-	startTransform.setIdentity();
-	vec3 localInertia(0,0,0);
-	//rigidbody is dynamic if and only if mass is non zero, otherwise static
-	if (    _mass != 0.0f
-	     && getShape()!=nullptr) {
-		getShape()->calculateLocalInertia(_mass, localInertia);
-	}
-	EGE_ERROR("Create The RIGID body ...");
-	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-	btDefaultMotionState* motionState = new btDefaultMotionState(startTransform);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(_mass, motionState, getShape(), localInertia);
-	m_body = new btRigidBody(rbInfo);
-	m_body->setUserPointer((void*)this);
-	m_body->setAngularVelocity(vec3(0,0,0));
-	if (_static == true) {
-		m_body->setCollisionFlags(m_body->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
+	// Initial position and orientation of the rigid body
+	rp3d::Vector3 initPosition(0.0, 3.0, 0.0);
+	rp3d::Quaternion initOrientation = rp3d::Quaternion::identity();
+	rp3d::Transform transform(initPosition, initOrientation);
+	
+	// Create a rigid body in the world
+	m_body = m_dynamicsWorld->createRigidBody(transform);
+	
+	if (_static = true) {
+		m_body->setType(STATIC);
+		//m_body->setType(KINEMATIC);
+		// Disable gravity for this body
+		m_body->enableGravity(false);
+	} else {
+		m_body->setType(DYNAMIC);
 	}
 }
 
@@ -359,18 +357,18 @@ void ege::ElementPhysic::draw(int32_t _pass) {
 	//EGE_INFO("draw : " << _pass );
 	if (_pass == 0) {
 		if(    m_body != nullptr
-		    && m_mesh != nullptr
-		    && m_body->getMotionState() ) {
+		    && m_mesh != nullptr) {
 			//EGE_INFO("element pos = " << getPosition());
-			btScalar mmm[16];
-			btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
-			myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(mmm);
-			
+			float mmm[16];
+			// Get the interpolated transform of the rigid body 
+			rp3d::Transform transform = m_body->getInterpolatedTransform();
+			// Get the OpenGL matrix array of the transform 
+			transform.getOpenGLMatrix(matrix);
 			
 			//EGE_INFO("    mat = " << mat4(mmm));
 			mat4 transformationMatrix(mmm);
 			//mat4 transformationMatrix = mat4(mmm) * etk::matScale(vec3(20,20,20));
-			transformationMatrix.transpose();
+			// TODO: check this : transformationMatrix.transpose();
 			m_mesh->draw(transformationMatrix);
 		}
 	}
@@ -382,11 +380,11 @@ void ege::ElementPhysic::dynamicEnable() {
 	}
 	if(m_body != nullptr) {
 		EGE_VERBOSE("dynamicEnable : RigidBody");
-		m_env->getPhysicEngine().getDynamicWorld()->addRigidBody(m_body);
+		//m_env->getPhysicEngine().getDynamicWorld()->addRigidBody(m_body);
 	}
 	if(m_IA != nullptr) {
 		EGE_VERBOSE("dynamicEnable : IA");
-		m_env->getPhysicEngine().getDynamicWorld()->addAction(m_IA);
+		//m_env->getPhysicEngine().getDynamicWorld()->addAction(m_IA);
 	}
 	m_elementInPhysicsSystem = true;
 }
@@ -397,13 +395,13 @@ void ege::ElementPhysic::dynamicDisable() {
 	}
 	if(m_IA != nullptr) {
 		EGE_VERBOSE("dynamicDisable : IA");
-		m_env->getPhysicEngine().getDynamicWorld()->removeAction(m_IA);
+		//m_env->getPhysicEngine().getDynamicWorld()->removeAction(m_IA);
 	}
 	if(m_body != nullptr) {
 		EGE_VERBOSE("dynamicDisable : RigidBody");
 		// Unlink element from the engine
-		m_env->getPhysicEngine().getDynamicWorld()->removeRigidBody(m_body);
-		m_env->getPhysicEngine().getDynamicWorld()->removeCollisionObject(m_body);
+		//m_env->getPhysicEngine().getDynamicWorld()->removeRigidBody(m_body);
+		//m_env->getPhysicEngine().getDynamicWorld()->removeCollisionObject(m_body);
 	}
 	m_elementInPhysicsSystem = false;
 }
@@ -415,11 +413,11 @@ void ege::ElementPhysic::iaEnable() {
 	}
 	m_IA = new localIA(*this);
 	if (m_IA == nullptr) {
-		EGE_ERROR("Can not start the IA  == > allocation error");
+		EGE_ERROR("Can not start the IA == > allocation error");
 		return;
 	}
 	if (m_elementInPhysicsSystem == true) {
-		m_env->getPhysicEngine().getDynamicWorld()->addAction(m_IA);
+		//m_env->getPhysicEngine().getDynamicWorld()->addAction(m_IA);
 	}
 }
 
@@ -429,9 +427,9 @@ void ege::ElementPhysic::iaDisable() {
 		return;
 	}
 	if (m_elementInPhysicsSystem == true) {
-		m_env->getPhysicEngine().getDynamicWorld()->removeAction(m_IA);
+		//m_env->getPhysicEngine().getDynamicWorld()->removeAction(m_IA);
 	}
-	// remove IA :
+	// remove IA:
 	delete(m_IA);
 	m_IA = nullptr;
 }
@@ -442,10 +440,10 @@ void ege::ElementPhysic::setMass(float _value) {
 	}
 	vec3 localInertia(0,0,0);
 	if (_value != 0.0f && getShape()!=nullptr) {
-		getShape()->calculateLocalInertia(_value, localInertia);
+		//getShape()->calculateLocalInertia(_value, localInertia);
 		EWOL_ERROR("Update inertia calculated : " << localInertia);
 	}
-	m_body->setMassProps(_value, localInertia);
+	//m_body->setMassProps(_value, localInertia);
 }
 
 void ege::ElementPhysic::setLinearVelocity(const vec3& _value) {
@@ -453,7 +451,10 @@ void ege::ElementPhysic::setLinearVelocity(const vec3& _value) {
 		EGE_WARNING("no body");
 		return;
 	}
-	m_body->setLinearVelocity(_value);
+	// Force vector (in Newton)
+	rp3d::Vector3 force(_value.x(), _value.y(), _value.z());
+	// Apply a force to the center of the body
+	m_body->applyForceToCenter(force);
 }
 
 void ege::ElementPhysic::setTorqueImpulse(const vec3& _value) {
@@ -461,7 +462,10 @@ void ege::ElementPhysic::setTorqueImpulse(const vec3& _value) {
 		EGE_WARNING("no body");
 		return;
 	}
-	m_body->applyTorqueImpulse(_value);
+	// Torque vector
+	rp3d::Vector3 torque(_value.x(), _value.y(), _value.z());
+	// Apply a torque to the body 
+	m_body->applyTorque(torque);
 }
 
 void ege::ElementPhysic::setAngularVelocity(const vec3& _value) {
@@ -469,7 +473,7 @@ void ege::ElementPhysic::setAngularVelocity(const vec3& _value) {
 		EGE_WARNING("no body");
 		return;
 	}
-	m_body->setAngularVelocity(_value);
+	//m_body->setAngularVelocity(_value);
 }
 
 btQuaternion ege::ElementPhysic::getOrientation() const {
@@ -477,13 +481,16 @@ btQuaternion ege::ElementPhysic::getOrientation() const {
 		EGE_WARNING("no body");
 		return btQuaternion(0,0,0,0);
 	}
-	return m_body->getOrientation();
+	//return m_body->getOrientation();
+	return btQuaternion(0,0,0,0);
 }
+
 void ege::ElementPhysic::setCollisionDetectionStatus(bool _status) {
 	if (m_body == nullptr) {
 		EGE_WARNING("no body");
 		return;
 	}
+	/*
 	if (m_detectCollisionEnable == _status) {
 		return;
 	}
@@ -495,5 +502,6 @@ void ege::ElementPhysic::setCollisionDetectionStatus(bool _status) {
 			m_body->setCollisionFlags(m_body->getCollisionFlags() - btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 		}
 	}
+	*/
 }
 

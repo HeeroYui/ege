@@ -49,70 +49,47 @@ static bool handleContactsProcess(btManifoldPoint& _point, btCollisionObject* _b
 }
 
 
-ege::physics::Engine::Engine() {
-	setBulletConfig();
-	// set callback for collisions ...
-	gContactProcessedCallback = (ContactProcessedCallback)handleContactsProcess;
+ege::physics::Engine::Engine():
+  m_dynamicsWorld(nullptr),
+  m_accumulator(0.0f) {
+	// Start engine with no gravity
+	//rp3d::Vector3 gravity(0.0, -9.81, 0.0); // generic earth gravity
+	rp3d::Vector3 gravity(0.0f, 0.0f, 0.0f);
+	// Create the dynamics world
+	m_dynamicsWorld = new rp3d::DynamicsWorld(gravity);
 }
 
 ege::physics::Engine::~Engine() {
-	/*
-	m_dynamicsWorld.release();
-	m_solver.release();
-	m_broadphase.release();
-	m_dispatcher.release();
-	m_collisionConfiguration.release();
-	*/
-}
-
-void ege::physics::Engine::setBulletConfig(ememory::SharedPtr<btDefaultCollisionConfiguration> _collisionConfiguration,
-                                           ememory::SharedPtr<btCollisionDispatcher> _dispatcher,
-                                           ememory::SharedPtr<btBroadphaseInterface> _broadphase,
-                                           ememory::SharedPtr<btConstraintSolver> _solver,
-                                           ememory::SharedPtr<btDynamicsWorld> _dynamicsWorld) {
-	if (_collisionConfiguration != nullptr) {
-		m_collisionConfiguration = _collisionConfiguration;
-	} else {
-		m_collisionConfiguration = ememory::makeShared<btDefaultCollisionConfiguration>();
+	if (m_dynamicsWorld != nullptr) {
+		delete m_dynamicsWorld;
+		m_dynamicsWorld = nullptr;
 	}
-	///use the default collision dispatcher.
-	if (_dispatcher != nullptr) {
-		m_dispatcher = _dispatcher;
-	} else {
-		m_dispatcher = ememory::makeShared<btCollisionDispatcher>(m_collisionConfiguration.get());
-	}
-	if (_broadphase != nullptr) {
-		m_broadphase = _broadphase;
-	} else {
-		m_broadphase = ememory::makeShared<btDbvtBroadphase>();
-	}
-	
-	///the default constraint solver.
-	if (_solver != nullptr) {
-		m_solver = _solver;
-	} else {
-		m_solver = ememory::makeShared<btSequentialImpulseConstraintSolver>();
-	}
-	
-	if (_dynamicsWorld != nullptr) {
-		m_dynamicsWorld = _dynamicsWorld;
-	} else {
-		m_dynamicsWorld = ememory::makeShared<btDiscreteDynamicsWorld>(m_dispatcher.get(),m_broadphase.get(),m_solver.get(),m_collisionConfiguration.get());
-		// By default we set no gravity
-		m_dynamicsWorld->setGravity(btVector3(0,0,0));
-	}
-	//m_env.setDynamicWorld(m_dynamicsWorld);
 }
 
 void ege::physics::Engine::setGravity(const vec3& _axePower) {
 	if (m_dynamicsWorld != nullptr) {
-		m_dynamicsWorld->setGravity(_axePower);
+		m_dynamicsWorld->setGravity(rp3d::Vector3(_axePower.x(), _axePower.y(), _axePower.z()));
 	}
 }
 
-// some doccumantation : http://www.bulletphysics.org/mediawiki-1.5.8/index.php?title=Collision_Callbacks_and_Triggers
+// Constant physics time step
+const float timeStep = 1.0 / 60.0;
+
+void ege::physics::Engine::update(float _delta) {
+	// Add the time difference in the accumulator
+	m_accumulator += _delta;
+	// While there is enough accumulated time to take one or several physics steps
+	while (m_accumulator >= timeStep) {
+		// Update the Dynamics world with a constant time step
+		m_dynamicsWorld->update(timeStep);
+		// Decrease the accumulated time
+		m_accumulator -= timeStep;
+	}
+}
+
 std::vector<ege::physics::Engine::collisionPoints> ege::physics::Engine::getListOfCollision() {
 	std::vector<collisionPoints> out;
+	/*
 	if (m_dynamicsWorld != nullptr) {
 		int32_t numManifolds = m_dynamicsWorld->getDispatcher()->getNumManifolds();
 		for (int i=0;i<numManifolds;i++) {
@@ -138,5 +115,6 @@ std::vector<ege::physics::Engine::collisionPoints> ege::physics::Engine::getList
 			}
 		}
 	}
+	*/
 	return out;
 }

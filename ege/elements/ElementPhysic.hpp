@@ -19,7 +19,6 @@
 #include <ege/Environement.hpp>
 #include <ege/elements/Element.hpp>
 
-#include <LinearMath/btDefaultMotionState.h>
 
 #define INDEX_RIGHT_AXIS   (0)
 #define INDEX_FORWARD_AXIS (1)
@@ -32,7 +31,7 @@ namespace ege {
 		private:
 			static void FunctionFreeShape(void* _pointer);
 		protected:
-			btRigidBody* m_body; //!< all the element have a body  == > otherwise it will be not manage with this system...
+			rp3d::RigidBody* m_body; //!< all the element have a body  == > otherwise it will be not manage with this system...
 		public:
 			void createRigidBody(float _mass=400000000.0f, bool _static=false);
 		public:

@@ -65,7 +65,7 @@ def configure(target, my_module):
 	    ])
 	my_module.copy_path('data/ParticuleMesh.*')
 	my_module.copy_path('data/material3D.*')
-	my_module.add_depend(['ewol', 'bullet-physics', 'echrono'])
+	my_module.add_depend(['ewol', 'ephysics', 'echrono'])
 	my_module.add_flag('c++', [
 	    '-Wno-write-strings',
 	    '-Wmissing-field-initializers',

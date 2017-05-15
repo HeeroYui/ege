@@ -232,6 +232,18 @@ namespace ege {
 			 * @brief remove this element from the physique engine
 			 */
 			virtual void dynamicDisable() {};
+		
+		// TODO: next step:
+		/*
+		public:
+			void addComponent(const std::string& _name, const ememory::SharedPtr<ElementComponent>& _ref);
+			example: addComponent("physic", componentPhysic);
+			         addComponent("ia", componentIA);
+			         addComponent("render", componentRendering);
+			         addComponent("group", componentFormationMovingSquare); // << here we add a group to control the moving interface of the IA ...
+			if we want to remove the IA, just remove the component,
+			if the display (render) change (unit upgrade) just the render is change, if it is invisible, just remove the render ...
+		*/
 	};
 }
 

@@ -16,17 +16,6 @@
 #include <gale/resource/Manager.hpp>
 #include <ege/elements/Element.hpp>
 #include <gale/Dimension.hpp>
-
-class btBroadphaseInterface;
-class btCollisionShape;
-class btOverlappingPairCache;
-class btCollisionDispatcher;
-class btConstraintSolver;
-struct btCollisionAlgorithmCreateFunc;
-class btDefaultCollisionConfiguration;
-class btDynamicsWorld;
-#include <LinearMath/btScalar.h>
-class btVector3;
 #include <ewol/widget/Widget.hpp>
 #include <esignal/Signal.hpp>
 
