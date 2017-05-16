@@ -7,11 +7,10 @@
 
 #include <etk/types.hpp>
 #include <ege/resource/Mesh.hpp>
-#include <BulletCollision/CollisionShapes/btCollisionShape.h>
 
 namespace ege {
 	namespace collision {
-		btCollisionShape* createShape(const ememory::SharedPtr<ege::resource::Mesh>& _mesh);
+		//btCollisionShape* createShape(const ememory::SharedPtr<ege::resource::Mesh>& _mesh);
 	}
 }
 

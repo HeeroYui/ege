@@ -9,24 +9,13 @@
 #include <ege/debug.hpp>
 
 #include <gale/renderer/openGL/openGL.hpp>
-#include <etk/math/Matrix4.hpp>
-#include <BulletDynamics/Dynamics/btRigidBody.h>
-#include <LinearMath/btDefaultMotionState.h>
-#include <BulletDynamics/Dynamics/btDynamicsWorld.h>
-#include <BulletCollision/CollisionShapes/btCollisionShape.h>
-#include <LinearMath/btIDebugDraw.h>
-#include <btBulletCollisionCommon.h>
-#include <BulletCollision/CollisionShapes/btConvexPolyhedron.h>
-#include <BulletCollision/CollisionShapes/btShapeHull.h>
-#include <LinearMath/btTransformUtil.h>
-#include <LinearMath/btIDebugDraw.h>
-#include <btBulletDynamicsCommon.h>
-#include <BulletCollision/CollisionDispatch/btCollisionObject.h>
+#include <etk/math/Matrix4x4.hpp>
 
 #include <ege/elements/ElementPhysic.hpp>
 
 
 // unique callback function :
+/*
 extern ContactProcessedCallback gContactProcessedCallback;
 
 // TODO : remove double collision call ...
@@ -47,7 +36,7 @@ static bool handleContactsProcess(btManifoldPoint& _point, btCollisionObject* _b
 	}
 	return true;
 }
-
+*/
 
 ege::physics::Engine::Engine():
   m_dynamicsWorld(nullptr),
@@ -68,7 +57,8 @@ ege::physics::Engine::~Engine() {
 
 void ege::physics::Engine::setGravity(const vec3& _axePower) {
 	if (m_dynamicsWorld != nullptr) {
-		m_dynamicsWorld->setGravity(rp3d::Vector3(_axePower.x(), _axePower.y(), _axePower.z()));
+		rp3d::Vector3 gravity(_axePower.x(), _axePower.y(), _axePower.z());
+		m_dynamicsWorld->setGravity(gravity);
 	}
 }
 

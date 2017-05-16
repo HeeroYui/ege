@@ -6,11 +6,6 @@
 
 #include <ege/debug.hpp>
 #include <ege/CollisionShapeCreator.hpp>
-
-#include <btBulletCollisionCommon.h>
-#include <BulletCollision/CollisionShapes/btConvexPolyhedron.h>
-#include <BulletCollision/CollisionShapes/btShapeHull.h>
-#include <BulletCollision/CollisionDispatch/btCollisionObject.h>
 #include <ege/physicsShape/PhysicsShape.hpp>
 #include <ege/physicsShape/PhysicsBox.hpp>
 #include <ege/physicsShape/PhysicsCapsule.hpp>
@@ -21,7 +16,7 @@
 
 // Documentetion of bullet library :
 // http://bulletphysics.org/mediawiki-1.5.8/index.php/Collision_Shapes
-
+/*
 btCollisionShape* ege::collision::createShape(const ememory::SharedPtr<ege::resource::Mesh>& _mesh) {
 	if (_mesh == nullptr) {
 		EGE_ERROR("Create empty shape (no mesh)");
@@ -181,5 +176,5 @@ btCollisionShape* ege::collision::createShape(const ememory::SharedPtr<ege::reso
 	}
 	return outputShape;
 }
-
+*/
 

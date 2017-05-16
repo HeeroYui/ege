@@ -8,19 +8,6 @@
 #include <ege/debug.hpp>
 #include <ege/elements/Element.hpp>
 #include <ege/Environement.hpp>
-#include <BulletDynamics/Dynamics/btRigidBody.h>
-#include <LinearMath/btDefaultMotionState.h>
-#include <BulletDynamics/Dynamics/btDynamicsWorld.h>
-#include <BulletCollision/CollisionShapes/btCollisionShape.h>
-#include <LinearMath/btIDebugDraw.h>
-#include <btBulletCollisionCommon.h>
-#include <BulletCollision/CollisionShapes/btConvexPolyhedron.h>
-#include <BulletCollision/CollisionShapes/btShapeHull.h>
-#include <LinearMath/btTransformUtil.h>
-#include <LinearMath/btIDebugDraw.h>
-#include <btBulletDynamicsCommon.h>
-#include <BulletCollision/CollisionDispatch/btCollisionObject.h>
-
 #include <ege/CollisionShapeCreator.hpp>
 
 

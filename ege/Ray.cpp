@@ -8,8 +8,6 @@
 #include <ege/debug.hpp>
 #include <ege/elements/Element.hpp>
 
-#include <BulletDynamics/Dynamics/btDynamicsWorld.h>
-#include <BulletCollision/CollisionDispatch/btCollisionWorld.h>
 
 ege::Ray::Ray(const vec3& _origin, const vec3& _direction) :
   m_origin(_origin),
@@ -41,6 +39,7 @@ std::pair<vec3,vec3> ege::Ray::testRay(ege::physics::Engine& _engine) {
 	vec3 start = m_origin;
 	vec3 stop = m_origin+m_direction*1000.0f;
 	// Start and End are vectors
+	/*
 	btCollisionWorld::ClosestRayResultCallback rayCallback(start, stop);
 	EGE_VERBOSE("Process Raycast :");
 	// Perform raycast
@@ -51,6 +50,7 @@ std::pair<vec3,vec3> ege::Ray::testRay(ege::physics::Engine& _engine) {
 		EGE_VERBOSE("    hit at point=" << end << " normal=" << normal);
 		return std::pair<vec3,vec3>(end,normal);
 	}
+	*/
 	EGE_VERBOSE("    No Hit");
 	return std::pair<vec3,vec3>(vec3(0,0,0),vec3(0,0,0));
 }
@@ -60,6 +60,7 @@ std::pair<ememory::SharedPtr<ege::Element>, std::pair<vec3,vec3>> ege::Ray::test
 	vec3 start = m_origin;
 	vec3 stop = m_origin+m_direction*1000.0f;
 	// Start and End are vectors
+	/*
 	btCollisionWorld::ClosestRayResultCallback rayCallback(start, stop);
 	EGE_VERBOSE("Process Raycast :");
 	// Perform raycast
@@ -74,9 +75,9 @@ std::pair<ememory::SharedPtr<ege::Element>, std::pair<vec3,vec3>> ege::Ray::test
 		}
 		EGE_VERBOSE("    Can not get the element pointer");
 		return std::pair<ememory::SharedPtr<ege::Element>, std::pair<vec3,vec3>>(nullptr, std::pair<vec3,vec3>(end,normal));
-	} else {
-		EGE_VERBOSE("    No Hit");
 	}
+	*/
+	EGE_VERBOSE("    No Hit");
 	return std::pair<ememory::SharedPtr<ege::Element>, std::pair<vec3,vec3>>(nullptr, std::pair<vec3,vec3>(vec3(0,0,0),vec3(0,0,0)));
 }
 

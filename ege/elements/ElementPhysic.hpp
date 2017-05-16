@@ -7,7 +7,7 @@
 
 #include <etk/types.hpp>
 #include <etk/math/Vector3D.hpp>
-#include <etk/math/Matrix4.hpp>
+#include <etk/math/Matrix4x4.hpp>
 #include <vector>
 #include <ewol/debug.hpp>
 #include <ewol/widget/Widget.hpp>
@@ -53,7 +53,7 @@ namespace ege {
 			 */
 			virtual const std::string& getType() const;
 		protected:
-			btCollisionShape* m_shape; //!< shape of the element (set a copy here to have the debug display of it)
+			//btCollisionShape* m_shape; //!< shape of the element (set a copy here to have the debug display of it)
 		public:
 			/**
 			 * @brief set the shape properties.
@@ -61,19 +61,21 @@ namespace ege {
 			 * @note : this remove the shape properties.
 			 * @return true if no error occured
 			 */
-			bool setShape(btCollisionShape* _shape);
+			//bool setShape(btCollisionShape* _shape);
 			/**
 			 * @brief get a pointer on the bullet collision shape.
 			 * @return the collision pointer.
 			 */
+			 /*
 			inline btCollisionShape* getShape() {
 				return m_shape;
 			};
+			*/
 		private:
 			/**
 			 * @brief remove the curent selected shape.
 			 */
-			void removeShape();
+			//void removeShape();
 		public:
 			virtual bool setMesh(ememory::SharedPtr<ege::resource::Mesh> _mesh);
 			/**
@@ -121,7 +123,7 @@ namespace ege {
 			virtual void setTorqueImpulse(const vec3& _value);
 			virtual void setAngularVelocity(const vec3& _value);
 			
-			btQuaternion getOrientation() const;
+			//btQuaternion getOrientation() const;
 			
 		protected:
 			bool m_elementInPhysicsSystem;
@@ -129,7 +131,7 @@ namespace ege {
 			virtual void dynamicEnable();
 			virtual void dynamicDisable();
 		private:
-			class localIA : public btActionInterface {
+			class localIA {
 				private:
 					ege::ElementPhysic& m_element;
 				public:
@@ -147,12 +149,14 @@ namespace ege {
 						
 					};
 				public: // herited function
+					/*
 					void debugDraw(btIDebugDraw* _debugDrawer) {
 						
 					};
 					void updateAction(btCollisionWorld* _collisionWorld, btScalar _step) {
 						m_element.iaAction(_step);
 					};
+					*/
 			};
 			localIA* m_IA;
 		public:
@@ -177,7 +181,7 @@ namespace ege {
 			virtual void setPosition(const vec3& _pos);
 			virtual void drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
 		protected:
-			void drawShape(const btCollisionShape* _shape,
+			void drawShape(/*const btCollisionShape* _shape,*/
 			               ememory::SharedPtr<ewol::resource::Colored3DObject> _draw,
 			               mat4 _transformationMatrix,
 			               std::vector<vec3> _tmpVertices);

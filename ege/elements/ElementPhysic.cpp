@@ -8,18 +8,6 @@
 #include <ege/debug.hpp>
 #include <ege/elements/ElementPhysic.hpp>
 #include <ege/Environement.hpp>
-#include <BulletDynamics/Dynamics/btRigidBody.h>
-#include <LinearMath/btDefaultMotionState.h>
-#include <BulletDynamics/Dynamics/btDynamicsWorld.h>
-#include <BulletCollision/CollisionShapes/btCollisionShape.h>
-#include <LinearMath/btIDebugDraw.h>
-#include <btBulletCollisionCommon.h>
-#include <BulletCollision/CollisionShapes/btConvexPolyhedron.h>
-#include <BulletCollision/CollisionShapes/btShapeHull.h>
-#include <LinearMath/btTransformUtil.h>
-#include <LinearMath/btIDebugDraw.h>
-#include <btBulletDynamicsCommon.h>
-#include <BulletCollision/CollisionDispatch/btCollisionObject.h>
 
 #include <ege/CollisionShapeCreator.hpp>
 
@@ -32,7 +20,7 @@ const std::string& ege::ElementPhysic::getType() const {
 ege::ElementPhysic::ElementPhysic(const ememory::SharedPtr<ege::Environement>& _env, bool _autoRigidBody) ://, float _mass) :
   ege::Element(_env),
   m_body(nullptr),
-  m_shape(nullptr),
+  //m_shape(nullptr),
   m_elementInPhysicsSystem(false),
   m_IA(nullptr),
   m_detectCollisionEnable(false) {
@@ -45,12 +33,12 @@ ege::ElementPhysic::ElementPhysic(const ememory::SharedPtr<ege::Environement>& _
 
 ege::ElementPhysic::~ElementPhysic() {
 	// in every case remove IA
-	iaDisable();
+	//iaDisable();
 	// same ...
-	dynamicDisable();
-	removeShape();
+	//dynamicDisable();
+	//removeShape();
 	// Destroy the rigid body
-	m_dynamicsWorld->destroyRigidBody(m_body);
+	//m_dynamicsWorld->destroyRigidBody(m_body);
 	m_body = nullptr;
 }
 
@@ -62,8 +50,8 @@ void ege::ElementPhysic::createRigidBody(float _mass, bool _static) {
 	rp3d::Transform transform(initPosition, initOrientation);
 	
 	// Create a rigid body in the world
-	m_body = m_dynamicsWorld->createRigidBody(transform);
-	
+	m_body = nullptr;//m_dynamicsWorld->createRigidBody(transform);
+	/*
 	if (_static = true) {
 		m_body->setType(STATIC);
 		//m_body->setType(KINEMATIC);
@@ -72,18 +60,20 @@ void ege::ElementPhysic::createRigidBody(float _mass, bool _static) {
 	} else {
 		m_body->setType(DYNAMIC);
 	}
+	*/
 }
 
 bool ege::ElementPhysic::setMesh(ememory::SharedPtr<ege::resource::Mesh> _mesh) {
 	EGE_WARNING("Set Mesh");
 	if (m_mesh != nullptr) {
-		removeShape();
+		//removeShape();
 	}
 	ege::Element::setMesh(_mesh);
 	// auto load the shape:
 	if (m_mesh == nullptr) {
 		return true;
 	}
+	/*
 	if (m_mesh->getShape() != nullptr) {
 		EGE_WARNING("create shape whith mesh internal shape ...");
 		m_shape = static_cast<btCollisionShape*>(m_mesh->getShape());
@@ -96,10 +86,11 @@ bool ege::ElementPhysic::setMesh(ememory::SharedPtr<ege::resource::Mesh> _mesh) 
 	m_shape = static_cast<btCollisionShape*>(m_mesh->getShape());
 	vec3 localInertia(0,0,0);
 	m_shape->calculateLocalInertia(50000000, localInertia); // TODO : BETTER ///
+	*/
 	return true;
 }
 
-
+/*
 bool ege::ElementPhysic::setShape(btCollisionShape* _shape) {
 	EGE_DEBUG("Set Shape");
 	removeShape();
@@ -140,47 +131,55 @@ void ege::ElementPhysic::FunctionFreeShape(void* _pointer) {
 	}
 	delete(static_cast<btCollisionShape*>(_pointer));
 }
-
+*/
 void ege::ElementPhysic::setPosition(const vec3& _pos) {
 	if (m_body != nullptr) {
+		/*
 		btTransform transformation = m_body->getCenterOfMassTransform();
 		transformation.setOrigin(_pos);
 		m_body->setCenterOfMassTransform(transformation);
+		*/
 	}
 }
 
 const vec3& ege::ElementPhysic::getPosition() {
+	/*
 	if (m_body != nullptr) {
 		return m_body->getCenterOfMassPosition();
 	}
+	*/
 	return ege::Element::getPosition();
 };
 
 const vec3& ege::ElementPhysic::getSpeed() {
 	static vec3 emptySpeed(0,0,0);
+	/*
 	if (m_body != nullptr) {
 		return m_body->getLinearVelocity();
 	}
+	*/
 	return emptySpeed;
 };
 
 const float ege::ElementPhysic::getInvMass() {
+	/*
 	if (m_body != nullptr) {
 		return m_body->getInvMass();
 	}
+	*/
 	return 0.0000000001f;
 };
 
-void ege::ElementPhysic::drawShape(const btCollisionShape* _shape,
+void ege::ElementPhysic::drawShape(/*const btCollisionShape* _shape,*/
                                    ememory::SharedPtr<ewol::resource::Colored3DObject> _draw,
                                    mat4 _transformationMatrix,
                                    std::vector<vec3> _tmpVertices) {
+	#if 0
 	if(    _draw == nullptr
 	    || _shape == nullptr) {
 		return;
 	}
 	etk::Color<float> tmpColor(1.0, 0.0, 0.0, 0.3);
-	
 	//EGE_DEBUG("        draw (6): !btIDebugDraw::DBG_DrawWireframe");
 	int shapetype=_shape->getShapeType();
 	switch (shapetype) {
@@ -316,10 +315,12 @@ void ege::ElementPhysic::drawShape(const btCollisionShape* _shape,
 			EGE_DEBUG("            draw (09): default");
 		}
 	}
+	#endif
 }
 
 void ege::ElementPhysic::drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
 	ege::Element::drawDebug(_draw, _camera);
+	/*
 	btScalar mmm[16];
 	if (m_body == nullptr) {
 		return;
@@ -333,9 +334,11 @@ void ege::ElementPhysic::drawDebug(ememory::SharedPtr<ewol::resource::Colored3DO
 	// note : set the vertice here to prevent multiple allocations...
 	std::vector<vec3> EwolVertices;
 	drawShape(m_shape, _draw, transformationMatrix, EwolVertices);
+	*/
 }
 
 void ege::ElementPhysic::drawNormalDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
+	/*
 	if(    m_body != nullptr
 	    && m_mesh != nullptr
 	    && m_body->getMotionState() ) {
@@ -348,12 +351,14 @@ void ege::ElementPhysic::drawNormalDebug(ememory::SharedPtr<ewol::resource::Colo
 		transformationMatrix.transpose();
 		m_mesh->drawNormal(transformationMatrix, _draw);
 	}
+	*/
 }
 
 void ege::ElementPhysic::draw(int32_t _pass) {
 	if (m_elementInPhysicsSystem == false) {
 		return;
 	}
+	/*
 	//EGE_INFO("draw : " << _pass );
 	if (_pass == 0) {
 		if(    m_body != nullptr
@@ -372,6 +377,7 @@ void ege::ElementPhysic::draw(int32_t _pass) {
 			m_mesh->draw(transformationMatrix);
 		}
 	}
+	*/
 }
 
 void ege::ElementPhysic::dynamicEnable() {
@@ -438,12 +444,14 @@ void ege::ElementPhysic::setMass(float _value) {
 	if (m_body == nullptr) {
 		return;
 	}
+	/*
 	vec3 localInertia(0,0,0);
 	if (_value != 0.0f && getShape()!=nullptr) {
 		//getShape()->calculateLocalInertia(_value, localInertia);
 		EWOL_ERROR("Update inertia calculated : " << localInertia);
 	}
-	//m_body->setMassProps(_value, localInertia);
+	m_body->setMassProps(_value, localInertia);
+	*/
 }
 
 void ege::ElementPhysic::setLinearVelocity(const vec3& _value) {
@@ -454,7 +462,7 @@ void ege::ElementPhysic::setLinearVelocity(const vec3& _value) {
 	// Force vector (in Newton)
 	rp3d::Vector3 force(_value.x(), _value.y(), _value.z());
 	// Apply a force to the center of the body
-	m_body->applyForceToCenter(force);
+	m_body->applyForceToCenterOfMass(force);
 }
 
 void ege::ElementPhysic::setTorqueImpulse(const vec3& _value) {
@@ -475,7 +483,7 @@ void ege::ElementPhysic::setAngularVelocity(const vec3& _value) {
 	}
 	//m_body->setAngularVelocity(_value);
 }
-
+/*
 btQuaternion ege::ElementPhysic::getOrientation() const {
 	if (m_body == nullptr) {
 		EGE_WARNING("no body");
@@ -484,6 +492,7 @@ btQuaternion ege::ElementPhysic::getOrientation() const {
 	//return m_body->getOrientation();
 	return btQuaternion(0,0,0,0);
 }
+*/
 
 void ege::ElementPhysic::setCollisionDetectionStatus(bool _status) {
 	if (m_body == nullptr) {

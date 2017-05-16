@@ -12,7 +12,7 @@ namespace ege {
 };
 #include <etk/types.hpp>
 #include <etk/math/Vector3D.hpp>
-#include <etk/math/Matrix4.hpp>
+#include <etk/math/Matrix4x4.hpp>
 #include <vector>
 #include <ewol/debug.hpp>
 #include <ege/camera/Camera.hpp>
@@ -20,6 +20,7 @@ namespace ege {
 #include <gale/renderer/openGL/openGL.hpp>
 #include <gale/resource/Manager.hpp>
 #include <gale/Dimension.hpp>
+#include <ephysics/reactphysics3d.h>
 
 
 namespace ege {

@@ -11,11 +11,7 @@ namespace ege {
 };
 #include <ege/camera/Camera.hpp>
 #include <ege/ParticuleEngine.hpp>
-
 #include <etk/types.hpp>
-#include <BulletDynamics/Dynamics/btActionInterface.h>
-class btDynamicsWorld;
-
 #include <vector>
 #include <etk/math/Vector3D.hpp>
 #include <ejson/ejson.hpp>

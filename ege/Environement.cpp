@@ -10,19 +10,7 @@
 #include <ewol/object/Manager.hpp>
 
 #include <gale/renderer/openGL/openGL.hpp>
-#include <etk/math/Matrix4.hpp>
-#include <BulletDynamics/Dynamics/btRigidBody.h>
-#include <LinearMath/btDefaultMotionState.h>
-#include <BulletDynamics/Dynamics/btDynamicsWorld.h>
-#include <BulletCollision/CollisionShapes/btCollisionShape.h>
-#include <LinearMath/btIDebugDraw.h>
-#include <btBulletCollisionCommon.h>
-#include <BulletCollision/CollisionShapes/btConvexPolyhedron.h>
-#include <BulletCollision/CollisionShapes/btShapeHull.h>
-#include <LinearMath/btTransformUtil.h>
-#include <LinearMath/btIDebugDraw.h>
-#include <btBulletDynamicsCommon.h>
-#include <BulletCollision/CollisionDispatch/btCollisionObject.h>
+#include <etk/math/Matrix4x4.hpp>
 
 ememory::SharedPtr<ege::Element> ege::Environement::getElementNearest(ememory::SharedPtr<ege::Element> _sourceRequest, float& _distance) {
 	if (_sourceRequest == nullptr) {
