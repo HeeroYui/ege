@@ -80,8 +80,30 @@ namespace ege {
 			eproperty::List<enum gameStatus> propertyStatus; //!< the display is running (not in pause)
 			eproperty::Value<float> propertyRatio; //!< Speed ratio
 		private:
-			//ememory::SharedPtr<btDynamicsWorld> m_dynamicsWorld; //!< curent system world description
 			ege::physics::Engine m_physicEngine; //!< EGE physic engine interface.
+		public:
+			ege::physics::Engine& getPhysicEngine() {
+				return m_physicEngine;
+			}
+		private:
+			ege::render::Engine m_renderEngine; //!< EGE rendering engine interface.
+		public:
+			ege::render::Engine& getRenderEngine() {
+				return m_renderEngine;
+			}
+		private:
+			ege::particule::Engine m_particuleEngine; //!< EGE particule engine interface.
+		public:
+			ege::particule::Engine& getParticuleEngine() {
+				return m_particuleEngine;
+			}
+		private:
+			ege::ia::Engine m_iaEngine; //!< EGE Artificial inteligence engine interface.
+		public:
+			ege::ia::Engine& getIAEngine() {
+				return m_iaEngine;
+			}
+		private:
 			std::vector<ememory::SharedPtr<ege::Element>> m_listElement; //!< List of all element added in the Game
 		protected:
 			Environement();
@@ -157,9 +179,6 @@ namespace ege {
 				return m_dynamicsWorld;
 			};
 			#endif
-			ege::physics::Engine& getPhysicEngine() {
-				return m_physicEngine;
-			}
 			/**
 			 * @breif get a reference on the curent list of element games
 			 * @return all element list
@@ -203,16 +222,6 @@ namespace ege {
 			 * @param[in] _event event that might be apply ...
 			 */
 			void generateInteraction(ege::ElementInteraction& _event);
-		private:
-			ege::ParticuleEngine m_particuleEngine; //!< Particule engine properties
-		public:
-			/**
-			 * @brief get the particule engine reference.
-			 * @return The requested reference on the engine
-			 */
-			ege::ParticuleEngine& getParticuleEngine() {
-				return m_particuleEngine;
-			};
 		protected:
 			int64_t m_gameTime; //!< time of the game running
 		public:
