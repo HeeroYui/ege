@@ -10,7 +10,9 @@ namespace ege {
 	class ElementInteraction;
 };
 #include <ege/camera/Camera.hpp>
-#include <ege/ParticuleEngine.hpp>
+#include <ege/particule/Engine.hpp>
+#include <ege/render/Engine.hpp>
+#include <ege/ia/Engine.hpp>
 #include <etk/types.hpp>
 #include <vector>
 #include <etk/math/Vector3D.hpp>

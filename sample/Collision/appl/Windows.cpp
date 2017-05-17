@@ -19,6 +19,7 @@
 #include <ege/elements/ElementPhysic.hpp>
 #include <ege/physicsShape/PhysicsBox.hpp>
 #include <ege/physicsShape/PhysicsSphere.hpp>
+#include <ege/position/Component.hpp>
 
 appl::Windows::Windows() {
 	addObjectType("appl::Windows");
@@ -101,6 +102,21 @@ void appl::Windows::init() {
 	}
 	myMesh = ege::resource::Mesh::createCube(3);
 	if (myMesh != nullptr) {
+		ememory::SharedPtr<ege::Element> element = ememory::makeShared<ege::Element>(m_env);
+		// add all component:
+		// 1st Position component:
+		etk::Transform3D transform(vec3(0,0,2), etk::Quaternion::identity());
+		ememory::SharedPtr<ege::position::Component> componentPosition = ememory::makeShared<ege::position::Component>(transform);
+		element->addComponent(componentPosition);
+		
+		// 2nd something to diplay:
+		ememory::SharedPtr<ege::render::Component> componentRender = ememory::makeShared<ege::render::Component>(myMesh);
+		element->addComponent(componentRender);
+		
+		// add it ..
+		m_env->addElement(element);
+		
+		/*
 		//ememory::SharedPtr<ege::ElementBase> element = ememory::makeShared<ege::ElementBase>(m_env);
 		ememory::SharedPtr<ege::ElementPhysic> element = ememory::makeShared<ege::ElementPhysic>(m_env);
 		// add physic interface:
@@ -114,6 +130,7 @@ void appl::Windows::init() {
 		element->setMass(1000);
 		
 		m_env->addElement(element);
+		*/
 	}
 	myMesh = ege::resource::Mesh::createCube(3);
 	if (myMesh != nullptr) {

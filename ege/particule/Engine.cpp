@@ -5,20 +5,20 @@
  */
 
 #include <ege/debug.hpp>
-#include <ege/ParticuleEngine.hpp>
+#include <ege/particule/Engine.hpp>
 #include <ege/Environement.hpp>
-#include <ege/Particule.hpp>
+#include <ege/particule/Particule.hpp>
 
-ege::ParticuleEngine::ParticuleEngine(ege::Environement* _env) :
+ege::particule::Engine::Engine(ege::Environement* _env) :
   m_env(_env) {
 	
 }
 
-ege::ParticuleEngine::~ParticuleEngine() {
+ege::particule::Engine::~Engine() {
 	clear();
 }
 
-void ege::ParticuleEngine::add(Particule* _particule) {
+void ege::particule::Engine::add(const ememory::SharedPtr<ege::particule::Component>& _particule) {
 	if (_particule == nullptr) {
 		EGE_ERROR("Try to add particule nullptr");
 		return;
@@ -34,7 +34,7 @@ void ege::ParticuleEngine::add(Particule* _particule) {
 	m_particuleList.push_back(_particule);
 }
 
-void ege::ParticuleEngine::addRemoved(Particule* _particule) {
+void ege::particule::Engine::addRemoved(const ememory::SharedPtr<ege::particule::Component>& _particule) {
 	if (_particule == nullptr) {
 		return;
 	}
@@ -49,7 +49,7 @@ void ege::ParticuleEngine::addRemoved(Particule* _particule) {
 	m_particuleRemoved.push_back(_particule);
 }
 
-ege::Particule* ege::ParticuleEngine::respown(const char* _particuleType) {
+ememory::SharedPtr<ege::particule::Component> ege::particule::Engine::respown(const char* _particuleType) {
 	if (_particuleType == nullptr) {
 		return nullptr;
 	}
@@ -59,8 +59,8 @@ ege::Particule* ege::ParticuleEngine::respown(const char* _particuleType) {
 		}
 		if (m_particuleRemoved[iii]->getParticuleType() == _particuleType) {
 			add(m_particuleRemoved[iii]);
-			ege::Particule* tmpParticule = m_particuleRemoved[iii];
-			m_particuleRemoved[iii]=nullptr;
+			ememory::SharedPtr<ege::particule::Component> tmpParticule = m_particuleRemoved[iii];
+			m_particuleRemoved[iii].reset();
 			tmpParticule->init();
 			return tmpParticule;
 		}
@@ -68,10 +68,11 @@ ege::Particule* ege::ParticuleEngine::respown(const char* _particuleType) {
 	return nullptr;
 }
 
-void ege::ParticuleEngine::update(float _deltaTime) {
+void ege::particule::Engine::update(float _deltaTime) {
 	if (_deltaTime>(1.0f/60.0f)) {
 		_deltaTime = (1.0f/60.0f);
 	}
+	EGE_WARNING("Update the Particule engine ... " << _deltaTime);
 	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == nullptr) {
 			continue;
@@ -87,7 +88,7 @@ void ege::ParticuleEngine::update(float _deltaTime) {
 			m_particuleList[iii]->onEnd();
 			if (m_particuleList[iii]->getParticuleType() == nullptr) {
 				// Real remove particule ...
-				delete (m_particuleList[iii]);
+				m_particuleList[iii].reset();
 			} else {
 				addRemoved(m_particuleList[iii]);
 			}
@@ -106,7 +107,7 @@ void ege::ParticuleEngine::update(float _deltaTime) {
 	*/
 }
 
-void ege::ParticuleEngine::draw(const ege::Camera& _camera) {
+void ege::particule::Engine::draw(const ege::Camera& _camera) {
 	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == nullptr) {
 			continue;
@@ -115,14 +116,13 @@ void ege::ParticuleEngine::draw(const ege::Camera& _camera) {
 	}
 }
 
-void ege::ParticuleEngine::clear() {
+void ege::particule::Engine::clear() {
 	// clear element not removed
 	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == nullptr) {
 			continue;
 		}
-		delete m_particuleList[iii];
-		m_particuleList[iii] = nullptr;
+		m_particuleList[iii].reset();
 	}
 	m_particuleList.clear();
 	// clear element that are auto-removed
@@ -130,8 +130,7 @@ void ege::ParticuleEngine::clear() {
 		if (m_particuleRemoved[iii] == nullptr) {
 			continue;
 		}
-		delete m_particuleRemoved[iii];
-		m_particuleRemoved[iii] = nullptr;
+		m_particuleRemoved[iii].reset();
 	}
 	m_particuleRemoved.clear();
 }

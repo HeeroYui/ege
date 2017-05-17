@@ -382,7 +382,7 @@ void ege::Environement::clear() {
 
 void ege::Environement::onCallbackPeriodicCall(const ewol::event::Time& _event) {
 	float curentDelta = _event.getDeltaCall();
-	EGE_VERBOSE("periodic call : " << _event);
+	EGE_INFO("periodic call : " << _event);
 	// small hack to change speed ...
 	curentDelta *= *propertyRatio;
 	// check if the processing is availlable
@@ -393,7 +393,7 @@ void ege::Environement::onCallbackPeriodicCall(const ewol::event::Time& _event) 
 	int32_t lastGameTime = m_gameTime*0.000001f;
 	m_gameTime += curentDelta;
 	if (lastGameTime != (int32_t)(m_gameTime*0.000001f)) {
-		EGE_VERBOSE("    Emit Signal");
+		EGE_INFO("    Emit Signal");
 		signalPlayTimeChange.emit(m_gameTime*0.000001f);
 	}
 	
@@ -402,17 +402,17 @@ void ege::Environement::onCallbackPeriodicCall(const ewol::event::Time& _event) 
 	// update camera positions:
 	for (auto &it : m_listCamera) {
 		if (it.second != nullptr) {
-			EGE_VERBOSE("    update camera : '" << it.first << "'");
+			EGE_INFO("    update camera : '" << it.first << "'");
 			it.second->periodicCall(curentDelta);
 		}
 	}
 	//EGE_DEBUG("stepSimulation (start)");
 	///step the simulation
-	EGE_VERBOSE("    step simulation : " << curentDelta);
+	EGE_INFO("    step simulation : " << curentDelta);
 	m_physicEngine.update(curentDelta);
 	//optional but useful: debug drawing
 	m_physicEngine.debugDrawWorld();
-	EGE_VERBOSE("    Update particule engine");
+	EGE_INFO("    Update particule engine");
 	m_particuleEngine.update(curentDelta);
 	// remove all element that requested it ...
 	{
@@ -426,7 +426,7 @@ void ege::Environement::onCallbackPeriodicCall(const ewol::event::Time& _event) 
 						numberEnnemyKilled++;
 						victoryPoint++;
 					}
-					EGE_VERBOSE("[" << (*it)->getUID() << "] element Removing ... " << (*it)->getType());
+					EGE_INFO("[" << (*it)->getUID() << "] element Removing ... " << (*it)->getType());
 					rmElement((*it));
 					it = m_listElement.begin();
 				} else {

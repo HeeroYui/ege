@@ -17,6 +17,7 @@
 #include <ege/camera/Camera.hpp>
 #include <ewol/compositing/Text.hpp>
 #include <ege/Environement.hpp>
+#include <ege/Component.hpp>
 
 #define INDEX_RIGHT_AXIS   (0)
 #define INDEX_FORWARD_AXIS (1)
@@ -39,6 +40,22 @@ namespace ege {
 			 * @brief Destructor
 			 */
 			virtual ~Element();
+		protected:
+			std::vector<ememory::SharedPtr<ege::Component>> m_component;
+			int32_t m_idRender; //!< fast reference on the Render component (can static cast and not dynamic cast)
+			int32_t m_idIA; //!< fast reference on the IA component.
+			int32_t m_idParticule; //!< fast reference on the Particule component.
+			int32_t m_idPhysics; //!< fast reference on the Physics component.
+			int32_t m_idPosition; //!< fast reference on the position component ==> incompatible with 'physics' component.
+			// int32_t m_idCamera; //!< fast reference on the camera component.
+			// int32_t m_idSound; //!< fast reference on the Sound component.
+			// int32_t m_idLife; //!< fast reference on the Life component.
+			// ... and evry thing the user want to add ... to create a good game ...
+		public:
+			void addComponent(const ememory::SharedPtr<ege::Component>& _ref);
+			void rmComponent(const ememory::SharedPtr<ege::Component>& _ref);
+			void rmComponent(const std::string& _type);
+			
 			/**
 			 * @brief get the element Type description string.
 			 * @return A reference on the descriptive string.
@@ -66,6 +83,11 @@ namespace ege {
 			inline uint32_t getUID() const {
 				return m_uID;
 			};
+		/*
+		 * *********************************
+		 *     Remove in progress .... [BEGIN]
+		 * *********************************
+		 */
 		protected:
 			ememory::SharedPtr<ege::resource::Mesh> m_mesh; //!< Mesh of the Element (can be nullptr)
 		public:
@@ -90,6 +112,11 @@ namespace ege {
 			inline ememory::SharedPtr<ege::resource::Mesh> getMesh() {
 				return m_mesh;
 			};
+		/*
+		 * *********************************
+		 *     Remove in progress .... [END]
+		 * *********************************
+		 */
 		protected:
 			float m_life; //!< Current life of the object
 			float m_lifeMax; //!< Maximum possible life of the element
@@ -153,7 +180,7 @@ namespace ege {
 			 * @brief draw the curent element (can have multiple display)
 			 * @param[in] pass Id of the current pass : [0..?]
 			 */
-			virtual void draw(int32_t _pass=0) = 0;
+			virtual void draw(int32_t _pass=0) { };
 			
 			/**
 			 * @brief draw the current life of the element
@@ -233,17 +260,6 @@ namespace ege {
 			 */
 			virtual void dynamicDisable() {};
 		
-		// TODO: next step:
-		/*
-		public:
-			void addComponent(const std::string& _name, const ememory::SharedPtr<ElementComponent>& _ref);
-			example: addComponent("physic", componentPhysic);
-			         addComponent("ia", componentIA);
-			         addComponent("render", componentRendering);
-			         addComponent("group", componentFormationMovingSquare); // << here we add a group to control the moving interface of the IA ...
-			if we want to remove the IA, just remove the component,
-			if the display (render) change (unit upgrade) just the render is change, if it is invisible, just remove the render ...
-		*/
 	};
 }
 

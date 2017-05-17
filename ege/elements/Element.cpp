@@ -19,6 +19,11 @@ const std::string& ege::Element::getType() const {
 
 ege::Element::Element(const ememory::SharedPtr<ege::Environement>& _env) :
   m_env(_env),
+  m_idRender(-1),
+  m_idIA(-1),
+  m_idParticule(-1),
+  m_idPhysics(-1),
+  m_idPosition(-1),
   m_uID(0),
   m_mesh(),
   m_life(100),
@@ -36,6 +41,150 @@ ege::Element::Element(const ememory::SharedPtr<ege::Environement>& _env) :
 ege::Element::~Element() {
 	EGE_DEBUG("Destroy element: uId=" << m_uID);
 }
+
+void ege::Element::addComponent(const ememory::SharedPtr<ege::Component>& _ref) {
+	if (_ref == nullptr) {
+		EGE_ERROR("try to add an empty component");
+		return;
+	}
+	ememory::SharedPtr<ege::Component> componentRemoved;
+	int32_t findId = -1;
+	// check if not exist
+	for (int32_t iii=0; iii<m_component.size(); ++iii) {
+		if (m_component[iii] == nullptr) {
+			continue;
+		}
+		if (m_component[iii]->getType() == _ref->getType()) {
+			componentRemoved = m_component[iii];
+			m_component[iii] = _ref;
+			findId = iii;
+			break;
+		}
+	}
+	// try to add in an empty slot
+	if (findId == -1) {
+		for (int32_t iii=0; iii<m_component.size(); ++iii) {
+			if (m_component[iii] != nullptr) {
+				continue;
+			}
+			findId = iii;
+			m_component[iii] = _ref;
+			break;
+		}
+	}
+	// add it at the end ...
+	if (findId == -1) {
+		findId = m_component.size();
+		m_component.push_back(_ref);
+	}
+	if (_ref->getType() == "IA") {
+		m_idIA = findId;
+		m_env->getIAEngine().remove(_ref);
+	} else if (_ref->getType() == "render") {
+		m_idRender = findId;
+	} else if (_ref->getType() == "particule") {
+		m_idParticule = findId;
+	} else if (_ref->getType() == "physics") {
+		m_idPhysics = findId;
+	} else if (_ref->getType() == "position") {
+		m_idPosition = findId;
+	}
+	for (int32_t iii=0; iii<m_component.size(); ++iii) {
+		if (m_component[iii] == nullptr) {
+			continue;
+		}
+		if (componentRemoved != nullptr) {
+			m_env->engineComponentRemove(componentRemoved);
+			m_component[iii]->removeFriendComponent(componentRemoved);
+		}
+		m_env->engineComponentAdd(_ref);
+		m_component[iii]->addFriendComponent(_ref);
+	}
+	
+}
+void ege::Element::rmComponent(const ememory::SharedPtr<ege::Component>& _ref) {
+	if (_ref == nullptr) {
+		EGE_ERROR("try to remove an empty component");
+		return;
+	}
+	int32_t findId = -1;
+	// check if not exist
+	for (int32_t iii=0; iii<m_component.size(); ++iii) {
+		if (m_component[iii] == nullptr) {
+			continue;
+		}
+		if (m_component[iii] == _ref) {
+			m_component[iii] = nullptr;
+			findId = iii;
+			break;
+		}
+	}
+	if (findId == -1) {
+		EGE_ERROR("try to remove an unexisting component");
+		return;
+	}
+	if (_ref->getType() == "IA") {
+		m_idIA = -1;
+	} else if (_ref->getType() == "render") {
+		m_idRender = -1;
+	} else if (_ref->getType() == "particule") {
+		m_idParticule = -1;
+	} else if (_ref->getType() == "physics") {
+		m_idPhysics = -1;
+	} else if (_ref->getType() == "position") {
+		m_idPosition = -1;
+		//m_env->getPositionEngine().remove(componentRemoved);
+	}
+	for (int32_t iii=0; iii<m_component.size(); ++iii) {
+		if (m_component[iii] == nullptr) {
+			continue;
+		}
+		m_env->engineComponentRemove(_ref);
+		m_component[iii]->removeFriendComponent(_ref);
+	}
+}
+
+void ege::Element::rmComponent(const std::string& _type) {
+	int32_t findId = -1;
+	ememory::SharedPtr<ege::Component> componentRemoved;
+	// check if not exist
+	for (int32_t iii=0; iii<m_component.size(); ++iii) {
+		if (m_component[iii] == nullptr) {
+			continue;
+		}
+		if (m_component[iii]->getType() == _type) {
+			componentRemoved = m_component[iii];
+			m_component[iii] = nullptr;
+			findId = iii;
+			break;
+		}
+	}
+	if (findId == -1) {
+		EGE_ERROR("try to remove an unexisting component type : '" << _type << "'");
+		return;
+	}
+	if (_type == "IA") {
+		m_idIA = -1;
+	} else if (_type == "render") {
+		m_idRender = -1;
+	} else if (_type == "particule") {
+		m_idParticule = -1;
+	} else if (_type == "physics") {
+		m_idPhysics = -1;
+	} else if (_type == "position") {
+		m_idPosition = -1;
+	}
+	for (int32_t iii=0; iii<m_component.size(); ++iii) {
+		if (m_component[iii] == nullptr) {
+			continue;
+		}
+		m_env->engineComponentRemove(componentRemoved);
+		m_component[iii]->removeFriendComponent(componentRemoved);
+	}
+}
+
+
+
 
 
 bool ege::Element::init() {

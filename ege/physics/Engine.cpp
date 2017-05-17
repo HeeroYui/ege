@@ -46,6 +46,10 @@ ege::physics::Engine::Engine():
 	rp3d::Vector3 gravity(0.0f, 0.0f, 0.0f);
 	// Create the dynamics world
 	m_dynamicsWorld = new rp3d::DynamicsWorld(gravity);
+	if (m_dynamicsWorld != nullptr) {
+		// Set the number of iterations of the constraint solver
+		m_dynamicsWorld->setNbIterationsVelocitySolver(15);
+	}
 }
 
 ege::physics::Engine::~Engine() {
@@ -70,8 +74,11 @@ void ege::physics::Engine::update(float _delta) {
 	m_accumulator += _delta;
 	// While there is enough accumulated time to take one or several physics steps
 	while (m_accumulator >= timeStep) {
-		// Update the Dynamics world with a constant time step
-		m_dynamicsWorld->update(timeStep);
+		if (m_dynamicsWorld != nullptr) {
+			// Update the Dynamics world with a constant time step
+			EGE_WARNING("Update the Physic engine ... " << timeStep);
+			m_dynamicsWorld->update(timeStep);
+		}
 		// Decrease the accumulated time
 		m_accumulator -= timeStep;
 	}
