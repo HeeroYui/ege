@@ -4,19 +4,16 @@
  * @license MPL v2.0 (see license file)
  */
 #pragma once
-
+#include <ege/Engine.hpp>
 #include <etk/types.hpp>
 #include <vector>
-#include <ege/camera/Camera.hpp>
 #include <ege/particule/Component.hpp>
 
 namespace ege {
 	class Environement;
 	namespace particule {
 		class Component;
-		class Engine {
-			private:
-				ege::Environement* m_env;
+		class Engine : public ege::Engine {
 			public:
 				Engine(ege::Environement* _env); // note : need the engine to register has an dynamic element ... (the first ...)
 				~Engine();
@@ -41,16 +38,6 @@ namespace ege {
 				void addRemoved(const ememory::SharedPtr<ege::particule::Component>& _particule);
 			public:
 				/**
-				 * @brief update particule properties
-				 * @param[in] _deltaTime delta time to process
-				 */
-				void update(float _deltaTime);
-				/**
-				 * @brief draw all the active Particule
-				 * @param[in] _camera Reference on the current camera
-				 */
-				void draw(const ege::Camera& _camera);
-				/**
 				 * @brief get a particue with his type, we get particule that has been already removed, otherwise, you will create new
 				 * @param[in] _particuleType Particule type, this chek only the pointer not the data.
 				 * @return nullptr, the particule has not been removed from the created pool
@@ -59,6 +46,12 @@ namespace ege {
 				 */
 				ememory::SharedPtr<ege::particule::Component> respown(const char* _particuleType);
 				
+			public:
+				const std::string& getType() const override;
+				void componentRemove(const ememory::SharedPtr<ege::Component>& _ref) override;
+				void componentAdd(const ememory::SharedPtr<ege::Component>& _ref) override;
+				void update(const echrono::Duration& _delta) override;
+				void render(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) override;
 		};
 	}
 }

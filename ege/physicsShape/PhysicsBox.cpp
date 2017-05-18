@@ -4,6 +4,7 @@
  * @license MPL v2.0 (see license file)
  */
 #include <ege/debug.hpp>
+#include <etk/math/Vector3D.hpp>
 #include <ege/physicsShape/PhysicsBox.hpp>
 
 

@@ -14,7 +14,7 @@
 #include <ege/physicsShape/PhysicsCylinder.hpp>
 #include <ege/physicsShape/PhysicsSphere.hpp>
 
-// Documentetion of bullet library :
+// Documentetion of bullet library:
 // http://bulletphysics.org/mediawiki-1.5.8/index.php/Collision_Shapes
 /*
 btCollisionShape* ege::collision::createShape(const ememory::SharedPtr<ege::resource::Mesh>& _mesh) {

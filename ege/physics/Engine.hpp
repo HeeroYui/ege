@@ -5,6 +5,8 @@
  */
 #pragma once
 
+#include <ege/Engine.hpp>
+
 namespace ege {
 	namespace physics {
 		class Engine;
@@ -25,12 +27,12 @@ namespace ege {
 
 namespace ege {
 	namespace physics {
-		class Engine {
+		class Engine : public ege::Engine {
 			private:
 				rp3d::DynamicsWorld* m_dynamicsWorld;
 				float m_accumulator; // limit call of the step rendering
 			public:
-				Engine();
+				Engine(ege::Environement* _env);
 				~Engine();
 			public:
 				// Define a collision point ==> for debug only ...
@@ -63,12 +65,16 @@ namespace ege {
 				 * @param[in] _axePower energy of this gravity
 				 */
 				void setGravity(const vec3& _axePower);
-				// update cycle
-				void update(float _delta);
 				
 				void debugDrawWorld() {
 					// TODO: later ...
 				}
+			public:
+				const std::string& getType() const override;
+				void componentRemove(const ememory::SharedPtr<ege::Component>& _ref) override;
+				void componentAdd(const ememory::SharedPtr<ege::Component>& _ref) override;
+				void update(const echrono::Duration& _delta) override;
+				//void render(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) override;
 		};
 	}
 }

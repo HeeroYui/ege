@@ -186,7 +186,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 			switch(m_normalMode) {
 				case normalModeFace:
 					for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
-						if(btDot(mattttt * m_listFacesNormal[tmppFaces[iii].m_normal[0]], cameraNormal) >= 0.0f) {
+						if((mattttt * m_listFacesNormal[tmppFaces[iii].m_normal[0]]).dot(cameraNormal) >= 0.0f) {
 							tmpIndexResult.push_back(iii*3);
 							tmpIndexResult.push_back(iii*3+1);
 							tmpIndexResult.push_back(iii*3+2);
@@ -195,9 +195,9 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 					break;
 				case normalModeVertex:
 					for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
-						if(    (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[0]], cameraNormal) >= -0.2f)
-						    || (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[1]], cameraNormal) >= -0.2f)
-						    || (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[2]], cameraNormal) >= -0.2f) ) {
+						if(    ((mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[0]]).dot(cameraNormal) >= -0.2f)
+						    || ((mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[1]]).dot(cameraNormal) >= -0.2f)
+						    || ((mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[2]]).dot(cameraNormal) >= -0.2f) ) {
 							tmpIndexResult.push_back(iii*3);
 							tmpIndexResult.push_back(iii*3+1);
 							tmpIndexResult.push_back(iii*3+2);
@@ -285,7 +285,7 @@ void ege::resource::Mesh::drawNormal(mat4& _positionMatrix,
 							vec3 position = m_listVertex[tmpFaceList.m_faces[iii].m_vertex[indice]];
 							vec3 normal = m_listVertexNormal[tmpFaceList.m_faces[iii].m_normal[indice]];
 							vertices.push_back(position);
-							vertices.push_back(position+normal/4);
+							vertices.push_back(position+normal*0.25f);
 						}
 					} break;
 				case normalModeFace:
@@ -298,7 +298,7 @@ void ege::resource::Mesh::drawNormal(mat4& _positionMatrix,
 						center /= float(nbIndicInFace);
 						vec3 normal = m_listFacesNormal[tmpFaceList.m_faces[iii].m_normal[0]];
 						vertices.push_back(center);
-						vertices.push_back(center+normal/4);
+						vertices.push_back(center+normal*0.25f);
 					} break;
 				case normalModeNone:
 					break;
@@ -325,8 +325,7 @@ void ege::resource::Mesh::calculateNormaleFace(const std::string& _materialName)
 		}
 		for(auto &it : m_listFaces[_materialName].m_faces) {
 			// for all case, We use only the 3 vertex for quad element, in theory 3D modeler export element in triangle if it is not a real plane.
-			vec3 normal = btCross(m_listVertex[it.m_vertex[0]]-m_listVertex[it.m_vertex[1]],
-			                      m_listVertex[it.m_vertex[1]]-m_listVertex[it.m_vertex[2]]);
+			vec3 normal = (m_listVertex[it.m_vertex[0]]-m_listVertex[it.m_vertex[1]]).cross(m_listVertex[it.m_vertex[1]]-m_listVertex[it.m_vertex[2]]);
 			if (normal == vec3(0,0,0)) {
 				EGE_ERROR("Null vertor for a face ... " << m_listVertex[it.m_vertex[0]] << " " << m_listVertex[it.m_vertex[1]] << " " << m_listVertex[it.m_vertex[2]]);
 				m_listFacesNormal.push_back(vec3(1,0,0));

@@ -71,7 +71,8 @@ void ege::widget::Scene::onDraw() {
 		g_counterNbTimeDisplay++;
 		g_startTime = echrono::Steady::now();
 	#endif
-	
+	m_env->render(echrono::Duration(1.0/60.0), m_cameraName);
+	#if 0
 	// draw constant object:
 	{
 		mat4 tmpMatrix;
@@ -82,7 +83,7 @@ void ege::widget::Scene::onDraw() {
 		}
 	}
 	
-	// get camera :
+	// get camera:
 	ememory::SharedPtr<ege::Camera> camera = m_env->getCamera(m_cameraName);
 	if (camera == nullptr) {
 		EGE_ERROR(" can not get camera named: '" << m_cameraName << "'");
@@ -134,9 +135,12 @@ void ege::widget::Scene::onDraw() {
 		// Draw debug ... (User)
 		signalDisplayDebug.emit(m_debugDrawProperty);
 	}
+	/* TODO: set it back ...
 	if (camera != nullptr) {
 		m_env->getParticuleEngine().draw(*camera);
 	}
+	*/
+	#endif
 	#ifdef SCENE_DISPLAY_SPEED
 		echrono::Duration localTime = echrono::Steady::now() - g_startTime;
 		if (localTime>1) {

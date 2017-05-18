@@ -7,6 +7,7 @@
 #include <ege/Ray.hpp>
 #include <ege/debug.hpp>
 #include <ege/elements/Element.hpp>
+#include <etk/math/Vector3D.hpp>
 
 
 ege::Ray::Ray(const vec3& _origin, const vec3& _direction) :

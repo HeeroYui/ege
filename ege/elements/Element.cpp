@@ -19,11 +19,6 @@ const std::string& ege::Element::getType() const {
 
 ege::Element::Element(const ememory::SharedPtr<ege::Environement>& _env) :
   m_env(_env),
-  m_idRender(-1),
-  m_idIA(-1),
-  m_idParticule(-1),
-  m_idPhysics(-1),
-  m_idPosition(-1),
   m_uID(0),
   m_mesh(),
   m_life(100),
@@ -77,18 +72,6 @@ void ege::Element::addComponent(const ememory::SharedPtr<ege::Component>& _ref) 
 		findId = m_component.size();
 		m_component.push_back(_ref);
 	}
-	if (_ref->getType() == "IA") {
-		m_idIA = findId;
-		m_env->getIAEngine().remove(_ref);
-	} else if (_ref->getType() == "render") {
-		m_idRender = findId;
-	} else if (_ref->getType() == "particule") {
-		m_idParticule = findId;
-	} else if (_ref->getType() == "physics") {
-		m_idPhysics = findId;
-	} else if (_ref->getType() == "position") {
-		m_idPosition = findId;
-	}
 	for (int32_t iii=0; iii<m_component.size(); ++iii) {
 		if (m_component[iii] == nullptr) {
 			continue;
@@ -123,18 +106,6 @@ void ege::Element::rmComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 		EGE_ERROR("try to remove an unexisting component");
 		return;
 	}
-	if (_ref->getType() == "IA") {
-		m_idIA = -1;
-	} else if (_ref->getType() == "render") {
-		m_idRender = -1;
-	} else if (_ref->getType() == "particule") {
-		m_idParticule = -1;
-	} else if (_ref->getType() == "physics") {
-		m_idPhysics = -1;
-	} else if (_ref->getType() == "position") {
-		m_idPosition = -1;
-		//m_env->getPositionEngine().remove(componentRemoved);
-	}
 	for (int32_t iii=0; iii<m_component.size(); ++iii) {
 		if (m_component[iii] == nullptr) {
 			continue;
@@ -162,17 +133,6 @@ void ege::Element::rmComponent(const std::string& _type) {
 	if (findId == -1) {
 		EGE_ERROR("try to remove an unexisting component type : '" << _type << "'");
 		return;
-	}
-	if (_type == "IA") {
-		m_idIA = -1;
-	} else if (_type == "render") {
-		m_idRender = -1;
-	} else if (_type == "particule") {
-		m_idParticule = -1;
-	} else if (_type == "physics") {
-		m_idPhysics = -1;
-	} else if (_type == "position") {
-		m_idPosition = -1;
 	}
 	for (int32_t iii=0; iii<m_component.size(); ++iii) {
 		if (m_component[iii] == nullptr) {

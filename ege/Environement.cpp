@@ -9,8 +9,99 @@
 #include <ege/elements/Element.hpp>
 #include <ewol/object/Manager.hpp>
 
+#include <ege/particule/Engine.hpp>
+#include <ege/render/Engine.hpp>
+#include <ege/ia/Engine.hpp>
+#include <ege/physics/Engine.hpp>
+
 #include <gale/renderer/openGL/openGL.hpp>
 #include <etk/math/Matrix4x4.hpp>
+
+
+void ege::Environement::addEngine(const ememory::SharedPtr<ege::Engine>& _ref) {
+	if (_ref == nullptr) {
+		EGE_ERROR("try to add an empty Engine");
+		return;
+	}
+	// check if not exist
+	for (auto &it: m_engine) {
+		if (it == nullptr) {
+			continue;
+		}
+		if (it->getType() == _ref->getType()) {
+			it = _ref;
+			return;
+		}
+	}
+	// try to add in an empty slot
+	for (auto &it: m_engine) {
+		if (it != nullptr) {
+			continue;
+		}
+		it = _ref;
+		return;
+	}
+	// add it at the end ...
+	m_engine.push_back(_ref);
+}
+
+void ege::Environement::rmEngine(const ememory::SharedPtr<ege::Engine>& _ref) {
+	if (_ref == nullptr) {
+		EGE_ERROR("try to remove an empty engine");
+		return;
+	}
+	// check if not exist
+	for (auto &it: m_engine) {
+		if (it == nullptr) {
+			continue;
+		}
+		if (it == _ref) {
+			it = nullptr;
+			return;
+		}
+	}
+	EGE_ERROR("try to remove an unexisting engine");
+}
+
+void ege::Environement::rmEngine(const std::string& _type) {
+	// check if not exist
+	for (auto &it: m_engine) {
+		if (it == nullptr) {
+			continue;
+		}
+		if (it->getType() == _type) {
+			it = nullptr;
+			return;
+		}
+	}
+	EGE_ERROR("try to remove an unexisting engine type : '" << _type << "'");
+	return;
+}
+
+
+void ege::Environement::engineComponentRemove(const ememory::SharedPtr<ege::Component>& _ref) {
+	for (auto &it: m_engine) {
+		if (it == nullptr) {
+			continue;
+		}
+		if (it->getType() == _ref->getType()) {
+			it->componentRemove(_ref);
+			return;
+		}
+	}
+}
+void ege::Environement::engineComponentAdd(const ememory::SharedPtr<ege::Component>& _ref) {
+	for (auto &it: m_engine) {
+		if (it == nullptr) {
+			continue;
+		}
+		if (it->getType() == _ref->getType()) {
+			it->componentAdd(_ref);
+			return;
+		}
+	}
+}
+
 
 ememory::SharedPtr<ege::Element> ege::Environement::getElementNearest(ememory::SharedPtr<ege::Element> _sourceRequest, float& _distance) {
 	if (_sourceRequest == nullptr) {
@@ -32,7 +123,7 @@ ememory::SharedPtr<ege::Element> ege::Environement::getElementNearest(ememory::S
 		}
 		// check distance ...
 		vec3 destPosition = m_listElement[iii]->getPosition();
-		float distance = btDistance(sourcePosition, destPosition);
+		float distance = (sourcePosition - destPosition).length();
 		//EGE_DEBUG("Distance : " << _distance << " >? " << distance << " id=" << iii);
 		if (_distance>distance) {
 			_distance = distance;
@@ -61,7 +152,7 @@ void ege::Environement::getElementNearest(const vec3& _sourcePosition,
 		if (_sourcePosition == destPosition) {
 			continue;
 		}
-		result.dist = btDistance(_sourcePosition, destPosition);
+		result.dist = (_sourcePosition - destPosition).length();
 		//EGE_DEBUG("Distance : " << _distance << " >? " << distance << " id=" << iii);
 		if (_distanceMax>result.dist) {
 			_resultList.push_back(result);
@@ -87,7 +178,7 @@ void ege::Environement::getElementNearestFixed(const vec3& _sourcePosition,
 		}
 		// check distance ...
 		vec3 destPosition = result.element->getPositionTheoric();
-		result.dist = btDistance(_sourcePosition, destPosition);
+		result.dist = (_sourcePosition - destPosition).length();
 		//EGE_DEBUG("Distance : " << _distance << " >? " << distance << " id=" << iii);
 		if (_distanceMax <= result.dist) {
 			continue;
@@ -285,7 +376,7 @@ void ege::Environement::rmElement(ememory::SharedPtr<ege::Element> _removeElemen
 	}
 }
 
-
+// TODO : DEPRECATED ==> special function of the renderer ...
 void ege::Environement::getOrderedElementForDisplay(std::vector<ege::Environement::ResultNearestElement>& _resultList,
                                                     const vec3& _position,
                                                     const vec3& _direction) {
@@ -316,7 +407,7 @@ void ege::Environement::getOrderedElementForDisplay(std::vector<ege::Environemen
 			continue;
 		}
 		*/
-		result.dist = btDistance(_position, destPosition);
+		result.dist = (_position - destPosition).length();
 		/*
 		if (result.dist>500.0f) {
 			// The element is realy too far ...  == > no need to display
@@ -348,7 +439,7 @@ void ege::Environement::generateInteraction(ege::ElementInteraction& _event) {
 		_event.applyEvent(*m_listElement[iii]);
 		/*
 		vec3 destPosition = m_listElement[iii]->getPosition();
-		float dist = btDistance(sourcePosition, destPosition);
+		float dist = (sourcePosition - destPosition).length;
 		if (dist == 0 || dist>decreasePower) {
 			continue;
 		}
@@ -367,18 +458,38 @@ ege::Environement::Environement() :
   propertyRatio(this, "ratio",
                       1.0f,
                       "game speed ratio"),
-  m_listElement(),
-  m_particuleEngine(this) {
+  m_listElement() {
 	// nothing to do ...
 	propertyStatus.add(gameStart, "start", "Scene is started");
 	propertyStatus.add(gamePause, "pause", "Scene is paused");
 	propertyStatus.add(gameStop, "stop", "Scene is stopped");
+	// we add the 4 classical engines (the order is used to the global rendering cycle ...
+	addEngine(ememory::makeShared<ege::physics::Engine>(this));
+	addEngine(ememory::makeShared<ege::ia::Engine>(this));
+	addEngine(ememory::makeShared<ege::render::Engine>(this));
+	addEngine(ememory::makeShared<ege::particule::Engine>(this));
 }
 
 void ege::Environement::clear() {
 	m_listElement.clear();
 }
 
+
+void ege::Environement::render(const echrono::Duration& _delta, const std::string& _camera) {
+	// get the correct camera:
+	ememory::SharedPtr<ege::Camera> camera = getCamera(_camera);
+	if (camera == nullptr) {
+		EGE_ERROR("Render: Can not get camera named: '" << _camera << "'");
+		return;
+	}
+	for (auto &it: m_engine) {
+		if(it == nullptr) {
+			continue;
+		}
+		EGE_INFO("    render: " << it->getType());
+		it->render(_delta, camera);
+	}
+}
 
 void ege::Environement::onCallbackPeriodicCall(const ewol::event::Time& _event) {
 	float curentDelta = _event.getDeltaCall();
@@ -406,15 +517,24 @@ void ege::Environement::onCallbackPeriodicCall(const ewol::event::Time& _event) 
 			it.second->periodicCall(curentDelta);
 		}
 	}
+	EGE_INFO("    step simulation : " << curentDelta);
+	for (auto &it: m_engine) {
+		if(it == nullptr) {
+			continue;
+		}
+		EGE_INFO("    update: " << it->getType());
+		it->update(echrono::Duration(double(curentDelta)));
+	}
+	
 	//EGE_DEBUG("stepSimulation (start)");
 	///step the simulation
-	EGE_INFO("    step simulation : " << curentDelta);
-	m_physicEngine.update(curentDelta);
-	//optional but useful: debug drawing
-	m_physicEngine.debugDrawWorld();
-	EGE_INFO("    Update particule engine");
-	m_particuleEngine.update(curentDelta);
+	// TODO : m_physicEngine.update(curentDelta);
+	// TODO : //optional but useful: debug drawing
+	// TODO : m_physicEngine.debugDrawWorld();
+	// TODO : EGE_INFO("    Update particule engine");
+	// TODO : m_particuleEngine.update(curentDelta);
 	// remove all element that requested it ...
+	/**
 	{
 		int32_t numberEnnemyKilled=0;
 		int32_t victoryPoint=0;
@@ -440,6 +560,7 @@ void ege::Environement::onCallbackPeriodicCall(const ewol::event::Time& _event) 
 			//signalKillEnemy.emit(numberEnnemyKilled);
 		}
 	}
+	*/
 }
 
 

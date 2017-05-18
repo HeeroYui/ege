@@ -7,6 +7,7 @@
 
 #include <ege/camera/Camera.hpp>
 #include <ege/debug.hpp>
+#include <ege/Ray.hpp>
 
 #include <gale/renderer/openGL/openGL.hpp>
 

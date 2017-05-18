@@ -20,6 +20,7 @@
 #include <ege/physicsShape/PhysicsBox.hpp>
 #include <ege/physicsShape/PhysicsSphere.hpp>
 #include <ege/position/Component.hpp>
+#include <ege/render/Component.hpp>
 
 appl::Windows::Windows() {
 	addObjectType("appl::Windows");
@@ -242,6 +243,7 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 }
 
 void appl::Windows::onCallbackPeriodicCheckCollision(const ewol::event::Time& _event) {
+	/*
 	std::vector<ege::physics::Engine::collisionPoints> list = m_env->getPhysicEngine().getListOfCollision();
 	
 	if (list.size() != 0) {
@@ -250,6 +252,7 @@ void appl::Windows::onCallbackPeriodicCheckCollision(const ewol::event::Time& _e
 	for (size_t iii=0;iii<list.size();++iii) {
 		APPL_ERROR("    [" << list[iii].elem1->getUID() << "]:point1=" << list[iii].positionElem1 << " [" << list[iii].elem1->getUID() << "]:point2=" << list[iii].positionElem2  << " normal=" << list[iii].normalElem2);
 	}
+	*/
 }
 
 

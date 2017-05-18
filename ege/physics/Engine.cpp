@@ -4,6 +4,7 @@
  * @license MPL v2.0 (see license file)
  */
 
+#include <ege/elements/Element.hpp>
 #include <ege/physics/Engine.hpp>
 
 #include <ege/debug.hpp>
@@ -12,6 +13,19 @@
 #include <etk/math/Matrix4x4.hpp>
 
 #include <ege/elements/ElementPhysic.hpp>
+
+const std::string& ege::physics::Engine::getType() const {
+	static std::string tmp("physics");
+	return tmp;
+}
+
+void ege::physics::Engine::componentRemove(const ememory::SharedPtr<ege::Component>& _ref) {
+	
+}
+
+void ege::physics::Engine::componentAdd(const ememory::SharedPtr<ege::Component>& _ref) {
+	
+}
 
 
 // unique callback function :
@@ -38,7 +52,8 @@ static bool handleContactsProcess(btManifoldPoint& _point, btCollisionObject* _b
 }
 */
 
-ege::physics::Engine::Engine():
+ege::physics::Engine::Engine(ege::Environement* _env) :
+  ege::Engine(_env),
   m_dynamicsWorld(nullptr),
   m_accumulator(0.0f) {
 	// Start engine with no gravity
@@ -69,9 +84,10 @@ void ege::physics::Engine::setGravity(const vec3& _axePower) {
 // Constant physics time step
 const float timeStep = 1.0 / 60.0;
 
-void ege::physics::Engine::update(float _delta) {
+void ege::physics::Engine::update(const echrono::Duration& _delta) {
+	float deltaTime = _delta.toSeconds();
 	// Add the time difference in the accumulator
-	m_accumulator += _delta;
+	m_accumulator += deltaTime;
 	// While there is enough accumulated time to take one or several physics steps
 	while (m_accumulator >= timeStep) {
 		if (m_dynamicsWorld != nullptr) {

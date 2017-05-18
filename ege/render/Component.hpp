@@ -56,6 +56,9 @@ namespace ege {
 					return m_mesh;
 				};
 				
+				const etk::Transform3D& getTransform() {
+					return m_transform;
+				}
 			public:
 				const std::string& getType() const override;
 				void addFriendComponent(const ememory::SharedPtr<ege::Component>& _component) override;

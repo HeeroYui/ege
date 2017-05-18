@@ -10,13 +10,28 @@
 #include <ege/particule/Particule.hpp>
 
 ege::particule::Engine::Engine(ege::Environement* _env) :
-  m_env(_env) {
+  ege::Engine(_env) {
 	
 }
 
 ege::particule::Engine::~Engine() {
 	clear();
 }
+
+const std::string& ege::particule::Engine::getType() const {
+	static std::string tmp("particule");
+	return tmp;
+}
+
+void ege::particule::Engine::componentRemove(const ememory::SharedPtr<ege::Component>& _ref) {
+	
+}
+
+void ege::particule::Engine::componentAdd(const ememory::SharedPtr<ege::Component>& _ref) {
+	
+}
+
+
 
 void ege::particule::Engine::add(const ememory::SharedPtr<ege::particule::Component>& _particule) {
 	if (_particule == nullptr) {
@@ -68,16 +83,17 @@ ememory::SharedPtr<ege::particule::Component> ege::particule::Engine::respown(co
 	return nullptr;
 }
 
-void ege::particule::Engine::update(float _deltaTime) {
-	if (_deltaTime>(1.0f/60.0f)) {
-		_deltaTime = (1.0f/60.0f);
+void ege::particule::Engine::update(const echrono::Duration& _delta) {
+	float deltaTime = _delta.toSeconds();
+	if (deltaTime>(1.0f/60.0f)) {
+		deltaTime = (1.0f/60.0f);
 	}
-	EGE_WARNING("Update the Particule engine ... " << _deltaTime);
+	EGE_WARNING("Update the Particule engine ... " << deltaTime);
 	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == nullptr) {
 			continue;
 		}
-		m_particuleList[iii]->update(_deltaTime);
+		m_particuleList[iii]->update(deltaTime);
 	}
 	// check removing elements
 	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
@@ -107,12 +123,12 @@ void ege::particule::Engine::update(float _deltaTime) {
 	*/
 }
 
-void ege::particule::Engine::draw(const ege::Camera& _camera) {
+void ege::particule::Engine::render(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) {
 	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == nullptr) {
 			continue;
 		}
-		m_particuleList[iii]->draw(_camera);
+		m_particuleList[iii]->draw(*_camera);
 	}
 }
 

@@ -42,15 +42,6 @@ namespace ege {
 			virtual ~Element();
 		protected:
 			std::vector<ememory::SharedPtr<ege::Component>> m_component;
-			int32_t m_idRender; //!< fast reference on the Render component (can static cast and not dynamic cast)
-			int32_t m_idIA; //!< fast reference on the IA component.
-			int32_t m_idParticule; //!< fast reference on the Particule component.
-			int32_t m_idPhysics; //!< fast reference on the Physics component.
-			int32_t m_idPosition; //!< fast reference on the position component ==> incompatible with 'physics' component.
-			// int32_t m_idCamera; //!< fast reference on the camera component.
-			// int32_t m_idSound; //!< fast reference on the Sound component.
-			// int32_t m_idLife; //!< fast reference on the Life component.
-			// ... and evry thing the user want to add ... to create a good game ...
 		public:
 			void addComponent(const ememory::SharedPtr<ege::Component>& _ref);
 			void rmComponent(const ememory::SharedPtr<ege::Component>& _ref);

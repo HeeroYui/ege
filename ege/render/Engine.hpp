@@ -11,17 +11,31 @@
 #include <vector>
 #include <ege/debug.hpp>
 #include <ege/render/Component.hpp>
+#include <ege/Engine.hpp>
 
 
 namespace ege {
 	namespace render {
-		class Engine {
+		class Engine : public ege::Engine {
 			public:
-				Engine() {}
+				Engine(ege::Environement* _env);
 				~Engine() {}
-				
-				// update cycle
-				void update(float _delta) {}
+			protected:
+				std::vector<ememory::SharedPtr<ege::render::Component>> m_component;
+				class ResultNearestElement {
+					public:
+						ememory::SharedPtr<ege::render::Component> element;
+						float dist;
+				};
+				std::vector<ege::render::Engine::ResultNearestElement> m_displayElementOrdered;
+			public:
+				const std::string& getType() const override;
+				void componentRemove(const ememory::SharedPtr<ege::Component>& _ref) override;
+				void componentAdd(const ememory::SharedPtr<ege::Component>& _ref) override;
+				void render(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) override;
+				void getOrderedElementForDisplay(std::vector<ege::render::Engine::ResultNearestElement>& _resultList,
+                                                      const vec3& _position,
+                                                      const vec3& _direction);
 		};
 	}
 }

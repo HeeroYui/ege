@@ -18,6 +18,7 @@
 #include <ewol/compositing/Text.hpp>
 #include <ege/Environement.hpp>
 #include <ege/elements/Element.hpp>
+#include <ephysics/reactphysics3d.h>
 
 
 #define INDEX_RIGHT_AXIS   (0)

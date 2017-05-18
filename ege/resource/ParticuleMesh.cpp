@@ -90,7 +90,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 			//std::vector<uint32_t>& tmppIndex = m_listFaces.getValue(kkk).m_index;
 			if (normalModeFace == m_normalMode) {
 				for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
-					if(btDot(mattttt * m_listFacesNormal[tmppFaces[iii].m_normal[0]], cameraNormal) >= 0.0f) {
+					if((mattttt * m_listFacesNormal[tmppFaces[iii].m_normal[0]]).dot(cameraNormal) >= 0.0f) {
 						tmpIndexResult.push_back(iii*3);
 						tmpIndexResult.push_back(iii*3+1);
 						tmpIndexResult.push_back(iii*3+2);
@@ -98,9 +98,9 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 				}
 			} else {
 				for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
-					if(    (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[0]], cameraNormal) >= -0.2f)
-					    || (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[1]], cameraNormal) >= -0.2f)
-					    || (btDot(mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[2]], cameraNormal) >= -0.2f) ) {
+					if(    ((mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[0]]).dot(cameraNormal) >= -0.2f)
+					    || ((mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[1]]).dot(cameraNormal) >= -0.2f)
+					    || ((mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[2]]).dot(cameraNormal) >= -0.2f) ) {
 						tmpIndexResult.push_back(iii*3);
 						tmpIndexResult.push_back(iii*3+1);
 						tmpIndexResult.push_back(iii*3+2);

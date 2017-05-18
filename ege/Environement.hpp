@@ -10,9 +10,10 @@ namespace ege {
 	class ElementInteraction;
 };
 #include <ege/camera/Camera.hpp>
-#include <ege/particule/Engine.hpp>
-#include <ege/render/Engine.hpp>
-#include <ege/ia/Engine.hpp>
+
+#include <ege/Engine.hpp>
+
+
 #include <etk/types.hpp>
 #include <vector>
 #include <etk/math/Vector3D.hpp>
@@ -23,7 +24,6 @@ namespace ege {
 #include <ewol/event/Time.hpp>
 #include <eproperty/Value.hpp>
 #include <ege/resource/Mesh.hpp>
-#include <ege/physics/Engine.hpp>
 
 namespace ege {
 	class Element;
@@ -73,7 +73,7 @@ namespace ege {
 		public:
 			virtual void applyEvent(ege::Element& _element) { };
 	};
-	
+	// TODO : An element must be created by a local factory...
 	class Environement : public ewol::Object {
 		public:
 			// Signals
@@ -81,30 +81,14 @@ namespace ege {
 			// properties:
 			eproperty::List<enum gameStatus> propertyStatus; //!< the display is running (not in pause)
 			eproperty::Value<float> propertyRatio; //!< Speed ratio
-		private:
-			ege::physics::Engine m_physicEngine; //!< EGE physic engine interface.
+		protected:
+			std::vector<ememory::SharedPtr<ege::Engine>> m_engine; //!< EGE sub engine interface (like physique, rendering, audio, ...).
 		public:
-			ege::physics::Engine& getPhysicEngine() {
-				return m_physicEngine;
-			}
-		private:
-			ege::render::Engine m_renderEngine; //!< EGE rendering engine interface.
-		public:
-			ege::render::Engine& getRenderEngine() {
-				return m_renderEngine;
-			}
-		private:
-			ege::particule::Engine m_particuleEngine; //!< EGE particule engine interface.
-		public:
-			ege::particule::Engine& getParticuleEngine() {
-				return m_particuleEngine;
-			}
-		private:
-			ege::ia::Engine m_iaEngine; //!< EGE Artificial inteligence engine interface.
-		public:
-			ege::ia::Engine& getIAEngine() {
-				return m_iaEngine;
-			}
+			void addEngine(const ememory::SharedPtr<ege::Engine>& _ref);
+			void rmEngine(const ememory::SharedPtr<ege::Engine>& _ref);
+			void rmEngine(const std::string& _type);
+			void engineComponentRemove(const ememory::SharedPtr<ege::Component>& _ref);
+			void engineComponentAdd(const ememory::SharedPtr<ege::Component>& _ref);
 		private:
 			std::vector<ememory::SharedPtr<ege::Element>> m_listElement; //!< List of all element added in the Game
 		protected:
@@ -112,7 +96,8 @@ namespace ege {
 		public:
 			DECLARE_FACTORY(Environement);
 			virtual ~Environement() { };
-		protected:
+		public:
+			void render(const echrono::Duration& _delta, const std::string& _camera);
 		protected:
 			std::map<std::string, ememory::SharedPtr<ege::Camera>> m_listCamera; //!< list of all camera in the world
 		public:
