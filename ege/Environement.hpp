@@ -87,8 +87,10 @@ namespace ege {
 			void addEngine(const ememory::SharedPtr<ege::Engine>& _ref);
 			void rmEngine(const ememory::SharedPtr<ege::Engine>& _ref);
 			void rmEngine(const std::string& _type);
+			ememory::SharedPtr<ege::Engine> getEngine(const std::string& _type);
 			void engineComponentRemove(const ememory::SharedPtr<ege::Component>& _ref);
 			void engineComponentAdd(const ememory::SharedPtr<ege::Component>& _ref);
+			
 		private:
 			std::vector<ememory::SharedPtr<ege::Element>> m_listElement; //!< List of all element added in the Game
 		protected:

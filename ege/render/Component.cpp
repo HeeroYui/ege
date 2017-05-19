@@ -67,3 +67,21 @@ bool ege::render::Component::setMesh(ememory::SharedPtr<ege::resource::Mesh> _me
 	}
 	return true;
 }
+
+void ege::render::Component::draw(int32_t _pass) {
+	//EGE_INFO("draw : " << _pass );
+	if (_pass == 0) {
+		if(m_mesh != nullptr) {
+			//EGE_INFO("element pos = " << getPosition());
+			float mmm[16];
+			// Get the OpenGL matrix array of the transform 
+			m_transform.getOpenGLMatrix(mmm);
+			
+			//EGE_INFO("    mat = " << mat4(mmm));
+			mat4 transformationMatrix(mmm);
+			//mat4 transformationMatrix = mat4(mmm) * etk::matScale(vec3(20,20,20));
+			// TODO: check this : transformationMatrix.transpose();
+			m_mesh->draw(transformationMatrix);
+		}
+	}
+}

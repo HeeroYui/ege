@@ -78,6 +78,19 @@ void ege::Environement::rmEngine(const std::string& _type) {
 	return;
 }
 
+ememory::SharedPtr<ege::Engine> ege::Environement::getEngine(const std::string& _type) {
+	// check if not exist
+	for (auto &it: m_engine) {
+		if (it == nullptr) {
+			continue;
+		}
+		if (it->getType() == _type) {
+			return it;
+		}
+	}
+	EGE_ERROR("try to get an unexisting engine type : '" << _type << "'");
+	return nullptr;
+}
 
 void ege::Environement::engineComponentRemove(const ememory::SharedPtr<ege::Component>& _ref) {
 	for (auto &it: m_engine) {

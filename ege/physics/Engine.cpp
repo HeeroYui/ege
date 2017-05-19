@@ -99,7 +99,7 @@ void ege::physics::Engine::update(const echrono::Duration& _delta) {
 		m_accumulator -= timeStep;
 	}
 }
-
+#if 0
 std::vector<ege::physics::Engine::collisionPoints> ege::physics::Engine::getListOfCollision() {
 	std::vector<collisionPoints> out;
 	/*
@@ -131,3 +131,5 @@ std::vector<ege::physics::Engine::collisionPoints> ege::physics::Engine::getList
 	*/
 	return out;
 }
+
+#endif

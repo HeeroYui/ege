@@ -59,6 +59,12 @@ namespace ege {
 				const etk::Transform3D& getTransform() {
 					return m_transform;
 				}
+				/**
+				 * @brief draw the curent element (can have multiple display)
+				 * @param[in] pass Id of the current pass : [0..?]
+				 */
+				virtual void draw(int32_t _pass=0);
+				
 			public:
 				const std::string& getType() const override;
 				void addFriendComponent(const ememory::SharedPtr<ege::Component>& _component) override;

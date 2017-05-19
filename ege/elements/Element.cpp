@@ -83,8 +83,19 @@ void ege::Element::addComponent(const ememory::SharedPtr<ege::Component>& _ref) 
 		m_env->engineComponentAdd(_ref);
 		m_component[iii]->addFriendComponent(_ref);
 	}
-	
+	// notify new component of all previously added component:
+	componentRemoved = _ref;
+	for (int32_t iii=0; iii<m_component.size(); ++iii) {
+		if (m_component[iii] == nullptr) {
+			continue;
+		}
+		if (m_component[iii] == _ref) {
+			continue;
+		}
+		componentRemoved->addFriendComponent(m_component[iii]);
+	}
 }
+
 void ege::Element::rmComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 	if (_ref == nullptr) {
 		EGE_ERROR("try to remove an empty component");

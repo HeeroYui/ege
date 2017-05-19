@@ -21,6 +21,7 @@
 #include <ege/physicsShape/PhysicsSphere.hpp>
 #include <ege/position/Component.hpp>
 #include <ege/render/Component.hpp>
+#include <ege/physics/Component.hpp>
 
 appl::Windows::Windows() {
 	addObjectType("appl::Windows");
@@ -91,29 +92,53 @@ void appl::Windows::init() {
 	}
 	
 	ememory::SharedPtr<ege::resource::Mesh> myMesh;
-	// Create an external box :
+	// Create an external box:
 	myMesh = createViewBoxStar();
 	if (myMesh != nullptr) {
-		m_env->addStaticMeshToDraw(myMesh);
+		ememory::SharedPtr<ege::Element> element = ememory::makeShared<ege::Element>(m_env);
+		// 1st Position component:
+		etk::Transform3D transform(vec3(0,0,0), etk::Quaternion::identity());
+		ememory::SharedPtr<ege::position::Component> componentPosition = ememory::makeShared<ege::position::Component>(transform);
+		element->addComponent(componentPosition);
+		// 2nd something to diplay:
+		ememory::SharedPtr<ege::render::Component> componentRender = ememory::makeShared<ege::render::Component>(myMesh);
+		element->addComponent(componentRender);
+		// add it ..
+		m_env->addElement(element);
 	}
 	// create basic gird:
 	myMesh = ege::resource::Mesh::createGrid(10, vec3(0,0,0), 5);
 	if (myMesh != nullptr) {
-		m_env->addStaticMeshToDraw(myMesh);
+		ememory::SharedPtr<ege::Element> element = ememory::makeShared<ege::Element>(m_env);
+		// 1st Position component:
+		etk::Transform3D transform(vec3(0,0,0), etk::Quaternion::identity());
+		ememory::SharedPtr<ege::position::Component> componentPosition = ememory::makeShared<ege::position::Component>(transform);
+		element->addComponent(componentPosition);
+		// 2nd something to diplay:
+		ememory::SharedPtr<ege::render::Component> componentRender = ememory::makeShared<ege::render::Component>(myMesh);
+		element->addComponent(componentRender);
+		// add it ..
+		m_env->addElement(element);
 	}
+	// create cubes ...
 	myMesh = ege::resource::Mesh::createCube(3);
 	if (myMesh != nullptr) {
 		ememory::SharedPtr<ege::Element> element = ememory::makeShared<ege::Element>(m_env);
 		// add all component:
 		// 1st Position component:
 		etk::Transform3D transform(vec3(0,0,2), etk::Quaternion::identity());
-		ememory::SharedPtr<ege::position::Component> componentPosition = ememory::makeShared<ege::position::Component>(transform);
-		element->addComponent(componentPosition);
-		
+		//ememory::SharedPtr<ege::position::Component> componentPosition = ememory::makeShared<ege::position::Component>(transform);
+		//element->addComponent(componentPosition);
 		// 2nd something to diplay:
 		ememory::SharedPtr<ege::render::Component> componentRender = ememory::makeShared<ege::render::Component>(myMesh);
 		element->addComponent(componentRender);
-		
+		// 3rd some physic:
+		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
+		ememory::SharedPtr<ege::PhysicsBox> physic = ememory::makeShared<ege::PhysicsBox>();
+		physic->setSize(vec3(3.2,3.2,3.2));
+		componentPhysics->addShape(physic);
+		componentPhysics->generate();
+		element->addComponent(componentPhysics);
 		// add it ..
 		m_env->addElement(element);
 		
@@ -175,6 +200,7 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 	if (_event.getId() == 1) {
 		if (_event.getStatus() == gale::key::status::down) {
 			vec2 pos = relativePosition(_event.getPos());
+			/*
 			ege::Ray ray = m_camera->getRayFromScreenPosition(pos, m_size);
 			
 			ememory::SharedPtr<ege::resource::Mesh> myMesh;
@@ -192,6 +218,7 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 				m_env->addElement(element);
 				APPL_INFO("Create cube at position " << ray.getOrigin() << " velocity: " << ray.getDirection()*100);
 			}
+			*/
 			return true;
 		}
 	} else if (_event.getId() == 4) {

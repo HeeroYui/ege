@@ -92,7 +92,7 @@ void ege::render::Engine::getOrderedElementForDisplay(std::vector<ege::render::E
 		}
 	}
 }
-
+#define  NUMBER_OF_SUB_PASS (5)
 
 void ege::render::Engine::render(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) {
 	for (auto &it : m_component) {
@@ -107,10 +107,6 @@ void ege::render::Engine::render(const echrono::Duration& _delta, const ememory:
 	getOrderedElementForDisplay(m_displayElementOrdered, _camera->getEye(), _camera->getViewVector());
 	EGE_VERBOSE("DRAW : " << m_displayElementOrdered.size() << "/" << m_component.size() << " elements");
 	
-	// TODO : remove this  == > no more needed ==> checked in the generate the list of the element ordered
-	for (auto &it: m_displayElementOrdered) {
-		it.element->preCalculationDraw(*_camera);
-	}
 	// note :  the first pass is done at the reverse way to prevent multiple display od the same point in the screen 
 	//         (and we remember that the first pass is to display all the non transparent elements)
 	for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {

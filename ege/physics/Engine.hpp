@@ -37,6 +37,7 @@ namespace ege {
 			public:
 				// Define a collision point ==> for debug only ...
 				//! @not_in_doc
+#if 0
 				class collisionPoints {
 					public:
 						ememory::SharedPtr<ege::Element> elem1;
@@ -60,6 +61,7 @@ namespace ege {
 				 * @return the requested list of points
 				 */
 				std::vector<ege::physics::Engine::collisionPoints> getListOfCollision();
+#endif
 				/**
 				 * @brief Set the gravity axis of the physic engine
 				 * @param[in] _axePower energy of this gravity
@@ -68,6 +70,9 @@ namespace ege {
 				
 				void debugDrawWorld() {
 					// TODO: later ...
+				}
+				rp3d::DynamicsWorld* getDynamicWorld() {
+					return m_dynamicsWorld;
 				}
 			public:
 				const std::string& getType() const override;
