@@ -42,6 +42,23 @@ ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env, c
 	m_rigidBody = m_engine->getDynamicWorld()->createRigidBody(transform);
 }
 
+void ege::physics::Component::setType(enum ege::physics::Component::type _type) {
+	if (m_rigidBody == nullptr) {
+		return;
+	}
+	switch(_type) {
+		case ege::physics::Component::type::bodyStatic:
+			m_rigidBody->setType(rp3d::STATIC);
+			break;
+		case ege::physics::Component::type::bodyKinematic:
+			m_rigidBody->setType(rp3d::KINEMATIC);
+			break;
+		case ege::physics::Component::type::bodyDynamic:
+			m_rigidBody->setType(rp3d::DYNAMIC);
+			break;
+	}
+}
+
 ege::physics::Component::~Component() {
 	if (m_rigidBody == nullptr) {
 		return;
@@ -73,7 +90,8 @@ void ege::physics::Component::generate() {
 				                                tmpElement->getSize().y(),
 				                                tmpElement->getSize().z());
 				// Create the box shape
-				rp3d::BoxShape shape(halfExtents);
+				rp3d::BoxShape* shape = new rp3d::BoxShape(halfExtents);
+				m_listShape.push_back(shape);
 				rp3d::Vector3 position(tmpElement->getOrigin().x(),
 				                       tmpElement->getOrigin().y(),
 				                       tmpElement->getOrigin().z());
@@ -82,7 +100,8 @@ void ege::physics::Component::generate() {
 				                             tmpElement->getQuaternion().z(),
 				                             tmpElement->getQuaternion().w());
 				rp3d::Transform transform(position, orientation);
-				m_rigidBody->addCollisionShape(&shape, transform, 4.0f /* mass */);
+				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, 4.0f /* mass */);
+				m_listProxyShape.push_back(proxyShape);
 				break;
 			}
 			case ege::PhysicsShape::cylinder : {
@@ -93,7 +112,7 @@ void ege::physics::Component::generate() {
 					continue;
 				}
 				// Create the box shape
-				rp3d::CylinderShape shape(tmpElement->getSize().x(), tmpElement->getSize().y());
+				rp3d::CylinderShape* shape = new rp3d::CylinderShape(tmpElement->getSize().x(), tmpElement->getSize().y());
 				rp3d::Vector3 position(tmpElement->getOrigin().x(),
 				                       tmpElement->getOrigin().y(),
 				                       tmpElement->getOrigin().z());
@@ -102,7 +121,8 @@ void ege::physics::Component::generate() {
 				                             tmpElement->getQuaternion().z(),
 				                             tmpElement->getQuaternion().w());
 				rp3d::Transform transform(position, orientation);
-				m_rigidBody->addCollisionShape(&shape, transform, 4.0f /* mass */);
+				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, 4.0f /* mass */);
+				m_listProxyShape.push_back(proxyShape);
 				break;
 			}
 			case ege::PhysicsShape::capsule : {
@@ -195,6 +215,46 @@ void ege::physics::Component::generate() {
 				break;
 		}
 	}
+}
+
+
+vec3 ege::physics::Component::getLinearVelocity() const {
+	if (m_rigidBody == nullptr) {
+		return vec3(0,0,0);
+	}
+	rp3d::Vector3 value = m_rigidBody->getLinearVelocity();
+	return vec3(value.x,
+	            value.y,
+	            value.z);
+}
+
+void ege::physics::Component::setLinearVelocity(const vec3& _linearVelocity) {
+	if (m_rigidBody == nullptr) {
+		return;
+	}
+	rp3d::Vector3 value(_linearVelocity.x(),
+	                    _linearVelocity.y(),
+	                    _linearVelocity.z());
+	m_rigidBody->setLinearVelocity(value);
+}
+
+vec3 ege::physics::Component::getAngularVelocity() const {
+	if (m_rigidBody == nullptr) {
+		return vec3(0,0,0);
+	}
+	rp3d::Vector3 value = m_rigidBody->getAngularVelocity();
+	return vec3(value.x,
+	            value.y,
+	            value.z);
+}
+void ege::physics::Component::setAngularVelocity(const vec3& _angularVelocity) {
+	if (m_rigidBody == nullptr) {
+		return;
+	}
+	rp3d::Vector3 value(_angularVelocity.x(),
+	                    _angularVelocity.y(),
+	                    _angularVelocity.z());
+	m_rigidBody->setAngularVelocity(value);
 }
 
 const std::vector<ememory::SharedPtr<ege::PhysicsShape>>& ege::physics::Component::getShape() const {

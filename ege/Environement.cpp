@@ -499,14 +499,14 @@ void ege::Environement::render(const echrono::Duration& _delta, const std::strin
 		if(it == nullptr) {
 			continue;
 		}
-		EGE_INFO("    render: " << it->getType());
+		EGE_VERBOSE("    render: " << it->getType());
 		it->render(_delta, camera);
 	}
 }
 
 void ege::Environement::onCallbackPeriodicCall(const ewol::event::Time& _event) {
 	float curentDelta = _event.getDeltaCall();
-	EGE_INFO("periodic call : " << _event);
+	EGE_VERBOSE("periodic call : " << _event);
 	// small hack to change speed ...
 	curentDelta *= *propertyRatio;
 	// check if the processing is availlable
@@ -517,7 +517,7 @@ void ege::Environement::onCallbackPeriodicCall(const ewol::event::Time& _event) 
 	int32_t lastGameTime = m_gameTime*0.000001f;
 	m_gameTime += curentDelta;
 	if (lastGameTime != (int32_t)(m_gameTime*0.000001f)) {
-		EGE_INFO("    Emit Signal");
+		EGE_VERBOSE("    Emit Signal");
 		signalPlayTimeChange.emit(m_gameTime*0.000001f);
 	}
 	
@@ -526,16 +526,16 @@ void ege::Environement::onCallbackPeriodicCall(const ewol::event::Time& _event) 
 	// update camera positions:
 	for (auto &it : m_listCamera) {
 		if (it.second != nullptr) {
-			EGE_INFO("    update camera : '" << it.first << "'");
+			EGE_VERBOSE("    update camera : '" << it.first << "'");
 			it.second->periodicCall(curentDelta);
 		}
 	}
-	EGE_INFO("    step simulation : " << curentDelta);
+	EGE_VERBOSE("    step simulation : " << curentDelta);
 	for (auto &it: m_engine) {
 		if(it == nullptr) {
 			continue;
 		}
-		EGE_INFO("    update: " << it->getType());
+		EGE_VERBOSE("    update: " << it->getType());
 		it->update(echrono::Duration(double(curentDelta)));
 	}
 	

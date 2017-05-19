@@ -23,6 +23,8 @@ namespace ege {
 			protected:
 				ememory::SharedPtr<ege::physics::Engine> m_engine;
 				rp3d::RigidBody* m_rigidBody;
+				std::vector<rp3d::CollisionShape*> m_listShape;
+				std::vector<rp3d::ProxyShape*> m_listProxyShape;
 			public:
 				/**
 				 * @brief Create a basic position component (no orientation and position (0,0,0))
@@ -36,6 +38,13 @@ namespace ege {
 				~Component();
 			public:
 				virtual const std::string& getType() const;
+				
+				enum class type {
+					bodyDynamic,
+					bodyStatic,
+					bodyKinematic
+				};
+				void setType(enum ege::physics::Component::type _type);
 				/**
 				 * @brief set a new transformation
 				 * @param[in] _transform transformation of the position
@@ -46,6 +55,26 @@ namespace ege {
 				 * @return Transformation of the position
 				 */
 				etk::Transform3D getTransform() const;
+				/**
+				 * @brief Get the linear velocity.
+				 * @return The linear velocity vector of the body
+				 */
+				vec3 getLinearVelocity() const;
+				/**
+				 * @brief Set the linear velocity.
+				 * @param[in] _linearVelocity The linear velocity vector of the body
+				 */
+				void setLinearVelocity(const vec3& _linearVelocity);
+				/**
+				 * @brief Get the angular velocity.
+				 * @return The angular velocity vector of the body
+				 */
+				vec3 getAngularVelocity() const;
+				/**
+				 * @brief Set the angular velocity.
+				 * @param[in] _linearVelocity The angular velocity vector of the body
+				 */
+				void setAngularVelocity(const vec3& _angularVelocity);
 			protected:
 				std::vector<ememory::SharedPtr<ege::PhysicsShape>> m_shape; //!< collision shape module ... (independent of bullet lib)
 			public:

@@ -71,6 +71,7 @@ void ege::widget::Scene::onDraw() {
 		g_counterNbTimeDisplay++;
 		g_startTime = echrono::Steady::now();
 	#endif
+	gale::openGL::clearColor(etk::color::black);
 	m_env->render(echrono::Duration(1.0/60.0), m_cameraName);
 	#if 0
 	// draw constant object:

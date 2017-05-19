@@ -80,6 +80,7 @@ void ege::render::Component::draw(int32_t _pass) {
 			//EGE_INFO("    mat = " << mat4(mmm));
 			mat4 transformationMatrix(mmm);
 			//mat4 transformationMatrix = mat4(mmm) * etk::matScale(vec3(20,20,20));
+			transformationMatrix.transpose();
 			// TODO: check this : transformationMatrix.transpose();
 			m_mesh->draw(transformationMatrix);
 		}
