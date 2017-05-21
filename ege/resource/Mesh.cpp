@@ -14,7 +14,7 @@
 #include <ege/resource/tools/icoSphere.hpp>
 
 ege::resource::Mesh::Mesh() :
-  m_normalMode(normalModeNone),
+  m_normalMode(ege::resource::Mesh::normalMode::none),
   m_checkNormal(false),
   m_GLPosition(-1),
   m_GLMatrix(-1),
@@ -138,7 +138,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 		m_GLprogram->sendAttributePointer(m_GLtexture, m_verticesVBO, MESH_VBO_TEXTURE);
 	}
 	// position :
-	if (m_normalMode != normalModeNone) {
+	if (m_normalMode != ege::resource::Mesh::normalMode::none) {
 		m_GLprogram->sendAttributePointer(m_GLNormal, m_verticesVBO, MESH_VBO_VERTICES_NORMAL);
 		#if DEBUG
 			// TODO : ...
@@ -184,7 +184,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 			std::vector<ege::Face>& tmppFaces = m_listFaces.getValue(kkk).m_faces;
 			//std::vector<uint32_t>& tmppIndex = m_listFaces.getValue(kkk).m_index;
 			switch(m_normalMode) {
-				case normalModeFace:
+				case ege::resource::Mesh::normalMode::face:
 					for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
 						if((mattttt * m_listFacesNormal[tmppFaces[iii].m_normal[0]]).dot(cameraNormal) >= 0.0f) {
 							tmpIndexResult.push_back(iii*3);
@@ -193,7 +193,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 						}
 					}
 					break;
-				case normalModeVertex:
+				case ege::resource::Mesh::normalMode::vertex:
 					for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
 						if(    ((mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[0]]).dot(cameraNormal) >= -0.2f)
 						    || ((mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[1]]).dot(cameraNormal) >= -0.2f)
@@ -278,17 +278,17 @@ void ege::resource::Mesh::drawNormal(mat4& _positionMatrix,
 		FaceIndexing& tmpFaceList = m_listFaces.getValue(kkk);
 		for (size_t iii=0; iii<tmpFaceList.m_faces.size() ; iii++) {
 			switch(m_normalMode) {
-				case normalModeVertex:
+				case ege::resource::Mesh::normalMode::vertex:
 					{
 						// dsplay normal for each vertice ... (TODO: not tested ...)
 						for(size_t indice=0 ; indice<nbIndicInFace; indice++) {
 							vec3 position = m_listVertex[tmpFaceList.m_faces[iii].m_vertex[indice]];
 							vec3 normal = m_listVertexNormal[tmpFaceList.m_faces[iii].m_normal[indice]];
 							vertices.push_back(position);
-							vertices.push_back(position+normal*0.25f);
+							vertices.push_back(position+normal*0.5f);
 						}
 					} break;
-				case normalModeFace:
+				case ege::resource::Mesh::normalMode::face:
 					{
 						vec3 center(0,0,0);
 						for(size_t indice=0 ; indice<nbIndicInFace; indice++) {
@@ -296,11 +296,16 @@ void ege::resource::Mesh::drawNormal(mat4& _positionMatrix,
 							center += position;
 						}
 						center /= float(nbIndicInFace);
-						vec3 normal = m_listFacesNormal[tmpFaceList.m_faces[iii].m_normal[0]];
+						int32_t index = tmpFaceList.m_faces[iii].m_normal[0];
+						if (index >= m_listFacesNormal.size()) {
+							EGE_ERROR("not enougth normal in the buffer ... " << index << " >= " << m_listFacesNormal.size());
+							return;
+						}
+						vec3 normal = m_listFacesNormal[index];
 						vertices.push_back(center);
-						vertices.push_back(center+normal*0.25f);
+						vertices.push_back(center+normal*0.5f);
 					} break;
-				case normalModeNone:
+				case ege::resource::Mesh::normalMode::none:
 					break;
 			}
 		}
@@ -308,11 +313,15 @@ void ege::resource::Mesh::drawNormal(mat4& _positionMatrix,
 	_draw->drawLine(vertices, tmpColor, _positionMatrix);
 }
 
+void ege::resource::Mesh::setNormalMode(enum normalMode _mode) {
+	m_normalMode = _mode;
+}
+
 // normal calculation of the normal face is really easy :
 // TODO : Use it for multiple Material interface
 void ege::resource::Mesh::calculateNormaleFace(const std::string& _materialName) {
 	m_listFacesNormal.clear();
-	if (m_normalMode == ege::resource::Mesh::normalModeFace) {
+	if (m_normalMode == ege::resource::Mesh::normalMode::face) {
 		EGE_VERBOSE("calculateNormaleFace(" << _materialName << ")");
 		gale::openGL::renderMode tmpRenderMode = m_materials[_materialName]->getRenderMode();
 		if (    tmpRenderMode == gale::openGL::renderMode::point
@@ -320,25 +329,30 @@ void ege::resource::Mesh::calculateNormaleFace(const std::string& _materialName)
 		     || tmpRenderMode == gale::openGL::renderMode::lineStrip
 		     || tmpRenderMode == gale::openGL::renderMode::lineLoop) {
 			EGE_ERROR("calculateNormaleFace(" << _materialName << ") : can not calculate normal on lines ...");
-			m_normalMode = ege::resource::Mesh::normalModeNone;
+			m_normalMode = ege::resource::Mesh::normalMode::none;
 			return;
 		}
 		for(auto &it : m_listFaces[_materialName].m_faces) {
 			// for all case, We use only the 3 vertex for quad element, in theory 3D modeler export element in triangle if it is not a real plane.
 			vec3 normal = (m_listVertex[it.m_vertex[0]]-m_listVertex[it.m_vertex[1]]).cross(m_listVertex[it.m_vertex[1]]-m_listVertex[it.m_vertex[2]]);
+			//EGE_INFO("normal: " << normal.normalized());
 			if (normal == vec3(0,0,0)) {
 				EGE_ERROR("Null vertor for a face ... " << m_listVertex[it.m_vertex[0]] << " " << m_listVertex[it.m_vertex[1]] << " " << m_listVertex[it.m_vertex[2]]);
 				m_listFacesNormal.push_back(vec3(1,0,0));
 			} else {
 				m_listFacesNormal.push_back(normal.normalized());
 			}
+			int32_t normalID = m_listFacesNormal.size() - 1;
+			it.m_normal[0] = normalID;
+			it.m_normal[1] = normalID;
+			it.m_normal[2] = normalID;
 		}
 	}
 }
 
 void ege::resource::Mesh::calculateNormaleEdge(const std::string& _materialName) {
 	m_listVertexNormal.clear();
-	if (m_normalMode == ege::resource::Mesh::normalModeVertex) {
+	if (m_normalMode == ege::resource::Mesh::normalMode::vertex) {
 		EGE_INFO("calculateNormaleEdge(" << _materialName << ")");
 		gale::openGL::renderMode tmpRenderMode = m_materials[_materialName]->getRenderMode();
 		if (    tmpRenderMode == gale::openGL::renderMode::point
@@ -346,7 +360,7 @@ void ege::resource::Mesh::calculateNormaleEdge(const std::string& _materialName)
 		     || tmpRenderMode == gale::openGL::renderMode::lineStrip
 		     || tmpRenderMode == gale::openGL::renderMode::lineLoop) {
 			EGE_ERROR("calculateNormaleEdge(" << _materialName << ") :  can not calculate normal on lines ...");
-			m_normalMode = ege::resource::Mesh::normalModeNone;
+			m_normalMode = ege::resource::Mesh::normalMode::none;
 			return;
 		}
 		for(size_t iii=0 ; iii<m_listVertex.size() ; iii++) {
@@ -376,7 +390,7 @@ void ege::resource::Mesh::calculateNormaleEdge(const std::string& _materialName)
 
 void ege::resource::Mesh::generateVBO() {
 	// calculate the normal of all faces if needed
-	if (    m_normalMode != ege::resource::Mesh::normalModeNone
+	if (    m_normalMode != ege::resource::Mesh::normalMode::none
 	     && m_listFacesNormal.size() == 0) {
 		// when no normal detected  == > auto generate Face normal ....
 		EGE_ERROR("Calculate normal face ... in case ????");
@@ -436,14 +450,14 @@ void ege::resource::Mesh::generateVBO() {
 				// get Normal
 				vec3 normal;
 				switch(m_normalMode) {
-					case normalModeVertex:
+					case ege::resource::Mesh::normalMode::vertex:
 						normal = m_listVertexNormal[tmpFaceList.m_faces[iii].m_normal[indice]];
 						break;
-					case normalModeFace:
+					case ege::resource::Mesh::normalMode::face:
 						normal = m_listFacesNormal[tmpFaceList.m_faces[iii].m_normal[indice]];
 						break;
 					default:
-					case normalModeNone:
+					case ege::resource::Mesh::normalMode::none:
 						break;
 				}
 				// get Texture Position
@@ -471,7 +485,7 @@ void ege::resource::Mesh::generateVBO() {
 				#endif
 				if (elementFind == false) {
 					m_verticesVBO->pushOnBuffer(MESH_VBO_VERTICES, position);
-					if (m_normalMode != normalModeNone) {
+					if (m_normalMode != ege::resource::Mesh::normalMode::none) {
 						m_verticesVBO->pushOnBuffer(MESH_VBO_VERTICES_NORMAL, normal);
 					}
 					m_verticesVBO->pushOnBuffer(MESH_VBO_TEXTURE, texturepos);
@@ -493,14 +507,14 @@ void ege::resource::Mesh::generateVBO() {
 
 
 void ege::resource::Mesh::createViewBox(const std::string& _materialName,float _size) {
-	m_normalMode = normalModeNone;
+	m_normalMode = ege::resource::Mesh::normalMode::none;
 	ege::viewBox::create(m_materials, m_listFaces, m_listVertex, m_listUV,
 	                     _materialName, _size);
 	calculateNormaleFace(_materialName);
 }
 
 void ege::resource::Mesh::createIcoSphere(const std::string& _materialName,float _size, int32_t _subdivision) {
-	m_normalMode = normalModeNone;
+	m_normalMode = ege::resource::Mesh::normalMode::none;
 	ege::icoSphere::create(m_materials, m_listFaces, m_listVertex, m_listUV,
 	                       _materialName, _size, _subdivision);
 	calculateNormaleFace(_materialName);

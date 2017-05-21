@@ -12,21 +12,35 @@
 #include <gale/renderer/openGL/openGL.hpp>
 #include <etk/math/Matrix4x4.hpp>
 
-#include <ege/elements/ElementPhysic.hpp>
-
 const std::string& ege::physics::Engine::getType() const {
 	static std::string tmp("physics");
 	return tmp;
 }
 
 void ege::physics::Engine::componentRemove(const ememory::SharedPtr<ege::Component>& _ref) {
-	
+	ememory::SharedPtr<ege::physics::Component> ref = ememory::dynamicPointerCast<ege::physics::Component>(_ref);
+	for (auto it=m_component.begin();
+	     it != m_component.end();
+	     ++it) {
+		if (*it == ref) {
+			it->reset();
+			return;
+		}
+	}
 }
 
 void ege::physics::Engine::componentAdd(const ememory::SharedPtr<ege::Component>& _ref) {
-	
+	ememory::SharedPtr<ege::physics::Component> ref = ememory::dynamicPointerCast<ege::physics::Component>(_ref);
+	for (auto it=m_component.begin();
+	     it != m_component.end();
+	     ++it) {
+		if (*it == nullptr) {
+			*it = ref;
+			return;
+		}
+	}
+	m_component.push_back(ref);
 }
-
 
 // unique callback function :
 /*
@@ -54,8 +68,11 @@ static bool handleContactsProcess(btManifoldPoint& _point, btCollisionObject* _b
 
 ege::physics::Engine::Engine(ege::Environement* _env) :
   ege::Engine(_env),
+  propertyDebugAABB(this, "debug-AABB", false, "display the global AABB box of every shape"),
+  propertyDebugShape(this, "debug-shape", false, "display the physic shape"),
   m_dynamicsWorld(nullptr),
   m_accumulator(0.0f) {
+	m_debugDrawProperty = ewol::resource::Colored3DObject::create();
 	// Start engine with no gravity
 	//rp3d::Vector3 gravity(0.0, -9.81, 0.0); // generic earth gravity
 	rp3d::Vector3 gravity(0.0f, 0.0f, 0.0f);
@@ -92,13 +109,34 @@ void ege::physics::Engine::update(const echrono::Duration& _delta) {
 	while (m_accumulator >= timeStep) {
 		if (m_dynamicsWorld != nullptr) {
 			// Update the Dynamics world with a constant time step
-			EGE_WARNING("Update the Physic engine ... " << timeStep);
+			EGE_DEBUG("Update the Physic engine ... " << timeStep);
 			m_dynamicsWorld->update(timeStep);
 		}
 		// Decrease the accumulated time
 		m_accumulator -= timeStep;
 	}
+	for (auto &it: m_component) {
+		// check nullptr  pointer
+		if (it == nullptr) {
+			// no pointer null are set in the output list ...
+			continue;
+		}
+		it->emitAll();
+	}
 }
+
+
+void ege::physics::Engine::renderDebug(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) {
+	if (propertyDebugShape.get() == true) {
+		for (auto &it : m_component) {
+			if (it == nullptr) {
+				continue;
+			}
+			it->drawShape(m_debugDrawProperty, _camera);
+		}
+	}
+}
+
 #if 0
 std::vector<ege::physics::Engine::collisionPoints> ege::physics::Engine::getListOfCollision() {
 	std::vector<collisionPoints> out;
@@ -133,3 +171,4 @@ std::vector<ege::physics::Engine::collisionPoints> ege::physics::Engine::getList
 }
 
 #endif
+

@@ -25,6 +25,7 @@ ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env) {
 	rp3d::Vector3 initPosition(0.0f, 0.0f, 0.0f);
 	rp3d::Quaternion initOrientation = rp3d::Quaternion::identity();
 	rp3d::Transform transform(initPosition, initOrientation);
+	m_lastTransformEmit = etk::Transform3D(vec3(0,0,0), etk::Quaternion::identity());
 	m_rigidBody = m_engine->getDynamicWorld()->createRigidBody(transform);
 }
 
@@ -40,6 +41,7 @@ ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env, c
 	rp3d::Transform transform(initPosition, initOrientation);
 	// Create a rigid body in the world
 	m_rigidBody = m_engine->getDynamicWorld()->createRigidBody(transform);
+	m_lastTransformEmit = _transform;
 }
 
 void ege::physics::Component::setType(enum ege::physics::Component::type _type) {
@@ -79,7 +81,7 @@ void ege::physics::Component::generate() {
 		}
 		switch (it->getType()) {
 			case ege::PhysicsShape::box : {
-				EGE_ERROR("    Box");
+				EGE_DEBUG("    Box");
 				const ege::PhysicsBox* tmpElement = it->toBox();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    Box ==> can not cast in BOX");
@@ -92,15 +94,15 @@ void ege::physics::Component::generate() {
 				// Create the box shape
 				rp3d::BoxShape* shape = new rp3d::BoxShape(halfExtents);
 				m_listShape.push_back(shape);
-				rp3d::Vector3 position(tmpElement->getOrigin().x(),
-				                       tmpElement->getOrigin().y(),
-				                       tmpElement->getOrigin().z());
-				rp3d::Quaternion orientation(tmpElement->getQuaternion().x(),
-				                             tmpElement->getQuaternion().y(),
-				                             tmpElement->getQuaternion().z(),
-				                             tmpElement->getQuaternion().w());
+				rp3d::Vector3 position(it->getOrigin().x(),
+				                       it->getOrigin().y(),
+				                       it->getOrigin().z());
+				rp3d::Quaternion orientation(it->getQuaternion().x(),
+				                             it->getQuaternion().y(),
+				                             it->getQuaternion().z(),
+				                             it->getQuaternion().w());
 				rp3d::Transform transform(position, orientation);
-				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, 4.0f /* mass */);
+				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				m_listProxyShape.push_back(proxyShape);
 				break;
 			}
@@ -113,15 +115,15 @@ void ege::physics::Component::generate() {
 				}
 				// Create the box shape
 				rp3d::CylinderShape* shape = new rp3d::CylinderShape(tmpElement->getSize().x(), tmpElement->getSize().y());
-				rp3d::Vector3 position(tmpElement->getOrigin().x(),
-				                       tmpElement->getOrigin().y(),
-				                       tmpElement->getOrigin().z());
-				rp3d::Quaternion orientation(tmpElement->getQuaternion().x(),
-				                             tmpElement->getQuaternion().y(),
-				                             tmpElement->getQuaternion().z(),
-				                             tmpElement->getQuaternion().w());
+				rp3d::Vector3 position(it->getOrigin().x(),
+				                       it->getOrigin().y(),
+				                       it->getOrigin().z());
+				rp3d::Quaternion orientation(it->getQuaternion().x(),
+				                             it->getQuaternion().y(),
+				                             it->getQuaternion().z(),
+				                             it->getQuaternion().w());
 				rp3d::Transform transform(position, orientation);
-				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, 4.0f /* mass */);
+				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				m_listProxyShape.push_back(proxyShape);
 				break;
 			}
@@ -218,6 +220,46 @@ void ege::physics::Component::generate() {
 }
 
 
+void ege::physics::Component::emitAll() {
+	// emit onbly of new ...
+	etk::Transform3D transform = getTransform();
+	if (m_lastTransformEmit != transform) {
+		m_lastTransformEmit = transform;
+		signalPosition.emit(transform);
+	}
+}
+
+
+void ege::physics::Component::setTransform(const etk::Transform3D& _transform) {
+	if (m_rigidBody == nullptr) {
+		return;
+	}
+	rp3d::Vector3 position(_transform.getPosition().x(),
+	                       _transform.getPosition().y(),
+	                       _transform.getPosition().z());
+	rp3d::Quaternion orientation(_transform.getOrientation().x(),
+	                             _transform.getOrientation().y(),
+	                             _transform.getOrientation().z(),
+	                             _transform.getOrientation().w());
+	rp3d::Transform transform(position, orientation);
+	m_rigidBody->setTransform(transform);
+}
+
+etk::Transform3D ege::physics::Component::getTransform() const {
+	if (m_rigidBody == nullptr) {
+		return etk::Transform3D::identity();
+	}
+	rp3d::Transform transform = m_rigidBody->getTransform();
+	vec3 position(transform.getPosition().x,
+	              transform.getPosition().y,
+	              transform.getPosition().z);
+	etk::Quaternion orientation(transform.getOrientation().x,
+	                            transform.getOrientation().y,
+	                            transform.getOrientation().z,
+	                            transform.getOrientation().w);
+	return etk::Transform3D(position, orientation);
+}
+
 vec3 ege::physics::Component::getLinearVelocity() const {
 	if (m_rigidBody == nullptr) {
 		return vec3(0,0,0);
@@ -269,33 +311,138 @@ void ege::physics::Component::addShape(const ememory::SharedPtr<ege::PhysicsShap
 	m_shape.push_back(_shape);
 }
 
-void ege::physics::Component::setTransform(const etk::Transform3D& _transform) {
-	if (m_rigidBody == nullptr) {
-		return;
-	}
-	rp3d::Vector3 position(_transform.getPosition().x(),
-	                       _transform.getPosition().y(),
-	                       _transform.getPosition().z());
-	rp3d::Quaternion orientation(_transform.getOrientation().x(),
-	                             _transform.getOrientation().y(),
-	                             _transform.getOrientation().z(),
-	                             _transform.getOrientation().w());
-	rp3d::Transform transform(position, orientation);
-	m_rigidBody->setTransform(transform);
-}
 
-etk::Transform3D ege::physics::Component::getTransform() const {
-	if (m_rigidBody == nullptr) {
-		return etk::Transform3D::identity();
+void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
+	etk::Transform3D transform = getTransform();
+	float mmm[16];
+	// Get the OpenGL matrix array of the transform 
+	transform.getOpenGLMatrix(mmm);
+	mat4 transformationMatrix(mmm);
+	transformationMatrix.transpose();
+	etk::Color<float> tmpColor(1.0, 0.0, 0.0, 0.3);
+	for (auto &it: m_shape) {
+		if (it == nullptr) {
+			continue;
+		}
+		switch (it->getType()) {
+			case ege::PhysicsShape::box: {
+				EGE_DEBUG("    Box");
+				const ege::PhysicsBox* tmpElement = it->toBox();
+				if (tmpElement == nullptr) {
+					EGE_ERROR("    Box ==> can not cast in BOX");
+					continue;
+				}
+				etk::Transform3D transformLocal(it->getOrigin(), it->getOrientation());
+				transformLocal.getOpenGLMatrix(mmm);
+				mat4 transformationMatrixLocal(mmm);
+				transformationMatrixLocal.transpose();
+				transformationMatrixLocal = transformationMatrix * transformationMatrixLocal;
+				_draw->drawSquare(tmpElement->getSize(), transformationMatrixLocal, tmpColor);
+				break;
+			}
+			case ege::PhysicsShape::cylinder : {
+				EGE_DEBUG("    Cylinder");
+				const ege::PhysicsCylinder* tmpElement = it->toCylinder();
+				if (tmpElement == nullptr) {
+					EGE_ERROR("    Cylinder ==> can not cast in Cylinder");
+					continue;
+				}
+				etk::Transform3D transformLocal(it->getOrigin(), it->getOrientation());
+				transformLocal.getOpenGLMatrix(mmm);
+				mat4 transformationMatrixLocal(mmm);
+				transformationMatrixLocal.transpose();
+				transformationMatrixLocal = transformationMatrix * transformationMatrixLocal;
+				//_draw->drawSphere(radius, 10, 10, _transformationMatrix, tmpColor);
+				break;
+			}
+			case ege::PhysicsShape::capsule : {
+				EGE_DEBUG("    Capsule");
+				const ege::PhysicsCapsule* tmpElement = it->toCapsule();
+				if (tmpElement == nullptr) {
+					EGE_ERROR("    Capsule ==> can not cast in Capsule");
+					continue;
+				}
+				/*
+				btCollisionShape* tmpShape = new btCapsuleShape(tmpElement->getRadius(), tmpElement->getHeight());
+				if (tmpShape != nullptr) {
+					if (outputShape == nullptr) {
+						return tmpShape;
+					} else {
+						vec4 qqq = tmpElement->getQuaternion();
+						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
+						outputShape->addChildShape(localTransform, tmpShape);
+					}
+				}
+				*/
+				break;
+			}
+			case ege::PhysicsShape::cone : {
+				EGE_DEBUG("    Cone");
+				const ege::PhysicsCone* tmpElement = it->toCone();
+				if (tmpElement == nullptr) {
+					EGE_ERROR("    Cone ==> can not cast in Cone");
+					continue;
+				}
+				/*
+				btCollisionShape* tmpShape = new btConeShape(tmpElement->getRadius(), tmpElement->getHeight());
+				if (tmpShape != nullptr) {
+					if (outputShape == nullptr) {
+						return tmpShape;
+					} else {
+						vec4 qqq = tmpElement->getQuaternion();
+						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
+						outputShape->addChildShape(localTransform, tmpShape);
+					}
+				}
+				*/
+				break;
+			}
+			case ege::PhysicsShape::sphere : {
+				EGE_DEBUG("    Sphere");
+				const ege::PhysicsSphere* tmpElement = it->toSphere();
+				if (tmpElement == nullptr) {
+					EGE_ERROR("    Sphere ==> can not cast in Sphere");
+					continue;
+				}
+				/*
+				btCollisionShape* tmpShape = new btSphereShape(tmpElement->getRadius());
+				if (tmpShape != nullptr) {
+					if (outputShape == nullptr) {
+						return tmpShape;
+					} else {
+						vec4 qqq = tmpElement->getQuaternion();
+						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
+						outputShape->addChildShape(localTransform, tmpShape);
+					}
+				}
+				*/
+				break;
+			}
+			case ege::PhysicsShape::convexHull : {
+				EGE_DEBUG("    convexHull");
+				const ege::PhysicsConvexHull* tmpElement = it->toConvexHull();
+				if (tmpElement == nullptr) {
+					EGE_ERROR("    convexHull ==> can not cast in convexHull");
+					continue;
+				}
+				/*
+				btConvexHullShape* tmpShape = new btConvexHullShape(&(tmpElement->getPointList()[0].x()), tmpElement->getPointList().size());
+				if (tmpShape != nullptr) {
+					if (outputShape == nullptr) {
+						return tmpShape;
+					} else {
+						vec4 qqq = tmpElement->getQuaternion();
+						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
+						outputShape->addChildShape(localTransform, tmpShape);
+					}
+				}
+				*/
+				break;
+			}
+			default :
+				EGE_DEBUG("    ???");
+				// TODO : UNKNOW type ... 
+				break;
+		}
 	}
-	rp3d::Transform transform = m_rigidBody->getTransform();
-	vec3 position(transform.getPosition().x,
-	              transform.getPosition().y,
-	              transform.getPosition().z);
-	etk::Quaternion orientation(transform.getOrientation().x,
-	                            transform.getOrientation().y,
-	                            transform.getOrientation().z,
-	                            transform.getOrientation().w);
-	return etk::Transform3D(position, orientation);
 }
-

@@ -4,6 +4,9 @@
  * @license MPL v2.0 (see license file)
  */
 
+*******************************************
+** IS REMOVED
+*******************************************
 
 #include <ege/elements/ElementBase.hpp>
 #include <ege/debug.hpp>

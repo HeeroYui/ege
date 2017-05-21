@@ -41,13 +41,16 @@ namespace ege {
 				/**
 				 * @not_in_doc
 				 */
-				enum normalMode {
-					normalModeNone,
-					normalModeFace,
-					normalModeVertex,
+				enum class normalMode {
+					none,
+					face,
+					vertex,
 				};
 			protected:
 				enum normalMode m_normalMode; // select the normal mode of display
+			public:
+				void setNormalMode(enum normalMode _mode);
+			protected:
 				bool m_checkNormal; //!< when enable, this check the normal of the mesh before sending it at the 3d card
 			protected:
 				ememory::SharedPtr<gale::resource::Program> m_GLprogram;

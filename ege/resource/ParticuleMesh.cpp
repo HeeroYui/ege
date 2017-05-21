@@ -88,7 +88,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 			std::vector<uint32_t> tmpIndexResult;
 			std::vector<ege::Face>& tmppFaces = m_listFaces.getValue(kkk).m_faces;
 			//std::vector<uint32_t>& tmppIndex = m_listFaces.getValue(kkk).m_index;
-			if (normalModeFace == m_normalMode) {
+			if (m_normalMode == ege::resource::Mesh::normalMode::face) {
 				for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
 					if((mattttt * m_listFacesNormal[tmppFaces[iii].m_normal[0]]).dot(cameraNormal) >= 0.0f) {
 						tmpIndexResult.push_back(iii*3);

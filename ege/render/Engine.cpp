@@ -6,8 +6,9 @@
 #include <ege/render/Engine.hpp>
 
 ege::render::Engine::Engine(ege::Environement* _env) :
-  ege::Engine(_env) {
-	
+  ege::Engine(_env),
+  propertyDebugNormal(this, "debug-normal", false, "display the normal debug information") {
+	m_debugDrawProperty = ewol::resource::Colored3DObject::create();
 }
 
 const std::string& ege::render::Engine::getType() const {
@@ -17,7 +18,7 @@ const std::string& ege::render::Engine::getType() const {
 
 void ege::render::Engine::componentRemove(const ememory::SharedPtr<ege::Component>& _ref) {
 	ememory::SharedPtr<ege::render::Component> ref = ememory::dynamicPointerCast<ege::render::Component>(_ref);
-	for (auto it=m_component.begin();
+	for (auto it = m_component.begin();
 	     it != m_component.end();
 	     ++it) {
 		if (*it == ref) {
@@ -95,13 +96,14 @@ void ege::render::Engine::getOrderedElementForDisplay(std::vector<ege::render::E
 #define  NUMBER_OF_SUB_PASS (5)
 
 void ege::render::Engine::render(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) {
+	/*
 	for (auto &it : m_component) {
 		if (it == nullptr) {
 			continue;
 		}
 		
 	}
-	
+	*/
 	//EGE_DEBUG("Draw (start)");
 	mat4 tmpMatrix;
 	getOrderedElementForDisplay(m_displayElementOrdered, _camera->getEye(), _camera->getViewVector());
@@ -118,6 +120,13 @@ void ege::render::Engine::render(const echrono::Duration& _delta, const ememory:
 			it.element->draw(pass);
 		}
 	}
+}
+
+void ege::render::Engine::renderDebug(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) {
+	//EGE_DEBUG("Draw (start)");
+	mat4 tmpMatrix;
+	getOrderedElementForDisplay(m_displayElementOrdered, _camera->getEye(), _camera->getViewVector());
+	EGE_VERBOSE("DRAW : " << m_displayElementOrdered.size() << "/" << m_component.size() << " elements");
 	#if 0
 	if (propertyDebugPhysic.get() == true) {
 		// Draw debug ... (Object)
@@ -134,13 +143,14 @@ void ege::render::Engine::render(const echrono::Duration& _delta, const ememory:
 		}
 		*/
 	}
+	#endif
 	if (propertyDebugNormal.get() == true) {
 		// Draw debug ... (Object)
 		for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
-			m_displayElementOrdered[iii].element->drawNormalDebug(m_debugDrawProperty, camera);
+			m_displayElementOrdered[iii].element->drawNormalDebug(m_debugDrawProperty);
 		}
 	}
-	
+	#if 0
 	if (propertyDebugApplication.get() == true) {
 		// Draw debug ... (User)
 		signalDisplayDebug.emit(m_debugDrawProperty);

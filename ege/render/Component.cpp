@@ -76,13 +76,22 @@ void ege::render::Component::draw(int32_t _pass) {
 			float mmm[16];
 			// Get the OpenGL matrix array of the transform 
 			m_transform.getOpenGLMatrix(mmm);
-			
-			//EGE_INFO("    mat = " << mat4(mmm));
 			mat4 transformationMatrix(mmm);
-			//mat4 transformationMatrix = mat4(mmm) * etk::matScale(vec3(20,20,20));
 			transformationMatrix.transpose();
 			// TODO: check this : transformationMatrix.transpose();
 			m_mesh->draw(transformationMatrix);
 		}
 	}
 }
+
+void ege::render::Component::drawNormalDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw) {
+	if(m_mesh != nullptr) {
+		float mmm[16];
+		// Get the OpenGL matrix array of the transform 
+		m_transform.getOpenGLMatrix(mmm);
+		mat4 transformationMatrix(mmm);
+		transformationMatrix.transpose();
+		m_mesh->drawNormal(transformationMatrix, _draw);
+	}
+}
+

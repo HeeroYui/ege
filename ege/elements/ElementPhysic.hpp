@@ -5,6 +5,13 @@
  */
 #pragma once
 
+*******************************************
+** IS REMOVED
+*******************************************
+
+
+
+
 #include <etk/types.hpp>
 #include <etk/math/Vector3D.hpp>
 #include <etk/math/Matrix4x4.hpp>

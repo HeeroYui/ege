@@ -181,6 +181,7 @@ namespace ege {
 			 * @param[in] _distance Maximum distance search  == > return the element distance
 			 * @return Pointer on the neares element OR nullptr
 			 */
+			/*
 			ememory::SharedPtr<ege::Element> getElementNearest(ememory::SharedPtr<ege::Element> _sourceRequest, float& _distance);
 			
 			void getElementNearest(const vec3& _sourcePosition,
@@ -189,6 +190,7 @@ namespace ege {
 			void getElementNearestFixed(const vec3& _sourcePosition,
 			                            float _distanceMax,
 			                            std::vector<ege::Environement::ResultNearestElement>& _resultList);
+			*/
 			/**
 			 * @brief add an element on the list availlable.
 			 * @param[in] _newElement Element to add.
@@ -199,13 +201,6 @@ namespace ege {
 			 * @param[in] _removeElement Element to remove.
 			 */
 			void rmElement(ememory::SharedPtr<ege::Element> _removeElement);
-			/**
-			 * @brief get the element order from the nearest to the farest, and remove all element that are not in the camera angle and axes.
-			 * @param[in,out] _resultList List of the element ordered.
-			 * @param[in] _position Camera position in the space.
-			 * @param[in] _direction Camera direction of the view.
-			 */
-			void getOrderedElementForDisplay(std::vector<ege::Environement::ResultNearestElement>& _resultList, const vec3& _position, const vec3& _direction);
 			/**
 			 * @brief generate an event on all the sub element of the game  == > usefull for explosion, or lazer fire ...
 			 * @param[in] _event event that might be apply ...

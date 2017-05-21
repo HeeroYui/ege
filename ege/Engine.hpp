@@ -11,11 +11,14 @@
 #include <ege/Component.hpp>
 #include <echrono/Duration.hpp>
 #include <ege/camera/Camera.hpp>
+#include <eproperty/Interface.hpp>
 
 namespace ege {
 	class Environement;
 	class Camera;
-	class Engine : public ememory::EnableSharedFromThis<Engine> {
+	class Engine :
+	  public ememory::EnableSharedFromThis<Engine>,
+	  public eproperty::Interface {
 		protected:
 			ege::Environement* m_env;
 		public:
@@ -48,6 +51,12 @@ namespace ege {
 			 * @param[in] _camera Camera property to render the engine properties ...
 			 */
 			virtual void render(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera);
+			/**
+			 * @brief Globalgame engine main cycle of draw
+			 * @param[in] _delta time from the last render
+			 * @param[in] _camera Camera property to render the engine properties ...
+			 */
+			virtual void renderDebug(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera);
 	};
 }
 

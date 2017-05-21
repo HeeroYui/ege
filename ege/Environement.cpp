@@ -115,7 +115,7 @@ void ege::Environement::engineComponentAdd(const ememory::SharedPtr<ege::Compone
 	}
 }
 
-
+/*
 ememory::SharedPtr<ege::Element> ege::Environement::getElementNearest(ememory::SharedPtr<ege::Element> _sourceRequest, float& _distance) {
 	if (_sourceRequest == nullptr) {
 		return nullptr;
@@ -210,6 +210,7 @@ void ege::Environement::getElementNearestFixed(const vec3& _sourcePosition,
 		}
 	}
 }
+*/
 
 static etk::Hash<ege::createElement_tf>& getHachTableCreating() {
 	static etk::Hash<ege::createElement_tf> s_table;
@@ -389,60 +390,6 @@ void ege::Environement::rmElement(ememory::SharedPtr<ege::Element> _removeElemen
 	}
 }
 
-// TODO : DEPRECATED ==> special function of the renderer ...
-void ege::Environement::getOrderedElementForDisplay(std::vector<ege::Environement::ResultNearestElement>& _resultList,
-                                                    const vec3& _position,
-                                                    const vec3& _direction) {
-	// TODO : Set it back ... corrected...
-	// remove all unneeded elements (old display...)
-	_resultList.clear();
-	// basic element result
-	ege::Environement::ResultNearestElement result;
-	result.dist = 99999999999.0f;
-	result.element = nullptr;
-	// for all element in the game we chek if it is needed to display it ...
-	for (size_t iii=0; iii<m_listElement.size() ; iii++) {
-		// check nullptr  pointer
-		if (m_listElement[iii] == nullptr) {
-			// no pointer null are set in the output list ...
-			continue;
-		}
-		result.element = m_listElement[iii];
-		// check distance ...
-		vec3 destPosition = result.element->getPosition();
-		vec3 angleView = (destPosition - _position);
-		angleView.safeNormalize();
-		float dotResult=angleView.dot(_direction);
-		//EGE_DEBUG("Dot position : " << destPosition << "  == > dot=" << dotResult);
-		/*
-		if (dotResult <= 0.85f) {
-			// they are not in the camera angle view ...  == > no need to process display
-			continue;
-		}
-		*/
-		result.dist = (_position - destPosition).length();
-		/*
-		if (result.dist>500.0f) {
-			// The element is realy too far ...  == > no need to display
-			continue;
-		}
-		*/
-		// try to add the element at the best positions:
-		size_t jjj;
-		for (jjj=0; jjj<_resultList.size(); jjj++) {
-			if (_resultList[jjj].dist>result.dist) {
-				_resultList.insert(_resultList.begin()+jjj, result);
-				break;
-			}
-		}
-		// add element at the end :
-		if (jjj >= _resultList.size()) {
-			_resultList.push_back(result);
-		}
-	}
-}
-
-
 void ege::Environement::generateInteraction(ege::ElementInteraction& _event) {
 	// inform the element that an element has been removed  == > this permit to keep pointer on elements ...
 	for (size_t iii=0; iii<m_listElement.size() ; iii++) {
@@ -501,6 +448,13 @@ void ege::Environement::render(const echrono::Duration& _delta, const std::strin
 		}
 		EGE_VERBOSE("    render: " << it->getType());
 		it->render(_delta, camera);
+	}
+	for (auto &it: m_engine) {
+		if(it == nullptr) {
+			continue;
+		}
+		EGE_VERBOSE("    render: " << it->getType());
+		it->renderDebug(_delta, camera);
 	}
 }
 

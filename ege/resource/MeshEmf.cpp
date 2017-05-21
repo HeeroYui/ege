@@ -141,7 +141,7 @@ enum emfModuleMode {
 // TODO : rework with string line extractor
 bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 	m_checkNormal = true;
-	m_normalMode = normalModeNone;
+	m_normalMode = ege::resource::Mesh::normalMode::none;
 	etk::FSNode fileName(_fileName);
 	// get the fileSize ...
 	int32_t size = fileName.fileSize();
@@ -294,7 +294,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 						break;
 					}
 					case EMFModuleMeshNormalVertex: {
-						m_normalMode = normalModeVertex;
+						m_normalMode = ege::resource::Mesh::normalMode::vertex;
 						vec3 normal(0,0,0);
 						// find the vertex Normal list.
 						while (loadNextData(inputDataLine, 2048, fileName, true, true) != nullptr) {
@@ -314,7 +314,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 					}
 					case EMFModuleMeshNormalFace: {
 						EGE_ERROR("Change mode in face mode ...");
-						m_normalMode = normalModeFace; // TODO : check if it is the same mode of display the normal  from the start of the file
+						m_normalMode = ege::resource::Mesh::normalMode::face; // TODO : check if it is the same mode of display the normal  from the start of the file
 						vec3 normal(0,0,0);
 						// find the face Normal list.
 						while (loadNextData(inputDataLine, 2048, fileName, true, true) != nullptr) {
@@ -379,7 +379,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 									uvIndex[0] += offsetUV;
 									uvIndex[1] += offsetUV;
 									uvIndex[2] += offsetUV;
-									if (m_normalMode == normalModeFace) {
+									if (m_normalMode == ege::resource::Mesh::normalMode::face) {
 										normalIndex[0] += offsetFaceNormal;
 										normalIndex[1] += offsetFaceNormal;
 										normalIndex[2] += offsetFaceNormal;
@@ -396,7 +396,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 									vertexIndex[0] += offsetVertexId;
 									vertexIndex[1] += offsetVertexId;
 									vertexIndex[2] += offsetVertexId;
-									if (m_normalMode == normalModeFace) {
+									if (m_normalMode == ege::resource::Mesh::normalMode::face) {
 										normalIndex[0] += offsetFaceNormal;
 										normalIndex[1] += offsetFaceNormal;
 										normalIndex[2] += offsetFaceNormal;

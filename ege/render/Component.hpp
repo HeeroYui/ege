@@ -64,7 +64,11 @@ namespace ege {
 				 * @param[in] pass Id of the current pass : [0..?]
 				 */
 				virtual void draw(int32_t _pass=0);
-				
+				/**
+				 * @brief Debug display of the current element normal face
+				 * @param[in,out] _draw Basic system to draw the debug shape and informations
+				 */
+				void drawNormalDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw);
 			public:
 				const std::string& getType() const override;
 				void addFriendComponent(const ememory::SharedPtr<ege::Component>& _component) override;

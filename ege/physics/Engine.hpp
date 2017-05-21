@@ -23,11 +23,16 @@ namespace ege {
 #include <gale/resource/Manager.hpp>
 #include <gale/Dimension.hpp>
 #include <ephysics/reactphysics3d.h>
+#include <ege/physics/Component.hpp>
+#include <eproperty/Value.hpp>
 
 
 namespace ege {
 	namespace physics {
 		class Engine : public ege::Engine {
+			public:
+				eproperty::Value<bool> propertyDebugAABB;
+				eproperty::Value<bool> propertyDebugShape;
 			private:
 				rp3d::DynamicsWorld* m_dynamicsWorld;
 				float m_accumulator; // limit call of the step rendering
@@ -74,12 +79,16 @@ namespace ege {
 				rp3d::DynamicsWorld* getDynamicWorld() {
 					return m_dynamicsWorld;
 				}
+			protected:
+				std::vector<ememory::SharedPtr<ege::physics::Component>> m_component;
+				//TODO :  set it not in ewol ...
+				ememory::SharedPtr<ewol::resource::Colored3DObject> m_debugDrawProperty;
 			public:
 				const std::string& getType() const override;
 				void componentRemove(const ememory::SharedPtr<ege::Component>& _ref) override;
 				void componentAdd(const ememory::SharedPtr<ege::Component>& _ref) override;
 				void update(const echrono::Duration& _delta) override;
-				//void render(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) override;
+				void renderDebug(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) override;
 		};
 	}
 }

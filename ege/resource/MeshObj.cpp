@@ -9,7 +9,7 @@
 
 
 bool ege::resource::Mesh::loadOBJ(const std::string& _fileName) {
-	m_normalMode = normalModeNone;
+	m_normalMode = ege::resource::Mesh::normalMode::none;
 #if 0
 	etk::FSNode fileName(_fileName);
 	// get the fileSize ...

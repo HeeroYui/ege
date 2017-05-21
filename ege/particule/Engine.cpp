@@ -7,7 +7,7 @@
 #include <ege/debug.hpp>
 #include <ege/particule/Engine.hpp>
 #include <ege/Environement.hpp>
-#include <ege/particule/Particule.hpp>
+#include <ege/particule/Component.hpp>
 
 ege::particule::Engine::Engine(ege::Environement* _env) :
   ege::Engine(_env) {
@@ -88,7 +88,7 @@ void ege::particule::Engine::update(const echrono::Duration& _delta) {
 	if (deltaTime>(1.0f/60.0f)) {
 		deltaTime = (1.0f/60.0f);
 	}
-	EGE_WARNING("Update the Particule engine ... " << deltaTime);
+	EGE_DEBUG("Update the Particule engine ... " << deltaTime);
 	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
 		if (m_particuleList[iii] == nullptr) {
 			continue;

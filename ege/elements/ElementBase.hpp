@@ -3,6 +3,13 @@
  * @copyright 2011, Edouard DUPIN, all right reserved
  * @license MPL v2.0 (see license file)
  */
+*******************************************
+** IS REMOVED
+*******************************************
+
+
+
+
 #pragma once
 
 #include <ege/elements/Element.hpp>

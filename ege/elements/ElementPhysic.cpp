@@ -4,6 +4,13 @@
  * @license MPL v2.0 (see license file)
  */
 
+*******************************************
+** IS REMOVED
+*******************************************
+
+
+
+
 #include <etk/types.hpp>
 #include <ege/debug.hpp>
 #include <ege/elements/ElementPhysic.hpp>
@@ -318,41 +325,6 @@ void ege::ElementPhysic::drawShape(/*const btCollisionShape* _shape,*/
 	#endif
 }
 
-void ege::ElementPhysic::drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
-	ege::Element::drawDebug(_draw, _camera);
-	/*
-	btScalar mmm[16];
-	if (m_body == nullptr) {
-		return;
-	}
-	btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
-	myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(mmm);
-	
-	mat4 transformationMatrix(mmm);
-	transformationMatrix.transpose();
-	
-	// note : set the vertice here to prevent multiple allocations...
-	std::vector<vec3> EwolVertices;
-	drawShape(m_shape, _draw, transformationMatrix, EwolVertices);
-	*/
-}
-
-void ege::ElementPhysic::drawNormalDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
-	/*
-	if(    m_body != nullptr
-	    && m_mesh != nullptr
-	    && m_body->getMotionState() ) {
-		//EGE_INFO("element pos = " << getPosition());
-		btScalar mmm[16];
-		btDefaultMotionState* myMotionState = (btDefaultMotionState*)m_body->getMotionState();
-		myMotionState->m_graphicsWorldTrans.getOpenGLMatrix(mmm);
-		
-		mat4 transformationMatrix(mmm);
-		transformationMatrix.transpose();
-		m_mesh->drawNormal(transformationMatrix, _draw);
-	}
-	*/
-}
 
 void ege::ElementPhysic::draw(int32_t _pass) {
 	if (m_elementInPhysicsSystem == false) {

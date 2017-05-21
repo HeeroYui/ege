@@ -31,3 +31,7 @@ void ege::Engine::update(const echrono::Duration& _delta) {
 void ege::Engine::render(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) {
 	
 }
+
+void ege::Engine::renderDebug(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) {
+	
+}

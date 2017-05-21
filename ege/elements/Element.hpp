@@ -74,40 +74,6 @@ namespace ege {
 			inline uint32_t getUID() const {
 				return m_uID;
 			};
-		/*
-		 * *********************************
-		 *     Remove in progress .... [BEGIN]
-		 * *********************************
-		 */
-		protected:
-			ememory::SharedPtr<ege::resource::Mesh> m_mesh; //!< Mesh of the Element (can be nullptr)
-		public:
-			/**
-			 * @brief Select a mesh with a specific name.
-			 * @param[in] _meshFileName filename of the Mesh.
-			 * @note Automaticly load the shape if it is specify in the mesh file
-			 * @return true if no error occured
-			 */
-			virtual bool loadMesh(const std::string& _meshFileName);
-			/**
-			 * @brief set the the Mesh properties.
-			 * @param[in] _mesh The mesh pointer. (nullptr to force the mesh remove ...)
-			 * @note : this remove the shape and the mesh properties.
-			 * @return true if no error occured
-			 */
-			virtual bool setMesh(ememory::SharedPtr<ege::resource::Mesh> _mesh);
-			/**
-			 * @brief get a pointer on the Mesh file.
-			 * @return the mesh pointer.
-			 */
-			inline ememory::SharedPtr<ege::resource::Mesh> getMesh() {
-				return m_mesh;
-			};
-		/*
-		 * *********************************
-		 *     Remove in progress .... [END]
-		 * *********************************
-		 */
 		protected:
 			float m_life; //!< Current life of the object
 			float m_lifeMax; //!< Maximum possible life of the element
@@ -160,28 +126,9 @@ namespace ege {
 			inline void setGroup(int32_t _newGroup) {
 				m_group=_newGroup;
 			};
-		public:
-			/**
-			 * @brief Can be call tu opdate the list of the element displayed on the scren (example : no display of the hiden triangle)
-			 * @param[in] the camera properties
-			 * @ note by default nothing to do ...
-			 */
-			virtual void preCalculationDraw(const ege::Camera& _camera) { };
-			/**
-			 * @brief draw the curent element (can have multiple display)
-			 * @param[in] pass Id of the current pass : [0..?]
-			 */
-			virtual void draw(int32_t _pass=0) { };
-			
-			/**
-			 * @brief draw the current life of the element
-			 */
-			// TODO : Remove this ...
-			virtual void drawLife(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
-			
 		protected:
 			// For debug only ...
-			ewol::compositing::Text m_debugText;
+			//ewol::compositing::Text m_debugText; // ==> this is reall y a bad idea==> it is inneficient ...
 		public:
 			/**
 			 * @brief Debug display of the current element
@@ -190,44 +137,10 @@ namespace ege {
 			 */
 			virtual void drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
 			/**
-			 * @brief Debug display of the current element normal face
-			 * @param[in,out] _draw Basic system to draw the debug shape and informations
-			 * @param[in] _camera Current camera for display
-			 */
-			virtual void drawNormalDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
-			
-			/**
-			 * @brief get the theoric position. Sometimes, the element has move due to an explosion or something else, then its real position in not the one that woult it be at the end ...
-			 * @return the theoric position
-			 */
-			virtual vec3 getPositionTheoric() {
-				return getPosition();
-			};
-			/**
-			 * @brief get the current position of the element
-			 * @return the 3D position.
-			 */
-			virtual const vec3& getPosition();
-			/**
-			 * @brief set the current position of the element
-			 * @param[in] _pos set the 3D position.
-			 */
-			virtual void setPosition(const vec3& _pos) {};
-			/**
 			 * @brief Event arrive when an element has been remove from the system  == > this permit to keep pointer of ennemy, and not search them every cycle ...
 			 * @param[in] _removedElement Pointer on the element removed.
 			 */
 			virtual void elementIsRemoved(ememory::SharedPtr<ege::Element> _removedElement) { };
-		protected:
-			bool m_fixe; //!< is a fixed element  == > used for placement of every elements
-		public:
-			/**
-			 * @brief get the element if it is fixed or not. if the element is fixed this is for tower, and all thing does not really move
-			 * @return true : The element is fixed.
-			 */
-			inline bool isFixed() {
-				return m_fixe;
-			};
 		protected:
 			float m_radius; //!< Radius of the element (all element have a radius, if  == 0 ==> then ghost ...
 		public:

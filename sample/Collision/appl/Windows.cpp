@@ -15,8 +15,7 @@
 #include <ege/widget/Scene.hpp>
 #include <ege/camera/View.hpp>
 #include <etk/tool.hpp>
-#include <ege/elements/ElementBase.hpp>
-#include <ege/elements/ElementPhysic.hpp>
+#include <ege/elements/Element.hpp>
 #include <ege/physicsShape/PhysicsBox.hpp>
 #include <ege/physicsShape/PhysicsSphere.hpp>
 #include <ege/position/Component.hpp>
@@ -76,6 +75,10 @@ void appl::Windows::init() {
 	getObjectManager().periodicCall.connect(sharedFromThis(), &appl::Windows::onCallbackPeriodicCheckCollision);
 	
 	m_env = ege::Environement::create();
+	// set the debug property on the engines
+	m_env->getEngine("render")->properties.set("debug-normal", "true");
+	m_env->getEngine("physics")->properties.set("debug-AABB", "true");
+	m_env->getEngine("physics")->properties.set("debug-shape", "true");
 	// Create basic Camera
 	m_camera = ememory::makeShared<ege::camera::View>(vec3(30,30,-100), vec3(0,0,0));
 	m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),40*std::cos(m_anglePsy)));
@@ -93,7 +96,7 @@ void appl::Windows::init() {
 	}
 	
 	ememory::SharedPtr<ege::resource::Mesh> myMesh;
-	// Create an external box:
+	// Create an external box: (no physics)
 	myMesh = createViewBoxStar();
 	if (myMesh != nullptr) {
 		ememory::SharedPtr<ege::Element> element = ememory::makeShared<ege::Element>(m_env);
@@ -107,7 +110,7 @@ void appl::Windows::init() {
 		// add it ..
 		m_env->addElement(element);
 	}
-	// create basic gird:
+	// create basic gird: (no physics)
 	myMesh = ege::resource::Mesh::createGrid(10, vec3(0,0,0), 5);
 	if (myMesh != nullptr) {
 		ememory::SharedPtr<ege::Element> element = ememory::makeShared<ege::Element>(m_env);
@@ -128,8 +131,6 @@ void appl::Windows::init() {
 		// add all component:
 		// 1st Position component:
 		etk::Transform3D transform(vec3(0,0,2), etk::Quaternion::identity());
-		//ememory::SharedPtr<ege::position::Component> componentPosition = ememory::makeShared<ege::position::Component>(transform);
-		//element->addComponent(componentPosition);
 		// 2nd something to diplay:
 		ememory::SharedPtr<ege::render::Component> componentRender = ememory::makeShared<ege::render::Component>(myMesh);
 		element->addComponent(componentRender);
@@ -137,6 +138,7 @@ void appl::Windows::init() {
 		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
 		ememory::SharedPtr<ege::PhysicsBox> physic = ememory::makeShared<ege::PhysicsBox>();
 		physic->setSize(vec3(3.2,3.2,3.2));
+		physic->setMass(300000);
 		componentPhysics->addShape(physic);
 		componentPhysics->generate();
 		element->addComponent(componentPhysics);
@@ -158,6 +160,7 @@ void appl::Windows::init() {
 		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
 		ememory::SharedPtr<ege::PhysicsBox> physic = ememory::makeShared<ege::PhysicsBox>();
 		physic->setSize(vec3(3.2,3.2,3.2));
+		physic->setMass(50000);
 		componentPhysics->addShape(physic);
 		componentPhysics->generate();
 		element->addComponent(componentPhysics);
@@ -166,7 +169,7 @@ void appl::Windows::init() {
 	}
 	m_env->propertyStatus.set(ege::gameStart);
 }
-
+/*
 namespace appl {
 	class ElementHerit : public ege::ElementPhysic {
 		public:
@@ -179,6 +182,7 @@ namespace appl {
 			}
 	};
 }
+*/
 
 
 bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
@@ -204,12 +208,13 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 				ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
 				ememory::SharedPtr<ege::PhysicsBox> physic = ememory::makeShared<ege::PhysicsBox>();
 				physic->setSize(vec3(1.1,1.1,1.1));
+				physic->setMass(1000);
 				componentPhysics->setType(ege::physics::Component::type::bodyDynamic);
 				componentPhysics->addShape(physic);
 				componentPhysics->generate();
 				// set has dynamic object (can move)
 				//APPL_CRITICAL("velocity : " << ray.getDirection()*100);
-				componentPhysics->setLinearVelocity(ray.getDirection()*1000);
+				componentPhysics->setLinearVelocity(ray.getDirection()*100);
 				element->addComponent(componentPhysics);
 				// add it ..
 				m_env->addElement(element);

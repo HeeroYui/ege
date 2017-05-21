@@ -8,6 +8,7 @@
 #include <etk/types.hpp>
 #include <etk/math/Vector4D.hpp>
 #include <etk/math/Vector3D.hpp>
+#include <etk/math/Quaternion.hpp>
 #include <ememory/memory.hpp>
 
 
@@ -35,34 +36,47 @@ namespace ege {
 		public:
 			PhysicsShape() :
 			  m_quaternion(1,0,0,0),
-			  m_origin(0,0,0) {
+			  m_origin(0,0,0),
+			  m_mass(1) { // by default set mass at 1g
 				
-			};
+			}
 			virtual ~PhysicsShape() {
 				
-			};
+			}
 		public:
 			virtual enum ege::PhysicsShape::type getType() const {
 				return ege::PhysicsShape::unknow;
-			};
+			}
 			
 		public:
 			virtual bool parse(const char* _line);
 			virtual void display() {
 				
-			};
+			}
 		private:
 			vec4 m_quaternion;
 		public:
 			const vec4& getQuaternion() const {
 				return m_quaternion;
-			};
+			}
+			etk::Quaternion getOrientation() const {
+				return etk::Quaternion(m_quaternion.x(), m_quaternion.y(), m_quaternion.z(), m_quaternion.w());
+			}
 		private:
 			vec3 m_origin;
 		public:
 			const vec3& getOrigin() const {
 				return m_origin;
 			};
+		private:
+			float m_mass; //!< element mass in "g" then 1000 for 1kg
+		public:
+			float getMass() const {
+				return m_mass;
+			}
+			void setMass(float _mass) {
+				m_mass = _mass;
+			}
 		public:
 			bool isBox() {
 				return getType() == ege::PhysicsShape::box;

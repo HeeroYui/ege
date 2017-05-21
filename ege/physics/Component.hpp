@@ -12,6 +12,7 @@
 #include <esignal/Signal.hpp>
 #include <ephysics/reactphysics3d.h>
 #include <ege/resource/Mesh.hpp>
+#include <ege/camera/Camera.hpp>
 
 namespace ege {
 	class Environement;
@@ -20,6 +21,8 @@ namespace ege {
 		class Component : public ege::Component {
 			public:
 				esignal::Signal<etk::Transform3D> signalPosition;
+			protected:
+				etk::Transform3D m_lastTransformEmit;
 			protected:
 				ememory::SharedPtr<ege::physics::Engine> m_engine;
 				rp3d::RigidBody* m_rigidBody;
@@ -82,6 +85,10 @@ namespace ege {
 				void setShape(const std::vector<ememory::SharedPtr<ege::PhysicsShape>>& _prop);
 				void addShape(const ememory::SharedPtr<ege::PhysicsShape>& _shape);
 				void generate();
+				void drawShape(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
+			private:
+				void emitAll();
+				friend class ege::physics::Engine;
 		};
 	}
 }

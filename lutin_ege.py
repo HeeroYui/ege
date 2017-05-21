@@ -33,13 +33,12 @@ def configure(target, my_module):
 	    'ege/camera/Camera.cpp',
 	    'ege/camera/View.cpp',
 	    'ege/camera/FPS.cpp',
-	    'ege/CollisionShapeCreator.cpp',
 	    'ege/position/Component.cpp',
 	    'ege/physics/Component.cpp',
 	    'ege/physics/Engine.cpp',
 	    'ege/elements/Element.cpp',
-	    'ege/elements/ElementBase.cpp',
-	    'ege/elements/ElementPhysic.cpp',
+	    #'ege/elements/ElementBase.cpp',
+	    #'ege/elements/ElementPhysic.cpp',
 	    'ege/particule/Component.cpp',
 	    'ege/particule/Engine.cpp',
 	    'ege/particule/Simple.cpp',
@@ -71,7 +70,7 @@ def configure(target, my_module):
 	    ])
 	my_module.copy_path('data/ParticuleMesh.*')
 	my_module.copy_path('data/material3D.*')
-	my_module.add_depend(['ewol', 'ephysics', 'echrono'])
+	my_module.add_depend(['ewol', 'ephysics', 'eproperty', 'echrono'])
 	my_module.add_flag('c++', [
 	    '-Wno-write-strings',
 	    '-Wmissing-field-initializers',
@@ -84,13 +83,12 @@ def configure(target, my_module):
 	    'ege/camera/Camera.hpp',
 	    'ege/camera/View.hpp',
 	    'ege/camera/FPS.hpp',
-	    'ege/CollisionShapeCreator.hpp',
 	    'ege/position/Component.hpp',
 	    'ege/physics/Engine.hpp',
 	    'ege/physics/Component.hpp',
 	    'ege/elements/Element.hpp',
-	    'ege/elements/ElementBase.hpp',
-	    'ege/elements/ElementPhysic.hpp',
+	    #'ege/elements/ElementBase.hpp',
+	    #'ege/elements/ElementPhysic.hpp',
 	    'ege/particule/Component.hpp',
 	    'ege/particule/Engine.hpp',
 	    'ege/particule/Simple.hpp',
@@ -121,7 +119,6 @@ def configure(target, my_module):
 	# TODO: Remove this ...
 	my_module.add_flag('c++', "-Wno-unused-variable")
 	my_module.add_flag('c++', "-Wno-overloaded-virtual")
-	my_module.add_path(".")
 	return True
 
 
