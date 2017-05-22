@@ -15,7 +15,9 @@ namespace ege {
 		namespace shape {
 			class Cylinder : public ege::physics::Shape {
 				public:
-					Cylinder() {};
+					Cylinder() :
+					  m_radius(1.0f),
+					  m_size(1.0f) {};
 					virtual ~Cylinder() {};
 				public:
 					virtual bool parse(const char* _line);
@@ -25,11 +27,23 @@ namespace ege {
 						return ege::physics::Shape::type::cylinder;
 					};
 				private:
-					vec3 m_size;
+					float m_radius;
 				public:
-					vec3 getSize() const {
+					float getRadius() const {
+						return m_radius;
+					}
+					void setRadius(float _radius) {
+						m_radius = _radius;
+					}
+				private:
+					float m_size;
+				public:
+					float getSize() const {
 						return m_size;
-					};
+					}
+					void setSize(float _size) {
+						m_size = _size;
+					}
 				public:
 					virtual const ege::physics::shape::Cylinder* toCylinder() const {
 						return this;

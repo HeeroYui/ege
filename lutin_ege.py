@@ -54,6 +54,8 @@ def configure(target, my_module):
 	    'ege/resource/MeshCube.cpp',
 	    'ege/resource/MeshSphere.cpp',
 	    'ege/resource/MeshCylinder.cpp',
+	    'ege/resource/MeshCapsule.cpp',
+	    'ege/resource/MeshCone.cpp',
 	    'ege/resource/MeshObj.cpp',
 	    'ege/resource/ParticuleMesh.cpp',
 	    'ege/resource/tools/icoSphere.cpp',

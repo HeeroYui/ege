@@ -15,7 +15,9 @@ namespace ege {
 		namespace shape {
 			class Capsule : public ege::physics::Shape {
 				public:
-					Capsule() {};
+					Capsule() :
+					  m_radius(1.0f),
+					  m_size(1.0f) {};
 					virtual ~Capsule() {};
 				public:
 					virtual bool parse(const char* _line);
@@ -23,26 +25,32 @@ namespace ege {
 				public:
 					virtual enum ege::physics::Shape::type getType() const {
 						return ege::physics::Shape::type::capsule;
-					};
+					}
 				private:
 					float m_radius;
 				public:
 					float getRadius() const {
 						return m_radius;
-					};
+					}
+					void setRadius(float _radius) {
+						m_radius = _radius;
+					}
 				private:
-					float m_height;
+					float m_size;
 				public:
-					float getHeight() const {
-						return m_height;
-					};
+					float getSize() const {
+						return m_size;
+					}
+					void setSize(float _size) {
+						m_size = _size;
+					}
 				public:
 					virtual const ege::physics::shape::Capsule* toCapsule() const {
 						return this;
-					};
+					}
 					virtual ege::physics::shape::Capsule* toCapsule() {
 						return this;
-					};
+					}
 			};
 		}
 	}

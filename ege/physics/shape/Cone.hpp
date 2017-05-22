@@ -27,13 +27,19 @@ namespace ege {
 				public:
 					float getRadius() const {
 						return m_radius;
-					};
+					}
+					void setRadius(float _radius) {
+						m_radius = _radius;
+					}
 				private:
-					float m_height;
+					float m_size;
 				public:
-					float getHeight() const {
-						return m_height;
-					};
+					float getSize() const {
+						return m_size;
+					}
+					void setSize(float _size) {
+						m_size = _size;
+					}
 				public:
 					virtual const ege::physics::shape::Cone* toCone() const {
 						return this;

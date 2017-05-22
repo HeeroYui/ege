@@ -17,9 +17,9 @@ bool ege::physics::shape::Capsule::parse(const char* _line) {
 		EGE_VERBOSE("                radius=" << m_radius);
 		return true;
 	}
-	if(strncmp(_line, "height:", 7) == 0) {
-		sscanf(&_line[7], "%f", &m_height );
-		EGE_VERBOSE("                height=" << m_height);
+	if(strncmp(_line, "size:", 5) == 0) {
+		sscanf(&_line[5], "%f", &m_size );
+		EGE_VERBOSE("                height=" << m_size);
 		return true;
 	}
 	return false;

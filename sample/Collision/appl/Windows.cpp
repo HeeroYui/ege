@@ -18,6 +18,9 @@
 #include <ege/Entity.hpp>
 #include <ege/physics/shape/Box.hpp>
 #include <ege/physics/shape/Sphere.hpp>
+#include <ege/physics/shape/Cylinder.hpp>
+#include <ege/physics/shape/Capsule.hpp>
+#include <ege/physics/shape/Cone.hpp>
 #include <ege/position/Component.hpp>
 #include <ege/render/Component.hpp>
 #include <ege/physics/Component.hpp>
@@ -182,6 +185,75 @@ void appl::Windows::init() {
 		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
 		ememory::SharedPtr<ege::physics::shape::Sphere> physic = ememory::makeShared<ege::physics::shape::Sphere>();
 		physic->setRadius(4.01);
+		physic->setMass(500000);
+		componentPhysics->addShape(physic);
+		componentPhysics->generate();
+		element->addComponent(componentPhysics);
+		// add it ..
+		m_env->addEntity(element);
+	}
+	myMesh = ege::resource::Mesh::createCylinder(4, 8, "basics", etk::color::blue);
+	if (myMesh != nullptr) {
+		ememory::SharedPtr<ege::Entity> element = ememory::makeShared<ege::Entity>(m_env);
+		// add all component:
+		// 1st Position component:
+		etk::Transform3D transform(vec3(20,10,10), etk::Quaternion::identity());
+		//ememory::SharedPtr<ege::position::Component> componentPosition = ememory::makeShared<ege::position::Component>(transform);
+		//element->addComponent(componentPosition);
+		// 2nd something to diplay:
+		ememory::SharedPtr<ege::render::Component> componentRender = ememory::makeShared<ege::render::Component>(myMesh);
+		element->addComponent(componentRender);
+		// 3rd some physic:
+		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
+		ememory::SharedPtr<ege::physics::shape::Cylinder> physic = ememory::makeShared<ege::physics::shape::Cylinder>();
+		physic->setRadius(4.01);
+		physic->setSize(8.01);
+		physic->setMass(500000);
+		componentPhysics->addShape(physic);
+		componentPhysics->generate();
+		element->addComponent(componentPhysics);
+		// add it ..
+		m_env->addEntity(element);
+	}
+	myMesh = ege::resource::Mesh::createCapsule(4, 8, "basics", etk::color::purple);
+	if (myMesh != nullptr) {
+		ememory::SharedPtr<ege::Entity> element = ememory::makeShared<ege::Entity>(m_env);
+		// add all component:
+		// 1st Position component:
+		etk::Transform3D transform(vec3(20,-10,-10), etk::Quaternion::identity());
+		//ememory::SharedPtr<ege::position::Component> componentPosition = ememory::makeShared<ege::position::Component>(transform);
+		//element->addComponent(componentPosition);
+		// 2nd something to diplay:
+		ememory::SharedPtr<ege::render::Component> componentRender = ememory::makeShared<ege::render::Component>(myMesh);
+		element->addComponent(componentRender);
+		// 3rd some physic:
+		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
+		ememory::SharedPtr<ege::physics::shape::Capsule> physic = ememory::makeShared<ege::physics::shape::Capsule>();
+		physic->setRadius(4.01);
+		physic->setSize(8.01);
+		physic->setMass(500000);
+		componentPhysics->addShape(physic);
+		componentPhysics->generate();
+		element->addComponent(componentPhysics);
+		// add it ..
+		m_env->addEntity(element);
+	}
+	myMesh = ege::resource::Mesh::createCone(4, 8, "basics", etk::color::purple);
+	if (myMesh != nullptr) {
+		ememory::SharedPtr<ege::Entity> element = ememory::makeShared<ege::Entity>(m_env);
+		// add all component:
+		// 1st Position component:
+		etk::Transform3D transform(vec3(20, 20,-10), etk::Quaternion::identity());
+		//ememory::SharedPtr<ege::position::Component> componentPosition = ememory::makeShared<ege::position::Component>(transform);
+		//element->addComponent(componentPosition);
+		// 2nd something to diplay:
+		ememory::SharedPtr<ege::render::Component> componentRender = ememory::makeShared<ege::render::Component>(myMesh);
+		element->addComponent(componentRender);
+		// 3rd some physic:
+		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
+		ememory::SharedPtr<ege::physics::shape::Cone> physic = ememory::makeShared<ege::physics::shape::Cone>();
+		physic->setRadius(4.01);
+		physic->setSize(8.01);
 		physic->setMass(500000);
 		componentPhysics->addShape(physic);
 		componentPhysics->generate();

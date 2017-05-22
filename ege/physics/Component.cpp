@@ -80,7 +80,7 @@ void ege::physics::Component::generate() {
 			continue;
 		}
 		switch (it->getType()) {
-			case ege::physics::Shape::type::box : {
+			case ege::physics::Shape::type::box: {
 				EGE_DEBUG("    Box");
 				const ege::physics::shape::Box* tmpElement = it->toBox();
 				if (tmpElement == nullptr) {
@@ -106,15 +106,15 @@ void ege::physics::Component::generate() {
 				m_listProxyShape.push_back(proxyShape);
 				break;
 			}
-			case ege::physics::Shape::type::cylinder : {
+			case ege::physics::Shape::type::cylinder: {
 				EGE_DEBUG("    Cylinder");
 				const ege::physics::shape::Cylinder* tmpElement = it->toCylinder();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    Cylinder ==> can not cast in Cylinder");
 					continue;
 				}
-				// Create the box shape
-				rp3d::CylinderShape* shape = new rp3d::CylinderShape(tmpElement->getSize().x(), tmpElement->getSize().y());
+				// Create the Cylinder shape
+				rp3d::CylinderShape* shape = new rp3d::CylinderShape(tmpElement->getRadius(), tmpElement->getSize());
 				rp3d::Vector3 position(it->getOrigin().x(),
 				                       it->getOrigin().y(),
 				                       it->getOrigin().z());
@@ -127,49 +127,49 @@ void ege::physics::Component::generate() {
 				m_listProxyShape.push_back(proxyShape);
 				break;
 			}
-			case ege::physics::Shape::type::capsule : {
+			case ege::physics::Shape::type::capsule: {
 				EGE_DEBUG("    Capsule");
 				const ege::physics::shape::Capsule* tmpElement = it->toCapsule();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    Capsule ==> can not cast in Capsule");
 					continue;
 				}
-				/*
-				btCollisionShape* tmpShape = new btCapsuleShape(tmpElement->getRadius(), tmpElement->getHeight());
-				if (tmpShape != nullptr) {
-					if (outputShape == nullptr) {
-						return tmpShape;
-					} else {
-						vec4 qqq = tmpElement->getQuaternion();
-						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
-						outputShape->addChildShape(localTransform, tmpShape);
-					}
-				}
-				*/
+				// Create the Capsule shape
+				rp3d::CapsuleShape* shape = new rp3d::CapsuleShape(tmpElement->getRadius(), tmpElement->getSize());
+				rp3d::Vector3 position(it->getOrigin().x(),
+				                       it->getOrigin().y(),
+				                       it->getOrigin().z());
+				rp3d::Quaternion orientation(it->getQuaternion().x(),
+				                             it->getQuaternion().y(),
+				                             it->getQuaternion().z(),
+				                             it->getQuaternion().w());
+				rp3d::Transform transform(position, orientation);
+				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
+				m_listProxyShape.push_back(proxyShape);
 				break;
 			}
-			case ege::physics::Shape::type::cone : {
+			case ege::physics::Shape::type::cone: {
 				EGE_DEBUG("    Cone");
 				const ege::physics::shape::Cone* tmpElement = it->toCone();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    Cone ==> can not cast in Cone");
 					continue;
 				}
-				/*
-				btCollisionShape* tmpShape = new btConeShape(tmpElement->getRadius(), tmpElement->getHeight());
-				if (tmpShape != nullptr) {
-					if (outputShape == nullptr) {
-						return tmpShape;
-					} else {
-						vec4 qqq = tmpElement->getQuaternion();
-						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
-						outputShape->addChildShape(localTransform, tmpShape);
-					}
-				}
-				*/
+				// Create the Cone shape
+				rp3d::ConeShape* shape = new rp3d::ConeShape(tmpElement->getRadius(), tmpElement->getSize());
+				rp3d::Vector3 position(it->getOrigin().x(),
+				                       it->getOrigin().y(),
+				                       it->getOrigin().z());
+				rp3d::Quaternion orientation(it->getQuaternion().x(),
+				                             it->getQuaternion().y(),
+				                             it->getQuaternion().z(),
+				                             it->getQuaternion().w());
+				rp3d::Transform transform(position, orientation);
+				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
+				m_listProxyShape.push_back(proxyShape);
 				break;
 			}
-			case ege::physics::Shape::type::sphere : {
+			case ege::physics::Shape::type::sphere: {
 				EGE_DEBUG("    Sphere");
 				const ege::physics::shape::Sphere* tmpElement = it->toSphere();
 				if (tmpElement == nullptr) {
@@ -188,21 +188,9 @@ void ege::physics::Component::generate() {
 				rp3d::Transform transform(position, orientation);
 				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				m_listProxyShape.push_back(proxyShape);
-				/*
-				btCollisionShape* tmpShape = new btSphereShape(tmpElement->getRadius());
-				if (tmpShape != nullptr) {
-					if (outputShape == nullptr) {
-						return tmpShape;
-					} else {
-						vec4 qqq = tmpElement->getQuaternion();
-						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
-						outputShape->addChildShape(localTransform, tmpShape);
-					}
-				}
-				*/
 				break;
 			}
-			case ege::physics::Shape::type::convexHull : {
+			case ege::physics::Shape::type::convexHull: {
 				EGE_DEBUG("    convexHull");
 				const ege::physics::shape::ConvexHull* tmpElement = it->toConvexHull();
 				if (tmpElement == nullptr) {
@@ -225,7 +213,7 @@ void ege::physics::Component::generate() {
 			}
 			default :
 				EGE_DEBUG("    ???");
-				// TODO : UNKNOW type ... 
+				// TODO: UNKNOW type ... 
 				break;
 		}
 	}
@@ -352,7 +340,7 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 				_draw->drawSquare(tmpElement->getSize(), transformationMatrixLocal, tmpColor);
 				break;
 			}
-			case ege::physics::Shape::type::cylinder : {
+			case ege::physics::Shape::type::cylinder: {
 				EGE_DEBUG("    Cylinder");
 				const ege::physics::shape::Cylinder* tmpElement = it->toCylinder();
 				if (tmpElement == nullptr) {
@@ -364,52 +352,40 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 				mat4 transformationMatrixLocal(mmm);
 				transformationMatrixLocal.transpose();
 				transformationMatrixLocal = transformationMatrix * transformationMatrixLocal;
-				//_draw->drawSphere(radius, 10, 10, _transformationMatrix, tmpColor);
+				_draw->drawCylinder(tmpElement->getRadius(), tmpElement->getSize(), 10, 10, transformationMatrixLocal, tmpColor);
 				break;
 			}
-			case ege::physics::Shape::type::capsule : {
+			case ege::physics::Shape::type::capsule: {
 				EGE_DEBUG("    Capsule");
 				const ege::physics::shape::Capsule* tmpElement = it->toCapsule();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    Capsule ==> can not cast in Capsule");
 					continue;
 				}
-				/*
-				btCollisionShape* tmpShape = new btCapsuleShape(tmpElement->getRadius(), tmpElement->getHeight());
-				if (tmpShape != nullptr) {
-					if (outputShape == nullptr) {
-						return tmpShape;
-					} else {
-						vec4 qqq = tmpElement->getQuaternion();
-						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
-						outputShape->addChildShape(localTransform, tmpShape);
-					}
-				}
-				*/
+				etk::Transform3D transformLocal(it->getOrigin(), it->getOrientation());
+				transformLocal.getOpenGLMatrix(mmm);
+				mat4 transformationMatrixLocal(mmm);
+				transformationMatrixLocal.transpose();
+				transformationMatrixLocal = transformationMatrix * transformationMatrixLocal;
+				_draw->drawCapsule(tmpElement->getRadius(), tmpElement->getSize(), 10, 10, transformationMatrixLocal, tmpColor);
 				break;
 			}
-			case ege::physics::Shape::type::cone : {
+			case ege::physics::Shape::type::cone: {
 				EGE_DEBUG("    Cone");
 				const ege::physics::shape::Cone* tmpElement = it->toCone();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    Cone ==> can not cast in Cone");
 					continue;
 				}
-				/*
-				btCollisionShape* tmpShape = new btConeShape(tmpElement->getRadius(), tmpElement->getHeight());
-				if (tmpShape != nullptr) {
-					if (outputShape == nullptr) {
-						return tmpShape;
-					} else {
-						vec4 qqq = tmpElement->getQuaternion();
-						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
-						outputShape->addChildShape(localTransform, tmpShape);
-					}
-				}
-				*/
+				etk::Transform3D transformLocal(it->getOrigin(), it->getOrientation());
+				transformLocal.getOpenGLMatrix(mmm);
+				mat4 transformationMatrixLocal(mmm);
+				transformationMatrixLocal.transpose();
+				transformationMatrixLocal = transformationMatrix * transformationMatrixLocal;
+				_draw->drawCone(tmpElement->getRadius(), tmpElement->getSize(), 10, 10, transformationMatrixLocal, tmpColor);
 				break;
 			}
-			case ege::physics::Shape::type::sphere : {
+			case ege::physics::Shape::type::sphere: {
 				EGE_DEBUG("    Sphere");
 				const ege::physics::shape::Sphere* tmpElement = it->toSphere();
 				if (tmpElement == nullptr) {
@@ -424,7 +400,7 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 				_draw->drawSphere(tmpElement->getRadius(), 10, 10, transformationMatrixLocal, tmpColor);
 				break;
 			}
-			case ege::physics::Shape::type::convexHull : {
+			case ege::physics::Shape::type::convexHull: {
 				EGE_DEBUG("    convexHull");
 				const ege::physics::shape::ConvexHull* tmpElement = it->toConvexHull();
 				if (tmpElement == nullptr) {
@@ -447,7 +423,7 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 			}
 			default :
 				EGE_DEBUG("    ???");
-				// TODO : UNKNOW type ... 
+				// TODO: UNKNOW type ... 
 				break;
 		}
 	}

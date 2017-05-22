@@ -7,7 +7,7 @@
 #include <ege/debug.hpp>
 #include <ege/resource/Mesh.hpp>
 
-ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createCylinder(float _radius, float _size, const std::string& _materialName, const etk::Color<float>& _color, int32_t _lats, int32_t _longs) {
+ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createCone(float _radius, float _size, const std::string& _materialName, const etk::Color<float>& _color, int32_t _lats, int32_t _longs) {
 	EGE_VERBOSE(" create a cylinder _size=" << _size << " _materialName=" << _materialName << " _color=" << _color);
 	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("---", "DATA:color3.prog");
 	if (out != nullptr) {
@@ -25,55 +25,33 @@ ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createCylinder(floa
 		// center to border (TOP)
 		for(int32_t jjj=0; jjj<_longs; ++jjj) {
 			float lng = 2.0f * M_PI * float(jjj - 1) / _longs;
-			
-			float y = _size*0.5f;
-			vec3 v1 = vec3(0.0f, y, 0.0f);
+			vec3 v1 = vec3(0.0f, -_size/2, 0.0f);
 			
 			float x = cos(lng)*_radius;
 			float z = sin(lng)*_radius;
-			vec3 v2 = vec3(x, y, z);
+			vec3 v2 = vec3(x, _size/2, z);
 			
 			lng = 2.0f * M_PI * float(jjj) / _longs;
 			x = cos(lng)*_radius;
 			z = sin(lng)*_radius;
-			vec3 v3 = vec3(x, y, z);
-			out->addTriangle(_materialName, v1, v3, v2, _color);
-		}
-		// Cylinder
-		for(int32_t jjj=0; jjj<_longs; ++jjj) {
-			float lng = 2.0f * M_PI * float(jjj - 1) / _longs;
-			
-			float y = _size*0.5f;
-			
-			float x = cos(lng)*_radius;
-			float z = sin(lng)*_radius;
-			vec3 v2  = vec3(x, y, z);
-			vec3 v2b = vec3(x, -y, z);
-			
-			lng = 2.0f * M_PI * float(jjj) / _longs;
-			x = cos(lng)*_radius;
-			z = sin(lng)*_radius;
-			vec3 v3  = vec3(x, y, z);
-			vec3 v3b = vec3(x, -y, z);
-			
-			out->addQuad(_materialName, v2, v3, v3b, v2b, _color);
+			vec3 v3 = vec3(x, _size/2, z);
+			out->addTriangle(_materialName, v1, v2, v3, _color);
 		}
 		// center to border (BUTTOM)
 		for(int32_t jjj=0; jjj<_longs; ++jjj) {
 			float lng = 2.0f * M_PI * float(jjj - 1) / _longs;
 			
-			float y = _size*-0.5f;
-			vec3 v1 = vec3(0.0f, y, 0.0f);
+			vec3 v1 = vec3(0.0f, _size/2, 0.0f);
 			
 			float x = cos(lng)*_radius;
 			float z = sin(lng)*_radius;
-			vec3 v2 = vec3(x, y, z);
+			vec3 v2 = vec3(x, _size/2, z);
 			
 			lng = 2.0f * M_PI * float(jjj) / _longs;
 			x = cos(lng)*_radius;
 			z = sin(lng)*_radius;
-			vec3 v3 = vec3(x, y, z);
-			out->addTriangle(_materialName, v1, v2, v3, _color);
+			vec3 v3 = vec3(x, _size/2, z);
+			out->addTriangle(_materialName, v1, v3, v2, _color);
 		}
 		out->setNormalMode(ege::resource::Mesh::normalMode::face);
 		out->calculateNormaleFace(_materialName);

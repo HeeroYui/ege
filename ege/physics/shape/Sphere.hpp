@@ -25,7 +25,7 @@ namespace ege {
 						return ege::physics::Shape::type::sphere;
 					};
 				private:
-					float m_radius; // props["radius"] = obj.scale.x
+					float m_radius;
 				public:
 					float getRadius() const {
 						return m_radius;
