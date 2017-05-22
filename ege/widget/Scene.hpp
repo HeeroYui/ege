@@ -14,7 +14,7 @@
 #include <ewol/widget/Widget.hpp>
 #include <gale/renderer/openGL/openGL.hpp>
 #include <gale/resource/Manager.hpp>
-#include <ege/elements/Element.hpp>
+#include <ege/Entity.hpp>
 #include <gale/Dimension.hpp>
 #include <ewol/widget/Widget.hpp>
 #include <esignal/Signal.hpp>
@@ -66,8 +66,8 @@ namespace ege {
 					return m_cameraName;
 				}
 			protected:
-				// Note : This is only for temporary elements : on the display
-				std::vector<ege::Environement::ResultNearestElement> m_displayElementOrdered;
+				// Note : This is only for temporary entitys : on the display
+				std::vector<ege::Environement::ResultNearestEntity> m_displayEntityOrdered;
 			protected:
 				esignal::Connection m_PCH; //!< Periodic call handle to remove it when needed
 				/**

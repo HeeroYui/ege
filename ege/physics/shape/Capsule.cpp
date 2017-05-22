@@ -4,12 +4,12 @@
  * @license MPL v2.0 (see license file)
  */
 #include <ege/debug.hpp>
-#include <ege/physicsShape/PhysicsCone.hpp>
+#include <ege/physics/shape/Capsule.hpp>
 
 
 
-bool ege::PhysicsCone::parse(const char* _line) {
-	if (ege::PhysicsShape::parse(_line) == true) {
+bool ege::physics::shape::Capsule::parse(const char* _line) {
+	if (ege::physics::Shape::parse(_line) == true) {
 		return true;
 	}
 	if(strncmp(_line, "radius:", 7) == 0) {

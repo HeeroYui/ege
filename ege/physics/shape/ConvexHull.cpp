@@ -4,12 +4,12 @@
  * @license MPL v2.0 (see license file)
  */
 #include <ege/debug.hpp>
-#include <ege/physicsShape/PhysicsConvexHull.hpp>
+#include <ege/physics/shape/ConvexHull.hpp>
 
 
 
-bool ege::PhysicsConvexHull::parse(const char* _line) {
-	if (ege::PhysicsShape::parse(_line) == true) {
+bool ege::physics::shape::ConvexHull::parse(const char* _line) {
+	if (ege::physics::Shape::parse(_line) == true) {
 		return true;
 	}
 	if(strncmp(_line, "points:", 6) == 0) {

@@ -4,12 +4,12 @@
  * @license MPL v2.0 (see license file)
  */
 #include <ege/debug.hpp>
-#include <ege/physicsShape/PhysicsCapsule.hpp>
+#include <ege/physics/shape/Sphere.hpp>
 
 
 
-bool ege::PhysicsCapsule::parse(const char* _line) {
-	if (ege::PhysicsShape::parse(_line) == true) {
+bool ege::physics::shape::Sphere::parse(const char* _line) {
+	if (ege::physics::Shape::parse(_line) == true) {
 		return true;
 	}
 	if(strncmp(_line, "radius:", 7) == 0) {
@@ -17,10 +17,7 @@ bool ege::PhysicsCapsule::parse(const char* _line) {
 		EGE_VERBOSE("                radius=" << m_radius);
 		return true;
 	}
-	if(strncmp(_line, "height:", 7) == 0) {
-		sscanf(&_line[7], "%f", &m_height );
-		EGE_VERBOSE("                height=" << m_height);
-		return true;
-	}
 	return false;
 }
+
+

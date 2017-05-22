@@ -174,7 +174,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 	std::string materialName = "";
 	ememory::SharedPtr<ege::Material> material;
 	// physical shape:
-	ememory::SharedPtr<ege::PhysicsShape> physics;
+	ememory::SharedPtr<ege::physics::Shape> physics;
 	bool haveUVMapping = false;
 	size_t offsetVertexId = 0;
 	size_t offsetUV = 0;
@@ -435,7 +435,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 						}
 						removeEndLine(inputDataLine);
 						if (level == 2) {
-							physics = ege::PhysicsShape::create(inputDataLine);
+							physics = ege::physics::Shape::create(inputDataLine);
 							if (physics == nullptr) {
 								EGE_ERROR("Allocation error when creating physical shape ...");
 								continue;
@@ -532,7 +532,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 				removeEndLine(inputDataLine);
 				if (level == 1) {
 					EGE_ERROR("Load shape : " << inputDataLine);
-					physics = ege::PhysicsShape::create(inputDataLine);
+					physics = ege::physics::Shape::create(inputDataLine);
 					if (physics == nullptr) {
 						EGE_ERROR("Allocation error when creating physical shape ...");
 						continue;

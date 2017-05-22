@@ -6,17 +6,17 @@
 
 #include <etk/types.hpp>
 #include <ege/debug.hpp>
-#include <ege/elements/Element.hpp>
+#include <ege/Entity.hpp>
 #include <ege/Environement.hpp>
 
 
-const std::string& ege::Element::getType() const {
+const std::string& ege::Entity::getType() const {
 	static const std::string nameType("----");
 	return nameType;
 }
 
 
-ege::Element::Element(const ememory::SharedPtr<ege::Environement>& _env) :
+ege::Entity::Entity(const ememory::SharedPtr<ege::Environement>& _env) :
   m_env(_env),
   m_uID(0),
   m_life(100),
@@ -25,16 +25,16 @@ ege::Element::Element(const ememory::SharedPtr<ege::Environement>& _env) :
   m_radius(0) {
 	static uint32_t unique=0;
 	m_uID = unique;
-	EGE_DEBUG("Create element: uId=" << m_uID);
+	EGE_DEBUG("Create Entity: uId=" << m_uID);
 	//m_debugText.setFontSize(12);
 	unique++;
 }
 
-ege::Element::~Element() {
-	EGE_DEBUG("Destroy element: uId=" << m_uID);
+ege::Entity::~Entity() {
+	EGE_DEBUG("Destroy Entity: uId=" << m_uID);
 }
 
-void ege::Element::addComponent(const ememory::SharedPtr<ege::Component>& _ref) {
+void ege::Entity::addComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 	if (_ref == nullptr) {
 		EGE_ERROR("try to add an empty component");
 		return;
@@ -93,7 +93,7 @@ void ege::Element::addComponent(const ememory::SharedPtr<ege::Component>& _ref) 
 	}
 }
 
-void ege::Element::rmComponent(const ememory::SharedPtr<ege::Component>& _ref) {
+void ege::Entity::rmComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 	if (_ref == nullptr) {
 		EGE_ERROR("try to remove an empty component");
 		return;
@@ -123,7 +123,7 @@ void ege::Element::rmComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 	}
 }
 
-void ege::Element::rmComponent(const std::string& _type) {
+void ege::Entity::rmComponent(const std::string& _type) {
 	int32_t findId = -1;
 	ememory::SharedPtr<ege::Component> componentRemoved;
 	// check if not exist
@@ -155,45 +155,45 @@ void ege::Element::rmComponent(const std::string& _type) {
 
 
 
-bool ege::Element::init() {
+bool ege::Entity::init() {
 	EGE_WARNING("init() not implemented: uId=" << m_uID);
 	return false;
 }
-bool ege::Element::initString(const std::string& _description) {
+bool ege::Entity::initString(const std::string& _description) {
 	EGE_WARNING("String Init not implemented: uId=" << m_uID);
 	return false;
 }
-bool ege::Element::initXML(const exml::Node& _node) {
+bool ege::Entity::initXML(const exml::Node& _node) {
 	EGE_WARNING("xml Init not implemented: uId=" << m_uID);
 	return false;
 }
-bool ege::Element::initJSON(const ejson::Value& _value) {
+bool ege::Entity::initJSON(const ejson::Value& _value) {
 	EGE_WARNING("JSON Init not implemented: uId=" << m_uID);
 	return false;
 }
-bool ege::Element::initVoid(void* _value) {
+bool ege::Entity::initVoid(void* _value) {
 	EGE_WARNING("joid* Init not implemented: uId=" << m_uID);
 	return false;
 }
-bool ege::Element::unInit() {
+bool ege::Entity::unInit() {
 	return true;
 }
 
 
 
-float ege::Element::getLifeRatio() {
+float ege::Entity::getLifeRatio() {
 	if (0 >= m_life) {
 		return 0;
 	}
 	return m_life/m_lifeMax;
 }
 
-void ege::Element::setFireOn(int32_t _groupIdSource, int32_t _type, float _power, const vec3& _center) {
+void ege::Entity::setFireOn(int32_t _groupIdSource, int32_t _type, float _power, const vec3& _center) {
 	float previousLife = m_life;
 	m_life += _power;
 	m_life = std::avg(0.0f, m_life, m_lifeMax);
 	if (m_life <= 0) {
-		EGE_DEBUG("[" << getUID() << "] element is killed ..." << getType());
+		EGE_DEBUG("[" << getUID() << "] Entity is killed ..." << getType());
 	}
 	if (m_life != previousLife) {
 		onLifeChange();
@@ -206,7 +206,7 @@ const float lifeWidth = 2.0f;
 const float lifeYPos = 1.7f;
 
 #if 0
-void ege::Element::drawLife(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
+void ege::Entity::drawLife(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
 	if (_draw == nullptr) {
 		return;
 	}
@@ -246,7 +246,7 @@ void ege::Element::drawLife(ememory::SharedPtr<ewol::resource::Colored3DObject> 
 }
 #endif
 
-void ege::Element::drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
+void ege::Entity::drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
 	/*
 	m_debugText.clear();
 	m_debugText.setColor(etk::Color<>(0x00, 0xFF, 0x00, 0xFF));

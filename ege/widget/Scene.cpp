@@ -23,7 +23,7 @@ namespace etk {
 };
 
 ege::widget::Scene::Scene() :
-  signalDisplayDebug(this, "drawDebug", "Call to draw debug after all elements"),
+  signalDisplayDebug(this, "drawDebug", "Call to draw debug after all entitys"),
   propertyDebugPhysic(this, "debugPhysic",
                             false,
                             "Display debug of the physic interface"),
@@ -73,75 +73,6 @@ void ege::widget::Scene::onDraw() {
 	#endif
 	gale::openGL::clearColor(etk::color::black);
 	m_env->render(echrono::Duration(1.0/60.0), m_cameraName);
-	#if 0
-	// draw constant object:
-	{
-		mat4 tmpMatrix;
-		for (auto &it : m_env->getStaticMeshToDraw()) {
-			if (it != nullptr) {
-				it->draw(tmpMatrix);
-			}
-		}
-	}
-	
-	// get camera:
-	ememory::SharedPtr<ege::Camera> camera = m_env->getCamera(m_cameraName);
-	if (camera == nullptr) {
-		EGE_ERROR(" can not get camera named: '" << m_cameraName << "'");
-		return;
-	}
-	//EGE_DEBUG("Draw (start)");
-	mat4 tmpMatrix;
-	m_env->getOrderedElementForDisplay(m_displayElementOrdered, camera->getEye(), camera->getViewVector());
-	EGE_VERBOSE("DRAW : " << m_displayElementOrdered.size() << "/" << m_env->getElement().size() << " elements");
-	
-	// TODO : remove this  == > no more needed ==> checked in the generate the list of the element ordered
-	for (size_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
-		m_displayElementOrdered[iii].element->preCalculationDraw(*camera);
-	}
-	// note :  the first pass is done at the reverse way to prevent multiple display od the same point in the screen 
-	//         (and we remember that the first pass is to display all the non transparent elements)
-	for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
-		m_displayElementOrdered[iii].element->draw(0);
-	}
-	// for the other pass the user can draw transparent elements ...
-	for (int32_t pass=1; pass <= NUMBER_OF_SUB_PASS+1; pass++) {
-		for (size_t iii=0; iii<m_displayElementOrdered.size(); iii++) {
-			m_displayElementOrdered[iii].element->draw(pass);
-		}
-	}
-	if (propertyDebugPhysic.get() == true) {
-		// Draw debug ... (Object)
-		for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
-			m_displayElementOrdered[iii].element->drawDebug(m_debugDrawProperty, camera);
-		}
-		// Draw debug ... (Camera)
-		/*
-		std::map<std::string, ememory::SharedPtr<ege::Camera>> listCamera = m_env->getCameraList();
-		for (auto &itCam : listCamera) {
-			if (itCam.second != nullptr) {
-				itCam.second->drawDebug(m_debugDrawProperty, camera);
-			}
-		}
-		*/
-	}
-	if (propertyDebugNormal.get() == true) {
-		// Draw debug ... (Object)
-		for (int32_t iii=m_displayElementOrdered.size()-1; iii >= 0; iii--) {
-			m_displayElementOrdered[iii].element->drawNormalDebug(m_debugDrawProperty, camera);
-		}
-	}
-	
-	if (propertyDebugApplication.get() == true) {
-		// Draw debug ... (User)
-		signalDisplayDebug.emit(m_debugDrawProperty);
-	}
-	/* TODO: set it back ...
-	if (camera != nullptr) {
-		m_env->getParticuleEngine().draw(*camera);
-	}
-	*/
-	#endif
 	#ifdef SCENE_DISPLAY_SPEED
 		echrono::Duration localTime = echrono::Steady::now() - g_startTime;
 		if (localTime>1) {

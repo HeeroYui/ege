@@ -7,7 +7,7 @@
 
 namespace ege {
 	class Environement;
-	class ElementInteraction;
+	class EntityInteraction;
 };
 #include <ege/camera/Camera.hpp>
 
@@ -26,9 +26,9 @@ namespace ege {
 #include <ege/resource/Mesh.hpp>
 
 namespace ege {
-	class Element;
+	class Entity;
 	class Environement;
-	typedef ememory::SharedPtr<ege::Element> (*createElement_tf)(const ememory::SharedPtr<ege::Environement>& _env);
+	typedef ememory::SharedPtr<ege::Entity> (*createEntity_tf)(const ememory::SharedPtr<ege::Environement>& _env);
 	
 	enum gameStatus {
 		gameStart,
@@ -36,7 +36,7 @@ namespace ege {
 		gameStop
 	};
 	
-	class ElementInteraction {
+	class EntityInteraction {
 		protected:
 			int32_t m_type;
 		public:
@@ -65,15 +65,15 @@ namespace ege {
 				return m_positionSource;
 			};
 		public:
-			ElementInteraction(int32_t _type, int32_t _groupSource, const vec3& _pos) : 
+			EntityInteraction(int32_t _type, int32_t _groupSource, const vec3& _pos) : 
 				m_type(_type),
 				m_groupSource(_groupSource),
 				m_positionSource(_pos)
 			{ };
 		public:
-			virtual void applyEvent(ege::Element& _element) { };
+			virtual void applyEvent(ege::Entity& _entity) { };
 	};
-	// TODO : An element must be created by a local factory...
+	// TODO : An entity must be created by a local factory...
 	class Environement : public ewol::Object {
 		public:
 			// Signals
@@ -92,7 +92,7 @@ namespace ege {
 			void engineComponentAdd(const ememory::SharedPtr<ege::Component>& _ref);
 			
 		private:
-			std::vector<ememory::SharedPtr<ege::Element>> m_listElement; //!< List of all element added in the Game
+			std::vector<ememory::SharedPtr<ege::Entity>> m_listEntity; //!< List of all entity added in the Game
 		protected:
 			Environement();
 		public:
@@ -128,28 +128,28 @@ namespace ege {
 			 */
 			void clear();
 			/**
-			 * @brief add a creator element system
-			 * @param[in] _type Type of the element.
-			 * @param[in] _creator Function pointer that reference the element creating.
+			 * @brief add a creator entity system
+			 * @param[in] _type Type of the entity.
+			 * @param[in] _creator Function pointer that reference the entity creating.
 			 */
-			static void addCreator(const std::string& _type, ege::createElement_tf _creator);
+			static void addCreator(const std::string& _type, ege::createEntity_tf _creator);
 			/**
-			 * @brief Create an element on the curent scene.
-			 * @param[in] _type Type of the element that might be created.
-			 * @param[in] _description String that describe the content of the element properties.
-			 * @param[in] _autoAddElement this permit to add the element if it is created  == > no more action ...
-			 * @return nullptr if an error occured OR the pointer on the element and it is already added on the system.
+			 * @brief Create an entity on the curent scene.
+			 * @param[in] _type Type of the entity that might be created.
+			 * @param[in] _description String that describe the content of the entity properties.
+			 * @param[in] _autoAddEntity this permit to add the entity if it is created  == > no more action ...
+			 * @return nullptr if an error occured OR the pointer on the entity and it is already added on the system.
 			 * @note Pointer is return in case of setting properties on it...
 			 */
-			ememory::SharedPtr<ege::Element> createElement(const std::string& _type, const std::string& _description, bool _autoAddElement=true);
-			ememory::SharedPtr<ege::Element> createElement(const std::string& _type, const ejson::Value& _value, bool _autoAddElement=true);
-			ememory::SharedPtr<ege::Element> createElement(const std::string& _type, const exml::Node& _node, bool _autoAddElement=true);
-			ememory::SharedPtr<ege::Element> createElement(const std::string& _type, void* _data, bool _autoAddElement=true);
-			ememory::SharedPtr<ege::Element> createElement(const std::string& _type, bool _autoAddElement=true);
+			ememory::SharedPtr<ege::Entity> createEntity(const std::string& _type, const std::string& _description, bool _autoAddEntity=true);
+			ememory::SharedPtr<ege::Entity> createEntity(const std::string& _type, const ejson::Value& _value, bool _autoAddEntity=true);
+			ememory::SharedPtr<ege::Entity> createEntity(const std::string& _type, const exml::Node& _node, bool _autoAddEntity=true);
+			ememory::SharedPtr<ege::Entity> createEntity(const std::string& _type, void* _data, bool _autoAddEntity=true);
+			ememory::SharedPtr<ege::Entity> createEntity(const std::string& _type, bool _autoAddEntity=true);
 		public:
-			class ResultNearestElement {
+			class ResultNearestEntity {
 				public:
-					ememory::SharedPtr<ege::Element> element;
+					ememory::SharedPtr<ege::Entity> entity;
 					float dist;
 			};
 			#if 0
@@ -169,43 +169,43 @@ namespace ege {
 			};
 			#endif
 			/**
-			 * @breif get a reference on the curent list of element games
-			 * @return all element list
+			 * @breif get a reference on the curent list of entity games
+			 * @return all entity list
 			 */
-			std::vector<ememory::SharedPtr<ege::Element>>& getElement() {
-				return m_listElement;
+			std::vector<ememory::SharedPtr<ege::Entity>>& getEntity() {
+				return m_listEntity;
 			};
 			/**
-			 * @brief get the nearest Element
-			 * @param[in] _sourceRequest Pointer on the element that request this.
-			 * @param[in] _distance Maximum distance search  == > return the element distance
-			 * @return Pointer on the neares element OR nullptr
+			 * @brief get the nearest Entity
+			 * @param[in] _sourceRequest Pointer on the entity that request this.
+			 * @param[in] _distance Maximum distance search  == > return the entity distance
+			 * @return Pointer on the neares entity OR nullptr
 			 */
 			/*
-			ememory::SharedPtr<ege::Element> getElementNearest(ememory::SharedPtr<ege::Element> _sourceRequest, float& _distance);
+			ememory::SharedPtr<ege::Entity> getEntityNearest(ememory::SharedPtr<ege::Entity> _sourceRequest, float& _distance);
 			
-			void getElementNearest(const vec3& _sourcePosition,
+			void getEntityNearest(const vec3& _sourcePosition,
 			                       float _distanceMax,
-			                       std::vector<ege::Environement::ResultNearestElement>& _resultList);
-			void getElementNearestFixed(const vec3& _sourcePosition,
+			                       std::vector<ege::Environement::ResultNearestEntity>& _resultList);
+			void getEntityNearestFixed(const vec3& _sourcePosition,
 			                            float _distanceMax,
-			                            std::vector<ege::Environement::ResultNearestElement>& _resultList);
+			                            std::vector<ege::Environement::ResultNearestEntity>& _resultList);
 			*/
 			/**
-			 * @brief add an element on the list availlable.
-			 * @param[in] _newElement Element to add.
+			 * @brief add an entity on the list availlable.
+			 * @param[in] _newEntity Entity to add.
 			 */
-			void addElement(ememory::SharedPtr<ege::Element> _newElement);
+			void addEntity(ememory::SharedPtr<ege::Entity> _newEntity);
 			/**
-			 * @brief remove an element on the list availlable.
-			 * @param[in] _removeElement Element to remove.
+			 * @brief remove an entity on the list availlable.
+			 * @param[in] _removeEntity Entity to remove.
 			 */
-			void rmElement(ememory::SharedPtr<ege::Element> _removeElement);
+			void rmEntity(ememory::SharedPtr<ege::Entity> _removeEntity);
 			/**
-			 * @brief generate an event on all the sub element of the game  == > usefull for explosion, or lazer fire ...
+			 * @brief generate an event on all the sub entity of the game  == > usefull for explosion, or lazer fire ...
 			 * @param[in] _event event that might be apply ...
 			 */
-			void generateInteraction(ege::ElementInteraction& _event);
+			void generateInteraction(ege::EntityInteraction& _event);
 		protected:
 			int64_t m_gameTime; //!< time of the game running
 		public:

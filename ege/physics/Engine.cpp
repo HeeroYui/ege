@@ -4,7 +4,7 @@
  * @license MPL v2.0 (see license file)
  */
 
-#include <ege/elements/Element.hpp>
+#include <ege/Entity.hpp>
 #include <ege/physics/Engine.hpp>
 
 #include <ege/debug.hpp>
@@ -48,8 +48,8 @@ extern ContactProcessedCallback gContactProcessedCallback;
 
 // TODO : remove double collision call ...
 static bool handleContactsProcess(btManifoldPoint& _point, btCollisionObject* _body0, btCollisionObject* _body1) {
-	ege::ElementPhysic* elem0 = static_cast<ege::ElementPhysic*>(_body0->getUserPointer());
-	ege::ElementPhysic* elem1 = static_cast<ege::ElementPhysic*>(_body1->getUserPointer());
+	ege::Entityhysic* elem0 = static_cast<ege::EntityPhysic*>(_body0->getUserPointer());
+	ege::EntityPhysic* elem1 = static_cast<ege::EntityPhysic*>(_body1->getUserPointer());
 	if (    elem0 == nullptr
 	     || elem1 == nullptr) {
 		EGE_WARNING("callback of collision error");
@@ -151,8 +151,8 @@ std::vector<ege::physics::Engine::collisionPoints> ege::physics::Engine::getList
 			     || obB == nullptr) {
 				continue;
 			}
-			ege::ElementPhysic* elem0 = static_cast<ege::ElementPhysic*>(obA->getUserPointer());
-			ege::ElementPhysic* elem1 = static_cast<ege::ElementPhysic*>(obB->getUserPointer());
+			ege::EntityPhysic* elem0 = static_cast<ege::EntityPhysic*>(obA->getUserPointer());
+			ege::EntityPhysic* elem1 = static_cast<ege::EntityPhysic*>(obB->getUserPointer());
 			if (    elem0 == nullptr
 			     || elem1 == nullptr) {
 				continue;

@@ -18,7 +18,7 @@
 #include <ege/resource/tools/Face.hpp>
 #include <ege/resource/tools/FaceIndexing.hpp>
 
-#include <ege/physicsShape/PhysicsShape.hpp>
+#include <ege/physics/shape/Shape.hpp>
 // VBO table property:
 #define MESH_VBO_VERTICES  (0)
 #define MESH_VBO_TEXTURE   (1)
@@ -80,7 +80,7 @@ namespace ege {
 				std::vector<vec3> m_listVertexNormal; //!< List of all Face normal, when calculated
 				etk::Hash<FaceIndexing> m_listFaces; //!< List of all Face for the mesh
 				etk::Hash<ememory::SharedPtr<ege::Material>> m_materials;
-				std::vector<ememory::SharedPtr<ege::PhysicsShape>> m_physics; //!< collision shape module ... (independent of bullet lib)
+				std::vector<ememory::SharedPtr<ege::physics::Shape>> m_physics; //!< collision shape module ... (independent of bullet lib)
 				void clean();
 			protected:
 				ememory::SharedPtr<gale::resource::VirtualBufferObject> m_verticesVBO;
@@ -131,10 +131,10 @@ namespace ege {
 				bool getCheckNormal() {
 					return m_checkNormal;
 				};
-				const std::vector<ememory::SharedPtr<ege::PhysicsShape>>& getPhysicalProperties() const {
+				const std::vector<ememory::SharedPtr<ege::physics::Shape>>& getPhysicalProperties() const {
 					return m_physics;
 				};
-				void addPhysicElement(const ememory::SharedPtr<ege::PhysicsShape>& _shape) {
+				void addPhysicElement(const ememory::SharedPtr<ege::physics::Shape>& _shape) {
 					m_physics.push_back(_shape);
 				}
 			private:

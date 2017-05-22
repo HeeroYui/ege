@@ -79,11 +79,11 @@ namespace ege {
 				 */
 				void setAngularVelocity(const vec3& _angularVelocity);
 			protected:
-				std::vector<ememory::SharedPtr<ege::PhysicsShape>> m_shape; //!< collision shape module ... (independent of bullet lib)
+				std::vector<ememory::SharedPtr<ege::physics::Shape>> m_shape; //!< collision shape module ... (independent of bullet lib)
 			public:
-				const std::vector<ememory::SharedPtr<ege::PhysicsShape>>& getShape() const;
-				void setShape(const std::vector<ememory::SharedPtr<ege::PhysicsShape>>& _prop);
-				void addShape(const ememory::SharedPtr<ege::PhysicsShape>& _shape);
+				const std::vector<ememory::SharedPtr<ege::physics::Shape>>& getShape() const;
+				void setShape(const std::vector<ememory::SharedPtr<ege::physics::Shape>>& _prop);
+				void addShape(const ememory::SharedPtr<ege::physics::Shape>& _shape);
 				void generate();
 				void drawShape(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
 			private:

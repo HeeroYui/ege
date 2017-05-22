@@ -6,7 +6,7 @@
 
 #include <ege/debug.hpp>
 #include <ege/Environement.hpp>
-#include <ege/elements/Element.hpp>
+#include <ege/Entity.hpp>
 #include <ewol/object/Manager.hpp>
 
 #include <ege/particule/Engine.hpp>
@@ -116,52 +116,52 @@ void ege::Environement::engineComponentAdd(const ememory::SharedPtr<ege::Compone
 }
 
 /*
-ememory::SharedPtr<ege::Element> ege::Environement::getElementNearest(ememory::SharedPtr<ege::Element> _sourceRequest, float& _distance) {
+ememory::SharedPtr<ege::Entity> ege::Environement::getEntityNearest(ememory::SharedPtr<ege::Entity> _sourceRequest, float& _distance) {
 	if (_sourceRequest == nullptr) {
 		return nullptr;
 	}
 	vec3 sourcePosition = _sourceRequest->getPosition();
-	ememory::SharedPtr<ege::Element> result = nullptr;
-	for (size_t iii=0; iii<m_listElement.size() ; iii++) {
+	ememory::SharedPtr<ege::Entity> result = nullptr;
+	for (size_t iii=0; iii<m_listEntity.size() ; iii++) {
 		// chack nullptr  pointer
-		if (m_listElement[iii] == nullptr) {
+		if (m_listEntity[iii] == nullptr) {
 			continue;
 		}
-		if (m_listElement[iii]->getGroup() <= 0) {
+		if (m_listEntity[iii]->getGroup() <= 0) {
 			continue;
 		}
 		// check if they are in the same group:
-		if (m_listElement[iii]->getGroup() == _sourceRequest->getGroup()) {
+		if (m_listEntity[iii]->getGroup() == _sourceRequest->getGroup()) {
 			continue;
 		}
 		// check distance ...
-		vec3 destPosition = m_listElement[iii]->getPosition();
+		vec3 destPosition = m_listEntity[iii]->getPosition();
 		float distance = (sourcePosition - destPosition).length();
 		//EGE_DEBUG("Distance : " << _distance << " >? " << distance << " id=" << iii);
 		if (_distance>distance) {
 			_distance = distance;
-			result = m_listElement[iii];
+			result = m_listEntity[iii];
 		}
 	}
 	return result;
 }
 
 
-void ege::Environement::getElementNearest(const vec3& _sourcePosition,
+void ege::Environement::getEntityNearest(const vec3& _sourcePosition,
                                           float _distanceMax,
-                                          std::vector<ege::Environement::ResultNearestElement>& _resultList) {
+                                          std::vector<ege::Environement::ResultNearestEntity>& _resultList) {
 	_resultList.clear();
-	ege::Environement::ResultNearestElement result;
+	ege::Environement::ResultNearestEntity result;
 	result.dist = 99999999999.0f;
-	result.element = nullptr;
-	for (size_t iii=0; iii<m_listElement.size() ; iii++) {
+	result.entity = nullptr;
+	for (size_t iii=0; iii<m_listEntity.size() ; iii++) {
 		// chack nullptr  pointer
-		result.element = m_listElement[iii];
-		if (result.element == nullptr) {
+		result.entity = m_listEntity[iii];
+		if (result.entity == nullptr) {
 			continue;
 		}
 		// check distance ...
-		vec3 destPosition = result.element->getPosition();
+		vec3 destPosition = result.entity->getPosition();
 		if (_sourcePosition == destPosition) {
 			continue;
 		}
@@ -173,30 +173,30 @@ void ege::Environement::getElementNearest(const vec3& _sourcePosition,
 	}
 }
 
-void ege::Environement::getElementNearestFixed(const vec3& _sourcePosition,
+void ege::Environement::getEntityNearestFixed(const vec3& _sourcePosition,
                                                float _distanceMax,
-                                               std::vector<ege::Environement::ResultNearestElement>& _resultList) {
+                                               std::vector<ege::Environement::ResultNearestEntity>& _resultList) {
 	_resultList.clear();
-	ege::Environement::ResultNearestElement result;
+	ege::Environement::ResultNearestEntity result;
 	result.dist = 99999999999.0f;
-	result.element = nullptr;
-	for (size_t iii=0; iii<m_listElement.size() ; iii++) {
+	result.entity = nullptr;
+	for (size_t iii=0; iii<m_listEntity.size() ; iii++) {
 		// chack nullptr  pointer
-		result.element = m_listElement[iii];
-		if (result.element == nullptr) {
+		result.entity = m_listEntity[iii];
+		if (result.entity == nullptr) {
 			continue;
 		}
-		if (result.element->isFixed() == false) {
+		if (result.entity->isFixed() == false) {
 			continue;
 		}
 		// check distance ...
-		vec3 destPosition = result.element->getPositionTheoric();
+		vec3 destPosition = result.entity->getPositionTheoric();
 		result.dist = (_sourcePosition - destPosition).length();
 		//EGE_DEBUG("Distance : " << _distance << " >? " << distance << " id=" << iii);
 		if (_distanceMax <= result.dist) {
 			continue;
 		}
-		// try to add the element at the best positions:
+		// try to add the entity at the best positions:
 		size_t jjj;
 		for (jjj=0; jjj<_resultList.size(); jjj++) {
 			if (_resultList[jjj].dist>result.dist) {
@@ -204,7 +204,7 @@ void ege::Environement::getElementNearestFixed(const vec3& _sourcePosition,
 				break;
 			}
 		}
-		// add element at the end :
+		// add entity at the end :
 		if (jjj >= _resultList.size()) {
 			_resultList.push_back(result);
 		}
@@ -212,12 +212,12 @@ void ege::Environement::getElementNearestFixed(const vec3& _sourcePosition,
 }
 */
 
-static etk::Hash<ege::createElement_tf>& getHachTableCreating() {
-	static etk::Hash<ege::createElement_tf> s_table;
+static etk::Hash<ege::createEntity_tf>& getHachTableCreating() {
+	static etk::Hash<ege::createEntity_tf> s_table;
 	return s_table;
 }
 
-void ege::Environement::addCreator(const std::string& _type, ege::createElement_tf _creator) {
+void ege::Environement::addCreator(const std::string& _type, ege::createEntity_tf _creator) {
 	if (_creator == nullptr) {
 		EGE_ERROR("Try to add an empty CREATOR ...");
 		return;
@@ -228,183 +228,183 @@ void ege::Environement::addCreator(const std::string& _type, ege::createElement_
 }
 
 
-ememory::SharedPtr<ege::Element> ege::Environement::createElement(const std::string& _type, const std::string& _description, bool _autoAddElement) {
+ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const std::string& _type, const std::string& _description, bool _autoAddEntity) {
 	if (getHachTableCreating().exist(_type) == false) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return nullptr;
 	}
-	ege::createElement_tf creatorPointer = getHachTableCreating()[_type];
+	ege::createEntity_tf creatorPointer = getHachTableCreating()[_type];
 	if (creatorPointer == nullptr) {
 		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
 		return nullptr;
 	}
-	ememory::SharedPtr<ege::Element> tmpElement = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
-	if (tmpElement == nullptr) {
+	ememory::SharedPtr<ege::Entity> tmpEntity = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
+	if (tmpEntity == nullptr) {
 		EGE_ERROR("allocation error '" << _type << "'");
 		return nullptr;
 	}
-	if (tmpElement->initString(_description) == false) {
+	if (tmpEntity->initString(_description) == false) {
 		EGE_ERROR("Init error ... '" << _type << "'");
 		return nullptr;
 	}
-	if (_autoAddElement == true) {
-		addElement(tmpElement);
+	if (_autoAddEntity == true) {
+		addEntity(tmpEntity);
 	}
-	return tmpElement;
+	return tmpEntity;
 }
 
-ememory::SharedPtr<ege::Element> ege::Environement::createElement(const std::string& _type, const ejson::Value& _value, bool _autoAddElement) {
+ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const std::string& _type, const ejson::Value& _value, bool _autoAddEntity) {
 	if (getHachTableCreating().exist(_type) == false) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return nullptr;
 	}
-	ege::createElement_tf creatorPointer = getHachTableCreating()[_type];
+	ege::createEntity_tf creatorPointer = getHachTableCreating()[_type];
 	if (creatorPointer == nullptr) {
 		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
 		return nullptr;
 	}
-	ememory::SharedPtr<ege::Element> tmpElement = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
-	if (tmpElement == nullptr) {
+	ememory::SharedPtr<ege::Entity> tmpEntity = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
+	if (tmpEntity == nullptr) {
 		EGE_ERROR("allocation error '" << _type << "'");
 		return nullptr;
 	}
-	if (tmpElement->initJSON(_value) == false) {
+	if (tmpEntity->initJSON(_value) == false) {
 		EGE_ERROR("Init error ... '" << _type << "'");
 		return nullptr;
 	}
-	if (_autoAddElement == true) {
-		addElement(tmpElement);
+	if (_autoAddEntity == true) {
+		addEntity(tmpEntity);
 	}
-	return tmpElement;
+	return tmpEntity;
 }
 
-ememory::SharedPtr<ege::Element> ege::Environement::createElement(const std::string& _type, const exml::Node& _node, bool _autoAddElement) {
+ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const std::string& _type, const exml::Node& _node, bool _autoAddEntity) {
 	if (getHachTableCreating().exist(_type) == false) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return nullptr;
 	}
-	ege::createElement_tf creatorPointer = getHachTableCreating()[_type];
+	ege::createEntity_tf creatorPointer = getHachTableCreating()[_type];
 	if (creatorPointer == nullptr) {
 		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
 		return nullptr;
 	}
-	ememory::SharedPtr<ege::Element> tmpElement = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
-	if (tmpElement == nullptr) {
+	ememory::SharedPtr<ege::Entity> tmpEntity = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
+	if (tmpEntity == nullptr) {
 		EGE_ERROR("allocation error '" << _type << "'");
 		return nullptr;
 	}
-	if (tmpElement->initXML(_node) == false) {
+	if (tmpEntity->initXML(_node) == false) {
 		EGE_ERROR("Init error ... '" << _type << "'");
 		return nullptr;
 	}
-	if (_autoAddElement == true) {
-		addElement(tmpElement);
+	if (_autoAddEntity == true) {
+		addEntity(tmpEntity);
 	}
-	return tmpElement;
+	return tmpEntity;
 }
 
-ememory::SharedPtr<ege::Element> ege::Environement::createElement(const std::string& _type, void* _data, bool _autoAddElement) {
+ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const std::string& _type, void* _data, bool _autoAddEntity) {
 	if (getHachTableCreating().exist(_type) == false) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return nullptr;
 	}
-	ege::createElement_tf creatorPointer = getHachTableCreating()[_type];
+	ege::createEntity_tf creatorPointer = getHachTableCreating()[_type];
 	if (creatorPointer == nullptr) {
 		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
 		return nullptr;
 	}
-	ememory::SharedPtr<ege::Element> tmpElement = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
-	if (tmpElement == nullptr) {
+	ememory::SharedPtr<ege::Entity> tmpEntity = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
+	if (tmpEntity == nullptr) {
 		EGE_ERROR("allocation error '" << _type << "'");
 		return nullptr;
 	}
-	if (tmpElement->initVoid(_data) == false) {
+	if (tmpEntity->initVoid(_data) == false) {
 		EGE_ERROR("Init error ... '" << _type << "'");
 		return nullptr;
 	}
-	if (_autoAddElement == true) {
-		addElement(tmpElement);
+	if (_autoAddEntity == true) {
+		addEntity(tmpEntity);
 	}
-	return tmpElement;
+	return tmpEntity;
 }
 
-ememory::SharedPtr<ege::Element> ege::Environement::createElement(const std::string& _type, bool _autoAddElement) {
+ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const std::string& _type, bool _autoAddEntity) {
 	if (getHachTableCreating().exist(_type) == false) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return nullptr;
 	}
-	ege::createElement_tf creatorPointer = getHachTableCreating()[_type];
+	ege::createEntity_tf creatorPointer = getHachTableCreating()[_type];
 	if (creatorPointer == nullptr) {
 		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
 		return nullptr;
 	}
-	ememory::SharedPtr<ege::Element> tmpElement = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
-	if (tmpElement == nullptr) {
+	ememory::SharedPtr<ege::Entity> tmpEntity = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
+	if (tmpEntity == nullptr) {
 		EGE_ERROR("allocation error '" << _type << "'");
 		return nullptr;
 	}
-	if (tmpElement->init() == false) {
+	if (tmpEntity->init() == false) {
 		EGE_ERROR("Init error ... '" << _type << "'");
 		return nullptr;
 	}
-	if (_autoAddElement == true) {
-		addElement(tmpElement);
+	if (_autoAddEntity == true) {
+		addEntity(tmpEntity);
 	}
-	return tmpElement;
+	return tmpEntity;
 }
 
-void ege::Environement::addElement(ememory::SharedPtr<ege::Element> _newElement) {
+void ege::Environement::addEntity(ememory::SharedPtr<ege::Entity> _newEntity) {
 	// prevent memory allocation and un allocation ...
-	if (_newElement == nullptr) {
+	if (_newEntity == nullptr) {
 		return;
 	}
-	for (size_t iii=0; iii<m_listElement.size() ; iii++) {
-		if (m_listElement[iii] == nullptr) {
-			m_listElement[iii] = _newElement;
-			m_listElement[iii]->dynamicEnable();
+	for (size_t iii=0; iii<m_listEntity.size() ; iii++) {
+		if (m_listEntity[iii] == nullptr) {
+			m_listEntity[iii] = _newEntity;
+			m_listEntity[iii]->dynamicEnable();
 			return;
 		}
 	}
-	m_listElement.push_back(_newElement);
-	_newElement->dynamicEnable();
+	m_listEntity.push_back(_newEntity);
+	_newEntity->dynamicEnable();
 }
 
-void ege::Environement::rmElement(ememory::SharedPtr<ege::Element> _removeElement) {
-	if (_removeElement == nullptr) {
+void ege::Environement::rmEntity(ememory::SharedPtr<ege::Entity> _removeEntity) {
+	if (_removeEntity == nullptr) {
 		return;
 	}
-	// inform the element that an element has been removed  == > this permit to keep pointer on elements ...
-	for (size_t iii=0; iii<m_listElement.size() ; iii++) {
-		if (m_listElement[iii] != nullptr) {
-			m_listElement[iii]->elementIsRemoved(_removeElement);
+	// inform the entity that an entity has been removed  == > this permit to keep pointer on entitys ...
+	for (size_t iii=0; iii<m_listEntity.size() ; iii++) {
+		if (m_listEntity[iii] != nullptr) {
+			m_listEntity[iii]->entityIsRemoved(_removeEntity);
 		}
 	}
-	// ream remove on the element :
-	for (size_t iii=0; iii<m_listElement.size() ; iii++) {
-		if (_removeElement == m_listElement[iii]) {
-			m_listElement[iii]->onDestroy();
-			m_listElement[iii]->dynamicDisable();
-			m_listElement[iii]->unInit();
-			m_listElement[iii].reset();
+	// ream remove on the entity :
+	for (size_t iii=0; iii<m_listEntity.size() ; iii++) {
+		if (_removeEntity == m_listEntity[iii]) {
+			m_listEntity[iii]->onDestroy();
+			m_listEntity[iii]->dynamicDisable();
+			m_listEntity[iii]->unInit();
+			m_listEntity[iii].reset();
 		}
 	}
 }
 
-void ege::Environement::generateInteraction(ege::ElementInteraction& _event) {
-	// inform the element that an element has been removed  == > this permit to keep pointer on elements ...
-	for (size_t iii=0; iii<m_listElement.size() ; iii++) {
-		if (m_listElement[iii] == nullptr) {
+void ege::Environement::generateInteraction(ege::EntityInteraction& _event) {
+	// inform the entity that an entity has been removed  == > this permit to keep pointer on entitys ...
+	for (size_t iii=0; iii<m_listEntity.size() ; iii++) {
+		if (m_listEntity[iii] == nullptr) {
 			continue;
 		}
-		_event.applyEvent(*m_listElement[iii]);
+		_event.applyEvent(*m_listEntity[iii]);
 		/*
-		vec3 destPosition = m_listElement[iii]->getPosition();
+		vec3 destPosition = m_listEntity[iii]->getPosition();
 		float dist = (sourcePosition - destPosition).length;
 		if (dist == 0 || dist>decreasePower) {
 			continue;
 		}
 		float inpact = (decreasePower-dist)/decreasePower * power;
-		g_listElement[iii]->setFireOn(groupIdSource, type, -inpact, sourcePosition);
+		g_listEntity[iii]->setFireOn(groupIdSource, type, -inpact, sourcePosition);
 		*/
 	}
 }
@@ -418,7 +418,7 @@ ege::Environement::Environement() :
   propertyRatio(this, "ratio",
                       1.0f,
                       "game speed ratio"),
-  m_listElement() {
+  m_listEntity() {
 	// nothing to do ...
 	propertyStatus.add(gameStart, "start", "Scene is started");
 	propertyStatus.add(gamePause, "pause", "Scene is paused");
@@ -431,7 +431,7 @@ ege::Environement::Environement() :
 }
 
 void ege::Environement::clear() {
-	m_listElement.clear();
+	m_listEntity.clear();
 }
 
 
@@ -500,22 +500,22 @@ void ege::Environement::onCallbackPeriodicCall(const ewol::event::Time& _event) 
 	// TODO : m_physicEngine.debugDrawWorld();
 	// TODO : EGE_INFO("    Update particule engine");
 	// TODO : m_particuleEngine.update(curentDelta);
-	// remove all element that requested it ...
+	// remove all entity that requested it ...
 	/**
 	{
 		int32_t numberEnnemyKilled=0;
 		int32_t victoryPoint=0;
-		auto it(m_listElement.begin());
-		while (it != m_listElement.end()) {
+		auto it(m_listEntity.begin());
+		while (it != m_listEntity.end()) {
 			if(*it != nullptr) {
 				if ((*it)->needToRemove() == true) {
 					if ((*it)->getGroup() > 1) {
 						numberEnnemyKilled++;
 						victoryPoint++;
 					}
-					EGE_INFO("[" << (*it)->getUID() << "] element Removing ... " << (*it)->getType());
-					rmElement((*it));
-					it = m_listElement.begin();
+					EGE_INFO("[" << (*it)->getUID() << "] entity Removing ... " << (*it)->getType());
+					rmEntity((*it));
+					it = m_listEntity.begin();
 				} else {
 					++it;
 				}

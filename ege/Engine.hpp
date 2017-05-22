@@ -31,12 +31,12 @@ namespace ege {
 			 */
 			virtual const std::string& getType() const;
 			/**
-			 * @brief An ege::Element component has been removed ==> need remove it in local if needed
+			 * @brief An ege::Entity component has been removed ==> need remove it in local if needed
 			 * @param[in] _ref Referrence on the component
 			 */
 			virtual void componentRemove(const ememory::SharedPtr<ege::Component>& _ref);
 			/**
-			 * @brief An ege::Element component has been added ==> need add it in local if needed
+			 * @brief An ege::Entity component has been added ==> need add it in local if needed
 			 * @param[in] _ref Referrence on the component
 			 */
 			virtual void componentAdd(const ememory::SharedPtr<ege::Component>& _ref);

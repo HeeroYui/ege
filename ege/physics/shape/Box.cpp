@@ -4,11 +4,12 @@
  * @license MPL v2.0 (see license file)
  */
 #include <ege/debug.hpp>
-#include <ege/physicsShape/PhysicsCylinder.hpp>
+#include <etk/math/Vector3D.hpp>
+#include <ege/physics/shape/Box.hpp>
 
 
-bool ege::PhysicsCylinder::parse(const char* _line) {
-	if (ege::PhysicsShape::parse(_line) == true) {
+bool ege::physics::shape::Box::parse(const char* _line) {
+	if (ege::physics::Shape::parse(_line) == true) {
 		return true;
 	}
 	if(strncmp(_line, "half-extents:", 13) == 0) {

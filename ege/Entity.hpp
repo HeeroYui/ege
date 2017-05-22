@@ -23,23 +23,23 @@
 #define INDEX_FORWARD_AXIS (1)
 #define INDEX_UP_AXIS      (2)
 
-#define ELEMENT_SCALE     (1.0f/8.0f)
+#define Entity_SCALE     (1.0f/8.0f)
 
 namespace ege {
-	class Element : public ememory::EnableSharedFromThis<Element> {
+	class Entity : public ememory::EnableSharedFromThis<Entity> {
 		protected:
 			ememory::SharedPtr<ege::Environement> m_env;
 		public:
 			/**
-			 * @brief Constructor (when constructer is called just add element that did not change.
-			 * The objest will be stored in a pool of element and keep a second time if needed  == > redure memory allocation,
+			 * @brief Constructor (when constructer is called just add Entity that did not change.
+			 * The objest will be stored in a pool of Entity and keep a second time if needed  == > redure memory allocation,
 			 * when needed, the system will call the init and un-init function...
 			 */
-			Element(const ememory::SharedPtr<ege::Environement>& _env);
+			Entity(const ememory::SharedPtr<ege::Environement>& _env);
 			/**
 			 * @brief Destructor
 			 */
-			virtual ~Element();
+			virtual ~Entity();
 		protected:
 			std::vector<ememory::SharedPtr<ege::Component>> m_component;
 		public:
@@ -48,15 +48,15 @@ namespace ege {
 			void rmComponent(const std::string& _type);
 			
 			/**
-			 * @brief get the element Type description string.
+			 * @brief get the Entity Type description string.
 			 * @return A reference on the descriptive string.
 			 */
 			virtual const std::string& getType() const;
 			/**
-			 * @brief init the element with the defined properties
-			 * @param[in] _property Type of the next element
+			 * @brief init the Entity with the defined properties
+			 * @param[in] _property Type of the next Entity
 			 * @param[in] _value pointer on the value type
-			 * @return true, the element is corectly initialized.
+			 * @return true, the Entity is corectly initialized.
 			 */
 			virtual bool init();
 			virtual bool initString(const std::string& _description);
@@ -65,10 +65,10 @@ namespace ege {
 			virtual bool initVoid(void* _value);
 			virtual bool unInit();
 		private:
-			uint32_t m_uID; //!< This is a reference on a basic element ID
+			uint32_t m_uID; //!< This is a reference on a basic Entity ID
 		public:
 			/**
-			 * @brief get the curent Element Unique ID in the all Game.
+			 * @brief get the curent Entity Unique ID in the all Game.
 			 * @return The requested Unique ID.
 			 */
 			inline uint32_t getUID() const {
@@ -76,7 +76,7 @@ namespace ege {
 			};
 		protected:
 			float m_life; //!< Current life of the object
-			float m_lifeMax; //!< Maximum possible life of the element
+			float m_lifeMax; //!< Maximum possible life of the Entity
 		public:
 			/**
 			 * @brief get the curent life ratio [0..1]
@@ -84,21 +84,21 @@ namespace ege {
 			 */
 			float getLifeRatio();
 			/**
-			 * @brief Check if the element is dead.
-			 * @return true if the element does not exist anymore, false otherwise.
+			 * @brief Check if the Entity is dead.
+			 * @return true if the Entity does not exist anymore, false otherwise.
 			 */
 			bool isDead() {
 				return (0 >= m_life)?true:false;
 			};
 			/**
-			 * @brief Request if the element might be removed from the system
+			 * @brief Request if the Entity might be removed from the system
 			 * @return true  == > the object is removed
 			 */
 			virtual bool needToRemove() {
 				return isDead();
 			}
 			/**
-			 * @brief apply a fire on the element at a current power and a specific power.
+			 * @brief apply a fire on the Entity at a current power and a specific power.
 			 * @param[in] _groupIdSource Source Id of the group, by default all event arrive at all group, buf some event can not be obviously apply at the ennemy like reparing ....
 			 * @param[in] _type Type of event on the life propertied
 			 * @param[in] _power Power of the event (can be >0 for adding life).
@@ -106,22 +106,22 @@ namespace ege {
 			 */
 			virtual void setFireOn(int32_t _groupIdSource, int32_t _type, float _power, const vec3& _center=vec3(0,0,0));
 			/**
-			 * @brief Call when the element life change.
+			 * @brief Call when the Entity life change.
 			 */
 			virtual void onLifeChange() { };
 		protected:
-			int32_t m_group; //!< Every element has a generic group
+			int32_t m_group; //!< Every Entity has a generic group
 		public:
 			/**
-			 * @brief get the Group of the element.
+			 * @brief get the Group of the Entity.
 			 * @return The group ID
 			 */
 			inline int32_t getGroup() const {
 				return m_group;
 			};
 			/**
-			 * @brief set the group of the curent element
-			 * @param[in] newGroup The new Group ID of the element.
+			 * @brief set the group of the curent Entity
+			 * @param[in] newGroup The new Group ID of the Entity.
 			 */
 			inline void setGroup(int32_t _newGroup) {
 				m_group=_newGroup;
@@ -131,28 +131,28 @@ namespace ege {
 			//ewol::compositing::Text m_debugText; // ==> this is reall y a bad idea==> it is inneficient ...
 		public:
 			/**
-			 * @brief Debug display of the current element
+			 * @brief Debug display of the current Entity
 			 * @param[in,out] _draw Basic system to draw the debug shape and informations
 			 * @param[in] _camera Current camera for display
 			 */
 			virtual void drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
 			/**
-			 * @brief Event arrive when an element has been remove from the system  == > this permit to keep pointer of ennemy, and not search them every cycle ...
-			 * @param[in] _removedElement Pointer on the element removed.
+			 * @brief Event arrive when an Entity has been remove from the system  == > this permit to keep pointer of ennemy, and not search them every cycle ...
+			 * @param[in] _removedEntity Pointer on the Entity removed.
 			 */
-			virtual void elementIsRemoved(ememory::SharedPtr<ege::Element> _removedElement) { };
+			virtual void entityIsRemoved(ememory::SharedPtr<ege::Entity> _removedEntity) { };
 		protected:
-			float m_radius; //!< Radius of the element (all element have a radius, if  == 0 ==> then ghost ...
+			float m_radius; //!< Radius of the Entity (all Entity have a radius, if  == 0 ==> then ghost ...
 		public:
 			/**
-			 * @brief get the current space needed by the element in the workspace
+			 * @brief get the current space needed by the Entity in the workspace
 			 * @return The dimention needed.
 			 */
 			inline float getRadius() {
 				return m_radius;
 			};
 			/**
-			 * @brief, call when the element is removed (call only one time)
+			 * @brief, call when the Entity is removed (call only one time)
 			 */
 			virtual void onDestroy() {};
 			/**
@@ -160,7 +160,7 @@ namespace ege {
 			 */
 			virtual void dynamicEnable() {};
 			/**
-			 * @brief remove this element from the physique engine
+			 * @brief remove this Entity from the physique engine
 			 */
 			virtual void dynamicDisable() {};
 		

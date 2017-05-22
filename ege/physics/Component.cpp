@@ -6,13 +6,13 @@
 #include <ege/physics/Component.hpp>
 #include <ege/physics/Engine.hpp>
 #include <ege/Environement.hpp>
-#include <ege/physicsShape/PhysicsShape.hpp>
-#include <ege/physicsShape/PhysicsBox.hpp>
-#include <ege/physicsShape/PhysicsCapsule.hpp>
-#include <ege/physicsShape/PhysicsCone.hpp>
-#include <ege/physicsShape/PhysicsConvexHull.hpp>
-#include <ege/physicsShape/PhysicsCylinder.hpp>
-#include <ege/physicsShape/PhysicsSphere.hpp>
+#include <ege/physics/shape/Shape.hpp>
+#include <ege/physics/shape/Box.hpp>
+#include <ege/physics/shape/Capsule.hpp>
+#include <ege/physics/shape/Cone.hpp>
+#include <ege/physics/shape/ConvexHull.hpp>
+#include <ege/physics/shape/Cylinder.hpp>
+#include <ege/physics/shape/Sphere.hpp>
 
 const std::string& ege::physics::Component::getType() const {
 	static std::string tmp("physics");
@@ -80,9 +80,9 @@ void ege::physics::Component::generate() {
 			continue;
 		}
 		switch (it->getType()) {
-			case ege::PhysicsShape::box : {
+			case ege::physics::Shape::type::box : {
 				EGE_DEBUG("    Box");
-				const ege::PhysicsBox* tmpElement = it->toBox();
+				const ege::physics::shape::Box* tmpElement = it->toBox();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    Box ==> can not cast in BOX");
 					continue;
@@ -106,9 +106,9 @@ void ege::physics::Component::generate() {
 				m_listProxyShape.push_back(proxyShape);
 				break;
 			}
-			case ege::PhysicsShape::cylinder : {
+			case ege::physics::Shape::type::cylinder : {
 				EGE_DEBUG("    Cylinder");
-				const ege::PhysicsCylinder* tmpElement = it->toCylinder();
+				const ege::physics::shape::Cylinder* tmpElement = it->toCylinder();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    Cylinder ==> can not cast in Cylinder");
 					continue;
@@ -127,9 +127,9 @@ void ege::physics::Component::generate() {
 				m_listProxyShape.push_back(proxyShape);
 				break;
 			}
-			case ege::PhysicsShape::capsule : {
+			case ege::physics::Shape::type::capsule : {
 				EGE_DEBUG("    Capsule");
-				const ege::PhysicsCapsule* tmpElement = it->toCapsule();
+				const ege::physics::shape::Capsule* tmpElement = it->toCapsule();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    Capsule ==> can not cast in Capsule");
 					continue;
@@ -148,9 +148,9 @@ void ege::physics::Component::generate() {
 				*/
 				break;
 			}
-			case ege::PhysicsShape::cone : {
+			case ege::physics::Shape::type::cone : {
 				EGE_DEBUG("    Cone");
-				const ege::PhysicsCone* tmpElement = it->toCone();
+				const ege::physics::shape::Cone* tmpElement = it->toCone();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    Cone ==> can not cast in Cone");
 					continue;
@@ -169,9 +169,9 @@ void ege::physics::Component::generate() {
 				*/
 				break;
 			}
-			case ege::PhysicsShape::sphere : {
+			case ege::physics::Shape::type::sphere : {
 				EGE_DEBUG("    Sphere");
-				const ege::PhysicsSphere* tmpElement = it->toSphere();
+				const ege::physics::shape::Sphere* tmpElement = it->toSphere();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    Sphere ==> can not cast in Sphere");
 					continue;
@@ -202,9 +202,9 @@ void ege::physics::Component::generate() {
 				*/
 				break;
 			}
-			case ege::PhysicsShape::convexHull : {
+			case ege::physics::Shape::type::convexHull : {
 				EGE_DEBUG("    convexHull");
-				const ege::PhysicsConvexHull* tmpElement = it->toConvexHull();
+				const ege::physics::shape::ConvexHull* tmpElement = it->toConvexHull();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    convexHull ==> can not cast in convexHull");
 					continue;
@@ -311,15 +311,15 @@ void ege::physics::Component::setAngularVelocity(const vec3& _angularVelocity) {
 	m_rigidBody->setAngularVelocity(value);
 }
 
-const std::vector<ememory::SharedPtr<ege::PhysicsShape>>& ege::physics::Component::getShape() const {
+const std::vector<ememory::SharedPtr<ege::physics::Shape>>& ege::physics::Component::getShape() const {
 	return m_shape;
 }
 
-void ege::physics::Component::setShape(const std::vector<ememory::SharedPtr<ege::PhysicsShape>>& _prop) {
+void ege::physics::Component::setShape(const std::vector<ememory::SharedPtr<ege::physics::Shape>>& _prop) {
 	m_shape = _prop;
 }
 
-void ege::physics::Component::addShape(const ememory::SharedPtr<ege::PhysicsShape>& _shape) {
+void ege::physics::Component::addShape(const ememory::SharedPtr<ege::physics::Shape>& _shape) {
 	m_shape.push_back(_shape);
 }
 
@@ -337,9 +337,9 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 			continue;
 		}
 		switch (it->getType()) {
-			case ege::PhysicsShape::box: {
+			case ege::physics::Shape::type::box: {
 				EGE_DEBUG("    Box");
-				const ege::PhysicsBox* tmpElement = it->toBox();
+				const ege::physics::shape::Box* tmpElement = it->toBox();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    Box ==> can not cast in BOX");
 					continue;
@@ -352,9 +352,9 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 				_draw->drawSquare(tmpElement->getSize(), transformationMatrixLocal, tmpColor);
 				break;
 			}
-			case ege::PhysicsShape::cylinder : {
+			case ege::physics::Shape::type::cylinder : {
 				EGE_DEBUG("    Cylinder");
-				const ege::PhysicsCylinder* tmpElement = it->toCylinder();
+				const ege::physics::shape::Cylinder* tmpElement = it->toCylinder();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    Cylinder ==> can not cast in Cylinder");
 					continue;
@@ -367,9 +367,9 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 				//_draw->drawSphere(radius, 10, 10, _transformationMatrix, tmpColor);
 				break;
 			}
-			case ege::PhysicsShape::capsule : {
+			case ege::physics::Shape::type::capsule : {
 				EGE_DEBUG("    Capsule");
-				const ege::PhysicsCapsule* tmpElement = it->toCapsule();
+				const ege::physics::shape::Capsule* tmpElement = it->toCapsule();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    Capsule ==> can not cast in Capsule");
 					continue;
@@ -388,9 +388,9 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 				*/
 				break;
 			}
-			case ege::PhysicsShape::cone : {
+			case ege::physics::Shape::type::cone : {
 				EGE_DEBUG("    Cone");
-				const ege::PhysicsCone* tmpElement = it->toCone();
+				const ege::physics::shape::Cone* tmpElement = it->toCone();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    Cone ==> can not cast in Cone");
 					continue;
@@ -409,9 +409,9 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 				*/
 				break;
 			}
-			case ege::PhysicsShape::sphere : {
+			case ege::physics::Shape::type::sphere : {
 				EGE_DEBUG("    Sphere");
-				const ege::PhysicsSphere* tmpElement = it->toSphere();
+				const ege::physics::shape::Sphere* tmpElement = it->toSphere();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    Sphere ==> can not cast in Sphere");
 					continue;
@@ -424,9 +424,9 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 				_draw->drawSphere(tmpElement->getRadius(), 10, 10, transformationMatrixLocal, tmpColor);
 				break;
 			}
-			case ege::PhysicsShape::convexHull : {
+			case ege::physics::Shape::type::convexHull : {
 				EGE_DEBUG("    convexHull");
-				const ege::PhysicsConvexHull* tmpElement = it->toConvexHull();
+				const ege::physics::shape::ConvexHull* tmpElement = it->toConvexHull();
 				if (tmpElement == nullptr) {
 					EGE_ERROR("    convexHull ==> can not cast in convexHull");
 					continue;
