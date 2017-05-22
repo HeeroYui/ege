@@ -127,6 +127,33 @@ void appl::Windows::init() {
 		// add it ..
 		m_env->addEntity(element);
 	}
+	// create the 6 border that destroy the object when percuted:
+	
+	// create cubes ...
+	myMesh = ege::resource::Mesh::createCube(vec3(200,0.2,200), "basics", etk::color::green);
+	if (myMesh != nullptr) {
+		ememory::SharedPtr<ege::Entity> element = ememory::makeShared<ege::Entity>(m_env);
+		// add all component:
+		// 1st Position component:
+		etk::Transform3D transform(vec3(0,-200,0), etk::Quaternion::identity());
+		// 2nd something to diplay:
+		ememory::SharedPtr<ege::render::Component> componentRender = ememory::makeShared<ege::render::Component>(myMesh);
+		element->addComponent(componentRender);
+		// 3rd some physic:
+		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
+		ememory::SharedPtr<ege::physics::shape::Box> physic = ememory::makeShared<ege::physics::shape::Box>();
+		physic->setSize(vec3(200.01,0.21,200.01));
+		componentPhysics->addShape(physic);
+		// The element can not move
+		componentPhysics->setType(ege::physics::Component::type::bodyStatic);
+		componentPhysics->generate();
+		element->addComponent(componentPhysics);
+		// add it ..
+		m_env->addEntity(element);
+	}
+	
+	
+	
 	// create cubes ...
 	myMesh = ege::resource::Mesh::createCube(vec3(3,0.2,5), "basics", etk::color::green);
 	if (myMesh != nullptr) {
