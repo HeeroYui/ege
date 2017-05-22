@@ -128,7 +128,7 @@ void appl::Windows::init() {
 		m_env->addEntity(element);
 	}
 	// create cubes ...
-	myMesh = ege::resource::Mesh::createCube(3, "basics", etk::color::green);
+	myMesh = ege::resource::Mesh::createCube(vec3(3,0.2,5), "basics", etk::color::green);
 	if (myMesh != nullptr) {
 		ememory::SharedPtr<ege::Entity> element = ememory::makeShared<ege::Entity>(m_env);
 		// add all component:
@@ -140,7 +140,7 @@ void appl::Windows::init() {
 		// 3rd some physic:
 		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
 		ememory::SharedPtr<ege::physics::shape::Box> physic = ememory::makeShared<ege::physics::shape::Box>();
-		physic->setSize(vec3(3.01,3.01,3.01));
+		physic->setSize(vec3(3.01,0.21,5.01));
 		physic->setMass(300000);
 		componentPhysics->addShape(physic);
 		componentPhysics->generate();

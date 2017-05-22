@@ -37,6 +37,9 @@ namespace ege {
 				static ememory::SharedPtr<ege::resource::Mesh> createCube(float _size=1.0f,
 				                                                          const std::string& _materialName="basics",
 				                                                          const etk::Color<float>& _color=etk::color::green);
+				static ememory::SharedPtr<ege::resource::Mesh> createCube(const vec3& _size=vec3(1.0f, 1.0f, 1.0f),
+				                                                          const std::string& _materialName="basics",
+				                                                          const etk::Color<float>& _color=etk::color::green);
 				static ememory::SharedPtr<ege::resource::Mesh> createSphere(float _size=1.0f,
 				                                                            const std::string& _materialName="basics",
 				                                                            const etk::Color<float>& _color=etk::color::green,
