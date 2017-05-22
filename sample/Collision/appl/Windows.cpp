@@ -137,7 +137,7 @@ void appl::Windows::init() {
 		// 3rd some physic:
 		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
 		ememory::SharedPtr<ege::PhysicsBox> physic = ememory::makeShared<ege::PhysicsBox>();
-		physic->setSize(vec3(3.2,3.2,3.2));
+		physic->setSize(vec3(3.01,3.01,3.01));
 		physic->setMass(300000);
 		componentPhysics->addShape(physic);
 		componentPhysics->generate();
@@ -159,8 +159,30 @@ void appl::Windows::init() {
 		// 3rd some physic:
 		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
 		ememory::SharedPtr<ege::PhysicsBox> physic = ememory::makeShared<ege::PhysicsBox>();
-		physic->setSize(vec3(3.2,3.2,3.2));
+		physic->setSize(vec3(3.01,3.01,3.01));
 		physic->setMass(50000);
+		componentPhysics->addShape(physic);
+		componentPhysics->generate();
+		element->addComponent(componentPhysics);
+		// add it ..
+		m_env->addElement(element);
+	}
+	myMesh = ege::resource::Mesh::createSphere(4, "basics", etk::color::blue);
+	if (myMesh != nullptr) {
+		ememory::SharedPtr<ege::Element> element = ememory::makeShared<ege::Element>(m_env);
+		// add all component:
+		// 1st Position component:
+		etk::Transform3D transform(vec3(-20,10,10), etk::Quaternion::identity());
+		//ememory::SharedPtr<ege::position::Component> componentPosition = ememory::makeShared<ege::position::Component>(transform);
+		//element->addComponent(componentPosition);
+		// 2nd something to diplay:
+		ememory::SharedPtr<ege::render::Component> componentRender = ememory::makeShared<ege::render::Component>(myMesh);
+		element->addComponent(componentRender);
+		// 3rd some physic:
+		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
+		ememory::SharedPtr<ege::PhysicsSphere> physic = ememory::makeShared<ege::PhysicsSphere>();
+		physic->setRadius(4.01);
+		physic->setMass(500000);
 		componentPhysics->addShape(physic);
 		componentPhysics->generate();
 		element->addComponent(componentPhysics);
@@ -207,7 +229,7 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 				// 3rd some physic:
 				ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
 				ememory::SharedPtr<ege::PhysicsBox> physic = ememory::makeShared<ege::PhysicsBox>();
-				physic->setSize(vec3(1.1,1.1,1.1));
+				physic->setSize(vec3(1.01,1.01,1.01));
 				physic->setMass(1000);
 				componentPhysics->setType(ege::physics::Component::type::bodyDynamic);
 				componentPhysics->addShape(physic);

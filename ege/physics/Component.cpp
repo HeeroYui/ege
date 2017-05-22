@@ -176,6 +176,18 @@ void ege::physics::Component::generate() {
 					EGE_ERROR("    Sphere ==> can not cast in Sphere");
 					continue;
 				}
+				// Create the box shape
+				rp3d::SphereShape* shape = new rp3d::SphereShape(tmpElement->getRadius());
+				rp3d::Vector3 position(it->getOrigin().x(),
+				                       it->getOrigin().y(),
+				                       it->getOrigin().z());
+				rp3d::Quaternion orientation(it->getQuaternion().x(),
+				                             it->getQuaternion().y(),
+				                             it->getQuaternion().z(),
+				                             it->getQuaternion().w());
+				rp3d::Transform transform(position, orientation);
+				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
+				m_listProxyShape.push_back(proxyShape);
 				/*
 				btCollisionShape* tmpShape = new btSphereShape(tmpElement->getRadius());
 				if (tmpShape != nullptr) {
@@ -404,18 +416,12 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 					EGE_ERROR("    Sphere ==> can not cast in Sphere");
 					continue;
 				}
-				/*
-				btCollisionShape* tmpShape = new btSphereShape(tmpElement->getRadius());
-				if (tmpShape != nullptr) {
-					if (outputShape == nullptr) {
-						return tmpShape;
-					} else {
-						vec4 qqq = tmpElement->getQuaternion();
-						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
-						outputShape->addChildShape(localTransform, tmpShape);
-					}
-				}
-				*/
+				etk::Transform3D transformLocal(it->getOrigin(), it->getOrientation());
+				transformLocal.getOpenGLMatrix(mmm);
+				mat4 transformationMatrixLocal(mmm);
+				transformationMatrixLocal.transpose();
+				transformationMatrixLocal = transformationMatrix * transformationMatrixLocal;
+				_draw->drawSphere(tmpElement->getRadius(), 10, 10, transformationMatrixLocal, tmpColor);
 				break;
 			}
 			case ege::PhysicsShape::convexHull : {
