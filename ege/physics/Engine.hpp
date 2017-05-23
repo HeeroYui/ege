@@ -25,6 +25,8 @@ namespace ege {
 #include <ephysics/reactphysics3d.h>
 #include <ege/physics/Component.hpp>
 #include <eproperty/Value.hpp>
+#include <ege/Ray.hpp>
+
 
 
 namespace ege {
@@ -64,6 +66,19 @@ namespace ege {
 				// herited from rp3D::EventListener
 				void beginContact(const rp3d::ContactPointInfo& _contact) override;
 				void newContact(const rp3d::ContactPointInfo& _contact) override;
+			public:
+				/**
+				 * @brief Test a rayCasting on the physic engine
+				 * @param[in] _ray Ray top test
+				 * @return Impact position and normal of the impact (if normal == vec3(0,0,0) then no object impact...
+				 */
+				std::pair<vec3,vec3> testRay(const ege::Ray& _ray);
+				/**
+				 * @brief Test a rayCasting on the physic engine
+				 * @param[in] _ray Ray top test
+				 * @return Impact Component, position and normal of the impact (if normal == vec3(0,0,0) then no object impact...
+				 */
+				std::pair<ememory::SharedPtr<ege::Component>, std::pair<vec3,vec3>> testRayObject(const ege::Ray& _ray);
 		};
 	}
 }

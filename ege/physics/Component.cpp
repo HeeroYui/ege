@@ -19,8 +19,12 @@ const std::string& ege::physics::Component::getType() const {
 	return tmp;
 }
 
-void ege::physics::Component::notifyContact(const rp3d::ContactPointInfo& _contactPointInfo) {
-	EGE_INFO("collision detection " << vec3(_contactPointInfo.normal.x, _contactPointInfo.normal.y, _contactPointInfo.normal.z) << " depth=" << _contactPointInfo.penetrationDepth);
+void ege::physics::Component::beginContact(ege::physics::Component* _other, const vec3& _normal, const vec3& _pos, const vec3& _posOther, float _penetrationDepth) {
+	EGE_WARNING("    collision [BEGIN] " << _pos << " depth=" << _penetrationDepth);
+}
+
+void ege::physics::Component::newContact(ege::physics::Component* _other, const vec3& _normal, const vec3& _pos, const vec3& _posOther, float _penetrationDepth) {
+	EGE_WARNING("    collision [ NEW ] " << _pos << " depth=" << _penetrationDepth);
 }
 
 ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env) {
@@ -31,8 +35,9 @@ ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env) {
 	rp3d::Transform transform(initPosition, initOrientation);
 	m_lastTransformEmit = etk::Transform3D(vec3(0,0,0), etk::Quaternion::identity());
 	m_rigidBody = m_engine->getDynamicWorld()->createRigidBody(transform);
+	m_rigidBody->setUserData(this);
 	// set collision callback:
-	m_engine->getDynamicWorld()->testCollision(m_rigidBody, this);
+	//m_engine->getDynamicWorld()->testCollision(m_rigidBody, this);
 }
 
 ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env, const etk::Transform3D& _transform) {
@@ -47,9 +52,10 @@ ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env, c
 	rp3d::Transform transform(initPosition, initOrientation);
 	// Create a rigid body in the world
 	m_rigidBody = m_engine->getDynamicWorld()->createRigidBody(transform);
+	m_rigidBody->setUserData(this);
 	m_lastTransformEmit = _transform;
 	// set collision callback:
-	m_engine->getDynamicWorld()->testCollision(m_rigidBody, this);
+	//m_engine->getDynamicWorld()->testCollision(m_rigidBody, this);
 }
 
 void ege::physics::Component::setType(enum ege::physics::Component::type _type) {
@@ -74,6 +80,7 @@ ege::physics::Component::~Component() {
 		return;
 	}
 	// disable callback
+	m_rigidBody->setUserData(nullptr);
 	m_engine->getDynamicWorld()->testCollision(m_rigidBody, nullptr);
 	m_engine->getDynamicWorld()->destroyRigidBody(m_rigidBody);
 	m_rigidBody = nullptr;
@@ -113,6 +120,7 @@ void ege::physics::Component::generate() {
 				                             it->getQuaternion().w());
 				rp3d::Transform transform(position, orientation);
 				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
+				proxyShape->setUserData(this);
 				m_listProxyShape.push_back(proxyShape);
 				break;
 			}
@@ -134,6 +142,7 @@ void ege::physics::Component::generate() {
 				                             it->getQuaternion().w());
 				rp3d::Transform transform(position, orientation);
 				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
+				proxyShape->setUserData(this);
 				m_listProxyShape.push_back(proxyShape);
 				break;
 			}
@@ -155,6 +164,7 @@ void ege::physics::Component::generate() {
 				                             it->getQuaternion().w());
 				rp3d::Transform transform(position, orientation);
 				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
+				proxyShape->setUserData(this);
 				m_listProxyShape.push_back(proxyShape);
 				break;
 			}
@@ -176,6 +186,7 @@ void ege::physics::Component::generate() {
 				                             it->getQuaternion().w());
 				rp3d::Transform transform(position, orientation);
 				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
+				proxyShape->setUserData(this);
 				m_listProxyShape.push_back(proxyShape);
 				break;
 			}
@@ -197,6 +208,7 @@ void ege::physics::Component::generate() {
 				                             it->getQuaternion().w());
 				rp3d::Transform transform(position, orientation);
 				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
+				proxyShape->setUserData(this);
 				m_listProxyShape.push_back(proxyShape);
 				break;
 			}

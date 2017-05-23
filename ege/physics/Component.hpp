@@ -19,8 +19,8 @@ namespace ege {
 	namespace physics {
 		class Engine;
 		class Component :
-		  public ege::Component,
-		  public rp3d::CollisionCallback {
+		  public ege::Component/*,
+		  public rp3d::CollisionCallback*/ {
 			public:
 				esignal::Signal<etk::Transform3D> signalPosition;
 			protected:
@@ -93,8 +93,24 @@ namespace ege {
 				void emitAll();
 				friend class ege::physics::Engine;
 			private:
-				// herited from rp3d::CollisionCallback to notify the contact on the current rigid body
-				void notifyContact(const rp3d::ContactPointInfo& _contactPointInfo) override;
+				/**
+				 * @brief Called when a new contact point is found between two bodies that were separated before.
+				 * @param[in] _other The other component that have the impact
+				 * @param[in] _normal Normal of the impact
+				 * @param[in] _pos Position of the impact at the current object
+				 * @param[in] _posOther Position of the impact at the other object
+				 * @param[in] _penetrationDepth Depth penetration in the object
+				 */
+				void beginContact(ege::physics::Component* _other, const vec3& _normal, const vec3& _pos, const vec3& _posOther, float _penetrationDepth);
+				/**
+				 * @brief Called when a new contact point is found between two bodies.
+				 * @param[in] _other The other component that have the impact
+				 * @param[in] _normal Normal of the impact
+				 * @param[in] _pos Position of the impact at the current object
+				 * @param[in] _posOther Position of the impact at the other object
+				 * @param[in] _penetrationDepth Depth penetration in the object
+				 */
+				void newContact(ege::physics::Component* _other, const vec3& _normal, const vec3& _pos, const vec3& _posOther, float _penetrationDepth);
 		};
 	}
 }

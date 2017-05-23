@@ -36,51 +36,6 @@ std::ostream& ege::operator <<(std::ostream& _os, const ege::Ray& _obj) {
 	return _os;
 }
 
-std::pair<vec3,vec3> ege::Ray::testRay(ege::physics::Engine& _engine) {
-	vec3 start = m_origin;
-	vec3 stop = m_origin+m_direction*1000.0f;
-	// Start and End are vectors
-	/*
-	btCollisionWorld::ClosestRayResultCallback rayCallback(start, stop);
-	EGE_VERBOSE("Process Raycast :");
-	// Perform raycast
-	_engine.getDynamicWorld()->rayTest(start, stop, rayCallback);
-	if(rayCallback.hasHit()) {
-		vec3 end = rayCallback.m_hitPointWorld;
-		vec3 normal = rayCallback.m_hitNormalWorld;
-		EGE_VERBOSE("    hit at point=" << end << " normal=" << normal);
-		return std::pair<vec3,vec3>(end,normal);
-	}
-	*/
-	EGE_VERBOSE("    No Hit");
-	return std::pair<vec3,vec3>(vec3(0,0,0),vec3(0,0,0));
-}
-
-
-std::pair<ememory::SharedPtr<ege::Entity>, std::pair<vec3,vec3>> ege::Ray::testRayObject(ege::physics::Engine& _engine) {
-	vec3 start = m_origin;
-	vec3 stop = m_origin+m_direction*1000.0f;
-	// Start and End are vectors
-	/*
-	btCollisionWorld::ClosestRayResultCallback rayCallback(start, stop);
-	EGE_VERBOSE("Process Raycast :");
-	// Perform raycast
-	_engine.getDynamicWorld()->rayTest(start, stop, rayCallback);
-	if(rayCallback.hasHit()) {
-		vec3 end = rayCallback.m_hitPointWorld;
-		vec3 normal = rayCallback.m_hitNormalWorld;
-		ege::Entity* elem = static_cast<ege::Entity*>(rayCallback.m_collisionObject->getUserPointer());
-		if (elem != nullptr) {
-			EGE_VERBOSE("    hit at point=" << end << " normal=" << normal);
-			return std::pair<ememory::SharedPtr<ege::Entity>, std::pair<vec3,vec3>>(elem->sharedFromThis(), std::pair<vec3,vec3>(end,normal));
-		}
-		EGE_VERBOSE("    Can not get the entity pointer");
-		return std::pair<ememory::SharedPtr<ege::Entity>, std::pair<vec3,vec3>>(nullptr, std::pair<vec3,vec3>(end,normal));
-	}
-	*/
-	EGE_VERBOSE("    No Hit");
-	return std::pair<ememory::SharedPtr<ege::Entity>, std::pair<vec3,vec3>>(nullptr, std::pair<vec3,vec3>(vec3(0,0,0),vec3(0,0,0)));
-}
 
 vec3 ege::Ray::testRayZeroPlane() {
 	float coef = m_origin.z() / m_direction.z();

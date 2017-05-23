@@ -75,8 +75,6 @@ static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
 void appl::Windows::init() {
 	ewol::widget::Windows::init();
 	
-	getObjectManager().periodicCall.connect(sharedFromThis(), &appl::Windows::onCallbackPeriodicCheckCollision);
-	
 	m_env = ege::Environement::create();
 	// set the debug property on the engines
 	m_env->getEngine("render")->properties.set("debug-normal", "true");
@@ -388,19 +386,6 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 		m_camera->setAngle(m_camera->getAngle() - 0.01f);
 	} 
 	return false;
-}
-
-void appl::Windows::onCallbackPeriodicCheckCollision(const ewol::event::Time& _event) {
-	/*
-	std::vector<ege::physics::Engine::collisionPoints> list = m_env->getPhysicEngine().getListOfCollision();
-	
-	if (list.size() != 0) {
-		APPL_INFO("num contact =" << list.size());
-	}
-	for (size_t iii=0;iii<list.size();++iii) {
-		APPL_ERROR("    [" << list[iii].elem1->getUID() << "]:point1=" << list[iii].positionElem1 << " [" << list[iii].elem1->getUID() << "]:point2=" << list[iii].positionElem2  << " normal=" << list[iii].normalElem2);
-	}
-	*/
 }
 
 
