@@ -14,8 +14,15 @@
 #include <ege/widget/Scene.hpp>
 #include <ege/camera/View.hpp>
 #include <etk/tool.hpp>
-#include <ege/elements/ElementBase.hpp>
-#include <ege/elements/ElementPhysic.hpp>
+#include <ege/Entity.hpp>
+#include <ege/physics/shape/Box.hpp>
+#include <ege/physics/shape/Sphere.hpp>
+#include <ege/physics/shape/Cylinder.hpp>
+#include <ege/physics/shape/Capsule.hpp>
+#include <ege/physics/shape/Cone.hpp>
+#include <ege/position/Component.hpp>
+#include <ege/render/Component.hpp>
+#include <ege/physics/Component.hpp>
 
 appl::Windows::Windows() {
 	addObjectType("appl::Windows");
@@ -27,7 +34,7 @@ static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
 	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("viewBoxStar", "DATA:texturedNoMaterial.prog");
 	if (out != nullptr) {
 		ememory::SharedPtr<ege::Material> material = ememory::makeShared<ege::Material>();
-		// set the element material properties :
+		// set the entity material properties :
 		material->setAmbientFactor(vec4(1,1,1,1));
 		material->setDiffuseFactor(vec4(0,0,0,1));
 		material->setSpecularFactor(vec4(0,0,0,1));
@@ -59,34 +66,6 @@ static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
 	return out;
 }
 
-namespace appl {
-	class Tree : public ege::ElementPhysic {
-		public:
-			Tree(const ememory::SharedPtr<ege::Environement>& _env) :
-			  ege::ElementPhysic(_env, false) {
-				m_group = 1;
-				m_life = 100;
-				m_radius = 10;
-				loadMesh("DATA:tree_1.emf");
-				
-				createRigidBody(10000);
-				///never deactivate the vehicle
-				m_body->setActivationState(DISABLE_DEACTIVATION);
-				// set the Element as an IA:
-				iaEnable();
-			}
-			void iaAction(float _step) {
-				
-			}
-			void onLifeChange() {
-				APPL_DEBUG("Loose life " << m_life);
-			}
-	};
-}
-
-static ememory::SharedPtr<ege::Element> createTree(const ememory::SharedPtr<ege::Environement>& _env) {
-	return ememory::makeShared<appl::Tree>(_env);
-}
 
 
 void appl::Windows::init() {
@@ -96,9 +75,9 @@ void appl::Windows::init() {
 	
 	m_env = ege::Environement::create();
 	// Create basic Camera
-	m_camera = ememory::makeShared<ege::camera::View>(vec3(30,30,-100), vec3(0,0,1));
-	m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),80*std::cos(m_anglePsy)));
+	m_camera = ememory::makeShared<ege::camera::View>();
 	m_env->addCamera("basic", m_camera);
+	m_cameraControler.setCamera(m_camera);
 	
 	ememory::SharedPtr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create();
 	if (tmpWidget == nullptr) {
@@ -111,20 +90,50 @@ void appl::Windows::init() {
 		setSubWidget(tmpWidget);
 	}
 	ememory::SharedPtr<ege::resource::Mesh> myMesh;
-	// Create an external box :
+	// Create an external box: (no physics)
 	myMesh = createViewBoxStar();
 	if (myMesh != nullptr) {
-		m_env->addStaticMeshToDraw(myMesh);
+		ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
+		// 1st Position component:
+		etk::Transform3D transform(vec3(0,0,0), etk::Quaternion::identity());
+		ememory::SharedPtr<ege::position::Component> componentPosition = ememory::makeShared<ege::position::Component>(transform);
+		entity->addComponent(componentPosition);
+		// 2nd something to diplay:
+		ememory::SharedPtr<ege::render::Component> componentRender = ememory::makeShared<ege::render::Component>(myMesh);
+		entity->addComponent(componentRender);
+		// add it ..
+		m_env->addEntity(entity);
 	}
+	// create basic gird: (no physics)
 	myMesh = ege::resource::Mesh::createGrid(10, vec3(0,0,0), 5);
 	if (myMesh != nullptr) {
-		m_env->addStaticMeshToDraw(myMesh);
+		ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
+		// 1st Position component:
+		etk::Transform3D transform(vec3(0,0,0), etk::Quaternion::identity());
+		ememory::SharedPtr<ege::position::Component> componentPosition = ememory::makeShared<ege::position::Component>(transform);
+		entity->addComponent(componentPosition);
+		// 2nd something to diplay:
+		ememory::SharedPtr<ege::render::Component> componentRender = ememory::makeShared<ege::render::Component>(myMesh);
+		entity->addComponent(componentRender);
+		// add it ..
+		m_env->addEntity(entity);
 	}
-	if (true) {
-		ememory::SharedPtr<ege::Element> myElement = createTree(m_env);
-		if (myElement != nullptr) {
-			m_env->addElement(myElement);
-		}
+	myMesh = ege::resource::Mesh::create("DATA:tree_1.emf");
+	if (myMesh != nullptr) {
+		ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
+		// add all component:
+		// 1st Position component:
+		etk::Transform3D transform(vec3(0,0,0), etk::Quaternion::identity());
+		// 2nd something to diplay:
+		ememory::SharedPtr<ege::render::Component> componentRender = ememory::makeShared<ege::render::Component>(myMesh);
+		entity->addComponent(componentRender);
+		// 3rd some physic:
+		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
+		componentPhysics->setShape(myMesh->getPhysicalProperties());
+		componentPhysics->generate();
+		entity->addComponent(componentPhysics);
+		// add it ..
+		m_env->addEntity(entity);
 	}
 	m_env->propertyStatus.set(ege::gameStart);
 	tmpWidget->propertyDebugPhysic.set(false);
@@ -132,63 +141,16 @@ void appl::Windows::init() {
 }
 
 
-void appl::Windows::onCallbackPeriodicUpdateCamera(const ewol::event::Time& _event) {
-	static float offset = 0;
-	offset += 0.01;
-	static float offset2 = 0;
-	offset2 += 0.003;
-	m_camera->setEye(vec3(10*std::sin(offset),10*std::cos(offset),4*std::cos(offset2)));
+bool appl::Windows::onEventEntry(const ewol::event::Entry& _event) {
+	if (m_cameraControler.onEventEntry(_event) == true) {
+		return true;
+	}
+	return false;
 }
 
-
-
 bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
-	static float ploppp=1;
-	if (_event.getId() == 1) {
-	} else if (_event.getId() == 4) {
-		ploppp += 0.001f;
-		m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),80*std::cos(m_anglePsy))*ploppp);
-	} else if (_event.getId() == 5) {
-		ploppp -= 0.001f;
-		if (ploppp == 0) {
-			ploppp = 1.0f;
-		}
-		m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),80*std::cos(m_anglePsy))*ploppp);
-	} else if (_event.getId() == 3) {
-		if (_event.getStatus() == gale::key::status::down) {
-			m_oldScreenPos = relativePosition(_event.getPos());
-			return true;
-		} else if (_event.getStatus() == gale::key::status::move) {
-			vec2 pos = relativePosition(_event.getPos());
-			m_angleTetha -= (m_oldScreenPos.x()-pos.x())*0.05f;
-			m_anglePsy += (m_oldScreenPos.y()-pos.y())*0.01f;
-			m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),80*std::cos(m_anglePsy))*ploppp);
-			m_oldScreenPos = relativePosition(_event.getPos());
-			return true;
-		}
-	} else if (_event.getId() == 2) {
-		if (_event.getStatus() == gale::key::status::down) {
-			m_oldScreenPos = relativePosition(_event.getPos());
-			return true;
-		} else if (_event.getStatus() == gale::key::status::move) {
-			vec2 pos = relativePosition(_event.getPos())*0.2;
-			pos -= m_oldScreenPos*0.2;
-			float cameraAngle = m_camera->getTetha();
-			vec3 newPos = vec3(std::sin(cameraAngle)*pos.x() + std::cos(cameraAngle)*pos.y(),
-			                   std::cos(cameraAngle)*pos.x() + std::sin(cameraAngle)*pos.y(),
-			                   0);
-			APPL_ERROR("apply offset = " << newPos << " from pos=" << pos << " angle=" << cameraAngle);
-			newPos += m_camera->getTarget();
-			newPos.setMin(vec3(200,200,200));
-			newPos.setMax(vec3(-200,-200,-200));
-			m_camera->setTarget(newPos);
-			m_oldScreenPos = relativePosition(_event.getPos());
-			return true;
-		}
-	} else if (_event.getId() == 10) {
-		m_camera->setAngle(m_camera->getAngle() + 0.01f);
-	} else if (_event.getId() == 11) {
-		m_camera->setAngle(m_camera->getAngle() - 0.01f);
-	} 
+	if (m_cameraControler.onEventInput(_event, relativePosition(_event.getPos())) == true) {
+		return true;
+	}
 	return false;
 }

@@ -10,12 +10,14 @@
 #include <ewol/widget/Windows.hpp>
 #include <ege/Environement.hpp>
 #include <ege/camera/View.hpp>
+#include <ege/camera/ControlBase.hpp>
 
 namespace appl {
 	class Windows : public ewol::widget::Windows {
 		private:
 			ememory::SharedPtr<ege::Environement> m_env;
 			ememory::SharedPtr<ege::camera::View> m_camera;
+			ege::camera::ControlBase m_cameraControler;
 		protected:
 			Windows();
 			void init() override;
@@ -24,10 +26,10 @@ namespace appl {
 			virtual ~Windows() { };
 		private:
 			void onCallbackPeriodicUpdateCamera(const ewol::event::Time& _event);
-			bool onEventInput(const ewol::event::Input& _event);
-			float m_angleTetha;
-			float m_anglePsy;
-			vec2 m_oldScreenPos;
+		private:
+			// need this to forward if to the camera controler ...
+			bool onEventEntry(const ewol::event::Entry& _event) override;
+			bool onEventInput(const ewol::event::Input& _event) override;
 	};
 }
 

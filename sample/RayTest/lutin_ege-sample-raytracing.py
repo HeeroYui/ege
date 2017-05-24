@@ -31,6 +31,7 @@ def get_version():
 	return [0,2]
 
 def configure(target, my_module):
+	my_module.add_extra_flags()
 	
 	my_module.add_src_file([
 	    'appl/debug.cpp',

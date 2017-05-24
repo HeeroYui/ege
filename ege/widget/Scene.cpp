@@ -51,7 +51,13 @@ ege::widget::Scene::~Scene() {
 
 void ege::widget::Scene::onRegenerateDisplay() {
 	if (needRedraw() == true) {
-		
+		// Update the curent camera with the aspect ratio
+		if (m_env != nullptr) {
+			ememory::SharedPtr<ege::Camera> camera = m_env->getCamera(m_cameraName);
+			if (camera != nullptr) {
+				camera->setSceenSize(getSize());
+			}
+		}
 	}
 }
 

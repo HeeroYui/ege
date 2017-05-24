@@ -25,6 +25,7 @@ def get_version():
 	return "version.txt"
 
 def configure(target, my_module):
+	my_module.add_extra_flags()
 	my_module.add_src_file([
 	    'ege/debug.cpp',
 	    'ege/Engine.cpp',
@@ -33,6 +34,7 @@ def configure(target, my_module):
 	    'ege/camera/Camera.cpp',
 	    'ege/camera/View.cpp',
 	    'ege/camera/FPS.cpp',
+	    'ege/camera/ControlBase.cpp',
 	    'ege/position/Component.cpp',
 	    'ege/physics/Component.cpp',
 	    'ege/physics/Engine.cpp',
@@ -87,6 +89,7 @@ def configure(target, my_module):
 	    'ege/camera/Camera.hpp',
 	    'ege/camera/View.hpp',
 	    'ege/camera/FPS.hpp',
+	    'ege/camera/ControlBase.hpp',
 	    'ege/position/Component.hpp',
 	    'ege/physics/Engine.hpp',
 	    'ege/physics/Component.hpp',

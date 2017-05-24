@@ -10,6 +10,7 @@
 #include <ewol/widget/Windows.hpp>
 #include <ege/Environement.hpp>
 #include <ege/camera/View.hpp>
+#include <ege/camera/ControlBase.hpp>
 #include <ewol/resource/Colored3DObject.hpp>
 
 namespace appl {
@@ -17,17 +18,17 @@ namespace appl {
 		private:
 			ememory::SharedPtr<ege::Environement> m_env;
 			ememory::SharedPtr<ege::camera::View> m_camera;
+			ege::camera::ControlBase m_cameraControler;
 		protected:
 			Windows();
-			void init();
+			void init() override;
 		public:
 			DECLARE_FACTORY(Windows);
 			virtual ~Windows() { };
 		private:
-			bool onEventInput(const ewol::event::Input& _event);
-			float m_angleTetha;
-			float m_anglePsy;
-			vec2 m_oldScreenPos;
+			// need this to forward if to the camera controler ...
+			bool onEventEntry(const ewol::event::Entry& _event) override;
+			bool onEventInput(const ewol::event::Input& _event) override;
 	};
 }
 
