@@ -11,6 +11,7 @@
 #include <ege/Environement.hpp>
 #include <ege/camera/View.hpp>
 #include <ewol/resource/Colored3DObject.hpp>
+#include <ege/Ray.hpp>
 
 namespace appl {
 	class Windows : public ewol::widget::Windows {
@@ -26,7 +27,7 @@ namespace appl {
 		private:
 			bool onEventInput(const ewol::event::Input& _event);
 			void onCallbackDisplayDebug(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _obj);
-			ege::Ray m_ray;
+			std::pair<vec3,vec3> m_ray;
 			float m_angleTetha;
 			float m_anglePsy;
 			vec2 m_oldScreenPos;

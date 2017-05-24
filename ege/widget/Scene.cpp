@@ -73,6 +73,7 @@ void ege::widget::Scene::onDraw() {
 	#endif
 	gale::openGL::clearColor(etk::color::black);
 	m_env->render(echrono::Duration(1.0/60.0), m_cameraName);
+	signalDisplayDebug.emit(m_debugDrawProperty);
 	#ifdef SCENE_DISPLAY_SPEED
 		echrono::Duration localTime = echrono::Steady::now() - g_startTime;
 		if (localTime>1) {

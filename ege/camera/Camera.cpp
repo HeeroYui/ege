@@ -79,13 +79,13 @@ vec2 ege::Camera::tansformPositionToAngle(vec3 _vect) {
 	if (distance == 0.0f) {
 		return out;
 	}
-	out.setY(std::asin(_vect.z()/distance));
-	_vect.setZ(0.0f);
-	if (_vect.x() == 0 && _vect.y() == 0) {
+	out.setY(std::asin(_vect.y()/distance));
+	_vect.setY(0.0f);
+	if (_vect.x() == 0 && _vect.z() == 0) {
 		return out;
 	}
 	_vect.normalize();
-	out.setX(std::asin(_vect.y()));
+	out.setX(std::asin(_vect.z()));
 	if (_vect.x() < 0) {
 		out.setX(out.x()*-1 - M_PI);
 	}

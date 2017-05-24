@@ -28,7 +28,7 @@ def get_maintainer():
 	return ["Mr DUPIN Edouard <yui.heero@gmail.com>"]
 
 def get_version():
-	return [0,1]
+	return [0,2]
 
 def configure(target, my_module):
 	

@@ -288,20 +288,6 @@ void appl::Windows::init() {
 	}
 	m_env->propertyStatus.set(ege::gameStart);
 }
-/*
-namespace appl {
-	class EntityHerit : public ege::EntityPhysic {
-		public:
-			EntityHerit(const ememory::SharedPtr<ege::Environement>& _env, bool _autoRigidBody=true) :
-			  ege::EntityPhysic(_env, _autoRigidBody) {
-				setCollisionDetectionStatus(true);
-			}
-			virtual void onCollisionDetected(const ememory::SharedPtr<ege::Entity>& _obj, const vec3& _point, const vec3& _normal) {
-				APPL_WARNING("[" << getUID() << "] collision : pos=" << _point << " norm=" <<_normal);
-			}
-	};
-}
-*/
 
 
 bool appl::Windows::onEventInput(const ewol::event::Input& _event) {

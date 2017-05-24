@@ -14,10 +14,15 @@
 #include <ege/widget/Scene.hpp>
 #include <ege/camera/View.hpp>
 #include <etk/tool.hpp>
-#include <ege/elements/ElementBase.hpp>
-#include <ege/elements/ElementPhysic.hpp>
-#include <ege/physicsShape/PhysicsBox.hpp>
-#include <ege/physicsShape/PhysicsSphere.hpp>
+#include <ege/Entity.hpp>
+#include <ege/physics/shape/Box.hpp>
+#include <ege/physics/shape/Sphere.hpp>
+#include <ege/physics/shape/Cylinder.hpp>
+#include <ege/physics/shape/Capsule.hpp>
+#include <ege/physics/shape/Cone.hpp>
+#include <ege/position/Component.hpp>
+#include <ege/render/Component.hpp>
+#include <ege/physics/Component.hpp>
 
 appl::Windows::Windows() :
   m_angleTetha(0),
@@ -61,7 +66,7 @@ static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
 	}
 	return out;
 }
-
+ememory::SharedPtr<ege::physics::Component> componentPhysicsPlop;
 
 void appl::Windows::init() {
 	ewol::widget::Windows::init();
@@ -75,7 +80,7 @@ void appl::Windows::init() {
 	
 	// Create basic Camera
 	m_camera = ememory::makeShared<ege::camera::View>(vec3(30,30,-100), vec3(0,0,0));
-	m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),40*std::cos(m_anglePsy)));
+	m_camera->setEye(vec3(100*std::sin(m_angleTetha),40*std::cos(m_anglePsy),100*std::cos(m_angleTetha)));
 	m_env->addCamera("basic", m_camera);
 	
 	ememory::SharedPtr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create();
@@ -124,7 +129,7 @@ void appl::Windows::init() {
 		ememory::SharedPtr<ege::Entity> element = ememory::makeShared<ege::Entity>(m_env);
 		// add all component:
 		// 1st Position component:
-		etk::Transform3D transform(vec3(20,-10,10), etk::Quaternion::identity());
+		etk::Transform3D transform(vec3(-20,10,0), etk::Quaternion::identity());
 		//ememory::SharedPtr<ege::position::Component> componentPosition = ememory::makeShared<ege::position::Component>(transform);
 		//element->addComponent(componentPosition);
 		// 2nd something to diplay:
@@ -132,6 +137,7 @@ void appl::Windows::init() {
 		element->addComponent(componentRender);
 		// 3rd some physic:
 		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
+		componentPhysicsPlop = componentPhysics;
 		ememory::SharedPtr<ege::physics::shape::Box> physic = ememory::makeShared<ege::physics::shape::Box>();
 		physic->setSize(vec3(3.01,3.01,3.01));
 		physic->setMass(50000);
@@ -146,7 +152,7 @@ void appl::Windows::init() {
 		ememory::SharedPtr<ege::Entity> element = ememory::makeShared<ege::Entity>(m_env);
 		// add all component:
 		// 1st Position component:
-		etk::Transform3D transform(vec3(-20,10,10), etk::Quaternion::identity());
+		etk::Transform3D transform(vec3(20,10,0), etk::Quaternion::identity());
 		//ememory::SharedPtr<ege::position::Component> componentPosition = ememory::makeShared<ege::position::Component>(transform);
 		//element->addComponent(componentPosition);
 		// 2nd something to diplay:
@@ -166,28 +172,43 @@ void appl::Windows::init() {
 	m_env->propertyStatus.set(ege::gameStart);
 }
 
+std::vector<vec3> listpos;
 bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 	static float ploppp=1;
 	if (_event.getId() == 1) {
-		vec2 pos = relativePosition(_event.getPos());
-		ege::Ray ray = m_camera->getRayFromScreenPosition(pos, m_size);
-		m_ray = ray;
-		APPL_DEBUG("pos=" << pos << " ray = " << ray);
-		m_destination = ray.testRay(m_env->getPhysicEngine());
-		std::pair<ememory::SharedPtr<ege::Element>, std::pair<vec3,vec3>> result = ray.testRayObject(m_env->getPhysicEngine());
-		if (result.first != nullptr) {
-			APPL_INFO("Select Object :" << result.first->getUID());
+		if (_event.getStatus() == gale::key::status::down) {
+			vec2 pos = relativePosition(_event.getPos());
+			ege::Ray ray = m_camera->getRayFromScreenPosition(pos, m_size);
+			m_ray = std::make_pair(ray.getOrigin(), ray.getOrigin()+ray.getDirection()*50000);
+			APPL_DEBUG("pos=" << pos << " ray = " << ray);
+			ememory::SharedPtr<ege::physics::Engine> engine = ememory::dynamicPointerCast<ege::physics::Engine>(m_env->getEngine("physics"));
+			if (engine != nullptr) {
+				/*
+				std::pair<ememory::SharedPtr<ege::physic::Component>, std::pair<vec3,vec3>> result = engine->testRayObject(m_ray);
+				if (result.first != nullptr) {
+					APPL_INFO("Select Object :" << result.first->getUID());
+				}
+				*/
+				std::pair<vec3,vec3> result = engine->testRay(ray);
+				if (result.second != vec3(0,0,0)) {
+					APPL_INFO("impact at: pos=" << result.first << " normal=" << result.second);
+					m_destination = std::make_pair(result.first, result.first+result.second*50);
+					m_ray.second = result.first;
+				}
+			}
+			return true;
 		}
-		return true;
 	} else if (_event.getId() == 4) {
 		ploppp += 0.2f;
-		m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),40*std::cos(m_anglePsy))*ploppp);
+		m_camera->setEye(vec3(100*std::sin(m_angleTetha),40*std::cos(m_anglePsy),100*std::cos(m_angleTetha))*ploppp);
+		listpos.push_back(m_camera->getEye());
 	} else if (_event.getId() == 5) {
 		ploppp -= 0.2f;
 		if (ploppp == 0) {
 			ploppp = 1.0f;
 		}
-		m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),40*std::cos(m_anglePsy))*ploppp);
+		m_camera->setEye(vec3(100*std::sin(m_angleTetha),40*std::cos(m_anglePsy),100*std::cos(m_angleTetha))*ploppp);
+		listpos.push_back(m_camera->getEye());
 	} else if (_event.getId() == 3) {
 		if (_event.getStatus() == gale::key::status::down) {
 			m_oldScreenPos = relativePosition(_event.getPos());
@@ -196,7 +217,8 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 			vec2 pos = relativePosition(_event.getPos());
 			m_angleTetha -= (m_oldScreenPos.x()-pos.x())*0.05f;
 			m_anglePsy += (m_oldScreenPos.y()-pos.y())*0.05f;
-			m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),40*std::cos(m_anglePsy))*ploppp);
+			m_camera->setEye(vec3(100*std::sin(m_angleTetha),40*std::cos(m_anglePsy),100*std::cos(m_angleTetha))*ploppp);
+		listpos.push_back(m_camera->getEye());
 			m_oldScreenPos = relativePosition(_event.getPos());
 			return true;
 		}
@@ -211,14 +233,14 @@ void appl::Windows::onCallbackDisplayDebug(const ememory::SharedPtr<ewol::resour
 	// Display ray line
 	if (true) {
 		static std::vector<vec3> vertices;
-		if (m_ray.getOrigin() != vec3(0,0,0)) {
-			vertices.push_back(m_ray.getOrigin());
-			vertices.push_back(m_ray.getOrigin()+m_ray.getDirection()*50);
+		if (m_ray.first != vec3(0,0,0)) {
+			vertices.push_back(m_ray.first);
+			vertices.push_back(m_ray.second);
 			// prevent Ray removing with empty
-			m_ray.setOrigin(vec3(0,0,0));
+			m_ray.first = vec3(0,0,0);
 		}
 		if (vertices.size() > 250) {
-			vertices.erase(vertices.begin(), vertices.begin()+vertices.size()-250);
+			vertices.erase(vertices.begin(), vertices.begin()+vertices.size()-25);
 		}
 		obj->drawLine(vertices, etk::Color<float>(0.0, 1.0, 0.0, 0.8), mat);
 	}
@@ -227,13 +249,24 @@ void appl::Windows::onCallbackDisplayDebug(const ememory::SharedPtr<ewol::resour
 		static std::vector<vec3> vertices;
 		if (m_destination.second != vec3(0,0,0)) {
 			vertices.push_back(m_destination.first);
-			vertices.push_back(m_destination.first + m_destination.second*20);
+			vertices.push_back(m_destination.second);
 			m_destination.second = vec3(0,0,0);
 		}
 		if (vertices.size() > 250) {
-			vertices.erase(vertices.begin(), vertices.begin()+vertices.size()-250);
+			vertices.erase(vertices.begin(), vertices.begin()+vertices.size()-25);
 		}
 		obj->drawLine(vertices, etk::Color<float>(1.0, 0.0, 0.0, 0.8), mat);
+	}
+	if (listpos.size() >= 1) {
+		vec3 last(0,0,0);
+		static std::vector<vec3> vertices;
+		for (auto &it: listpos) {
+			vertices.push_back(last);
+			last = it;
+			vertices.push_back(last);
+			
+		}
+		obj->drawLine(vertices, etk::Color<float>(1.0, 1.0, 0.0, 0.8), mat);
 	}
 }
 
