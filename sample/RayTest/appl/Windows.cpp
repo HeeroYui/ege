@@ -66,11 +66,9 @@ static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
 	}
 	return out;
 }
-ememory::SharedPtr<ege::physics::Component> componentPhysicsPlop;
 
 void appl::Windows::init() {
 	ewol::widget::Windows::init();
-	
 	
 	m_env = ege::Environement::create();
 	// set the debug property on the engines
@@ -137,7 +135,6 @@ void appl::Windows::init() {
 		element->addComponent(componentRender);
 		// 3rd some physic:
 		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
-		componentPhysicsPlop = componentPhysics;
 		ememory::SharedPtr<ege::physics::shape::Box> physic = ememory::makeShared<ege::physics::shape::Box>();
 		physic->setSize(vec3(3.01,3.01,3.01));
 		physic->setMass(50000);
@@ -172,7 +169,6 @@ void appl::Windows::init() {
 	m_env->propertyStatus.set(ege::gameStart);
 }
 
-std::vector<vec3> listpos;
 bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 	static float ploppp=1;
 	if (_event.getId() == 1) {
@@ -201,14 +197,12 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 	} else if (_event.getId() == 4) {
 		ploppp += 0.2f;
 		m_camera->setEye(vec3(100*std::sin(m_angleTetha),40*std::cos(m_anglePsy),100*std::cos(m_angleTetha))*ploppp);
-		listpos.push_back(m_camera->getEye());
 	} else if (_event.getId() == 5) {
 		ploppp -= 0.2f;
 		if (ploppp == 0) {
 			ploppp = 1.0f;
 		}
 		m_camera->setEye(vec3(100*std::sin(m_angleTetha),40*std::cos(m_anglePsy),100*std::cos(m_angleTetha))*ploppp);
-		listpos.push_back(m_camera->getEye());
 	} else if (_event.getId() == 3) {
 		if (_event.getStatus() == gale::key::status::down) {
 			m_oldScreenPos = relativePosition(_event.getPos());
@@ -218,7 +212,6 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 			m_angleTetha -= (m_oldScreenPos.x()-pos.x())*0.05f;
 			m_anglePsy += (m_oldScreenPos.y()-pos.y())*0.05f;
 			m_camera->setEye(vec3(100*std::sin(m_angleTetha),40*std::cos(m_anglePsy),100*std::cos(m_angleTetha))*ploppp);
-		listpos.push_back(m_camera->getEye());
 			m_oldScreenPos = relativePosition(_event.getPos());
 			return true;
 		}
@@ -256,17 +249,6 @@ void appl::Windows::onCallbackDisplayDebug(const ememory::SharedPtr<ewol::resour
 			vertices.erase(vertices.begin(), vertices.begin()+vertices.size()-25);
 		}
 		obj->drawLine(vertices, etk::Color<float>(1.0, 0.0, 0.0, 0.8), mat);
-	}
-	if (listpos.size() >= 1) {
-		vec3 last(0,0,0);
-		static std::vector<vec3> vertices;
-		for (auto &it: listpos) {
-			vertices.push_back(last);
-			last = it;
-			vertices.push_back(last);
-			
-		}
-		obj->drawLine(vertices, etk::Color<float>(1.0, 1.0, 0.0, 0.8), mat);
 	}
 }
 
