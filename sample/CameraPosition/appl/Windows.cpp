@@ -76,7 +76,7 @@ void appl::Windows::init() {
 	
 	m_env = ege::Environement::create();
 	// Create basic Camera
-	m_camera = ememory::makeShared<ege::camera::View>(vec3(30,-100,30), vec3(0,0,0));
+	m_camera = ememory::makeShared<ege::camera::View>(vec3(30,30,-100), vec3(0,0,0));
 	m_env->addCamera("basic", m_camera);
 	
 	ememory::SharedPtr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create();
@@ -127,7 +127,7 @@ void appl::Windows::onCallbackPeriodicUpdateCamera(const ewol::event::Time& _eve
 	offset += 0.01;
 	static float offset2 = 0;
 	offset2 += 0.003;
-	m_camera->setEye(vec3(100*std::sin(offset),40*std::cos(offset2),100*std::cos(offset)));
+	m_camera->setEye(vec3(100*std::sin(offset),100*std::cos(offset),40*std::cos(offset2)));
 }
 
 

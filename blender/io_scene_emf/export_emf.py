@@ -49,57 +49,62 @@ To create a compound physics collision shape for a mesh in blender:
 							default=True)
 """
 
-def out_point3( v ):
+# Methods for writing point, scale, and quaternion types to a YAML file.
+# This particular implementation converts values to a Y-up coordinate system.
+def out_point3_y_up( v ):
+	return "%g %g %g" % ( v.x, v.z, -v.y )
+def out_scale3_y_up( s ):
+	return "%g %g %g" % ( s.x, s.z, s.y )
+def out_quaternion_y_up( q ):
+	return "%g %g %g %g" % ( q.w, q.x, q.z, -q.y )
+# This implementation maintains blender's Z-up coordinate system.
+def out_point3_z_up( v ):
 	return "%g %g %g" % ( v.x, v.y, v.z )
-def out_scale3( s ):
+def out_scale3_z_up( s ):
 	return "%g %g %g" % ( s.x, s.y, s.z )
-def out_quaternion( q ):
-	return "%g %g %g %g" % ( q.x, q.y, q.z, q.w )
+def out_quaternion_z_up( q ):
+	return "%g %g %g %g" % ( q.w, q.x, q.y, q.z )
 
 
-def get_physics_shape(obj, mainObjScale, _matrix):
+def get_physics_shape(obj, mainObjScale, use_y_up=False):
 	shape = ""
 	props = { }
 	name = obj.name.lower()
 	scale = Vector(( abs(obj.scale.x), abs(obj.scale.y), abs(obj.scale.z) ))
-	print("object * name : " + obj.name)
-	print("       * scale      : (" + str(obj.scale.x) + "," + str(obj.scale.y) + "," + str(obj.scale.z) + ")")
-	print("       * location   : (" + str(obj.location.x) + "," + str(obj.location.y) + "," + str(obj.location.z) + ")")
-	if obj.rotation_mode == 'QUATERNION':
-		qrot = obj.rotation_quaternion
-		qrot2 = _matrix.to_quaternion() * obj.rotation_quaternion
+	
+	if use_y_up:
+		out_point3 = out_point3_y_up
+		out_scale3 = out_scale3_y_up
+		out_quaternion = out_quaternion_y_up
 	else:
-		qrot = obj.matrix_local.to_quaternion()
-		qrot2 = _matrix.to_quaternion() * obj.matrix_local.to_quaternion()
-	if qrot == qrot2:
-		print("       * quaternion : (" + str(qrot.x) + "," + str(qrot.y) + "," + str(qrot.z) + "," + str(qrot.w) + ")")
-	else:
-		print("       * quaternion : (" + str(qrot.x) + "," + str(qrot.y) + "," + str(qrot.z) + "," + str(qrot.w) + ") ==> (" + str(qrot2.x) + "," + str(qrot2.y) + "," + str(qrot2.z) + "," + str(qrot2.w) + ")")
+		out_point3 = out_point3_z_up
+		out_scale3 = out_scale3_z_up
+		out_quaternion = out_quaternion_z_up
 	
 	# BOX
 	if    name.startswith('box') \
 	   or name.startswith('cube'):
 		shape = "Box"
-		props["half-extents"] = out_scale3( Vector((scale.x * mainObjScale.x, scale.y * mainObjScale.y, scale.z * mainObjScale.z )) )
+		props["half-extents"] = out_scale3( scale )
 	# SPHERE
 	elif name.startswith('sph'):
 		shape = "Sphere"
-		props["radius"] = (scale.x * mainObjScale.x + scale.y * mainObjScale.y + scale.z * mainObjScale.z ) / 3.0
+		props["radius"] = obj.scale.x * mainObjScale.x
 	# CONE
 	elif name.startswith('cone'):
 		shape = "Cone"
-		props["radius"] = (scale.x * mainObjScale.x + scale.y * mainObjScale.y ) / 2.0
-		props["size"] = obj.scale.z * mainObjScale.z * 2.0
+		props["radius"] = obj.scale.x
+		props["height"] = obj.scale.z * 2.0
 	# CYLINDER
 	elif name.startswith('cyl'):
 		shape = "Cylinder"
-		props["radius"] = (scale.x * mainObjScale.x + scale.y * mainObjScale.y ) / 2.0
-		props["size"] = obj.scale.z * mainObjScale.z
+		props["radius"] = (obj.scale.x+ obj.scale.y)*0.5
+		props["height"] = obj.scale.z
 	# CAPSULE
 	elif name.startswith('cap'):
 		shape = "Capsule"
-		props["radius"] = (scale.x * mainObjScale.x + scale.y * mainObjScale.y ) / 2.0
-		props["size"] = obj.scale.z * mainObjScale.z
+		props["radius"] = obj.scale.x
+		props["height"] = obj.scale.z
 	# CONVEX-HULL
 	elif name.startswith('convex'):
 		shape = "ConvexHull"
@@ -115,14 +120,8 @@ def get_physics_shape(obj, mainObjScale, _matrix):
 	print("            shape type: '" + str(shape) + "' from element name:'" + str(obj.name) + "'")
 	
 	if obj.location != Vector((0,0,0)):
-		location_tmp = _matrix * Vector((obj.location.x * mainObjScale.x, obj.location.y * mainObjScale.y, obj.location.z * mainObjScale.z ))
-		location_tmp = Vector((obj.location.x * mainObjScale.x, obj.location.y * mainObjScale.y, obj.location.z * mainObjScale.z ))
-		props["origin"] = out_point3(location_tmp)
+		props["origin"] = out_point3(obj.location)
 	
-	if obj.rotation_mode == 'QUATERNION':
-		qrot = _matrix.to_quaternion() * obj.rotation_quaternion
-	else:
-		qrot = _matrix.to_quaternion() * obj.matrix_local.to_quaternion()
 	if obj.rotation_mode == 'QUATERNION':
 		qrot = obj.rotation_quaternion
 	else:
@@ -134,7 +133,7 @@ def get_physics_shape(obj, mainObjScale, _matrix):
 	return (shape, props)
 
 
-def write_collision_shape(object, file, mainObjScale, offset, EXPORT_GLOBAL_MATRIX):
+def write_collision_shape(object, file, mainObjScale, offset):
 	if len(getChildren(object))==0:
 		# no phisical shape ...
 		return
@@ -147,7 +146,7 @@ def write_collision_shape(object, file, mainObjScale, offset, EXPORT_GLOBAL_MATR
 		if     subObj.type != 'MESH' \
 		   and subObj.type != 'EMPTY':
 			continue
-		(shape, props) = get_physics_shape(subObj, mainObjScale, EXPORT_GLOBAL_MATRIX)
+		(shape, props) = get_physics_shape(subObj, mainObjScale)
 		if shape=="":
 			print("error of shape detection type ...");
 			continue
@@ -550,7 +549,7 @@ def write_mesh(scene, file, object, EXPORT_GLOBAL_MATRIX, mtl_dict):
 		print("     child:'%s'" % (subObj.name))
 		if subObj.name.lower().startswith(EXPORT_COLLISION_NAME):
 			print("     find physics:'%s'" % (subObj.name))
-			write_collision_shape(subObj, file, object.scale, 1, EXPORT_GLOBAL_MATRIX)
+			write_collision_shape(subObj, file, object.scale, 1)
 
 
 
@@ -623,7 +622,7 @@ def write_file(filepath,
 					#####################################################################
 					## Save collision shapes (for one all):
 					#####################################################################
-					write_collision_shape(sub_obj, file, sub_obj.scale, 0, EXPORT_GLOBAL_MATRIX)
+					write_collision_shape(sub_obj, file, sub_obj.scale, 0)
 				else:
 					print("     child:'" + str(sub_obj.name) + "' type=" + sub_obj.type + " not parsed ...")
 					

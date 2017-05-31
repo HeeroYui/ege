@@ -150,7 +150,7 @@ class ExportEMF(bpy.types.Operator, ExportHelper):
 	           ('-Y', "-Y Forward", ""),
 	           ('-Z', "-Z Forward", ""),
 	           ),
-	    default='-Z',
+	    default='-Y',
 	    )
 	
 	axis_up = EnumProperty(
@@ -162,7 +162,7 @@ class ExportEMF(bpy.types.Operator, ExportHelper):
 	           ('-Y', "-Y Up", ""),
 	           ('-Z', "-Z Up", ""),
 	           ),
-	    default='Y',
+	    default='Z',
 	    )
 	
 	path_mode = path_reference_mode

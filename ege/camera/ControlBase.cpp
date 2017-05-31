@@ -27,7 +27,7 @@ void ege::camera::ControlBase::setCamera(const ememory::SharedPtr<ege::camera::V
 	}
 	m_camera = _camera;
 	m_camera->setTarget(vec3(0,0,0));
-	m_camera->setEye(vec3(100*std::sin(m_angleTetha),80*std::cos(m_anglePsy),100*std::cos(m_angleTetha))*m_distance);
+	m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),80*std::cos(m_anglePsy))*m_distance);
 	m_PCH = ewol::Object::getObjectManager().periodicCall.connect(this, &ege::camera::ControlBase::periodicCall);
 }
 
@@ -52,33 +52,33 @@ bool ege::camera::ControlBase::onEventEntry(const ewol::event::Entry& _event) {
 	}
 	if (_event.getType() == gale::key::keyboard::up) {
 		if (_event.getStatus() == gale::key::status::down) {
-			m_destinationCameraOffset += vec3(0,0,1);
+			m_destinationCameraOffset += vec3(0,1,0);
 		} else if (_event.getStatus() == gale::key::status::up) {
-			m_destinationCameraOffset -= vec3(0,0,1);
+			m_destinationCameraOffset -= vec3(0,1,0);
 		}
 		return true;
 	}
 	if (_event.getType() == gale::key::keyboard::down) {
 		if (_event.getStatus() == gale::key::status::down) {
-			m_destinationCameraOffset -= vec3(0,0,1);
+			m_destinationCameraOffset -= vec3(0,1,0);
 		} else if (_event.getStatus() == gale::key::status::up) {
-			m_destinationCameraOffset += vec3(0,0,1);
+			m_destinationCameraOffset += vec3(0,1,0);
 		}
 		return true;
 	}
 	if (_event.getType() == gale::key::keyboard::pageUp) {
 		if (_event.getStatus() == gale::key::status::down) {
-			m_destinationCameraOffset += vec3(0,1,0);
+			m_destinationCameraOffset += vec3(0,0,1);
 		} else if (_event.getStatus() == gale::key::status::up) {
-			m_destinationCameraOffset -= vec3(0,1,0);
+			m_destinationCameraOffset -= vec3(0,0,1);
 		}
 		return true;
 	}
 	if (_event.getType() == gale::key::keyboard::pageDown) {
 		if (_event.getStatus() == gale::key::status::down) {
-			m_destinationCameraOffset -= vec3(0,1,0);
+			m_destinationCameraOffset -= vec3(0,0,1);
 		} else if (_event.getStatus() == gale::key::status::up) {
-			m_destinationCameraOffset += vec3(0,1,0);
+			m_destinationCameraOffset += vec3(0,0,1);
 		}
 		return true;
 	}
@@ -117,7 +117,7 @@ bool ege::camera::ControlBase::onEventInput(const ewol::event::Input& _event, co
 	if (_event.getId() == 4) {
 		// scrool button ==> zoom in
 		m_distance += 0.01f;
-		m_camera->setEye(vec3(100*std::sin(m_angleTetha),80*std::cos(m_anglePsy),100*std::cos(m_angleTetha))*m_distance);
+		m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),80*std::cos(m_anglePsy))*m_distance);
 		return true;
 	} else if (_event.getId() == 5) {
 		// scrool button ==> zoom OUT
@@ -125,7 +125,7 @@ bool ege::camera::ControlBase::onEventInput(const ewol::event::Input& _event, co
 		if (m_distance <= 0.05f) {
 			m_distance = 0.05f;
 		}
-		m_camera->setEye(vec3(100*std::sin(m_angleTetha),80*std::cos(m_anglePsy),100*std::cos(m_angleTetha))*m_distance);
+		m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),80*std::cos(m_anglePsy))*m_distance);
 		return true;
 	} else if (_event.getId() == 3) {
 		// Middle button ==> move around the target position
@@ -135,7 +135,7 @@ bool ege::camera::ControlBase::onEventInput(const ewol::event::Input& _event, co
 			vec2 pos = _relativePosition;
 			m_angleTetha += (m_oldScreenPos.x()-pos.x())*0.02f;
 			m_anglePsy += (m_oldScreenPos.y()-pos.y())*0.01f;
-			m_camera->setEye(m_camera->getTarget() + vec3(100*std::sin(m_angleTetha),80*std::cos(m_anglePsy),100*std::cos(m_angleTetha))*m_distance);
+			m_camera->setEye(m_camera->getTarget() + vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),80*std::cos(m_anglePsy))*m_distance);
 			m_oldScreenPos = _relativePosition;
 		}
 		return true;

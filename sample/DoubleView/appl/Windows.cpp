@@ -82,10 +82,10 @@ void appl::Windows::init() {
 	ememory::SharedPtr<ege::camera::View> camera2 = ememory::makeShared<ege::camera::View>(vec3(100,0,0), vec3(0,0,0));
 	m_env->addCamera("front", camera2);
 	// Create basic Camera
-	ememory::SharedPtr<ege::camera::View> camera3 = ememory::makeShared<ege::camera::View>(vec3(20,20,100), vec3(0,0,0));
+	ememory::SharedPtr<ege::camera::View> camera3 = ememory::makeShared<ege::camera::View>(vec3(20,100,20), vec3(0,0,0));
 	m_env->addCamera("top", camera3);
 	// Create basic Camera
-	ememory::SharedPtr<ege::camera::View> camera4 = ememory::makeShared<ege::camera::View>(vec3(0,100,0), vec3(0,0,0));
+	ememory::SharedPtr<ege::camera::View> camera4 = ememory::makeShared<ege::camera::View>(vec3(0,0,100), vec3(0,0,0));
 	m_env->addCamera("left", camera4);
 	
 	ememory::SharedPtr<ewol::widget::Sizer> tmpSizerVert = ewol::widget::Sizer::create();

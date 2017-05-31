@@ -23,6 +23,7 @@
 #include <ege/position/Component.hpp>
 #include <ege/render/Component.hpp>
 #include <ege/physics/Component.hpp>
+#include <ege/Ray.hpp>
 
 appl::Windows::Windows() {
 	addObjectType("appl::Windows");
@@ -84,12 +85,13 @@ static ememory::SharedPtr<ege::resource::Mesh> createMars() {
 void appl::Windows::init() {
 	ewol::widget::Windows::init();
 	
-	getObjectManager().periodicCall.connect(sharedFromThis(), &appl::Windows::onCallbackPeriodicUpdateCamera);
+	//getObjectManager().periodicCall.connect(sharedFromThis(), &appl::Windows::onCallbackPeriodicUpdateCamera);
 	
 	m_env = ege::Environement::create();
 	// Create basic Camera
-	m_camera = ememory::makeShared<ege::camera::View>(vec3(30,-100,30), vec3(50,0,0));
+	m_camera = ememory::makeShared<ege::camera::View>();
 	m_env->addCamera("basic", m_camera);
+	m_cameraControler.setCamera(m_camera);
 	
 	ememory::SharedPtr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create();
 	if (tmpWidget == nullptr) {
@@ -130,7 +132,7 @@ void appl::Windows::init() {
 		// add it ..
 		m_env->addEntity(entity);
 	}
-	if (true) {
+	if (false) {
 		myMesh = createMars();
 		if (myMesh != nullptr) {
 			ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
@@ -148,13 +150,100 @@ void appl::Windows::init() {
 	m_env->propertyStatus.set(ege::gameStart);
 }
 
+void appl::Windows::setDebugNormal() {
+	m_env->getEngine("render")->properties.set("debug-normal", "true");
+}
+void appl::Windows::setDebugAABB() {
+	m_env->getEngine("physics")->properties.set("debug-AABB", "true");
+}
+void appl::Windows::setDebugShape() {
+	m_env->getEngine("physics")->properties.set("debug-shape", "true");
+}
+
+void appl::Windows::setMeshName(const std::string& _fileName) {
+	// Create an external box: (no physics)
+	ememory::SharedPtr<ege::resource::Mesh> myMesh = ege::resource::Mesh::create(_fileName);
+	if (myMesh != nullptr) {
+		ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
+		// 1st Position component:
+		etk::Transform3D transform(vec3(0,0,0), etk::Quaternion::identity());
+		if (myMesh->getPhysicalProperties().size() != 0) {
+			ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
+			componentPhysics->setShape(myMesh->getPhysicalProperties());
+			componentPhysics->generate();
+			entity->addComponent(componentPhysics);
+		} else {
+			ememory::SharedPtr<ege::position::Component> componentPosition = ememory::makeShared<ege::position::Component>(transform);
+			entity->addComponent(componentPosition);
+		}
+		// 2nd something to diplay:
+		ememory::SharedPtr<ege::render::Component> componentRender = ememory::makeShared<ege::render::Component>(myMesh);
+		entity->addComponent(componentRender);
+		// add it ..
+		m_env->addEntity(entity);
+	}
+}
+
+
 
 void appl::Windows::onCallbackPeriodicUpdateCamera(const ewol::event::Time& _event) {
 	static float offset = 0;
 	offset += 0.01;
 	static float offset2 = 0;
 	offset2 += 0.003;
-	m_camera->setEye(vec3(100*std::sin(offset),40*std::cos(offset2),100*std::cos(offset))+vec3(50,0,0));
+	m_camera->setEye(vec3(100*std::sin(offset),100*std::cos(offset),40*std::cos(offset2))+vec3(50,0,0));
 }
+
+
+
+bool appl::Windows::onEventEntry(const ewol::event::Entry& _event) {
+	if (m_cameraControler.onEventEntry(_event) == true) {
+		return true;
+	}
+	return false;
+}
+
+bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
+	if (m_cameraControler.onEventInput(_event, relativePosition(_event.getPos())) == true) {
+		return true;
+	}
+	if (_event.getId() == 1) {
+		if (_event.getStatus() == gale::key::status::down) {
+			vec2 pos = relativePosition(_event.getPos());
+			ege::Ray ray = m_camera->getRayFromScreenPosition(pos, m_size);
+			
+			ememory::SharedPtr<ege::resource::Mesh> myMesh;
+			myMesh = ege::resource::Mesh::createCube(1, "basics", etk::color::orange);
+			if (myMesh != nullptr) {
+				ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
+				// add all component:
+				// 1st Position component:
+				etk::Transform3D transform(ray.getOrigin(), etk::Quaternion::identity());
+				//ememory::SharedPtr<ege::position::Component> componentPosition = ememory::makeShared<ege::position::Component>(transform);
+				//entity->addComponent(componentPosition);
+				// 2nd something to diplay:
+				ememory::SharedPtr<ege::render::Component> componentRender = ememory::makeShared<ege::render::Component>(myMesh);
+				entity->addComponent(componentRender);
+				// 3rd some physic:
+				ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
+				ememory::SharedPtr<ege::physics::shape::Box> physic = ememory::makeShared<ege::physics::shape::Box>();
+				physic->setSize(vec3(1.01,1.01,1.01));
+				physic->setMass(1000);
+				componentPhysics->setType(ege::physics::Component::type::bodyDynamic);
+				componentPhysics->addShape(physic);
+				componentPhysics->generate();
+				// set has dynamic object (can move)
+				//APPL_CRITICAL("velocity : " << ray.getDirection()*100);
+				componentPhysics->setLinearVelocity(ray.getDirection()*100);
+				entity->addComponent(componentPhysics);
+				// add it ..
+				m_env->addEntity(entity);
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
 
 
