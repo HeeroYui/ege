@@ -25,32 +25,32 @@ ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createCone(float _r
 		// center to border (TOP)
 		for(int32_t jjj=0; jjj<_longs; ++jjj) {
 			float lng = 2.0f * M_PI * float(jjj - 1) / _longs;
-			vec3 v1 = vec3(0.0f, -_size/2, 0.0f);
+			vec3 v1 = vec3(0.0f, 0.0f, _size/2);
 			
 			float x = cos(lng)*_radius;
-			float z = sin(lng)*_radius;
-			vec3 v2 = vec3(x, _size/2, z);
+			float y = sin(lng)*_radius;
+			vec3 v2 = vec3(x, y, -_size/2);
 			
 			lng = 2.0f * M_PI * float(jjj) / _longs;
 			x = cos(lng)*_radius;
-			z = sin(lng)*_radius;
-			vec3 v3 = vec3(x, _size/2, z);
+			y = sin(lng)*_radius;
+			vec3 v3 = vec3(x, y, -_size/2);
 			out->addTriangle(_materialName, v1, v2, v3, _color);
 		}
 		// center to border (BUTTOM)
 		for(int32_t jjj=0; jjj<_longs; ++jjj) {
 			float lng = 2.0f * M_PI * float(jjj - 1) / _longs;
 			
-			vec3 v1 = vec3(0.0f, _size/2, 0.0f);
+			vec3 v1 = vec3(0.0f, 0.0f, -_size/2);
 			
 			float x = cos(lng)*_radius;
-			float z = sin(lng)*_radius;
-			vec3 v2 = vec3(x, _size/2, z);
+			float y = sin(lng)*_radius;
+			vec3 v2 = vec3(x, y, -_size/2);
 			
 			lng = 2.0f * M_PI * float(jjj) / _longs;
 			x = cos(lng)*_radius;
-			z = sin(lng)*_radius;
-			vec3 v3 = vec3(x, _size/2, z);
+			y = sin(lng)*_radius;
+			vec3 v3 = vec3(x, y, -_size/2);
 			out->addTriangle(_materialName, v1, v3, v2, _color);
 		}
 		out->setNormalMode(ege::resource::Mesh::normalMode::face);

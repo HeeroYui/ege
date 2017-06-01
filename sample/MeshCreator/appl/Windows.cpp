@@ -228,7 +228,7 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 				ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
 				ememory::SharedPtr<ege::physics::shape::Box> physic = ememory::makeShared<ege::physics::shape::Box>();
 				physic->setSize(vec3(1.01,1.01,1.01));
-				physic->setMass(1000);
+				physic->setMass(0.1);
 				componentPhysics->setType(ege::physics::Component::type::bodyDynamic);
 				componentPhysics->addShape(physic);
 				componentPhysics->generate();

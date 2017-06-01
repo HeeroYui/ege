@@ -56,14 +56,14 @@ def out_point3_y_up( v ):
 def out_scale3_y_up( s ):
 	return "%g %g %g" % ( s.x, s.z, s.y )
 def out_quaternion_y_up( q ):
-	return "%g %g %g %g" % ( q.w, q.x, q.z, -q.y )
+	return "%g %g %g %g" % ( q.x, q.z, -q.y, q.w )
 # This implementation maintains blender's Z-up coordinate system.
 def out_point3_z_up( v ):
 	return "%g %g %g" % ( v.x, v.y, v.z )
 def out_scale3_z_up( s ):
 	return "%g %g %g" % ( s.x, s.y, s.z )
 def out_quaternion_z_up( q ):
-	return "%g %g %g %g" % ( q.w, q.x, q.y, q.z )
+	return "%g %g %g %g" % ( q.x, q.y, q.z, q.w )
 
 
 def get_physics_shape(obj, mainObjScale, use_y_up=False):
@@ -93,18 +93,18 @@ def get_physics_shape(obj, mainObjScale, use_y_up=False):
 	# CONE
 	elif name.startswith('cone'):
 		shape = "Cone"
-		props["radius"] = obj.scale.x
-		props["height"] = obj.scale.z * 2.0
+		props["radius"] = (obj.scale.x + obj.scale.y)*0.5
+		props["size"] = obj.scale.z * 2.0
 	# CYLINDER
 	elif name.startswith('cyl'):
 		shape = "Cylinder"
-		props["radius"] = (obj.scale.x+ obj.scale.y)*0.5
-		props["height"] = obj.scale.z
+		props["radius"] = (obj.scale.x + obj.scale.y)*0.5
+		props["size"] = obj.scale.z
 	# CAPSULE
 	elif name.startswith('cap'):
 		shape = "Capsule"
-		props["radius"] = obj.scale.x
-		props["height"] = obj.scale.z
+		props["radius"] = (obj.scale.x + obj.scale.y)*0.5
+		props["size"] = obj.scale.z
 	# CONVEX-HULL
 	elif name.startswith('convex'):
 		shape = "ConvexHull"
@@ -119,16 +119,21 @@ def get_physics_shape(obj, mainObjScale, use_y_up=False):
 	
 	print("            shape type: '" + str(shape) + "' from element name:'" + str(obj.name) + "'")
 	
-	if obj.location != Vector((0,0,0)):
-		props["origin"] = out_point3(obj.location)
+	if obj.matrix_world.to_translation() != Vector((0,0,0)):
+		props["origin"] = out_point3(obj.matrix_world.to_translation())
 	
 	if obj.rotation_mode == 'QUATERNION':
 		qrot = obj.rotation_quaternion
 	else:
 		qrot = obj.matrix_local.to_quaternion()
 	
+	print("            Origin (local ): " + str(obj.location))
+	print("            Origin (global): " + str(obj.matrix_world.to_translation()))
+	print("            Quaternion (local ): " + str(qrot))
+	print("            Quaternion (global): " + str(obj.matrix_world.to_quaternion()))
+	
 	if qrot != Quaternion((1,0,0,0)):
-		props["rotate"] = out_quaternion(qrot)
+		props["rotate"] = out_quaternion(obj.matrix_world.to_quaternion())
 	
 	return (shape, props)
 

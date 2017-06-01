@@ -128,19 +128,19 @@ void appl::Windows::init() {
 	// create the 6 border that destroy the object when percuted:
 	
 	// create cubes ...
-	myMesh = ege::resource::Mesh::createCube(vec3(200,0.2,200), "basics", etk::color::green);
+	myMesh = ege::resource::Mesh::createCube(vec3(200,200,0.2), "basics", etk::color::green);
 	if (myMesh != nullptr) {
 		ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
 		// add all component:
 		// 1st Position component:
-		etk::Transform3D transform(vec3(0,-200,0), etk::Quaternion::identity());
+		etk::Transform3D transform(vec3(0,0,-200), etk::Quaternion::identity());
 		// 2nd something to diplay:
 		ememory::SharedPtr<ege::render::Component> componentRender = ememory::makeShared<ege::render::Component>(myMesh);
 		entity->addComponent(componentRender);
 		// 3rd some physic:
 		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
 		ememory::SharedPtr<ege::physics::shape::Box> physic = ememory::makeShared<ege::physics::shape::Box>();
-		physic->setSize(vec3(200.01,0.21,200.01));
+		physic->setSize(vec3(200.01,200.01,0.21));
 		componentPhysics->addShape(physic);
 		// The entity can not move
 		componentPhysics->setType(ege::physics::Component::type::bodyStatic);
@@ -153,7 +153,7 @@ void appl::Windows::init() {
 	
 	
 	// create cubes ...
-	myMesh = ege::resource::Mesh::createCube(vec3(3,0.2,5), "basics", etk::color::green);
+	myMesh = ege::resource::Mesh::createCube(vec3(5,0.2,5), "basics", etk::color::green);
 	if (myMesh != nullptr) {
 		ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
 		// add all component:
@@ -165,7 +165,7 @@ void appl::Windows::init() {
 		// 3rd some physic:
 		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
 		ememory::SharedPtr<ege::physics::shape::Box> physic = ememory::makeShared<ege::physics::shape::Box>();
-		physic->setSize(vec3(3.01,0.21,5.01));
+		physic->setSize(vec3(5.01,0.21,5.01));
 		physic->setMass(300000);
 		componentPhysics->addShape(physic);
 		componentPhysics->generate();
@@ -217,7 +217,7 @@ void appl::Windows::init() {
 		// add it ..
 		m_env->addEntity(entity);
 	}
-	myMesh = ege::resource::Mesh::createCylinder(4, 8, "basics", etk::color::blue);
+	myMesh = ege::resource::Mesh::createCylinder(4, 15, "basics", etk::color::blue);
 	if (myMesh != nullptr) {
 		ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
 		// add all component:
@@ -232,7 +232,7 @@ void appl::Windows::init() {
 		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
 		ememory::SharedPtr<ege::physics::shape::Cylinder> physic = ememory::makeShared<ege::physics::shape::Cylinder>();
 		physic->setRadius(4.01);
-		physic->setSize(8.01);
+		physic->setSize(15.01);
 		physic->setMass(500000);
 		componentPhysics->addShape(physic);
 		componentPhysics->generate();
@@ -240,7 +240,7 @@ void appl::Windows::init() {
 		// add it ..
 		m_env->addEntity(entity);
 	}
-	myMesh = ege::resource::Mesh::createCapsule(4, 8, "basics", etk::color::purple);
+	myMesh = ege::resource::Mesh::createCapsule(4, 15, "basics", etk::color::purple);
 	if (myMesh != nullptr) {
 		ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
 		// add all component:
@@ -255,7 +255,7 @@ void appl::Windows::init() {
 		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
 		ememory::SharedPtr<ege::physics::shape::Capsule> physic = ememory::makeShared<ege::physics::shape::Capsule>();
 		physic->setRadius(4.01);
-		physic->setSize(8.01);
+		physic->setSize(15.01);
 		physic->setMass(500000);
 		componentPhysics->addShape(physic);
 		componentPhysics->generate();
@@ -263,7 +263,7 @@ void appl::Windows::init() {
 		// add it ..
 		m_env->addEntity(entity);
 	}
-	myMesh = ege::resource::Mesh::createCone(4, 8, "basics", etk::color::purple);
+	myMesh = ege::resource::Mesh::createCone(4, 15, "basics", etk::color::purple);
 	if (myMesh != nullptr) {
 		ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
 		// add all component:
@@ -278,7 +278,7 @@ void appl::Windows::init() {
 		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
 		ememory::SharedPtr<ege::physics::shape::Cone> physic = ememory::makeShared<ege::physics::shape::Cone>();
 		physic->setRadius(4.01);
-		physic->setSize(8.01);
+		physic->setSize(15.01);
 		physic->setMass(500000);
 		componentPhysics->addShape(physic);
 		componentPhysics->generate();

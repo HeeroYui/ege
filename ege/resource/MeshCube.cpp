@@ -26,12 +26,12 @@ ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createCube(const ve
 		
 		out->addFaceIndexing(_materialName);
 		
-		out->addQuad(_materialName, vec3(-1,-1,-1)*_size, vec3(-1, 1,-1)*_size, vec3( 1, 1,-1)*_size, vec3( 1,-1,-1)*_size, _color);
-		out->addQuad(_materialName, vec3(-1, 1, 1)*_size, vec3(-1,-1, 1)*_size, vec3( 1,-1, 1)*_size, vec3( 1, 1, 1)*_size, _color);
-		out->addQuad(_materialName, vec3(-1,-1,-1)*_size, vec3(-1,-1, 1)*_size, vec3(-1, 1, 1)*_size, vec3(-1, 1,-1)*_size, _color);
-		out->addQuad(_materialName, vec3( 1,-1, 1)*_size, vec3( 1,-1,-1)*_size, vec3( 1, 1,-1)*_size, vec3( 1, 1, 1)*_size, _color);
 		out->addQuad(_materialName, vec3(-1,-1, 1)*_size, vec3(-1,-1,-1)*_size, vec3( 1,-1,-1)*_size, vec3( 1,-1, 1)*_size, _color);
 		out->addQuad(_materialName, vec3(-1, 1,-1)*_size, vec3(-1, 1, 1)*_size, vec3( 1, 1, 1)*_size, vec3( 1, 1,-1)*_size, _color);
+		out->addQuad(_materialName, vec3(-1, 1,-1)*_size, vec3(-1,-1,-1)*_size, vec3(-1,-1, 1)*_size, vec3(-1, 1, 1)*_size, _color);
+		out->addQuad(_materialName, vec3( 1,-1,-1)*_size, vec3( 1, 1,-1)*_size, vec3( 1, 1, 1)*_size, vec3( 1,-1, 1)*_size, _color);
+		out->addQuad(_materialName, vec3(-1,-1,-1)*_size, vec3(-1, 1,-1)*_size, vec3( 1, 1,-1)*_size, vec3( 1,-1,-1)*_size, _color);
+		out->addQuad(_materialName, vec3(-1, 1, 1)*_size, vec3(-1,-1, 1)*_size, vec3( 1,-1, 1)*_size, vec3( 1, 1, 1)*_size, _color);
 		out->setNormalMode(ege::resource::Mesh::normalMode::face);
 		out->calculateNormaleFace(_materialName);
 		// generate the VBO

@@ -118,6 +118,8 @@ void ege::physics::Component::generate() {
 				                             it->getQuaternion().y(),
 				                             it->getQuaternion().z(),
 				                             it->getQuaternion().w());
+				// The ephysic use Y as UP ==> ege use Z as UP
+				//orientation = orientation * rp3d::Quaternion(-0.707107, 0, 0, 0.707107);
 				rp3d::Transform transform(position, orientation);
 				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
@@ -140,6 +142,8 @@ void ege::physics::Component::generate() {
 				                             it->getQuaternion().y(),
 				                             it->getQuaternion().z(),
 				                             it->getQuaternion().w());
+				// The ephysic use Y as UP ==> ege use Z as UP
+				orientation = orientation * rp3d::Quaternion(-0.707107, 0, 0, 0.707107);
 				rp3d::Transform transform(position, orientation);
 				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
@@ -162,6 +166,8 @@ void ege::physics::Component::generate() {
 				                             it->getQuaternion().y(),
 				                             it->getQuaternion().z(),
 				                             it->getQuaternion().w());
+				// The ephysic use Y as UP ==> ege use Z as UP
+				orientation = orientation * rp3d::Quaternion(-0.707107, 0, 0, 0.707107);
 				rp3d::Transform transform(position, orientation);
 				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
@@ -184,6 +190,8 @@ void ege::physics::Component::generate() {
 				                             it->getQuaternion().y(),
 				                             it->getQuaternion().z(),
 				                             it->getQuaternion().w());
+				// The ephysic use Y as UP ==> ege use Z as UP
+				orientation = orientation * rp3d::Quaternion(-0.707107, 0, 0, 0.707107);
 				rp3d::Transform transform(position, orientation);
 				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
@@ -206,6 +214,8 @@ void ege::physics::Component::generate() {
 				                             it->getQuaternion().y(),
 				                             it->getQuaternion().z(),
 				                             it->getQuaternion().w());
+				// The ephysic use Y as UP ==> ege use Z as UP
+				orientation = orientation * rp3d::Quaternion(-0.707107, 0, 0, 0.707107);
 				rp3d::Transform transform(position, orientation);
 				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
