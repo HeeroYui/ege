@@ -46,44 +46,13 @@ class ImportEMF(bpy.types.Operator, ImportHelper):
             options={'HIDDEN'},
             )
 
-    axis_forward = EnumProperty(
-            name="Forward",
-            items=(('X', "X Forward", ""),
-                   ('Y', "Y Forward", ""),
-                   ('Z', "Z Forward", ""),
-                   ('-X', "-X Forward", ""),
-                   ('-Y', "-Y Forward", ""),
-                   ('-Z', "-Z Forward", ""),
-                   ),
-            default='-X',
-            )
-
-    axis_up = EnumProperty(
-            name="Up",
-            items=(('X', "X Up", ""),
-                   ('Y', "Y Up", ""),
-                   ('Z', "Z Up", ""),
-                   ('-X', "-X Up", ""),
-                   ('-Y', "-Y Up", ""),
-                   ('-Z', "-Z Up", ""),
-                   ),
-            default='Z',
-            )
-
     def execute(self, context):
         # print("Selected: " + context.active_object.name)
         from . import import_obj
 
-        keywords = self.as_keywords(ignore=("axis_forward",
-                                            "axis_up",
-                                            "filter_glob",
+        keywords = self.as_keywords(ignore=("filter_glob",
                                             "split_mode",
                                             ))
-
-        global_matrix = axis_conversion(from_forward=self.axis_forward,
-                                        from_up=self.axis_up,
-                                        ).to_4x4()
-        keywords["global_matrix"] = global_matrix
 
         return import_obj.load(self, context, **keywords)
 
@@ -94,8 +63,6 @@ class ImportEMF(bpy.types.Operator, ImportHelper):
 
         row = layout.split(percentage=0.67)
         row.prop(self, "global_clamp_size")
-        layout.prop(self, "axis_forward")
-        layout.prop(self, "axis_up")
 
         layout.prop(self, "use_image_search")
 
@@ -141,30 +108,6 @@ class ExportEMF(bpy.types.Operator, ExportHelper):
 	    default="phys"
 	    )
 	
-	axis_forward = EnumProperty(
-	    name="Forward",
-	    items=(('X', "X Forward", ""),
-	           ('Y', "Y Forward", ""),
-	           ('Z', "Z Forward", ""),
-	           ('-X', "-X Forward", ""),
-	           ('-Y', "-Y Forward", ""),
-	           ('-Z', "-Z Forward", ""),
-	           ),
-	    default='-Y',
-	    )
-	
-	axis_up = EnumProperty(
-	    name="Up",
-	    items=(('X', "X Up", ""),
-	           ('Y', "Y Up", ""),
-	           ('Z', "Z Up", ""),
-	           ('-X', "-X Up", ""),
-	           ('-Y', "-Y Up", ""),
-	           ('-Z', "-Z Up", ""),
-	           ),
-	    default='Z',
-	    )
-	
 	path_mode = path_reference_mode
 	
 	check_extension = True
@@ -173,9 +116,7 @@ class ExportEMF(bpy.types.Operator, ExportHelper):
 		from . import export_emf
 		
 		from mathutils import Matrix
-		keywords = self.as_keywords(ignore=("axis_forward",
-		                                    "axis_up",
-		                                    "global_scale",
+		keywords = self.as_keywords(ignore=("global_scale",
 		                                    "check_existing",
 		                                    "filter_glob",
 		                                    ))
@@ -186,12 +127,6 @@ class ExportEMF(bpy.types.Operator, ExportHelper):
 		global_matrix[1][1] = \
 		global_matrix[2][2] = self.global_scale
 		
-		global_matrix = (global_matrix *
-		                 axis_conversion(to_forward=self.axis_forward,
-		                                 to_up=self.axis_up,
-		                                 ).to_4x4())
-		
-		keywords["global_matrix"] = global_matrix
 		return export_emf.save(self, context, **keywords)
 
 

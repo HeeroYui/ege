@@ -61,25 +61,94 @@ namespace ege {
 				 */
 				etk::Transform3D getTransform() const;
 				/**
-				 * @brief Get the linear velocity.
+				 * @brief Get the linear velocity (whole world).
 				 * @return The linear velocity vector of the body
 				 */
 				vec3 getLinearVelocity() const;
 				/**
-				 * @brief Set the linear velocity.
+				 * @brief Set the linear velocity (whole world).
 				 * @param[in] _linearVelocity The linear velocity vector of the body
 				 */
 				void setLinearVelocity(const vec3& _linearVelocity);
 				/**
-				 * @brief Get the angular velocity.
+				 * @brief Get the linear velocity (local Body).
+				 * @return The linear velocity vector of the body
+				 */
+				vec3 getRelativeLinearVelocity() const;
+				/**
+				 * @brief Set the linear velocity (local Body).
+				 * @param[in] _linearVelocity The linear velocity vector of the body
+				 */
+				void setRelativeLinearVelocity(const vec3& _linearVelocity);
+				/**
+				 * @brief Get the angular velocity (whole world).
 				 * @return The angular velocity vector of the body
 				 */
 				vec3 getAngularVelocity() const;
 				/**
-				 * @brief Set the angular velocity.
+				 * @brief Set the angular velocity (whole world).
 				 * @param[in] _linearVelocity The angular velocity vector of the body
 				 */
 				void setAngularVelocity(const vec3& _angularVelocity);
+				/**
+				 * @brief Get the angular velocity (local Body).
+				 * @return The angular velocity vector of the body
+				 */
+				vec3 getRelativeAngularVelocity() const;
+				/**
+				 * @brief Set the angular velocity (local Body).
+				 * @param[in] _linearVelocity The angular velocity vector of the body
+				 */
+				void setRelativeAngularVelocity(const vec3& _angularVelocity);
+				/**
+				 * @brief Apply an external force to the body at a given point (in world-space coordinates).
+				 *        If the point is not at the center of mass of the body, it will also generate some torque and therefore, change the angular velocity of the body.
+				 *        If the body is sleeping, calling this method will wake it up. Note that the force will we added to the sum of the applied forces and that this sum will be reset to zero at the end of each call of the DynamicsWorld::update() method. You can only apply a force to a dynamic body otherwise, this method will do nothing.
+				 * @param[in] _force The force to apply on the body
+				 * @param[in] _point The point where the force is applied (in world-space coordinates)
+				 */
+				void applyForce(const vec3& _force,const vec3& _point);
+			protected:
+				rp3d::Vector3 m_staticForceApplyCenterOfMass;
+			public:
+				/**
+				 * @brief Apply an external force to the body at its center of mass.
+				 *        If the body is sleeping, calling this method will wake it up.
+				 * @note The force will we added to the sum of the applied forces and that this sum will be reset to zero at the end of each call of the DynamicsWorld::update() method. You can only apply a force to a dynamic body otherwise, this method will do nothing.
+				 * @param[in] _force The external force to apply on the center of mass of the body
+				 * @param[in] _static The torque will be apply while the user des not call the same function with 0 value ...
+				 */
+				void applyForceToCenterOfMass(const vec3& _force, bool _static=false);
+				/**
+				 * @brief Apply an external force to the body at its center of mass.
+				 *        If the body is sleeping, calling this method will wake it up.
+				 * @note The force is apply with a relative axis of the object
+				 * @note The force will we added to the sum of the applied forces and that this sum will be reset to zero at the end of each call of the DynamicsWorld::update() method. You can only apply a force to a dynamic body otherwise, this method will do nothing.
+				 * @param[in] _force The external force to apply on the center of mass of the body
+				 * @param[in] _static The torque will be apply while the user des not call the same function with 0 value ...
+				 */
+				void applyRelativeForceToCenterOfMass(const vec3& _force, bool _static=false);
+			protected:
+				rp3d::Vector3 m_staticTorqueApply;
+			public:
+				/**
+				 * @brief Apply an external torque to the body.
+				 *        If the body is sleeping, calling this method will wake it up.
+				 * @note The force will we added to the sum of the applied torques and that this sum will be reset to zero at the end of each call of the DynamicsWorld::update() method. You can only apply a force to a dynamic body otherwise, this method will do nothing.
+				 * @param[in] _torque The external torque to apply on the body
+				 * @param[in] _static The torque will be apply while the user des not call the same function with 0 value ...
+				 */
+				void applyTorque(const vec3& _torque, bool _static=false);
+				/**
+				 * @brief Apply an external torque to the body.
+				 *        If the body is sleeping, calling this method will wake it up.
+				 * @note The torque is apply with a relative axis of the object
+				 * @note The force will we added to the sum of the applied torques and that this sum will be reset to zero at the end of each call of the DynamicsWorld::update() method. You can only apply a force to a dynamic body otherwise, this method will do nothing.
+				 * @param[in] _torque The external torque to apply on the body
+				 * @param[in] _static The torque will be apply while the user des not call the same function with 0 value ...
+				 */
+				void applyRelativeTorque(const vec3& _torque, bool _static=false);
+				
 			protected:
 				std::vector<ememory::SharedPtr<ege::physics::Shape>> m_shape; //!< collision shape module ... (independent of bullet lib)
 			public:
@@ -90,7 +159,10 @@ namespace ege {
 				void drawShape(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
 				void drawAABB(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
 			private:
+				// call done after all cycle update of the physical engine
 				void emitAll();
+				// call of this function every time the call will be done
+				void update(float _delta);
 				friend class ege::physics::Engine;
 			private:
 				/**

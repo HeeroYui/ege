@@ -27,7 +27,9 @@ void ege::physics::Component::newContact(ege::physics::Component* _other, const 
 	EGE_WARNING("    collision [ NEW ] " << _pos << " depth=" << _penetrationDepth);
 }
 
-ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env) {
+ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env):
+  m_staticForceApplyCenterOfMass(0,0,0),
+  m_staticTorqueApply(0,0,0) {
 	m_engine = ememory::dynamicPointerCast<ege::physics::Engine>(_env->getEngine(getType()));
 	// Initial position and orientation of the rigid body
 	rp3d::Vector3 initPosition(0.0f, 0.0f, 0.0f);
@@ -40,7 +42,9 @@ ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env) {
 	//m_engine->getDynamicWorld()->testCollision(m_rigidBody, this);
 }
 
-ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env, const etk::Transform3D& _transform) {
+ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env, const etk::Transform3D& _transform):
+  m_staticForceApplyCenterOfMass(0,0,0),
+  m_staticTorqueApply(0,0,0) {
 	m_engine = ememory::dynamicPointerCast<ege::physics::Engine>(_env->getEngine(getType()));
 	rp3d::Vector3 initPosition(_transform.getPosition().x(),
 	                           _transform.getPosition().y(),
@@ -56,6 +60,10 @@ ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env, c
 	m_lastTransformEmit = _transform;
 	// set collision callback:
 	//m_engine->getDynamicWorld()->testCollision(m_rigidBody, this);
+	EGE_ERROR("Bounciness=" << m_rigidBody->getMaterial().getBounciness());
+	EGE_ERROR("FrictionCoefficient=" << m_rigidBody->getMaterial().getFrictionCoefficient());
+	EGE_ERROR("RollingResistance=" << m_rigidBody->getMaterial().getRollingResistance());
+	m_rigidBody->getMaterial().setFrictionCoefficient(0.5);
 }
 
 void ege::physics::Component::setType(enum ege::physics::Component::type _type) {
@@ -261,6 +269,22 @@ void ege::physics::Component::emitAll() {
 	}
 }
 
+void ege::physics::Component::update(float _delta) {
+	if (m_rigidBody == nullptr) {
+		return;
+	}
+	if (m_staticForceApplyCenterOfMass != rp3d::Vector3(0,0,0)) {
+		rp3d::Vector3 tmp = m_staticForceApplyCenterOfMass*_delta;
+		EGE_ERROR("FORCE : " << vec3(tmp.x, tmp.y, tmp.z) );
+		m_rigidBody->applyForceToCenterOfMass(tmp);
+	}
+	if (m_staticTorqueApply != rp3d::Vector3(0,0,0)) {
+		rp3d::Vector3 tmp = m_staticTorqueApply*_delta;
+		EGE_ERROR("TORQUE : " << vec3(tmp.x, tmp.y, tmp.z));
+		m_rigidBody->applyTorque(tmp);
+	}
+}
+
 
 void ege::physics::Component::setTransform(const etk::Transform3D& _transform) {
 	if (m_rigidBody == nullptr) {
@@ -312,6 +336,28 @@ void ege::physics::Component::setLinearVelocity(const vec3& _linearVelocity) {
 	m_rigidBody->setLinearVelocity(value);
 }
 
+vec3 ege::physics::Component::getRelativeLinearVelocity() const {
+	if (m_rigidBody == nullptr) {
+		return vec3(0,0,0);
+	}
+	rp3d::Vector3 value = m_rigidBody->getLinearVelocity();
+	value = m_rigidBody->getTransform().getOrientation().getInverse()*value;
+	return vec3(value.x,
+	            value.y,
+	            value.z);
+}
+
+void ege::physics::Component::setRelativeLinearVelocity(const vec3& _linearVelocity) {
+	if (m_rigidBody == nullptr) {
+		return;
+	}
+	rp3d::Vector3 value(_linearVelocity.x(),
+	                    _linearVelocity.y(),
+	                    _linearVelocity.z());
+	value = m_rigidBody->getTransform().getOrientation()*value;
+	m_rigidBody->setLinearVelocity(value);
+}
+
 vec3 ege::physics::Component::getAngularVelocity() const {
 	if (m_rigidBody == nullptr) {
 		return vec3(0,0,0);
@@ -329,6 +375,99 @@ void ege::physics::Component::setAngularVelocity(const vec3& _angularVelocity) {
 	                    _angularVelocity.y(),
 	                    _angularVelocity.z());
 	m_rigidBody->setAngularVelocity(value);
+}
+
+vec3 ege::physics::Component::getRelativeAngularVelocity() const {
+	if (m_rigidBody == nullptr) {
+		return vec3(0,0,0);
+	}
+	rp3d::Vector3 value = m_rigidBody->getAngularVelocity();
+	value = m_rigidBody->getTransform().getOrientation().getInverse()*value;
+	return vec3(value.x,
+	            value.y,
+	            value.z);
+}
+void ege::physics::Component::setRelativeAngularVelocity(const vec3& _angularVelocity) {
+	if (m_rigidBody == nullptr) {
+		return;
+	}
+	rp3d::Vector3 value(_angularVelocity.x(),
+	                    _angularVelocity.y(),
+	                    _angularVelocity.z());
+	value = m_rigidBody->getTransform().getOrientation()*value;
+	m_rigidBody->setAngularVelocity(value);
+}
+
+
+void ege::physics::Component::applyForce(const vec3& _force,const vec3& _point) {
+	if (m_rigidBody == nullptr) {
+		return;
+	}
+	rp3d::Vector3 force(_force.x(),
+	                    _force.y(),
+	                    _force.z());
+	rp3d::Vector3 point(_point.x(),
+	                    _point.y(),
+	                    _point.z());
+	m_rigidBody->applyForce(force, point);
+}
+
+void ege::physics::Component::applyForceToCenterOfMass(const vec3& _force, bool _static) {
+	if (m_rigidBody == nullptr) {
+		return;
+	}
+	rp3d::Vector3 force(_force.x(),
+	                    _force.y(),
+	                    _force.z());
+	if(_static == true) {
+		m_staticForceApplyCenterOfMass = force;
+	} else {
+		m_rigidBody->applyForceToCenterOfMass(force);
+	}
+}
+
+void ege::physics::Component::applyRelativeForceToCenterOfMass(const vec3& _force, bool _static) {
+	if (m_rigidBody == nullptr) {
+		return;
+	}
+	rp3d::Vector3 force(_force.x(),
+	                    _force.y(),
+	                    _force.z());
+	force = m_rigidBody->getTransform().getOrientation()*force;
+	if(_static == true) {
+		m_staticForceApplyCenterOfMass = force;
+	} else {
+		m_rigidBody->applyForceToCenterOfMass(force);
+	}
+}
+
+void ege::physics::Component::applyTorque(const vec3& _torque, bool _static) {
+	if (m_rigidBody == nullptr) {
+		return;
+	}
+	rp3d::Vector3 torque(_torque.x(),
+	                     _torque.y(),
+	                     _torque.z());
+	if(_static == true) {
+		m_staticTorqueApply = torque;
+	} else {
+		m_rigidBody->applyTorque(torque);
+	}
+}
+
+void ege::physics::Component::applyRelativeTorque(const vec3& _torque, bool _static) {
+	if (m_rigidBody == nullptr) {
+		return;
+	}
+	rp3d::Vector3 torque(_torque.x(),
+	                     _torque.y(),
+	                     _torque.z());
+	torque = m_rigidBody->getTransform().getOrientation()*torque;
+	if(_static == true) {
+		m_staticTorqueApply = torque;
+	} else {
+		m_rigidBody->applyTorque(torque);
+	}
 }
 
 const std::vector<ememory::SharedPtr<ege::physics::Shape>>& ege::physics::Component::getShape() const {

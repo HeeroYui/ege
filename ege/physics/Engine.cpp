@@ -136,6 +136,15 @@ void ege::physics::Engine::update(const echrono::Duration& _delta) {
 	// While there is enough accumulated time to take one or several physics steps
 	while (m_accumulator >= timeStep) {
 		if (m_dynamicsWorld != nullptr) {
+			// call every object to usdate their constant forces applyed
+			for (auto &it: m_component) {
+				// check nullptr  pointer
+				if (it == nullptr) {
+					// no pointer null are set in the output list ...
+					continue;
+				}
+				it->update(timeStep);
+			}
 			// Update the Dynamics world with a constant time step
 			EGE_DEBUG("Update the Physic engine ... " << timeStep);
 			m_dynamicsWorld->update(timeStep);

@@ -49,37 +49,19 @@ To create a compound physics collision shape for a mesh in blender:
 							default=True)
 """
 
-# Methods for writing point, scale, and quaternion types to a YAML file.
-# This particular implementation converts values to a Y-up coordinate system.
-def out_point3_y_up( v ):
-	return "%g %g %g" % ( v.x, v.z, -v.y )
-def out_scale3_y_up( s ):
-	return "%g %g %g" % ( s.x, s.z, s.y )
-def out_quaternion_y_up( q ):
-	return "%g %g %g %g" % ( q.x, q.z, -q.y, q.w )
-# This implementation maintains blender's Z-up coordinate system.
-def out_point3_z_up( v ):
+def out_point3( v ):
 	return "%g %g %g" % ( v.x, v.y, v.z )
-def out_scale3_z_up( s ):
+def out_scale3( s ):
 	return "%g %g %g" % ( s.x, s.y, s.z )
-def out_quaternion_z_up( q ):
+def out_quaternion( q ):
 	return "%g %g %g %g" % ( q.x, q.y, q.z, q.w )
 
 
-def get_physics_shape(obj, mainObjScale, use_y_up=False):
+def get_physics_shape(obj, mainObjScale):
 	shape = ""
 	props = { }
 	name = obj.name.lower()
 	scale = Vector(( abs(obj.scale.x), abs(obj.scale.y), abs(obj.scale.z) ))
-	
-	if use_y_up:
-		out_point3 = out_point3_y_up
-		out_scale3 = out_scale3_y_up
-		out_quaternion = out_quaternion_y_up
-	else:
-		out_point3 = out_point3_z_up
-		out_scale3 = out_scale3_z_up
-		out_quaternion = out_quaternion_z_up
 	
 	# BOX
 	if    name.startswith('box') \
@@ -99,12 +81,12 @@ def get_physics_shape(obj, mainObjScale, use_y_up=False):
 	elif name.startswith('cyl'):
 		shape = "Cylinder"
 		props["radius"] = (obj.scale.x + obj.scale.y)*0.5
-		props["size"] = obj.scale.z
+		props["size"] = obj.scale.z * 2.0
 	# CAPSULE
 	elif name.startswith('cap'):
 		shape = "Capsule"
 		props["radius"] = (obj.scale.x + obj.scale.y)*0.5
-		props["size"] = obj.scale.z
+		props["size"] = obj.scale.z * 2.0
 	# CONVEX-HULL
 	elif name.startswith('convex'):
 		shape = "ConvexHull"
@@ -122,18 +104,12 @@ def get_physics_shape(obj, mainObjScale, use_y_up=False):
 	if obj.matrix_world.to_translation() != Vector((0,0,0)):
 		props["origin"] = out_point3(obj.matrix_world.to_translation())
 	
-	if obj.rotation_mode == 'QUATERNION':
-		qrot = obj.rotation_quaternion
-	else:
-		qrot = obj.matrix_local.to_quaternion()
-	
-	print("            Origin (local ): " + str(obj.location))
-	print("            Origin (global): " + str(obj.matrix_world.to_translation()))
-	print("            Quaternion (local ): " + str(qrot))
-	print("            Quaternion (global): " + str(obj.matrix_world.to_quaternion()))
-	
+	qrot = obj.matrix_world.to_quaternion()
 	if qrot != Quaternion((1,0,0,0)):
-		props["rotate"] = out_quaternion(obj.matrix_world.to_quaternion())
+		props["rotate"] = out_quaternion(qrot)
+	props["mass"] = obj.scale.x * obj.scale.y * obj.scale.z * 100.0
+	if props["mass"] < 0.01:
+		props["mass"] = 0.01
 	
 	return (shape, props)
 
@@ -293,7 +269,7 @@ def veckey3d(v):
 def veckey2d(v):
 	return round(v[0], 6), round(v[1], 6)
 
-def write_mesh(scene, file, object, EXPORT_GLOBAL_MATRIX, mtl_dict):
+def write_mesh(scene, file, object, mtl_dict):
 	print("**************** '" + str(object.name) + "' *******************")
 	
 	# Initialize totals, these are updated each object
@@ -338,8 +314,7 @@ def write_mesh(scene, file, object, EXPORT_GLOBAL_MATRIX, mtl_dict):
 			me = None
 		if me is None:
 			continue
-		me.transform(EXPORT_GLOBAL_MATRIX * ob_mat)
-		#print("ploppp:" + str(EXPORT_GLOBAL_MATRIX) )
+		me.transform(ob_mat)
 		#print("ploppp:" + str(ob_mat) )
 		# _must_ do this first since it re-allocs arrays
 		# triangulate all the mesh:
@@ -564,14 +539,10 @@ def write_mesh(scene, file, object, EXPORT_GLOBAL_MATRIX, mtl_dict):
 def write_file(filepath,
                objects,
                scene,
-               EXPORT_GLOBAL_MATRIX=None,
                EXPORT_PATH_MODE='AUTO',
                EXPORT_BINARY_MODE=False,
                EXPORT_COLLISION_NAME=""
                ):
-	if EXPORT_GLOBAL_MATRIX is None:
-		EXPORT_GLOBAL_MATRIX = mathutils.Matrix()
-	
 	print('EMF Export path: %r' % filepath)
 	
 	time1 = time.time()
@@ -615,12 +586,12 @@ def write_file(filepath,
 	# Get all meshes
 	for ob_main in objects:
 		if ob_main.type == 'MESH':
-			write_mesh(scene, file, ob_main, EXPORT_GLOBAL_MATRIX, mtl_dict)
+			write_mesh(scene, file, ob_main, mtl_dict)
 		elif ob_main.type == 'EMPTY':
 			for sub_obj in getChildren(ob_main):
 				print("     child:'" + str(sub_obj.name) + "' type=" + sub_obj.type)
 				if sub_obj.type == 'MESH':
-					write_mesh(scene, file, sub_obj, EXPORT_GLOBAL_MATRIX, mtl_dict)
+					write_mesh(scene, file, sub_obj, mtl_dict)
 				elif     sub_obj.type == 'EMPTY' \
 				     and sub_obj.name.lower().startswith("physic"):
 					print("     child:'" + str(sub_obj.name) + "' type=" + sub_obj.type)
@@ -654,7 +625,6 @@ def write_file(filepath,
 def _write(context,
            filepath,
            EXPORT_SEL_ONLY,
-           EXPORT_GLOBAL_MATRIX,
            EXPORT_PATH_MODE,
            EXPORT_BINARY_MODE,
            EXPORT_COLLISION_NAME,
@@ -683,7 +653,6 @@ def _write(context,
 	write_file(full_path,
 	           objects,
 	           scene,
-	           EXPORT_GLOBAL_MATRIX,
 	           EXPORT_PATH_MODE,
 	           EXPORT_BINARY_MODE,
 	           EXPORT_COLLISION_NAME,
@@ -701,13 +670,11 @@ def save(operator,
          use_selection=True,
          use_binary=False,
          collision_object_name="",
-         global_matrix=None,
          path_mode='AUTO'
          ):
 	_write(context,
 	       filepath,
 	       EXPORT_SEL_ONLY=use_selection,
-	       EXPORT_GLOBAL_MATRIX=global_matrix,
 	       EXPORT_PATH_MODE=path_mode,
 	       EXPORT_BINARY_MODE=use_binary,
 	       EXPORT_COLLISION_NAME=collision_object_name,

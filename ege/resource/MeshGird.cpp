@@ -49,9 +49,9 @@ ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createGrid(int32_t 
 				out->addLine(_materialName, _position+vec3(0,_lineCount+1.0f,0)*_size, _position+vec3(0,_lineCount+0.5f,0.5f)*_size, etk::color::green);
 				out->addLine(_materialName, _position+vec3(0,_lineCount+1.0f,0)*_size, _position+vec3(0,_lineCount+0.5f,-0.5f)*_size, etk::color::green);
 				// Y letter
-				out->addLine(_materialName, _position+vec3(0,_lineCount+2.0f,0)*_size, _position+vec3(0.7f,_lineCount+2.0f,1.0f)*_size, etk::color::blue);
-				out->addLine(_materialName, _position+vec3(0,_lineCount+2.0f,0)*_size, _position+vec3(-0.7f,_lineCount+2.0f,1.0f)*_size, etk::color::blue);
-				out->addLine(_materialName, _position+vec3(0,_lineCount+2.0f,0)*_size, _position+vec3(0,_lineCount+2.0f,-1.0f)*_size, etk::color::blue);
+				out->addLine(_materialName, _position+vec3(0,_lineCount+2.0f,0)*_size, _position+vec3(0.7f,_lineCount+2.0f,1.0f)*_size, etk::color::green);
+				out->addLine(_materialName, _position+vec3(0,_lineCount+2.0f,0)*_size, _position+vec3(-0.7f,_lineCount+2.0f,1.0f)*_size, etk::color::green);
+				out->addLine(_materialName, _position+vec3(0,_lineCount+2.0f,0)*_size, _position+vec3(0,_lineCount+2.0f,-1.0f)*_size, etk::color::green);
 			} else {
 				out->addLine(_materialName, _position+vec3(iii,-_lineCount,0)*_size, _position+vec3(iii,_lineCount,0)*_size, etk::color::gray);
 			}
@@ -68,9 +68,9 @@ ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createGrid(int32_t 
 				out->addLine(_materialName, _position+vec3(0,0,_lineCount+1)*_size, _position+vec3(0,0.5f,_lineCount+0.5f)*_size, etk::color::blue);
 				out->addLine(_materialName, _position+vec3(0,0,_lineCount+1)*_size, _position+vec3(0,-0.5f,_lineCount+0.5f)*_size, etk::color::blue);
 				// Z letter
-				out->addLine(_materialName, _position+vec3( 1,-1,_lineCount+2.0f)*_size, _position+vec3( 1, 1,_lineCount+2.0f)*_size, etk::color::green);
-				out->addLine(_materialName, _position+vec3( 1, 1,_lineCount+2.0f)*_size, _position+vec3(-1,-1,_lineCount+2.0f)*_size, etk::color::green);
-				out->addLine(_materialName, _position+vec3(-1,-1,_lineCount+2.0f)*_size, _position+vec3(-1, 1,_lineCount+2.0f)*_size, etk::color::green);
+				out->addLine(_materialName, _position+vec3( 1,-1,_lineCount+2.0f)*_size, _position+vec3( 1, 1,_lineCount+2.0f)*_size, etk::color::blue);
+				out->addLine(_materialName, _position+vec3( 1, 1,_lineCount+2.0f)*_size, _position+vec3(-1,-1,_lineCount+2.0f)*_size, etk::color::blue);
+				out->addLine(_materialName, _position+vec3(-1,-1,_lineCount+2.0f)*_size, _position+vec3(-1, 1,_lineCount+2.0f)*_size, etk::color::blue);
 				
 			} else {
 				std::vector<vec3> list;
