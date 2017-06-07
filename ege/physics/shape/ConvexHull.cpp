@@ -31,6 +31,7 @@ bool ege::physics::shape::ConvexHull::parse(const char* _line) {
 			EGE_VERBOSE("    parsed " << m_points[iii]);
 		}
 		*/
+		
 		return true;
 	}
 	if(strncmp(_line, "scale:", 6) == 0) {

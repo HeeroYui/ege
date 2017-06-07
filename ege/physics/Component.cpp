@@ -13,6 +13,9 @@
 #include <ege/physics/shape/ConvexHull.hpp>
 #include <ege/physics/shape/Cylinder.hpp>
 #include <ege/physics/shape/Sphere.hpp>
+#include <ege/physics/shape/Concave.hpp>
+#include <ephysics/collision/shapes/ConcaveShape.h>
+#include <ephysics/collision/shapes/ConcaveMeshShape.h>
 
 const std::string& ege::physics::Component::getType() const {
 	static std::string tmp("physics");
@@ -63,7 +66,13 @@ ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env, c
 	EGE_ERROR("Bounciness=" << m_rigidBody->getMaterial().getBounciness());
 	EGE_ERROR("FrictionCoefficient=" << m_rigidBody->getMaterial().getFrictionCoefficient());
 	EGE_ERROR("RollingResistance=" << m_rigidBody->getMaterial().getRollingResistance());
-	m_rigidBody->getMaterial().setFrictionCoefficient(0.5);
+	EGE_ERROR("LinearDamping=" << m_rigidBody->getLinearDamping());
+	EGE_ERROR("AngularDamping=" << m_rigidBody->getAngularDamping());
+	m_rigidBody->getMaterial().setBounciness(0.4);
+	//m_rigidBody->getMaterial().setFrictionCoefficient(0.01);
+	//m_rigidBody->getMaterial().setRollingResistance(0.01);
+	m_rigidBody->setAngularDamping(0.9);
+	m_rigidBody->setLinearDamping(0.9);
 }
 
 void ege::physics::Component::setType(enum ege::physics::Component::type _type) {
@@ -117,7 +126,7 @@ void ege::physics::Component::generate() {
 				                                tmpElement->getSize().y(),
 				                                tmpElement->getSize().z());
 				// Create the box shape
-				rp3d::BoxShape* shape = new rp3d::BoxShape(halfExtents);
+				rp3d::BoxShape* shape = new rp3d::BoxShape(halfExtents, 0.0001);
 				m_listShape.push_back(shape);
 				rp3d::Vector3 position(it->getOrigin().x(),
 				                       it->getOrigin().y(),
@@ -230,24 +239,52 @@ void ege::physics::Component::generate() {
 				m_listProxyShape.push_back(proxyShape);
 				break;
 			}
-			case ege::physics::Shape::type::convexHull: {
-				EGE_DEBUG("    convexHull");
-				const ege::physics::shape::ConvexHull* tmpElement = it->toConvexHull();
+			case ege::physics::Shape::type::concave: {
+				EGE_DEBUG("    Concave");
+				const ege::physics::shape::Concave* tmpElement = it->toConcave();
 				if (tmpElement == nullptr) {
-					EGE_ERROR("    convexHull ==> can not cast in convexHull");
+					EGE_ERROR("    Concave ==> can not cast in Concave");
 					continue;
 				}
+				
+				float* vertices = (float*)&tmpElement->getVertex()[0];
+				int* indices = (int*)&tmpElement->getIndices()[0];
+				
+				int32_t nbVertices = tmpElement->getVertex().size();
+				int32_t nbTriangles = tmpElement->getIndices().size()/3;
+				// TODO : Manage memory leak ...
+				//we have an error here ...
+				
+				rp3d::TriangleVertexArray* triangleArray = new rp3d::TriangleVertexArray(nbVertices,
+				                                                                         vertices,
+				                                                                         4 * sizeof(float),
+				                                                                         nbTriangles,
+				                                                                         indices,
+				                                                                         sizeof(int32_t),
+				                                                                         rp3d::TriangleVertexArray::VERTEX_FLOAT_TYPE,
+				                                                                         rp3d::TriangleVertexArray::INDEX_INTEGER_TYPE);
+				// Now that we have a TriangleVertexArray, we need to create a TriangleMesh and add the TriangleVertexArray into it as a subpart.
+				// Once this is done, we can create the actual ConcaveMeshShape and add it to the body we want to simulate as in the following example:
+				rp3d::TriangleMesh triangleMesh;
+				// Add the triangle vertex array to the triangle mesh
+				triangleMesh.addSubpart(triangleArray);
+				// Create the concave mesh shape
 				/*
-				btConvexHullShape* tmpShape = new btConvexHullShape(&(tmpElement->getPointList()[0].x()), tmpElement->getPointList().size());
-				if (tmpShape != nullptr) {
-					if (outputShape == nullptr) {
-						return tmpShape;
-					} else {
-						vec4 qqq = tmpElement->getQuaternion();
-						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
-						outputShape->addChildShape(localTransform, tmpShape);
-					}
-				}
+				// TODO : Manage memory leak ...
+				reactphysics3d::ConcaveShape* shape = new reactphysics3d::ConcaveMeshShape(&triangleMesh);
+				rp3d::Vector3 position(it->getOrigin().x(),
+				                       it->getOrigin().y(),
+				                       it->getOrigin().z());
+				rp3d::Quaternion orientation(it->getQuaternion().x(),
+				                             it->getQuaternion().y(),
+				                             it->getQuaternion().z(),
+				                             it->getQuaternion().w());
+				// The ephysic use Y as UP ==> ege use Z as UP
+				orientation = orientation * rp3d::Quaternion(-0.707107, 0, 0, 0.707107);
+				rp3d::Transform transform(position, orientation);
+				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
+				proxyShape->setUserData(this);
+				m_listProxyShape.push_back(proxyShape);
 				*/
 				break;
 			}

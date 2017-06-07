@@ -28,6 +28,20 @@
 
 namespace ege {
 	namespace resource {
+		/* TODO: A mesh is composed with:
+		 *     - a geometric property:
+		 *         * list of points
+		 *         * list of normals
+		 *         * List of texture UV mapping
+		 *         + List of triangle
+		 *         + List of quad
+		 *         + List of polygones
+		 *     - List of material
+		 *     - Physics shapes
+		 *     - UV texture
+		 *     - Normal texture
+		 *     - open GL shaders
+		 */
 		class Mesh : public gale::Resource {
 			public:
 				static ememory::SharedPtr<ege::resource::Mesh> createGrid(int32_t _lineCount,
@@ -149,9 +163,7 @@ namespace ege {
 				bool getCheckNormal() {
 					return m_checkNormal;
 				};
-				const std::vector<ememory::SharedPtr<ege::physics::Shape>>& getPhysicalProperties() const {
-					return m_physics;
-				};
+				const std::vector<ememory::SharedPtr<ege::physics::Shape>>& getPhysicalProperties();
 				void addPhysicElement(const ememory::SharedPtr<ege::physics::Shape>& _shape) {
 					m_physics.push_back(_shape);
 				}

@@ -21,6 +21,7 @@ namespace ege {
 			class Cone;
 			class ConvexHull;
 			class Sphere;
+			class Concave;
 		}
 		
 		class Shape {
@@ -34,7 +35,8 @@ namespace ege {
 					cone,
 					convexHull,
 					cylinder,
-					sphere
+					sphere,
+					concave
 				};
 			public:
 				Shape() :
@@ -97,6 +99,9 @@ namespace ege {
 				bool isSphere() {
 					return getType() == ege::physics::Shape::type::sphere;
 				};
+				bool isConcave() {
+					return getType() == ege::physics::Shape::type::concave;
+				};
 				
 				virtual const ege::physics::shape::Box* toBox() const {
 					return nullptr;
@@ -137,6 +142,12 @@ namespace ege {
 					return nullptr;
 				};
 				virtual ege::physics::shape::Sphere* toSphere() {
+					return nullptr;
+				};
+				virtual const ege::physics::shape::Concave* toConcave() const {
+					return nullptr;
+				};
+				virtual ege::physics::shape::Concave* toConcave() {
 					return nullptr;
 				};
 		};

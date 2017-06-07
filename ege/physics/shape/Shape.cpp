@@ -11,6 +11,7 @@
 #include <ege/physics/shape/ConvexHull.hpp>
 #include <ege/physics/shape/Cylinder.hpp>
 #include <ege/physics/shape/Sphere.hpp>
+#include <ege/physics/shape/Concave.hpp>
 
 
 ememory::SharedPtr<ege::physics::Shape> ege::physics::Shape::create(const std::string& _name) {
@@ -28,8 +29,10 @@ ememory::SharedPtr<ege::physics::Shape> ege::physics::Shape::create(const std::s
 		tmpp = ememory::makeShared<ege::physics::shape::Capsule>();
 	} else if (name == "convexhull") {
 		tmpp = ememory::makeShared<ege::physics::shape::ConvexHull>();
+	} else if (name == "autoconcave") {
+		tmpp = ememory::makeShared<ege::physics::shape::Concave>();
 	} else {
-		EGE_ERROR("Create an unknow element : '" << _name << "' availlable : [BOX,SPHERE,CONE,CYLINDER,CAPSULE,CONVEXHULL]");
+		EGE_ERROR("Create an unknow element : '" << _name << "' availlable : [BOX,SPHERE,CONE,CYLINDER,CAPSULE,CONVEXHULL,autoConcave]");
 		return nullptr;
 	}
 	if (tmpp == nullptr) {

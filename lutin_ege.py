@@ -72,6 +72,7 @@ def configure(target, my_module):
 	    'ege/physics/shape/ConvexHull.cpp',
 	    'ege/physics/shape/Cylinder.cpp',
 	    'ege/physics/shape/Sphere.cpp',
+	    'ege/physics/shape/Concave.cpp',
 	    'ege/Ray.cpp',
 	    ])
 	my_module.copy_path('data/ParticuleMesh.*')
@@ -121,6 +122,7 @@ def configure(target, my_module):
 	    'ege/physics/shape/ConvexHull.hpp',
 	    'ege/physics/shape/Cylinder.hpp',
 	    'ege/physics/shape/Sphere.hpp',
+	    'ege/physics/shape/Concave.hpp',
 	    'ege/Ray.hpp',
 	    ])
 	# TODO: Remove this ...

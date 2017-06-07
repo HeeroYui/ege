@@ -398,9 +398,9 @@ void ege::resource::Mesh::generateVBO() {
 	}
 	EGE_WARNING("Generate VBO for nb faces layers: " << m_listFaces.size() << " list layer=" << etk::to_string(m_listFaces.getKeys()));
 	
-	// generate element in 2 pass : 
-	//    - create new index dependeng a vertex is a unique componenet of position, texture, normal
-	//    - the index list generation (can be dynamic ... (TODO later)
+	// generate element in 2 pass:
+	//    - create new index depending on a vertex is a unique component of position, texture, normal
+	//    - the index list generation (can be dynamic ... (TODO later))
 	for (int32_t kkk=0; kkk<m_listFaces.size(); kkk++) {
 		// clean faces indexes :
 		m_listFaces.getValue(kkk).m_index.clear();
@@ -711,3 +711,26 @@ void ege::resource::Mesh::addTriangle(const std::string& _layerName, const vec3&
 		return;
 	}
 }
+
+#include <ege/physics/shape/Concave.hpp>
+const std::vector<ememory::SharedPtr<ege::physics::Shape>>& ege::resource::Mesh::getPhysicalProperties() {
+	for (auto &it: m_physics) {
+		if (it->getType() == ege::physics::Shape::type::concave) {
+			// need to generate the internal list of point and triangle needed:
+			ege::physics::shape::Concave* tmpElement = it->toConcave();
+			if (tmpElement == nullptr) {
+				EGE_ERROR("    Concave ==> can not cast in Concave");
+				return m_physics;
+			}
+			tmpElement->clear();
+			tmpElement->setListOfVertex(m_listVertex);
+			for (int32_t kkk=0; kkk<m_listFaces.size(); kkk++) {
+				tmpElement->addTriangle(m_listFaces.getValue(kkk).m_index);
+			}
+			// Can have only one concave element in a mesh ...
+			return m_physics;
+		}
+	}
+	return m_physics;
+}
+

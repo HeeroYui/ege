@@ -70,6 +70,7 @@ namespace ege {
 				m_groupSource(_groupSource),
 				m_positionSource(_pos)
 			{ };
+			virtual ~EntityInteraction() = default;
 		public:
 			virtual void applyEvent(ege::Entity& _entity) { };
 	};
