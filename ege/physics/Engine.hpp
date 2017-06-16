@@ -22,7 +22,7 @@ namespace ege {
 #include <gale/renderer/openGL/openGL.hpp>
 #include <gale/resource/Manager.hpp>
 #include <gale/Dimension.hpp>
-#include <ephysics/reactphysics3d.h>
+#include <ephysics/ephysics.hpp>
 #include <ege/physics/Component.hpp>
 #include <eproperty/Value.hpp>
 #include <ege/Ray.hpp>
@@ -33,12 +33,12 @@ namespace ege {
 	namespace physics {
 		class Engine:
 		  public ege::Engine,
-		  public rp3d::EventListener {
+		  public ephysics::EventListener {
 			public:
 				eproperty::Value<bool> propertyDebugAABB;
 				eproperty::Value<bool> propertyDebugShape;
 			private:
-				rp3d::DynamicsWorld* m_dynamicsWorld;
+				ephysics::DynamicsWorld* m_dynamicsWorld;
 				float m_accumulator; // limit call of the step rendering
 			public:
 				Engine(ege::Environement* _env);
@@ -49,7 +49,7 @@ namespace ege {
 				 * @param[in] _axePower energy of this gravity
 				 */
 				void setGravity(const vec3& _axePower);
-				rp3d::DynamicsWorld* getDynamicWorld() {
+				ephysics::DynamicsWorld* getDynamicWorld() {
 					return m_dynamicsWorld;
 				}
 			protected:
@@ -64,8 +64,8 @@ namespace ege {
 				void renderDebug(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) override;
 			private:
 				// herited from rp3D::EventListener
-				void beginContact(const rp3d::ContactPointInfo& _contact) override;
-				void newContact(const rp3d::ContactPointInfo& _contact) override;
+				void beginContact(const ephysics::ContactPointInfo& _contact) override;
+				void newContact(const ephysics::ContactPointInfo& _contact) override;
 			public:
 				/**
 				 * @brief Test a rayCasting on the physic engine

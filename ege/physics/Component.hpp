@@ -10,7 +10,7 @@
 #include <ege/Component.hpp>
 #include <etk/math/Transform3D.hpp>
 #include <esignal/Signal.hpp>
-#include <ephysics/reactphysics3d.h>
+#include <ephysics/ephysics.hpp>
 #include <ege/resource/Mesh.hpp>
 #include <ege/camera/Camera.hpp>
 
@@ -20,16 +20,16 @@ namespace ege {
 		class Engine;
 		class Component :
 		  public ege::Component/*,
-		  public rp3d::CollisionCallback*/ {
+		  public ephysics::CollisionCallback*/ {
 			public:
 				esignal::Signal<etk::Transform3D> signalPosition;
 			protected:
 				etk::Transform3D m_lastTransformEmit;
 			protected:
 				ememory::SharedPtr<ege::physics::Engine> m_engine;
-				rp3d::RigidBody* m_rigidBody;
-				std::vector<rp3d::CollisionShape*> m_listShape;
-				std::vector<rp3d::ProxyShape*> m_listProxyShape;
+				ephysics::RigidBody* m_rigidBody;
+				std::vector<ephysics::CollisionShape*> m_listShape;
+				std::vector<ephysics::ProxyShape*> m_listProxyShape;
 			public:
 				/**
 				 * @brief Create a basic position component (no orientation and position (0,0,0))

@@ -14,8 +14,8 @@
 #include <ege/physics/shape/Cylinder.hpp>
 #include <ege/physics/shape/Sphere.hpp>
 #include <ege/physics/shape/Concave.hpp>
-#include <ephysics/collision/shapes/ConcaveShape.h>
-#include <ephysics/collision/shapes/ConcaveMeshShape.h>
+#include <ephysics/collision/shapes/ConcaveShape.hpp>
+#include <ephysics/collision/shapes/ConcaveMeshShape.hpp>
 
 const std::string& ege::physics::Component::getType() const {
 	static std::string tmp("physics");
@@ -70,13 +70,13 @@ void ege::physics::Component::setType(enum ege::physics::Component::type _type) 
 	}
 	switch(_type) {
 		case ege::physics::Component::type::bodyStatic:
-			m_rigidBody->setType(rp3d::STATIC);
+			m_rigidBody->setType(ephysics::STATIC);
 			break;
 		case ege::physics::Component::type::bodyKinematic:
-			m_rigidBody->setType(rp3d::KINEMATIC);
+			m_rigidBody->setType(ephysics::KINEMATIC);
 			break;
 		case ege::physics::Component::type::bodyDynamic:
-			m_rigidBody->setType(rp3d::DYNAMIC);
+			m_rigidBody->setType(ephysics::DYNAMIC);
 			break;
 	}
 }
@@ -115,12 +115,12 @@ void ege::physics::Component::generate() {
 				                                tmpElement->getSize().y(),
 				                                tmpElement->getSize().z());
 				// Create the box shape
-				rp3d::BoxShape* shape = new rp3d::BoxShape(halfExtents, 0.0001);
+				ephysics::BoxShape* shape = new ephysics::BoxShape(halfExtents, 0.0001);
 				m_listShape.push_back(shape);
 				// The ephysic use Y as UP ==> ege use Z as UP
-				//orientation = orientation * rp3d::Quaternion(-0.707107, 0, 0, 0.707107);
+				//orientation = orientation * ephysics::Quaternion(-0.707107, 0, 0, 0.707107);
 				etk::Transform3D transform(it->getOrigin(), it->getOrientation());
-				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
+				ephysics::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
 				m_listProxyShape.push_back(proxyShape);
 				break;
@@ -133,11 +133,11 @@ void ege::physics::Component::generate() {
 					continue;
 				}
 				// Create the Cylinder shape
-				rp3d::CylinderShape* shape = new rp3d::CylinderShape(tmpElement->getRadius(), tmpElement->getSize());
+				ephysics::CylinderShape* shape = new ephysics::CylinderShape(tmpElement->getRadius(), tmpElement->getSize());
 				// The ephysic use Y as UP ==> ege use Z as UP
 				etk::Quaternion orientation = it->getOrientation() * etk::Quaternion(-0.707107, 0, 0, 0.707107);
 				etk::Transform3D transform(it->getOrigin(), orientation);
-				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
+				ephysics::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
 				m_listProxyShape.push_back(proxyShape);
 				break;
@@ -150,11 +150,11 @@ void ege::physics::Component::generate() {
 					continue;
 				}
 				// Create the Capsule shape
-				rp3d::CapsuleShape* shape = new rp3d::CapsuleShape(tmpElement->getRadius(), tmpElement->getSize());
+				ephysics::CapsuleShape* shape = new ephysics::CapsuleShape(tmpElement->getRadius(), tmpElement->getSize());
 				// The ephysic use Y as UP ==> ege use Z as UP
 				etk::Quaternion orientation = it->getOrientation() * etk::Quaternion(-0.707107, 0, 0, 0.707107);
 				etk::Transform3D transform(it->getOrigin(), orientation);
-				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
+				ephysics::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
 				m_listProxyShape.push_back(proxyShape);
 				break;
@@ -167,11 +167,11 @@ void ege::physics::Component::generate() {
 					continue;
 				}
 				// Create the Cone shape
-				rp3d::ConeShape* shape = new rp3d::ConeShape(tmpElement->getRadius(), tmpElement->getSize());
+				ephysics::ConeShape* shape = new ephysics::ConeShape(tmpElement->getRadius(), tmpElement->getSize());
 				// The ephysic use Y as UP ==> ege use Z as UP
 				etk::Quaternion orientation = it->getOrientation() * etk::Quaternion(-0.707107, 0, 0, 0.707107);
 				etk::Transform3D transform(it->getOrigin(), orientation);
-				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
+				ephysics::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
 				m_listProxyShape.push_back(proxyShape);
 				break;
@@ -184,11 +184,11 @@ void ege::physics::Component::generate() {
 					continue;
 				}
 				// Create the box shape
-				rp3d::SphereShape* shape = new rp3d::SphereShape(tmpElement->getRadius());
+				ephysics::SphereShape* shape = new ephysics::SphereShape(tmpElement->getRadius());
 				// The ephysic use Y as UP ==> ege use Z as UP
 				etk::Quaternion orientation = it->getOrientation() * etk::Quaternion(-0.707107, 0, 0, 0.707107);
 				etk::Transform3D transform(it->getOrigin(), orientation);
-				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
+				ephysics::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
 				m_listProxyShape.push_back(proxyShape);
 				break;
@@ -217,26 +217,26 @@ void ege::physics::Component::generate() {
 				// TODO : Manage memory leak ...
 				//we have an error here ...
 				
-				rp3d::TriangleVertexArray* triangleArray = new rp3d::TriangleVertexArray(nbVertices,
+				ephysics::TriangleVertexArray* triangleArray = new ephysics::TriangleVertexArray(nbVertices,
 				                                                                         (void*)vertices,
 				                                                                         3 * sizeof(float),
 				                                                                         nbTriangles,
 				                                                                         (void*)indices,
 				                                                                         sizeof(int),
-				                                                                         rp3d::TriangleVertexArray::VERTEX_FLOAT_TYPE,
-				                                                                         rp3d::TriangleVertexArray::INDEX_INTEGER_TYPE);
+				                                                                         ephysics::TriangleVertexArray::VERTEX_FLOAT_TYPE,
+				                                                                         ephysics::TriangleVertexArray::INDEX_INTEGER_TYPE);
 				// Now that we have a TriangleVertexArray, we need to create a TriangleMesh and add the TriangleVertexArray into it as a subpart.
 				// Once this is done, we can create the actual ConcaveMeshShape and add it to the body we want to simulate as in the following example:
-				rp3d::TriangleMesh triangleMesh;
+				ephysics::TriangleMesh triangleMesh;
 				// Add the triangle vertex array to the triangle mesh
 				triangleMesh.addSubpart(triangleArray);
 				// Create the concave mesh shape
 				// TODO : Manage memory leak ...
-				reactphysics3d::ConcaveShape* shape = new reactphysics3d::ConcaveMeshShape(&triangleMesh);
+				ephysics::ConcaveShape* shape = new ephysics::ConcaveMeshShape(&triangleMesh);
 				// The ephysic use Y as UP ==> ege use Z as UP
-				//etk::Quaternion orientation = it->getOrientation() * rp3d::Quaternion(-0.707107, 0, 0, 0.707107);
+				//etk::Quaternion orientation = it->getOrientation() * ephysics::Quaternion(-0.707107, 0, 0, 0.707107);
 				etk::Transform3D transform(it->getOrigin(), it->getOrientation());
-				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
+				ephysics::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
 				m_listProxyShape.push_back(proxyShape);
 				break;
@@ -538,7 +538,7 @@ void ege::physics::Component::drawAABB(ememory::SharedPtr<ewol::resource::Colore
 	}
 	mat4 transformationMatrix;
 	etk::Color<float> tmpColor(0.0, 1.0, 0.0, 0.8);
-	rp3d::AABB value = m_rigidBody->getAABB();
+	ephysics::AABB value = m_rigidBody->getAABB();
 	_draw->drawCubeLine(value.getMin(), value.getMax(), tmpColor, transformationMatrix);
 	
 }

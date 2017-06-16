@@ -17,7 +17,7 @@ const std::string& ege::physics::Engine::getType() const {
 	return tmp;
 }
 
-void ege::physics::Engine::beginContact(const rp3d::ContactPointInfo& _contact) {
+void ege::physics::Engine::beginContact(const ephysics::ContactPointInfo& _contact) {
 	ege::physics::Component* component1 = nullptr;
 	ege::physics::Component* component2 = nullptr;
 	// Called when a new contact point is found between two bodies that were separated before.
@@ -38,7 +38,7 @@ void ege::physics::Engine::beginContact(const rp3d::ContactPointInfo& _contact) 
 	}
 }
 
-void ege::physics::Engine::newContact(const rp3d::ContactPointInfo& _contact) {
+void ege::physics::Engine::newContact(const ephysics::ContactPointInfo& _contact) {
 	ege::physics::Component* component1 = nullptr;
 	ege::physics::Component* component2 = nullptr;
 	//Called when a new contact point is found between two bodies.
@@ -94,7 +94,7 @@ ege::physics::Engine::Engine(ege::Environement* _env) :
 	// Start engine with no gravity
 	vec3 gravity(0.0f, 0.0f, 0.0f);
 	// Create the dynamics world
-	m_dynamicsWorld = new rp3d::DynamicsWorld(gravity);
+	m_dynamicsWorld = new ephysics::DynamicsWorld(gravity);
 	if (m_dynamicsWorld != nullptr) {
 		// Set the number of iterations of the constraint solver
 		m_dynamicsWorld->setNbIterationsVelocitySolver(15);
@@ -172,19 +172,19 @@ void ege::physics::Engine::renderDebug(const echrono::Duration& _delta, const em
 	}
 }
 
-class MyCallbackClass : public rp3d::RaycastCallback {
+class MyCallbackClass : public ephysics::RaycastCallback {
 	public:
 		vec3 m_position;
 		vec3 m_normal;
 		bool m_haveImpact;
-		rp3d::CollisionBody* m_body;
+		ephysics::CollisionBody* m_body;
 		MyCallbackClass():
 		  m_haveImpact(false),
 		  m_body(nullptr) {
 			
 		}
 	public:
-		virtual float notifyRaycastHit(const rp3d::RaycastInfo& _info) {
+		virtual float notifyRaycastHit(const ephysics::RaycastInfo& _info) {
 			m_haveImpact = true;
 			// Display the world hit point coordinates
 			m_position = _info.worldPoint;
@@ -201,7 +201,7 @@ std::pair<vec3,vec3> ege::physics::Engine::testRay(const ege::Ray& _ray) {
 	vec3 stop = _ray.getOrigin()+_ray.getDirection()*1000.0f;
 	// Start and End are vectors
 	// Create the ray
-	rp3d::Ray ray(start, stop);
+	ephysics::Ray ray(start, stop);
 	// Create an instance of your callback class
 	MyCallbackClass callbackObject;
 	// Raycast test
@@ -218,7 +218,7 @@ std::pair<ememory::SharedPtr<ege::Component>, std::pair<vec3,vec3>> ege::physics
 	vec3 stop = _ray.getOrigin()+_ray.getDirection()*1000.0f;
 	// Start and End are vectors
 	// Create the ray
-	rp3d::Ray ray(start, stop);
+	ephysics::Ray ray(start, stop);
 	// Create an instance of your callback class
 	MyCallbackClass callbackObject;
 	// Raycast test
