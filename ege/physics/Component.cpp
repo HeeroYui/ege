@@ -35,11 +35,8 @@ ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env):
   m_staticTorqueApply(0,0,0) {
 	m_engine = ememory::dynamicPointerCast<ege::physics::Engine>(_env->getEngine(getType()));
 	// Initial position and orientation of the rigid body
-	rp3d::Vector3 initPosition(0.0f, 0.0f, 0.0f);
-	rp3d::Quaternion initOrientation = rp3d::Quaternion::identity();
-	rp3d::Transform transform(initPosition, initOrientation);
 	m_lastTransformEmit = etk::Transform3D(vec3(0,0,0), etk::Quaternion::identity());
-	m_rigidBody = m_engine->getDynamicWorld()->createRigidBody(transform);
+	m_rigidBody = m_engine->getDynamicWorld()->createRigidBody(m_lastTransformEmit);
 	m_rigidBody->setUserData(this);
 	// set collision callback:
 	//m_engine->getDynamicWorld()->testCollision(m_rigidBody, this);
@@ -49,16 +46,8 @@ ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env, c
   m_staticForceApplyCenterOfMass(0,0,0),
   m_staticTorqueApply(0,0,0) {
 	m_engine = ememory::dynamicPointerCast<ege::physics::Engine>(_env->getEngine(getType()));
-	rp3d::Vector3 initPosition(_transform.getPosition().x(),
-	                           _transform.getPosition().y(),
-	                           _transform.getPosition().z());
-	rp3d::Quaternion initOrientation(_transform.getOrientation().x(),
-	                                 _transform.getOrientation().y(),
-	                                 _transform.getOrientation().z(),
-	                                 _transform.getOrientation().w());
-	rp3d::Transform transform(initPosition, initOrientation);
 	// Create a rigid body in the world
-	m_rigidBody = m_engine->getDynamicWorld()->createRigidBody(transform);
+	m_rigidBody = m_engine->getDynamicWorld()->createRigidBody(_transform);
 	m_rigidBody->setUserData(this);
 	m_lastTransformEmit = _transform;
 	// set collision callback:
@@ -122,22 +111,15 @@ void ege::physics::Component::generate() {
 					continue;
 				}
 				// Half extents of the box in the x, y and z directions
-				const rp3d::Vector3 halfExtents(tmpElement->getSize().x(),
+				const vec3 halfExtents(tmpElement->getSize().x(),
 				                                tmpElement->getSize().y(),
 				                                tmpElement->getSize().z());
 				// Create the box shape
 				rp3d::BoxShape* shape = new rp3d::BoxShape(halfExtents, 0.0001);
 				m_listShape.push_back(shape);
-				rp3d::Vector3 position(it->getOrigin().x(),
-				                       it->getOrigin().y(),
-				                       it->getOrigin().z());
-				rp3d::Quaternion orientation(it->getQuaternion().x(),
-				                             it->getQuaternion().y(),
-				                             it->getQuaternion().z(),
-				                             it->getQuaternion().w());
 				// The ephysic use Y as UP ==> ege use Z as UP
 				//orientation = orientation * rp3d::Quaternion(-0.707107, 0, 0, 0.707107);
-				rp3d::Transform transform(position, orientation);
+				etk::Transform3D transform(it->getOrigin(), it->getOrientation());
 				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
 				m_listProxyShape.push_back(proxyShape);
@@ -152,16 +134,9 @@ void ege::physics::Component::generate() {
 				}
 				// Create the Cylinder shape
 				rp3d::CylinderShape* shape = new rp3d::CylinderShape(tmpElement->getRadius(), tmpElement->getSize());
-				rp3d::Vector3 position(it->getOrigin().x(),
-				                       it->getOrigin().y(),
-				                       it->getOrigin().z());
-				rp3d::Quaternion orientation(it->getQuaternion().x(),
-				                             it->getQuaternion().y(),
-				                             it->getQuaternion().z(),
-				                             it->getQuaternion().w());
 				// The ephysic use Y as UP ==> ege use Z as UP
-				orientation = orientation * rp3d::Quaternion(-0.707107, 0, 0, 0.707107);
-				rp3d::Transform transform(position, orientation);
+				etk::Quaternion orientation = it->getOrientation() * etk::Quaternion(-0.707107, 0, 0, 0.707107);
+				etk::Transform3D transform(it->getOrigin(), orientation);
 				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
 				m_listProxyShape.push_back(proxyShape);
@@ -176,16 +151,9 @@ void ege::physics::Component::generate() {
 				}
 				// Create the Capsule shape
 				rp3d::CapsuleShape* shape = new rp3d::CapsuleShape(tmpElement->getRadius(), tmpElement->getSize());
-				rp3d::Vector3 position(it->getOrigin().x(),
-				                       it->getOrigin().y(),
-				                       it->getOrigin().z());
-				rp3d::Quaternion orientation(it->getQuaternion().x(),
-				                             it->getQuaternion().y(),
-				                             it->getQuaternion().z(),
-				                             it->getQuaternion().w());
 				// The ephysic use Y as UP ==> ege use Z as UP
-				orientation = orientation * rp3d::Quaternion(-0.707107, 0, 0, 0.707107);
-				rp3d::Transform transform(position, orientation);
+				etk::Quaternion orientation = it->getOrientation() * etk::Quaternion(-0.707107, 0, 0, 0.707107);
+				etk::Transform3D transform(it->getOrigin(), orientation);
 				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
 				m_listProxyShape.push_back(proxyShape);
@@ -200,16 +168,9 @@ void ege::physics::Component::generate() {
 				}
 				// Create the Cone shape
 				rp3d::ConeShape* shape = new rp3d::ConeShape(tmpElement->getRadius(), tmpElement->getSize());
-				rp3d::Vector3 position(it->getOrigin().x(),
-				                       it->getOrigin().y(),
-				                       it->getOrigin().z());
-				rp3d::Quaternion orientation(it->getQuaternion().x(),
-				                             it->getQuaternion().y(),
-				                             it->getQuaternion().z(),
-				                             it->getQuaternion().w());
 				// The ephysic use Y as UP ==> ege use Z as UP
-				orientation = orientation * rp3d::Quaternion(-0.707107, 0, 0, 0.707107);
-				rp3d::Transform transform(position, orientation);
+				etk::Quaternion orientation = it->getOrientation() * etk::Quaternion(-0.707107, 0, 0, 0.707107);
+				etk::Transform3D transform(it->getOrigin(), orientation);
 				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
 				m_listProxyShape.push_back(proxyShape);
@@ -224,16 +185,9 @@ void ege::physics::Component::generate() {
 				}
 				// Create the box shape
 				rp3d::SphereShape* shape = new rp3d::SphereShape(tmpElement->getRadius());
-				rp3d::Vector3 position(it->getOrigin().x(),
-				                       it->getOrigin().y(),
-				                       it->getOrigin().z());
-				rp3d::Quaternion orientation(it->getQuaternion().x(),
-				                             it->getQuaternion().y(),
-				                             it->getQuaternion().z(),
-				                             it->getQuaternion().w());
 				// The ephysic use Y as UP ==> ege use Z as UP
-				orientation = orientation * rp3d::Quaternion(-0.707107, 0, 0, 0.707107);
-				rp3d::Transform transform(position, orientation);
+				etk::Quaternion orientation = it->getOrientation() * etk::Quaternion(-0.707107, 0, 0, 0.707107);
+				etk::Transform3D transform(it->getOrigin(), orientation);
 				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
 				m_listProxyShape.push_back(proxyShape);
@@ -247,20 +201,28 @@ void ege::physics::Component::generate() {
 					continue;
 				}
 				
+				/*
 				float* vertices = (float*)&tmpElement->getVertex()[0];
 				int* indices = (int*)&tmpElement->getIndices()[0];
 				
 				int32_t nbVertices = tmpElement->getVertex().size();
 				int32_t nbTriangles = tmpElement->getIndices().size()/3;
+				*/
+				static const float vertices[9] = {-100.0f,-100.0f,-50.0f,100.0f,-100.0f,-50.0f,100.0f,100.0f,-50.0f};
+				static const int indices[3] = {1,2,3};
+				
+				int32_t nbVertices = 3;
+				int32_t nbTriangles = 1;
+				
 				// TODO : Manage memory leak ...
 				//we have an error here ...
 				
 				rp3d::TriangleVertexArray* triangleArray = new rp3d::TriangleVertexArray(nbVertices,
-				                                                                         vertices,
-				                                                                         4 * sizeof(float),
+				                                                                         (void*)vertices,
+				                                                                         3 * sizeof(float),
 				                                                                         nbTriangles,
-				                                                                         indices,
-				                                                                         sizeof(int32_t),
+				                                                                         (void*)indices,
+				                                                                         sizeof(int),
 				                                                                         rp3d::TriangleVertexArray::VERTEX_FLOAT_TYPE,
 				                                                                         rp3d::TriangleVertexArray::INDEX_INTEGER_TYPE);
 				// Now that we have a TriangleVertexArray, we need to create a TriangleMesh and add the TriangleVertexArray into it as a subpart.
@@ -269,23 +231,14 @@ void ege::physics::Component::generate() {
 				// Add the triangle vertex array to the triangle mesh
 				triangleMesh.addSubpart(triangleArray);
 				// Create the concave mesh shape
-				/*
 				// TODO : Manage memory leak ...
 				reactphysics3d::ConcaveShape* shape = new reactphysics3d::ConcaveMeshShape(&triangleMesh);
-				rp3d::Vector3 position(it->getOrigin().x(),
-				                       it->getOrigin().y(),
-				                       it->getOrigin().z());
-				rp3d::Quaternion orientation(it->getQuaternion().x(),
-				                             it->getQuaternion().y(),
-				                             it->getQuaternion().z(),
-				                             it->getQuaternion().w());
 				// The ephysic use Y as UP ==> ege use Z as UP
-				orientation = orientation * rp3d::Quaternion(-0.707107, 0, 0, 0.707107);
-				rp3d::Transform transform(position, orientation);
+				//etk::Quaternion orientation = it->getOrientation() * rp3d::Quaternion(-0.707107, 0, 0, 0.707107);
+				etk::Transform3D transform(it->getOrigin(), it->getOrientation());
 				rp3d::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
 				m_listProxyShape.push_back(proxyShape);
-				*/
 				break;
 			}
 			default :
@@ -310,14 +263,14 @@ void ege::physics::Component::update(float _delta) {
 	if (m_rigidBody == nullptr) {
 		return;
 	}
-	if (m_staticForceApplyCenterOfMass != rp3d::Vector3(0,0,0)) {
-		rp3d::Vector3 tmp = m_staticForceApplyCenterOfMass*_delta;
-		EGE_ERROR("FORCE : " << vec3(tmp.x, tmp.y, tmp.z) );
+	if (m_staticForceApplyCenterOfMass != vec3(0,0,0)) {
+		vec3 tmp = m_staticForceApplyCenterOfMass*_delta;
+		EGE_ERROR("FORCE : " << tmp );
 		m_rigidBody->applyForceToCenterOfMass(tmp);
 	}
-	if (m_staticTorqueApply != rp3d::Vector3(0,0,0)) {
-		rp3d::Vector3 tmp = m_staticTorqueApply*_delta;
-		EGE_ERROR("TORQUE : " << vec3(tmp.x, tmp.y, tmp.z));
+	if (m_staticTorqueApply != vec3(0,0,0)) {
+		vec3 tmp = m_staticTorqueApply*_delta;
+		EGE_ERROR("TORQUE : " << tmp);
 		m_rigidBody->applyTorque(tmp);
 	}
 }
@@ -327,71 +280,43 @@ void ege::physics::Component::setTransform(const etk::Transform3D& _transform) {
 	if (m_rigidBody == nullptr) {
 		return;
 	}
-	rp3d::Vector3 position(_transform.getPosition().x(),
-	                       _transform.getPosition().y(),
-	                       _transform.getPosition().z());
-	rp3d::Quaternion orientation(_transform.getOrientation().x(),
-	                             _transform.getOrientation().y(),
-	                             _transform.getOrientation().z(),
-	                             _transform.getOrientation().w());
-	rp3d::Transform transform(position, orientation);
-	m_rigidBody->setTransform(transform);
+	m_rigidBody->setTransform(_transform);
 }
 
 etk::Transform3D ege::physics::Component::getTransform() const {
 	if (m_rigidBody == nullptr) {
 		return etk::Transform3D::identity();
 	}
-	rp3d::Transform transform = m_rigidBody->getTransform();
-	vec3 position(transform.getPosition().x,
-	              transform.getPosition().y,
-	              transform.getPosition().z);
-	etk::Quaternion orientation(transform.getOrientation().x,
-	                            transform.getOrientation().y,
-	                            transform.getOrientation().z,
-	                            transform.getOrientation().w);
-	return etk::Transform3D(position, orientation);
+	return m_rigidBody->getTransform();
 }
 
 vec3 ege::physics::Component::getLinearVelocity() const {
 	if (m_rigidBody == nullptr) {
 		return vec3(0,0,0);
 	}
-	rp3d::Vector3 value = m_rigidBody->getLinearVelocity();
-	return vec3(value.x,
-	            value.y,
-	            value.z);
+	return m_rigidBody->getLinearVelocity();
 }
 
 void ege::physics::Component::setLinearVelocity(const vec3& _linearVelocity) {
 	if (m_rigidBody == nullptr) {
 		return;
 	}
-	rp3d::Vector3 value(_linearVelocity.x(),
-	                    _linearVelocity.y(),
-	                    _linearVelocity.z());
-	m_rigidBody->setLinearVelocity(value);
+	m_rigidBody->setLinearVelocity(_linearVelocity);
 }
 
 vec3 ege::physics::Component::getRelativeLinearVelocity() const {
 	if (m_rigidBody == nullptr) {
 		return vec3(0,0,0);
 	}
-	rp3d::Vector3 value = m_rigidBody->getLinearVelocity();
-	value = m_rigidBody->getTransform().getOrientation().getInverse()*value;
-	return vec3(value.x,
-	            value.y,
-	            value.z);
+	vec3 value = m_rigidBody->getLinearVelocity();
+	return m_rigidBody->getTransform().getOrientation().getInverse()*value;
 }
 
 void ege::physics::Component::setRelativeLinearVelocity(const vec3& _linearVelocity) {
 	if (m_rigidBody == nullptr) {
 		return;
 	}
-	rp3d::Vector3 value(_linearVelocity.x(),
-	                    _linearVelocity.y(),
-	                    _linearVelocity.z());
-	value = m_rigidBody->getTransform().getOrientation()*value;
+	vec3 value = m_rigidBody->getTransform().getOrientation()*_linearVelocity;
 	m_rigidBody->setLinearVelocity(value);
 }
 
@@ -399,39 +324,27 @@ vec3 ege::physics::Component::getAngularVelocity() const {
 	if (m_rigidBody == nullptr) {
 		return vec3(0,0,0);
 	}
-	rp3d::Vector3 value = m_rigidBody->getAngularVelocity();
-	return vec3(value.x,
-	            value.y,
-	            value.z);
+	return m_rigidBody->getAngularVelocity();
 }
 void ege::physics::Component::setAngularVelocity(const vec3& _angularVelocity) {
 	if (m_rigidBody == nullptr) {
 		return;
 	}
-	rp3d::Vector3 value(_angularVelocity.x(),
-	                    _angularVelocity.y(),
-	                    _angularVelocity.z());
-	m_rigidBody->setAngularVelocity(value);
+	m_rigidBody->setAngularVelocity(_angularVelocity);
 }
 
 vec3 ege::physics::Component::getRelativeAngularVelocity() const {
 	if (m_rigidBody == nullptr) {
 		return vec3(0,0,0);
 	}
-	rp3d::Vector3 value = m_rigidBody->getAngularVelocity();
-	value = m_rigidBody->getTransform().getOrientation().getInverse()*value;
-	return vec3(value.x,
-	            value.y,
-	            value.z);
+	vec3 value = m_rigidBody->getAngularVelocity();
+	return m_rigidBody->getTransform().getOrientation().getInverse()*value;
 }
 void ege::physics::Component::setRelativeAngularVelocity(const vec3& _angularVelocity) {
 	if (m_rigidBody == nullptr) {
 		return;
 	}
-	rp3d::Vector3 value(_angularVelocity.x(),
-	                    _angularVelocity.y(),
-	                    _angularVelocity.z());
-	value = m_rigidBody->getTransform().getOrientation()*value;
+	vec3 value = m_rigidBody->getTransform().getOrientation()*_angularVelocity;
 	m_rigidBody->setAngularVelocity(value);
 }
 
@@ -440,26 +353,17 @@ void ege::physics::Component::applyForce(const vec3& _force,const vec3& _point) 
 	if (m_rigidBody == nullptr) {
 		return;
 	}
-	rp3d::Vector3 force(_force.x(),
-	                    _force.y(),
-	                    _force.z());
-	rp3d::Vector3 point(_point.x(),
-	                    _point.y(),
-	                    _point.z());
-	m_rigidBody->applyForce(force, point);
+	m_rigidBody->applyForce(_force, _point);
 }
 
 void ege::physics::Component::applyForceToCenterOfMass(const vec3& _force, bool _static) {
 	if (m_rigidBody == nullptr) {
 		return;
 	}
-	rp3d::Vector3 force(_force.x(),
-	                    _force.y(),
-	                    _force.z());
 	if(_static == true) {
-		m_staticForceApplyCenterOfMass = force;
+		m_staticForceApplyCenterOfMass = _force;
 	} else {
-		m_rigidBody->applyForceToCenterOfMass(force);
+		m_rigidBody->applyForceToCenterOfMass(_force);
 	}
 }
 
@@ -467,10 +371,7 @@ void ege::physics::Component::applyRelativeForceToCenterOfMass(const vec3& _forc
 	if (m_rigidBody == nullptr) {
 		return;
 	}
-	rp3d::Vector3 force(_force.x(),
-	                    _force.y(),
-	                    _force.z());
-	force = m_rigidBody->getTransform().getOrientation()*force;
+	vec3 force = m_rigidBody->getTransform().getOrientation()*_force;
 	if(_static == true) {
 		m_staticForceApplyCenterOfMass = force;
 	} else {
@@ -482,13 +383,10 @@ void ege::physics::Component::applyTorque(const vec3& _torque, bool _static) {
 	if (m_rigidBody == nullptr) {
 		return;
 	}
-	rp3d::Vector3 torque(_torque.x(),
-	                     _torque.y(),
-	                     _torque.z());
 	if(_static == true) {
-		m_staticTorqueApply = torque;
+		m_staticTorqueApply = _torque;
 	} else {
-		m_rigidBody->applyTorque(torque);
+		m_rigidBody->applyTorque(_torque);
 	}
 }
 
@@ -496,10 +394,7 @@ void ege::physics::Component::applyRelativeTorque(const vec3& _torque, bool _sta
 	if (m_rigidBody == nullptr) {
 		return;
 	}
-	rp3d::Vector3 torque(_torque.x(),
-	                     _torque.y(),
-	                     _torque.z());
-	torque = m_rigidBody->getTransform().getOrientation()*torque;
+	vec3 torque = m_rigidBody->getTransform().getOrientation()*_torque;
 	if(_static == true) {
 		m_staticTorqueApply = torque;
 	} else {
@@ -644,8 +539,6 @@ void ege::physics::Component::drawAABB(ememory::SharedPtr<ewol::resource::Colore
 	mat4 transformationMatrix;
 	etk::Color<float> tmpColor(0.0, 1.0, 0.0, 0.8);
 	rp3d::AABB value = m_rigidBody->getAABB();
-	vec3 minimum(value.getMin().x, value.getMin().y, value.getMin().z);
-	vec3 maximum(value.getMax().x, value.getMax().y, value.getMax().z);
-	_draw->drawCubeLine(minimum, maximum, tmpColor, transformationMatrix);
+	_draw->drawCubeLine(value.getMin(), value.getMax(), tmpColor, transformationMatrix);
 	
 }

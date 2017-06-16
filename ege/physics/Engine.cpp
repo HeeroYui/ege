@@ -20,12 +20,8 @@ const std::string& ege::physics::Engine::getType() const {
 void ege::physics::Engine::beginContact(const rp3d::ContactPointInfo& _contact) {
 	ege::physics::Component* component1 = nullptr;
 	ege::physics::Component* component2 = nullptr;
-	vec3 normal(_contact.normal.x, _contact.normal.y, _contact.normal.z);
-	vec3 pos1(_contact.localPoint1.x, _contact.localPoint1.y, _contact.localPoint1.z);
-	vec3 pos2(_contact.localPoint2.x, _contact.localPoint2.y, _contact.localPoint2.z);
-	float penetrationDepth = _contact.penetrationDepth;
 	// Called when a new contact point is found between two bodies that were separated before.
-	EGE_WARNING("collision detection [BEGIN] " << pos1 << " depth=" << penetrationDepth);
+	EGE_WARNING("collision detection [BEGIN] " << _contact.localPoint1 << " depth=" << _contact.penetrationDepth);
 	if (    _contact.shape1 != nullptr
 	     && _contact.shape1->getUserData() != nullptr) {
 		component1 = static_cast<ege::physics::Component*>(_contact.shape1->getUserData());
@@ -35,22 +31,18 @@ void ege::physics::Engine::beginContact(const rp3d::ContactPointInfo& _contact) 
 		component2 = static_cast<ege::physics::Component*>(_contact.shape2->getUserData());
 	}
 	if (component1 != nullptr) {
-		component1->beginContact(component2, normal, pos1, pos2, penetrationDepth);
+		component1->beginContact(component2, _contact.normal, _contact.localPoint1, _contact.localPoint2, _contact.penetrationDepth);
 	}
 	if (component2 != nullptr) {
-		component2->beginContact(component1, -normal, pos2, pos1, penetrationDepth);
+		component2->beginContact(component1, -_contact.normal, _contact.localPoint2, _contact.localPoint1, _contact.penetrationDepth);
 	}
 }
 
 void ege::physics::Engine::newContact(const rp3d::ContactPointInfo& _contact) {
 	ege::physics::Component* component1 = nullptr;
 	ege::physics::Component* component2 = nullptr;
-	vec3 normal(_contact.normal.x, _contact.normal.y, _contact.normal.z);
-	vec3 pos1(_contact.localPoint1.x, _contact.localPoint1.y, _contact.localPoint1.z);
-	vec3 pos2(_contact.localPoint2.x, _contact.localPoint2.y, _contact.localPoint2.z);
-	float penetrationDepth = _contact.penetrationDepth;
 	//Called when a new contact point is found between two bodies.
-	EGE_WARNING("collision detection [ NEW ] " << pos1 << " depth=" << penetrationDepth);
+	EGE_WARNING("collision detection [ NEW ] " << _contact.localPoint1 << " depth=" << _contact.penetrationDepth);
 	if (    _contact.shape1 != nullptr
 	     && _contact.shape1->getUserData() != nullptr) {
 		component1 = static_cast<ege::physics::Component*>(_contact.shape1->getUserData());
@@ -60,10 +52,10 @@ void ege::physics::Engine::newContact(const rp3d::ContactPointInfo& _contact) {
 		component2 = static_cast<ege::physics::Component*>(_contact.shape2->getUserData());
 	}
 	if (component1 != nullptr) {
-		component1->newContact(component2, normal, pos1, pos2, penetrationDepth);
+		component1->newContact(component2, _contact.normal, _contact.localPoint1, _contact.localPoint2, _contact.penetrationDepth);
 	}
 	if (component2 != nullptr) {
-		component2->newContact(component1, -normal, pos2, pos1, penetrationDepth);
+		component2->newContact(component1, -_contact.normal, _contact.localPoint2, _contact.localPoint1, _contact.penetrationDepth);
 	}
 }
 
@@ -100,8 +92,7 @@ ege::physics::Engine::Engine(ege::Environement* _env) :
   m_accumulator(0.0f) {
 	m_debugDrawProperty = ewol::resource::Colored3DObject::create();
 	// Start engine with no gravity
-	//rp3d::Vector3 gravity(0.0, -9.81, 0.0); // generic earth gravity
-	rp3d::Vector3 gravity(0.0f, 0.0f, 0.0f);
+	vec3 gravity(0.0f, 0.0f, 0.0f);
 	// Create the dynamics world
 	m_dynamicsWorld = new rp3d::DynamicsWorld(gravity);
 	if (m_dynamicsWorld != nullptr) {
@@ -121,7 +112,7 @@ ege::physics::Engine::~Engine() {
 
 void ege::physics::Engine::setGravity(const vec3& _axePower) {
 	if (m_dynamicsWorld != nullptr) {
-		rp3d::Vector3 gravity(_axePower.x(), _axePower.y(), _axePower.z());
+		vec3 gravity(_axePower);
 		m_dynamicsWorld->setGravity(gravity);
 	}
 }
@@ -196,8 +187,8 @@ class MyCallbackClass : public rp3d::RaycastCallback {
 		virtual float notifyRaycastHit(const rp3d::RaycastInfo& _info) {
 			m_haveImpact = true;
 			// Display the world hit point coordinates
-			m_position = vec3(_info.worldPoint.x, _info.worldPoint.y, _info.worldPoint.z);
-			m_normal = vec3(_info.worldNormal.x, _info.worldNormal.y, _info.worldNormal.z);
+			m_position = _info.worldPoint;
+			m_normal = _info.worldNormal;
 			m_body = _info.body;
 			EGE_WARNING("Hit point: " << m_position);
 			// Return a fraction of 1.0 to gather all hits
@@ -210,9 +201,7 @@ std::pair<vec3,vec3> ege::physics::Engine::testRay(const ege::Ray& _ray) {
 	vec3 stop = _ray.getOrigin()+_ray.getDirection()*1000.0f;
 	// Start and End are vectors
 	// Create the ray
-	rp3d::Vector3 startPoint(start.x(), start.y(), start.z());
-	rp3d::Vector3 endPoint(stop.x(), stop.y(), stop.z()); 
-	rp3d::Ray ray(startPoint, endPoint);
+	rp3d::Ray ray(start, stop);
 	// Create an instance of your callback class
 	MyCallbackClass callbackObject;
 	// Raycast test
@@ -229,9 +218,7 @@ std::pair<ememory::SharedPtr<ege::Component>, std::pair<vec3,vec3>> ege::physics
 	vec3 stop = _ray.getOrigin()+_ray.getDirection()*1000.0f;
 	// Start and End are vectors
 	// Create the ray
-	rp3d::Vector3 startPoint(start.x(), start.y(), start.z());
-	rp3d::Vector3 endPoint(stop.x(), stop.y(), stop.z());
-	rp3d::Ray ray(startPoint, endPoint);
+	rp3d::Ray ray(start, stop);
 	// Create an instance of your callback class
 	MyCallbackClass callbackObject;
 	// Raycast test

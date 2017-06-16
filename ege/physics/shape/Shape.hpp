@@ -40,7 +40,7 @@ namespace ege {
 				};
 			public:
 				Shape() :
-				  m_quaternion(1,0,0,0),
+				  m_quaternion(0,0,0,1),
 				  m_origin(0,0,0),
 				  m_mass(1) { // by default set mass at 1g
 					
@@ -57,11 +57,8 @@ namespace ege {
 					
 				}
 			private:
-				vec4 m_quaternion;
+				etk::Quaternion m_quaternion;
 			public:
-				const vec4& getQuaternion() const {
-					return m_quaternion;
-				}
 				etk::Quaternion getOrientation() const {
 					return etk::Quaternion(m_quaternion.x(), m_quaternion.y(), m_quaternion.z(), m_quaternion.w());
 				}

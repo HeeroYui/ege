@@ -109,7 +109,7 @@ namespace ege {
 				 */
 				void applyForce(const vec3& _force,const vec3& _point);
 			protected:
-				rp3d::Vector3 m_staticForceApplyCenterOfMass;
+				vec3 m_staticForceApplyCenterOfMass;
 			public:
 				/**
 				 * @brief Apply an external force to the body at its center of mass.
@@ -129,7 +129,7 @@ namespace ege {
 				 */
 				void applyRelativeForceToCenterOfMass(const vec3& _force, bool _static=false);
 			protected:
-				rp3d::Vector3 m_staticTorqueApply;
+				vec3 m_staticTorqueApply;
 			public:
 				/**
 				 * @brief Apply an external torque to the body.
