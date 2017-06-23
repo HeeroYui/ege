@@ -208,31 +208,18 @@ void ege::physics::Component::generate() {
 				int32_t nbVertices = tmpElement->getVertex().size();
 				int32_t nbTriangles = tmpElement->getIndices().size()/3;
 				*/
-				static const float vertices[9] = {-100.0f,-100.0f,-50.0f,100.0f,-100.0f,-50.0f,100.0f,100.0f,-50.0f};
-				static const int indices[3] = {1,2,3};
+				static const std::vector<vec3> vertices = {vec3(-100.0f,-100.0f,-50.0f),vec3(100.0f,-100.0f,-50.0f),vec3(100.0f,100.0f,-50.0f)};
+				static const std::vector<size_t> indices = {1,2,3};
 				
-				int32_t nbVertices = 3;
-				int32_t nbTriangles = 1;
-				
-				// TODO : Manage memory leak ...
-				//we have an error here ...
-				
-				ephysics::TriangleVertexArray* triangleArray = new ephysics::TriangleVertexArray(nbVertices,
-				                                                                         (void*)vertices,
-				                                                                         3 * sizeof(float),
-				                                                                         nbTriangles,
-				                                                                         (void*)indices,
-				                                                                         sizeof(int),
-				                                                                         ephysics::TriangleVertexArray::VERTEX_FLOAT_TYPE,
-				                                                                         ephysics::TriangleVertexArray::INDEX_INTEGER_TYPE);
+				ephysics::TriangleVertexArray* triangleArray = new ephysics::TriangleVertexArray(vertices, indices);
 				// Now that we have a TriangleVertexArray, we need to create a TriangleMesh and add the TriangleVertexArray into it as a subpart.
 				// Once this is done, we can create the actual ConcaveMeshShape and add it to the body we want to simulate as in the following example:
-				ephysics::TriangleMesh triangleMesh;
+				ephysics::TriangleMesh* triangleMesh = new ephysics::TriangleMesh();
 				// Add the triangle vertex array to the triangle mesh
-				triangleMesh.addSubpart(triangleArray);
+				triangleMesh->addSubpart(triangleArray);
 				// Create the concave mesh shape
 				// TODO : Manage memory leak ...
-				ephysics::ConcaveShape* shape = new ephysics::ConcaveMeshShape(&triangleMesh);
+				ephysics::ConcaveShape* shape = new ephysics::ConcaveMeshShape(triangleMesh);
 				// The ephysic use Y as UP ==> ege use Z as UP
 				//etk::Quaternion orientation = it->getOrientation() * ephysics::Quaternion(-0.707107, 0, 0, 0.707107);
 				etk::Transform3D transform(it->getOrigin(), it->getOrientation());
