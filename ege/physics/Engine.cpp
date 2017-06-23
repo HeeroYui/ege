@@ -17,6 +17,16 @@ const std::string& ege::physics::Engine::getType() const {
 	return tmp;
 }
 
+void ege::physics::Engine::beginContact(const rp3d::ContactPointInfo& _contact) {
+	// Called when a new contact point is found between two bodies that were separated before.
+	EGE_WARNING("collision detection [BEGIN] " << vec3(_contact.normal.x, _contact.normal.y, _contact.normal.z) << " depth=" << _contact.penetrationDepth);
+}
+
+void ege::physics::Engine::newContact(const rp3d::ContactPointInfo& _contact) {
+	//Called when a new contact point is found between two bodies.
+	EGE_WARNING("collision detection [ NEW ] " << vec3(_contact.normal.x, _contact.normal.y, _contact.normal.z) << " depth=" << _contact.penetrationDepth);
+}
+
 void ege::physics::Engine::componentRemove(const ememory::SharedPtr<ege::Component>& _ref) {
 	ememory::SharedPtr<ege::physics::Component> ref = ememory::dynamicPointerCast<ege::physics::Component>(_ref);
 	for (auto it=m_component.begin();
@@ -42,30 +52,6 @@ void ege::physics::Engine::componentAdd(const ememory::SharedPtr<ege::Component>
 	m_component.push_back(ref);
 }
 
-// unique callback function :
-/*
-extern ContactProcessedCallback gContactProcessedCallback;
-
-// TODO : remove double collision call ...
-static bool handleContactsProcess(btManifoldPoint& _point, btCollisionObject* _body0, btCollisionObject* _body1) {
-	ege::Entityhysic* elem0 = static_cast<ege::EntityPhysic*>(_body0->getUserPointer());
-	ege::EntityPhysic* elem1 = static_cast<ege::EntityPhysic*>(_body1->getUserPointer());
-	if (    elem0 == nullptr
-	     || elem1 == nullptr) {
-		EGE_WARNING("callback of collision error");
-		return false;
-	}
-	EGE_VERBOSE("collision process between " << elem0->getUID() << " && " << elem1->getUID() << " pos=" << _point.getPositionWorldOnA() << " norm=" << _point.m_normalWorldOnB);
-	if (elem0->getCollisionDetectionStatus() == true) {
-		elem0->onCollisionDetected(elem1->sharedFromThis(), _point.getPositionWorldOnA(), -_point.m_normalWorldOnB);
-	}
-	if (elem1->getCollisionDetectionStatus() == true) {
-		elem1->onCollisionDetected(elem0->sharedFromThis(), _point.getPositionWorldOnA(), _point.m_normalWorldOnB);
-	}
-	return true;
-}
-*/
-
 ege::physics::Engine::Engine(ege::Environement* _env) :
   ege::Engine(_env),
   propertyDebugAABB(this, "debug-AABB", false, "display the global AABB box of every shape"),
@@ -81,11 +67,13 @@ ege::physics::Engine::Engine(ege::Environement* _env) :
 	if (m_dynamicsWorld != nullptr) {
 		// Set the number of iterations of the constraint solver
 		m_dynamicsWorld->setNbIterationsVelocitySolver(15);
+		m_dynamicsWorld->setEventListener(this);
 	}
 }
 
 ege::physics::Engine::~Engine() {
 	if (m_dynamicsWorld != nullptr) {
+		m_dynamicsWorld->setEventListener(nullptr);
 		delete m_dynamicsWorld;
 		m_dynamicsWorld = nullptr;
 	}
@@ -125,7 +113,6 @@ void ege::physics::Engine::update(const echrono::Duration& _delta) {
 	}
 }
 
-
 void ege::physics::Engine::renderDebug(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) {
 	if (propertyDebugShape.get() == true) {
 		for (auto &it : m_component) {
@@ -135,40 +122,13 @@ void ege::physics::Engine::renderDebug(const echrono::Duration& _delta, const em
 			it->drawShape(m_debugDrawProperty, _camera);
 		}
 	}
-}
-
-#if 0
-std::vector<ege::physics::Engine::collisionPoints> ege::physics::Engine::getListOfCollision() {
-	std::vector<collisionPoints> out;
-	/*
-	if (m_dynamicsWorld != nullptr) {
-		int32_t numManifolds = m_dynamicsWorld->getDispatcher()->getNumManifolds();
-		for (int i=0;i<numManifolds;i++) {
-			btPersistentManifold* contactManifold = m_dynamicsWorld->getDispatcher()->getManifoldByIndexInternal(i);
-			const btCollisionObject* obA = static_cast<const btCollisionObject*>(contactManifold->getBody0());
-			const btCollisionObject* obB = static_cast<const btCollisionObject*>(contactManifold->getBody1());
-			if (    obA == nullptr
-			     || obB == nullptr) {
+	if (propertyDebugAABB.get() == true) {
+		for (auto &it : m_component) {
+			if (it == nullptr) {
 				continue;
 			}
-			ege::EntityPhysic* elem0 = static_cast<ege::EntityPhysic*>(obA->getUserPointer());
-			ege::EntityPhysic* elem1 = static_cast<ege::EntityPhysic*>(obB->getUserPointer());
-			if (    elem0 == nullptr
-			     || elem1 == nullptr) {
-				continue;
-			}
-			int numContacts = contactManifold->getNumContacts();
-			for (int j=0;j<numContacts;j++) {
-				btManifoldPoint& pt = contactManifold->getContactPoint(j);
-				if (pt.getDistance()<0.f) {
-					out.push_back(collisionPoints(elem0->sharedFromThis(), elem1->sharedFromThis(), pt.getPositionWorldOnA(), pt.getPositionWorldOnB(), pt.m_normalWorldOnB));
-				}
-			}
+			it->drawAABB(m_debugDrawProperty, _camera);
 		}
 	}
-	*/
-	return out;
 }
-
-#endif
 

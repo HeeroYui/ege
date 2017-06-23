@@ -19,6 +19,10 @@ const std::string& ege::physics::Component::getType() const {
 	return tmp;
 }
 
+void ege::physics::Component::notifyContact(const rp3d::ContactPointInfo& _contactPointInfo) {
+	EGE_INFO("collision detection " << vec3(_contactPointInfo.normal.x, _contactPointInfo.normal.y, _contactPointInfo.normal.z) << " depth=" << _contactPointInfo.penetrationDepth);
+}
+
 ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env) {
 	m_engine = ememory::dynamicPointerCast<ege::physics::Engine>(_env->getEngine(getType()));
 	// Initial position and orientation of the rigid body
@@ -27,6 +31,8 @@ ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env) {
 	rp3d::Transform transform(initPosition, initOrientation);
 	m_lastTransformEmit = etk::Transform3D(vec3(0,0,0), etk::Quaternion::identity());
 	m_rigidBody = m_engine->getDynamicWorld()->createRigidBody(transform);
+	// set collision callback:
+	m_engine->getDynamicWorld()->testCollision(m_rigidBody, this);
 }
 
 ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env, const etk::Transform3D& _transform) {
@@ -42,6 +48,8 @@ ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env, c
 	// Create a rigid body in the world
 	m_rigidBody = m_engine->getDynamicWorld()->createRigidBody(transform);
 	m_lastTransformEmit = _transform;
+	// set collision callback:
+	m_engine->getDynamicWorld()->testCollision(m_rigidBody, this);
 }
 
 void ege::physics::Component::setType(enum ege::physics::Component::type _type) {
@@ -65,6 +73,8 @@ ege::physics::Component::~Component() {
 	if (m_rigidBody == nullptr) {
 		return;
 	}
+	// disable callback
+	m_engine->getDynamicWorld()->testCollision(m_rigidBody, nullptr);
 	m_engine->getDynamicWorld()->destroyRigidBody(m_rigidBody);
 	m_rigidBody = nullptr;
 }
@@ -427,4 +437,17 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 				break;
 		}
 	}
+}
+
+void ege::physics::Component::drawAABB(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
+	if (m_rigidBody == nullptr) {
+		return;
+	}
+	mat4 transformationMatrix;
+	etk::Color<float> tmpColor(0.0, 1.0, 0.0, 0.8);
+	rp3d::AABB value = m_rigidBody->getAABB();
+	vec3 minimum(value.getMin().x, value.getMin().y, value.getMin().z);
+	vec3 maximum(value.getMax().x, value.getMax().y, value.getMax().z);
+	_draw->drawCubeLine(minimum, maximum, tmpColor, transformationMatrix);
+	
 }

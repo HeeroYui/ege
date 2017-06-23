@@ -15,7 +15,7 @@ namespace ege {
 			protected:
 				
 			public:
-				virtual const std::string& getType() const;
+				virtual const std::string& getType() const override;
 		};
 	}
 }

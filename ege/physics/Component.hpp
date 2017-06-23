@@ -18,7 +18,9 @@ namespace ege {
 	class Environement;
 	namespace physics {
 		class Engine;
-		class Component : public ege::Component {
+		class Component :
+		  public ege::Component,
+		  public rp3d::CollisionCallback {
 			public:
 				esignal::Signal<etk::Transform3D> signalPosition;
 			protected:
@@ -40,7 +42,7 @@ namespace ege {
 				Component(ememory::SharedPtr<ege::Environement> _env, const etk::Transform3D& _transform);
 				~Component();
 			public:
-				virtual const std::string& getType() const;
+				virtual const std::string& getType() const override;
 				
 				enum class type {
 					bodyDynamic,
@@ -86,9 +88,13 @@ namespace ege {
 				void addShape(const ememory::SharedPtr<ege::physics::Shape>& _shape);
 				void generate();
 				void drawShape(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
+				void drawAABB(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);
 			private:
 				void emitAll();
 				friend class ege::physics::Engine;
+			private:
+				// herited from rp3d::CollisionCallback to notify the contact on the current rigid body
+				void notifyContact(const rp3d::ContactPointInfo& _contactPointInfo) override;
 		};
 	}
 }

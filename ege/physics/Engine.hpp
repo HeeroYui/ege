@@ -29,7 +29,9 @@ namespace ege {
 
 namespace ege {
 	namespace physics {
-		class Engine : public ege::Engine {
+		class Engine:
+		  public ege::Engine,
+		  public rp3d::EventListener {
 			public:
 				eproperty::Value<bool> propertyDebugAABB;
 				eproperty::Value<bool> propertyDebugShape;
@@ -40,42 +42,11 @@ namespace ege {
 				Engine(ege::Environement* _env);
 				~Engine();
 			public:
-				// Define a collision point ==> for debug only ...
-				//! @not_in_doc
-#if 0
-				class collisionPoints {
-					public:
-						ememory::SharedPtr<ege::Element> elem1;
-						ememory::SharedPtr<ege::Element> elem2;
-						vec3 positionElem1;
-						vec3 positionElem2;
-						vec3 normalElem2;
-						collisionPoints(const ememory::SharedPtr<ege::Element>& _elem1,
-						                const ememory::SharedPtr<ege::Element>& _elem2,
-						                const vec3& _pos1,
-						                const vec3& _pos2,
-						                const vec3& _normal) :
-						  elem1(_elem1),
-						  elem2(_elem2),
-						  positionElem1(_pos1),
-						  positionElem2(_pos2),
-						  normalElem2(_normal) { }
-				};
-				/**
-				 * @brief Get the list of all collision point actually availlable ...
-				 * @return the requested list of points
-				 */
-				std::vector<ege::physics::Engine::collisionPoints> getListOfCollision();
-#endif
 				/**
 				 * @brief Set the gravity axis of the physic engine
 				 * @param[in] _axePower energy of this gravity
 				 */
 				void setGravity(const vec3& _axePower);
-				
-				void debugDrawWorld() {
-					// TODO: later ...
-				}
 				rp3d::DynamicsWorld* getDynamicWorld() {
 					return m_dynamicsWorld;
 				}
@@ -89,6 +60,10 @@ namespace ege {
 				void componentAdd(const ememory::SharedPtr<ege::Component>& _ref) override;
 				void update(const echrono::Duration& _delta) override;
 				void renderDebug(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) override;
+			private:
+				// herited from rp3D::EventListener
+				void beginContact(const rp3d::ContactPointInfo& _contact) override;
+				void newContact(const rp3d::ContactPointInfo& _contact) override;
 		};
 	}
 }
