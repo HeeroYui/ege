@@ -13,4 +13,5 @@ sample/Particle
 sample/RayTest
 sample/Script
 sample/StereoVision
+sample/TorqueApply
 sample/LowPoly
