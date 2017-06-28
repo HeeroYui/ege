@@ -159,7 +159,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	int32_t nbElementDrawTheoric = 0;
 	int32_t nbElementDraw = 0;
 	#endif
-	for (int32_t kkk=0; kkk<m_listFaces.size(); kkk++) {
+	for (size_t kkk=0; kkk<m_listFaces.size(); kkk++) {
 		if (m_materials.exist(m_listFaces.getKey(kkk)) == false) {
 			EGE_WARNING("missing materials : '" << m_listFaces.getKey(kkk) << "'");
 			continue;
@@ -250,9 +250,9 @@ void ege::resource::Mesh::drawNormal(mat4& _positionMatrix,
 	// generate element in 2 pass : 
 	//    - create new index dependeng a vertex is a unique componenet of position, texture, normal
 	//    - the index list generation (can be dynamic ... (TODO later)
-	for (int32_t kkk=0; kkk<m_listFaces.size(); kkk++) {
+	for (size_t kkk=0; kkk<m_listFaces.size(); kkk++) {
 		// clean faces indexes :
-		int32_t nbIndicInFace = 3;
+		size_t nbIndicInFace = 3;
 		switch (m_materials[m_listFaces.getKey(kkk)]->getRenderMode()) {
 			case gale::openGL::renderMode::triangle:
 			case gale::openGL::renderMode::triangleStrip:
@@ -296,7 +296,7 @@ void ege::resource::Mesh::drawNormal(mat4& _positionMatrix,
 							center += position;
 						}
 						center /= float(nbIndicInFace);
-						int32_t index = tmpFaceList.m_faces[iii].m_normal[0];
+						size_t index = tmpFaceList.m_faces[iii].m_normal[0];
 						if (index >= m_listFacesNormal.size()) {
 							EGE_ERROR("not enougth normal in the buffer ... " << index << " >= " << m_listFacesNormal.size());
 							return;
@@ -401,7 +401,7 @@ void ege::resource::Mesh::generateVBO() {
 	// generate element in 2 pass:
 	//    - create new index depending on a vertex is a unique component of position, texture, normal
 	//    - the index list generation (can be dynamic ... (TODO later))
-	for (int32_t kkk=0; kkk<m_listFaces.size(); kkk++) {
+	for (size_t kkk=0; kkk<m_listFaces.size(); kkk++) {
 		// clean faces indexes :
 		m_listFaces.getValue(kkk).m_index.clear();
 		int32_t nbIndicInFace = 3;
@@ -723,12 +723,23 @@ const std::vector<ememory::SharedPtr<ege::physics::Shape>>& ege::resource::Mesh:
 				return m_physics;
 			}
 			tmpElement->clear();
+			//EGE_INFO(" add vertices : " << m_listVertex);
 			tmpElement->setListOfVertex(m_listVertex);
-			for (int32_t kkk=0; kkk<m_listFaces.size(); kkk++) {
-				tmpElement->addTriangle(m_listFaces.getValue(kkk).m_index);
+			for (size_t kkk=0; kkk<m_listFaces.size(); ++kkk) {
+				std::vector<uint32_t> index;
+				for (auto &it : m_listFaces.getValue(kkk).m_faces) {
+					index.push_back(it.m_vertex[0]);
+					index.push_back(it.m_vertex[1]);
+					index.push_back(it.m_vertex[2]);
+				}
+				//EGE_INFO(" add triangle : " << m_listFaces.getValue(kkk).m_index);
+				
+				//tmpElement->addTriangle(m_listFaces.getValue(kkk).m_index);
+				tmpElement->addTriangle(index);
 			}
+			//EGE_CRITICAL("kjlkj");
 			// Can have only one concave element in a mesh ...
-			return m_physics;
+			//return m_physics;
 		}
 	}
 	return m_physics;

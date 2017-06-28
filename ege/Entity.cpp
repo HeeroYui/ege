@@ -42,7 +42,7 @@ void ege::Entity::addComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 	ememory::SharedPtr<ege::Component> componentRemoved;
 	int32_t findId = -1;
 	// check if not exist
-	for (int32_t iii=0; iii<m_component.size(); ++iii) {
+	for (size_t iii=0; iii<m_component.size(); ++iii) {
 		if (m_component[iii] == nullptr) {
 			continue;
 		}
@@ -55,7 +55,7 @@ void ege::Entity::addComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 	}
 	// try to add in an empty slot
 	if (findId == -1) {
-		for (int32_t iii=0; iii<m_component.size(); ++iii) {
+		for (size_t iii=0; iii<m_component.size(); ++iii) {
 			if (m_component[iii] != nullptr) {
 				continue;
 			}
@@ -69,7 +69,7 @@ void ege::Entity::addComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 		findId = m_component.size();
 		m_component.push_back(_ref);
 	}
-	for (int32_t iii=0; iii<m_component.size(); ++iii) {
+	for (size_t iii=0; iii<m_component.size(); ++iii) {
 		if (m_component[iii] == nullptr) {
 			continue;
 		}
@@ -82,7 +82,7 @@ void ege::Entity::addComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 	}
 	// notify new component of all previously added component:
 	componentRemoved = _ref;
-	for (int32_t iii=0; iii<m_component.size(); ++iii) {
+	for (size_t iii=0; iii<m_component.size(); ++iii) {
 		if (m_component[iii] == nullptr) {
 			continue;
 		}
@@ -100,7 +100,7 @@ void ege::Entity::rmComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 	}
 	int32_t findId = -1;
 	// check if not exist
-	for (int32_t iii=0; iii<m_component.size(); ++iii) {
+	for (size_t iii=0; iii<m_component.size(); ++iii) {
 		if (m_component[iii] == nullptr) {
 			continue;
 		}
@@ -114,7 +114,7 @@ void ege::Entity::rmComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 		EGE_ERROR("try to remove an unexisting component");
 		return;
 	}
-	for (int32_t iii=0; iii<m_component.size(); ++iii) {
+	for (size_t iii=0; iii<m_component.size(); ++iii) {
 		if (m_component[iii] == nullptr) {
 			continue;
 		}
@@ -127,7 +127,7 @@ void ege::Entity::rmComponent(const std::string& _type) {
 	int32_t findId = -1;
 	ememory::SharedPtr<ege::Component> componentRemoved;
 	// check if not exist
-	for (int32_t iii=0; iii<m_component.size(); ++iii) {
+	for (size_t iii=0; iii<m_component.size(); ++iii) {
 		if (m_component[iii] == nullptr) {
 			continue;
 		}
@@ -142,7 +142,7 @@ void ege::Entity::rmComponent(const std::string& _type) {
 		EGE_ERROR("try to remove an unexisting component type : '" << _type << "'");
 		return;
 	}
-	for (int32_t iii=0; iii<m_component.size(); ++iii) {
+	for (size_t iii=0; iii<m_component.size(); ++iii) {
 		if (m_component[iii] == nullptr) {
 			continue;
 		}

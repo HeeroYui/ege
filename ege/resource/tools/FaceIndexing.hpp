@@ -9,7 +9,7 @@ namespace ege {
 	class FaceIndexing {
 		public:
 			std::vector<Face> m_faces;
-			std::vector<uint32_t> m_index;
+			std::vector<uint32_t> m_index; //!< index of the vertex in the VBO not in the Mesh.m_listVertex
 	};
 }
 

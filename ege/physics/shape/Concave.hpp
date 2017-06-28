@@ -33,7 +33,7 @@ namespace ege {
 					}
 				private:
 					std::vector<vec3> m_listVertex;
-					std::vector<int> m_indices; // TODO : do it better: this is dependent of ephysics
+					std::vector<uint32_t> m_indices;
 				public:
 					void clear() {
 						m_listVertex.clear();
@@ -49,6 +49,10 @@ namespace ege {
 							return;
 						}
 						*/
+						if (_index.size()%3 != 0 ) {
+							EGE_ERROR("wrong number of faces : " << _index.size() << " ==> not a multiple of 3");
+							return;
+						}
 						for (auto &it: _index) {
 							m_indices.push_back(it);
 						}
@@ -56,7 +60,7 @@ namespace ege {
 					const std::vector<vec3>& getVertex() const {
 						return m_listVertex;
 					}
-					const std::vector<int>& getIndices() const {
+					const std::vector<uint32_t>& getIndices() const {
 						return m_indices;
 					}
 			};

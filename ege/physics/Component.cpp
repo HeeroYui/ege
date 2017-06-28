@@ -200,18 +200,14 @@ void ege::physics::Component::generate() {
 					EGE_ERROR("    Concave ==> can not cast in Concave");
 					continue;
 				}
-				
-				/*
-				float* vertices = (float*)&tmpElement->getVertex()[0];
-				int* indices = (int*)&tmpElement->getIndices()[0];
-				
-				int32_t nbVertices = tmpElement->getVertex().size();
-				int32_t nbTriangles = tmpElement->getIndices().size()/3;
-				*/
+				#if 0
 				static const std::vector<vec3> vertices = {vec3(-100.0f,-100.0f,-50.0f),vec3(100.0f,-100.0f,-50.0f),vec3(100.0f,100.0f,-50.0f)};
-				static const std::vector<size_t> indices = {1,2,3};
+				static const std::vector<uint32_t> indices = {0,1,2};
 				
 				ephysics::TriangleVertexArray* triangleArray = new ephysics::TriangleVertexArray(vertices, indices);
+				#else
+				ephysics::TriangleVertexArray* triangleArray = new ephysics::TriangleVertexArray(tmpElement->getVertex(), tmpElement->getIndices());
+				#endif
 				// Now that we have a TriangleVertexArray, we need to create a TriangleMesh and add the TriangleVertexArray into it as a subpart.
 				// Once this is done, we can create the actual ConcaveMeshShape and add it to the body we want to simulate as in the following example:
 				ephysics::TriangleMesh* triangleMesh = new ephysics::TriangleMesh();
@@ -221,7 +217,7 @@ void ege::physics::Component::generate() {
 				// TODO : Manage memory leak ...
 				ephysics::ConcaveShape* shape = new ephysics::ConcaveMeshShape(triangleMesh);
 				// The ephysic use Y as UP ==> ege use Z as UP
-				//etk::Quaternion orientation = it->getOrientation() * ephysics::Quaternion(-0.707107, 0, 0, 0.707107);
+				etk::Quaternion orientation = it->getOrientation() * etk::Quaternion(-0.707107, 0, 0, 0.707107);
 				etk::Transform3D transform(it->getOrigin(), it->getOrientation());
 				ephysics::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
@@ -490,6 +486,22 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 				_draw->drawSphere(tmpElement->getRadius(), 10, 10, transformationMatrixLocal, tmpColor);
 				break;
 			}
+			case ege::physics::Shape::type::concave: {
+				EGE_DEBUG("    concave");
+				const ege::physics::shape::Concave* tmpElement = it->toConcave();
+				if (tmpElement == nullptr) {
+					EGE_ERROR("    concave ==> can not cast in convexHull");
+					continue;
+				}
+				etk::Transform3D transformLocal(it->getOrigin(), it->getOrientation());
+				transformLocal.getOpenGLMatrix(mmm);
+				mat4 transformationMatrixLocal(mmm);
+				transformationMatrixLocal.transpose();
+				transformationMatrixLocal = transformationMatrix * transformationMatrixLocal;
+				
+				_draw->drawTriangles(tmpElement->getVertex(), tmpElement->getIndices(), transformationMatrixLocal, tmpColor);
+				break;
+			}
 			case ege::physics::Shape::type::convexHull: {
 				EGE_DEBUG("    convexHull");
 				const ege::physics::shape::ConvexHull* tmpElement = it->toConvexHull();
@@ -497,18 +509,6 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 					EGE_ERROR("    convexHull ==> can not cast in convexHull");
 					continue;
 				}
-				/*
-				btConvexHullShape* tmpShape = new btConvexHullShape(&(tmpElement->getPointList()[0].x()), tmpElement->getPointList().size());
-				if (tmpShape != nullptr) {
-					if (outputShape == nullptr) {
-						return tmpShape;
-					} else {
-						vec4 qqq = tmpElement->getQuaternion();
-						const btTransform localTransform(btQuaternion(qqq.x(),qqq.y(),qqq.z(),qqq.w()), tmpElement->getOrigin());
-						outputShape->addChildShape(localTransform, tmpShape);
-					}
-				}
-				*/
 				break;
 			}
 			default :
