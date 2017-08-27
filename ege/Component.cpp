@@ -5,8 +5,8 @@
  */
 #include <ege/Component.hpp>
 
-const std::string& ege::Component::getType() const {
-	static std::string tmp("component");
+const etk::String& ege::Component::getType() const {
+	static etk::String tmp("component");
 	return tmp;
 }
 

@@ -27,7 +27,7 @@ void ege::Ray::setDirection(const vec3& _direction) {
 
 
 
-std::ostream& ege::operator <<(std::ostream& _os, const ege::Ray& _obj) {
+etk::Stream& ege::operator <<(etk::Stream& _os, const ege::Ray& _obj) {
 	_os << "{ori=";
 	_os << _obj.getOrigin();
 	_os << " dir=";

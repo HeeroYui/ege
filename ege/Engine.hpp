@@ -29,7 +29,7 @@ namespace ege {
 			 * @brief get the type of the engine
 			 * @return the type in string
 			 */
-			virtual const std::string& getType() const;
+			virtual const etk::String& getType() const;
 			/**
 			 * @brief An ege::Entity component has been removed ==> need remove it in local if needed
 			 * @param[in] _ref Referrence on the component

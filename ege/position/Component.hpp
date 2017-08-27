@@ -39,7 +39,7 @@ namespace ege {
 				 */
 				const etk::Transform3D& getTransform() const;
 			public:
-				const std::string& getType() const override;
+				const etk::String& getType() const override;
 				void addFriendComponent(const ememory::SharedPtr<ege::Component>& _component) override;
 		};
 	}

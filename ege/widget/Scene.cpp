@@ -17,7 +17,7 @@
 #include <etk/math/Matrix4x4.hpp>
 
 namespace etk {
-	template<> std::string to_string<ememory::SharedPtr<ewol::resource::Colored3DObject> >(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _value) {
+	template<> etk::String toString<ememory::SharedPtr<ewol::resource::Colored3DObject> >(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _value) {
 		return "{{ERROR}}";
 	}
 };
@@ -119,7 +119,7 @@ void ege::widget::Scene::systemDraw(const ewol::DrawProperty& _displayProp) {
 }
 
 
-void ege::widget::Scene::setCamera(const std::string& _cameraName) {
+void ege::widget::Scene::setCamera(const etk::String& _cameraName) {
 	if (m_cameraName == _cameraName) {
 		return;
 	}

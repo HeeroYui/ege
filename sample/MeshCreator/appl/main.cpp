@@ -33,7 +33,7 @@ class MainApplication : public ewol::context::Application {
 			ememory::SharedPtr<appl::Windows> basicWindows = appl::Windows::create();
 			
 			for( int32_t iii=0 ; iii<_context.getCmd().size(); iii++) {
-				std::string tmpppp = _context.getCmd().get(iii);
+				etk::String tmpppp = _context.getCmd().get(iii);
 				if (    tmpppp == "-h"
 				     || tmpppp == "--help") {
 					APPL_PRINT("  -h/--help       display this help");
@@ -43,7 +43,7 @@ class MainApplication : public ewol::context::Application {
 					APPL_PRINT("  --debug-shape   Display Shape");
 					exit(0);
 				} else if (etk::start_with(tmpppp, "--mesh=") == true) {
-					std::string fileName = &tmpppp[7];
+					etk::String fileName = &tmpppp[7];
 					basicWindows->setMeshName(fileName);
 				} else if (tmpppp == "--debug-normal") {
 					basicWindows->setDebugNormal();

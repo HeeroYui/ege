@@ -29,9 +29,9 @@ namespace ege {
 						return m_scale;
 					};
 				private:
-					std::vector<vec3> m_points;
+					etk::Vector<vec3> m_points;
 				public:
-					const std::vector<vec3>& getPointList() const {
+					const etk::Vector<vec3>& getPointList() const {
 						return m_points;
 					};
 				public:

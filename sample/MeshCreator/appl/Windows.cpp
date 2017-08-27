@@ -160,7 +160,7 @@ void appl::Windows::setDebugShape() {
 	m_env->getEngine("physics")->properties.set("debug-shape", "true");
 }
 
-void appl::Windows::setMeshName(const std::string& _fileName) {
+void appl::Windows::setMeshName(const etk::String& _fileName) {
 	// Create an external box: (no physics)
 	ememory::SharedPtr<ege::resource::Mesh> myMesh = ege::resource::Mesh::create(_fileName);
 	if (myMesh != nullptr) {

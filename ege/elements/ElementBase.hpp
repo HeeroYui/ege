@@ -32,7 +32,7 @@ namespace ege {
 			 * @brief get the element Type description string.
 			 * @return A reference on the descriptive string.
 			 */
-			virtual const std::string& getType() const;
+			virtual const etk::String& getType() const;
 			virtual void draw(int32_t _pass=0);
 		private:
 			vec3 m_position;

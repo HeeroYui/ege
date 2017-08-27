@@ -12,8 +12,8 @@
 #include <gale/renderer/openGL/openGL.hpp>
 #include <etk/math/Matrix4x4.hpp>
 
-const std::string& ege::physics::Engine::getType() const {
-	static std::string tmp("physics");
+const etk::String& ege::physics::Engine::getType() const {
+	static etk::String tmp("physics");
 	return tmp;
 }
 
@@ -81,7 +81,7 @@ void ege::physics::Engine::componentAdd(const ememory::SharedPtr<ege::Component>
 			return;
 		}
 	}
-	m_component.push_back(ref);
+	m_component.pushBack(ref);
 }
 
 ege::physics::Engine::Engine(ege::Environement* _env) :
@@ -196,7 +196,7 @@ class MyCallbackClass : public ephysics::RaycastCallback {
 		}
 };
 
-std::pair<vec3,vec3> ege::physics::Engine::testRay(const ege::Ray& _ray) {
+etk::Pair<vec3,vec3> ege::physics::Engine::testRay(const ege::Ray& _ray) {
 	vec3 start = _ray.getOrigin();
 	vec3 stop = _ray.getOrigin()+_ray.getDirection()*1000.0f;
 	// Start and End are vectors
@@ -207,13 +207,13 @@ std::pair<vec3,vec3> ege::physics::Engine::testRay(const ege::Ray& _ray) {
 	// Raycast test
 	m_dynamicsWorld->raycast(ray, &callbackObject);
 	if (callbackObject.m_haveImpact == true) {
-		return std::pair<vec3,vec3>(callbackObject.m_position, callbackObject.m_normal);
+		return etk::Pair<vec3,vec3>(callbackObject.m_position, callbackObject.m_normal);
 	}
 	EGE_VERBOSE("    No Hit");
-	return std::pair<vec3,vec3>(vec3(0,0,0),vec3(0,0,0));
+	return etk::Pair<vec3,vec3>(vec3(0,0,0),vec3(0,0,0));
 }
 
-std::pair<ememory::SharedPtr<ege::Component>, std::pair<vec3,vec3>> ege::physics::Engine::testRayObject(const ege::Ray& _ray) {
+etk::Pair<ememory::SharedPtr<ege::Component>, etk::Pair<vec3,vec3>> ege::physics::Engine::testRayObject(const ege::Ray& _ray) {
 	vec3 start = _ray.getOrigin();
 	vec3 stop = _ray.getOrigin()+_ray.getDirection()*1000.0f;
 	// Start and End are vectors
@@ -226,13 +226,13 @@ std::pair<ememory::SharedPtr<ege::Component>, std::pair<vec3,vec3>> ege::physics
 	if (callbackObject.m_haveImpact == true) {
 		if (    callbackObject.m_body == nullptr
 		     || callbackObject.m_body->getUserData() == nullptr) {
-			std::pair<ememory::SharedPtr<ege::Component>, std::pair<vec3,vec3>>(nullptr, std::pair<vec3,vec3>(callbackObject.m_position, callbackObject.m_normal));
+			etk::Pair<ememory::SharedPtr<ege::Component>, etk::Pair<vec3,vec3>>(nullptr, std::pair<vec3,vec3>(callbackObject.m_position, callbackObject.m_normal));
 		}
 		// TODO: je n'ai pas une entity, main un component ...
 		ege::physics::Component* elem = static_cast<ege::physics::Component*>(callbackObject.m_body->getUserData());
-		return std::pair<ememory::SharedPtr<ege::Component>, std::pair<vec3,vec3>>(elem->sharedFromThis(), std::pair<vec3,vec3>(callbackObject.m_position, callbackObject.m_normal));
+		return etk::Pair<ememory::SharedPtr<ege::Component>, etk::Pair<vec3,vec3>>(elem->sharedFromThis(), std::pair<vec3,vec3>(callbackObject.m_position, callbackObject.m_normal));
 	}
 	EGE_VERBOSE("    No Hit");
-	return std::pair<ememory::SharedPtr<ege::Component>, std::pair<vec3,vec3>>(nullptr, std::pair<vec3,vec3>(vec3(0,0,0),vec3(0,0,0)));
+	return etk::Pair<ememory::SharedPtr<ege::Component>, etk::Pair<vec3,vec3>>(nullptr, std::pair<vec3,vec3>(vec3(0,0,0),vec3(0,0,0)));
 	
 }

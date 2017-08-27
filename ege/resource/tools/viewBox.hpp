@@ -12,8 +12,8 @@
 
 namespace ege {
 	namespace viewBox {
-		void create(etk::Hash<ememory::SharedPtr<ege::Material>>& _materials, etk::Hash<FaceIndexing>& _listFaces, std::vector<vec3>& _listVertex, std::vector<vec2>& _listUV,
-		            const std::string& _materialName, float _size);
+		void create(etk::Hash<ememory::SharedPtr<ege::Material>>& _materials, etk::Hash<FaceIndexing>& _listFaces, etk::Vector<vec3>& _listVertex, etk::Vector<vec2>& _listUV,
+		            const etk::String& _materialName, float _size);
 	}
 }
 

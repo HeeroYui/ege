@@ -17,7 +17,7 @@ ege::MaterialGlId::MaterialGlId() :
 	// nothing to do else ...
 }
 
-void ege::MaterialGlId::link(ememory::SharedPtr<gale::resource::Program> _prog, const std::string& _baseName) {
+void ege::MaterialGlId::link(ememory::SharedPtr<gale::resource::Program> _prog, const etk::String& _baseName) {
 	if (_prog == nullptr) {
 		return;
 	}
@@ -66,7 +66,7 @@ void ege::Material::draw(ememory::SharedPtr<gale::resource::Program> _prog, cons
 	EGE_VERBOSE("draw Material: ( end )");
 }
 
-void ege::Material::setTexture0(const std::string& _filename) {
+void ege::Material::setTexture0(const etk::String& _filename) {
 	ivec2 tmpSize(256, 256);
 	if (_filename != "") {
 		// prevent overloard error :

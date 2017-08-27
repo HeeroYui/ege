@@ -29,7 +29,7 @@ namespace ege {
 		public:
 			Light();
 			~Light();
-			void link(ememory::SharedPtr<gale::resource::Program> _prog, const std::string& _baseName);
+			void link(ememory::SharedPtr<gale::resource::Program> _prog, const etk::String& _baseName);
 			void draw(ememory::SharedPtr<gale::resource::Program> _prog);
 			void setDirection(const vec3& val) {
 				m_direction = val;
@@ -47,8 +47,8 @@ namespace ege {
 				m_specularColor = val;
 			}
 			
-		friend std::ostream& operator <<(std::ostream& _os, const ege::Light& _obj);
+		friend etk::Stream& operator <<(etk::Stream& _os, const ege::Light& _obj);
 	};
-	std::ostream& operator <<(std::ostream& _os, const ege::Light& _obj);
+	etk::Stream& operator <<(etk::Stream& _os, const ege::Light& _obj);
 }
 

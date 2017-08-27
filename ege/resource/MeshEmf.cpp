@@ -139,7 +139,7 @@ enum emfModuleMode {
 };
 
 // TODO : rework with string line extractor
-bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
+bool ege::resource::Mesh::loadEMF(const etk::String& _fileName) {
 	m_checkNormal = true;
 	m_normalMode = ege::resource::Mesh::normalMode::none;
 	etk::FSNode fileName(_fileName);
@@ -168,10 +168,10 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 	enum emfModuleMode currentMode = EMFModuleNone;
 	EGE_VERBOSE("Start parsing Mesh file : " << fileName);
 	// mesh global param :
-	std::string currentMeshName = "";
+	etk::String currentMeshName = "";
 	int32_t meshFaceMaterialID = -1;
 	// material global param :
-	std::string materialName = "";
+	etk::String materialName = "";
 	ememory::SharedPtr<ege::Material> material;
 	// physical shape:
 	ememory::SharedPtr<ege::physics::Shape> physics;
@@ -266,7 +266,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 								break;
 							}
 							sscanf(inputDataLine, "%f %f %f", &vertex.m_floats[0], &vertex.m_floats[1], &vertex.m_floats[2] );
-							m_listVertex.push_back(vertex);
+							m_listVertex.pushBack(vertex);
 							int32_t len = strlen(inputDataLine)-1;
 							if(    inputDataLine[len] == '\n'
 							    || inputDataLine[len] == '\r') {
@@ -283,7 +283,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 								break;
 							}
 							sscanf(inputDataLine, "%f %f", &uvMap.m_floats[0], &uvMap.m_floats[1]);
-							m_listUV.push_back(uvMap);
+							m_listUV.pushBack(uvMap);
 							int32_t len = strlen(inputDataLine)-1;
 							if(    inputDataLine[len] == '\n'
 							    || inputDataLine[len] == '\r') {
@@ -302,7 +302,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 								break;
 							}
 							sscanf(inputDataLine, "%f %f %f", &normal.m_floats[0], &normal.m_floats[1], &normal.m_floats[2] );
-							m_listVertexNormal.push_back(normal);
+							m_listVertexNormal.pushBack(normal);
 							int32_t len = strlen(inputDataLine)-1;
 							if(    inputDataLine[len] == '\n'
 							    || inputDataLine[len] == '\r') {
@@ -322,7 +322,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 								break;
 							}
 							sscanf(inputDataLine, "%f %f %f", &normal.m_floats[0], &normal.m_floats[1], &normal.m_floats[2] );
-							m_listFacesNormal.push_back(normal);
+							m_listFacesNormal.pushBack(normal);
 							int32_t len = strlen(inputDataLine)-1;
 							if(    inputDataLine[len] == '\n'
 							    || inputDataLine[len] == '\r') {
@@ -406,7 +406,7 @@ bool ege::resource::Mesh::loadEMF(const std::string& _fileName) {
 										normalIndex[2] += offsetVertexNormal;
 									}
 								}
-								m_listFaces.getValue(meshFaceMaterialID).m_faces.push_back(Face(vertexIndex[0], uvIndex[0], normalIndex[0],
+								m_listFaces.getValue(meshFaceMaterialID).m_faces.pushBack(Face(vertexIndex[0], uvIndex[0], normalIndex[0],
 								                                                                vertexIndex[1], uvIndex[1], normalIndex[1],
 								                                                                vertexIndex[2], uvIndex[2], normalIndex[2]));
 								/*

@@ -42,7 +42,7 @@ void ege::Environement::addEngine(const ememory::SharedPtr<ege::Engine>& _ref) {
 		return;
 	}
 	// add it at the end ...
-	m_engine.push_back(_ref);
+	m_engine.pushBack(_ref);
 }
 
 void ege::Environement::rmEngine(const ememory::SharedPtr<ege::Engine>& _ref) {
@@ -63,7 +63,7 @@ void ege::Environement::rmEngine(const ememory::SharedPtr<ege::Engine>& _ref) {
 	EGE_ERROR("try to remove an unexisting engine");
 }
 
-void ege::Environement::rmEngine(const std::string& _type) {
+void ege::Environement::rmEngine(const etk::String& _type) {
 	// check if not exist
 	for (auto &it: m_engine) {
 		if (it == nullptr) {
@@ -78,7 +78,7 @@ void ege::Environement::rmEngine(const std::string& _type) {
 	return;
 }
 
-ememory::SharedPtr<ege::Engine> ege::Environement::getEngine(const std::string& _type) {
+ememory::SharedPtr<ege::Engine> ege::Environement::getEngine(const etk::String& _type) {
 	// check if not exist
 	for (auto &it: m_engine) {
 		if (it == nullptr) {
@@ -149,7 +149,7 @@ ememory::SharedPtr<ege::Entity> ege::Environement::getEntityNearest(ememory::Sha
 
 void ege::Environement::getEntityNearest(const vec3& _sourcePosition,
                                           float _distanceMax,
-                                          std::vector<ege::Environement::ResultNearestEntity>& _resultList) {
+                                          etk::Vector<ege::Environement::ResultNearestEntity>& _resultList) {
 	_resultList.clear();
 	ege::Environement::ResultNearestEntity result;
 	result.dist = 99999999999.0f;
@@ -168,14 +168,14 @@ void ege::Environement::getEntityNearest(const vec3& _sourcePosition,
 		result.dist = (_sourcePosition - destPosition).length();
 		//EGE_DEBUG("Distance : " << _distance << " >? " << distance << " id=" << iii);
 		if (_distanceMax>result.dist) {
-			_resultList.push_back(result);
+			_resultList.pushBack(result);
 		}
 	}
 }
 
 void ege::Environement::getEntityNearestFixed(const vec3& _sourcePosition,
                                                float _distanceMax,
-                                               std::vector<ege::Environement::ResultNearestEntity>& _resultList) {
+                                               etk::Vector<ege::Environement::ResultNearestEntity>& _resultList) {
 	_resultList.clear();
 	ege::Environement::ResultNearestEntity result;
 	result.dist = 99999999999.0f;
@@ -206,7 +206,7 @@ void ege::Environement::getEntityNearestFixed(const vec3& _sourcePosition,
 		}
 		// add entity at the end :
 		if (jjj >= _resultList.size()) {
-			_resultList.push_back(result);
+			_resultList.pushBack(result);
 		}
 	}
 }
@@ -217,7 +217,7 @@ static etk::Hash<ege::createEntity_tf>& getHachTableCreating() {
 	return s_table;
 }
 
-void ege::Environement::addCreator(const std::string& _type, ege::createEntity_tf _creator) {
+void ege::Environement::addCreator(const etk::String& _type, ege::createEntity_tf _creator) {
 	if (_creator == nullptr) {
 		EGE_ERROR("Try to add an empty CREATOR ...");
 		return;
@@ -228,7 +228,7 @@ void ege::Environement::addCreator(const std::string& _type, ege::createEntity_t
 }
 
 
-ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const std::string& _type, const std::string& _description, bool _autoAddEntity) {
+ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const etk::String& _type, const etk::String& _description, bool _autoAddEntity) {
 	if (getHachTableCreating().exist(_type) == false) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return nullptr;
@@ -253,7 +253,7 @@ ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const std::strin
 	return tmpEntity;
 }
 
-ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const std::string& _type, const ejson::Value& _value, bool _autoAddEntity) {
+ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const etk::String& _type, const ejson::Value& _value, bool _autoAddEntity) {
 	if (getHachTableCreating().exist(_type) == false) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return nullptr;
@@ -278,7 +278,7 @@ ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const std::strin
 	return tmpEntity;
 }
 
-ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const std::string& _type, const exml::Node& _node, bool _autoAddEntity) {
+ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const etk::String& _type, const exml::Node& _node, bool _autoAddEntity) {
 	if (getHachTableCreating().exist(_type) == false) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return nullptr;
@@ -303,7 +303,7 @@ ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const std::strin
 	return tmpEntity;
 }
 
-ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const std::string& _type, void* _data, bool _autoAddEntity) {
+ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const etk::String& _type, void* _data, bool _autoAddEntity) {
 	if (getHachTableCreating().exist(_type) == false) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return nullptr;
@@ -328,7 +328,7 @@ ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const std::strin
 	return tmpEntity;
 }
 
-ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const std::string& _type, bool _autoAddEntity) {
+ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const etk::String& _type, bool _autoAddEntity) {
 	if (getHachTableCreating().exist(_type) == false) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
 		return nullptr;
@@ -365,7 +365,7 @@ void ege::Environement::addEntity(ememory::SharedPtr<ege::Entity> _newEntity) {
 			return;
 		}
 	}
-	m_listEntity.push_back(_newEntity);
+	m_listEntity.pushBack(_newEntity);
 	_newEntity->dynamicEnable();
 }
 
@@ -435,7 +435,7 @@ void ege::Environement::clear() {
 }
 
 
-void ege::Environement::render(const echrono::Duration& _delta, const std::string& _camera) {
+void ege::Environement::render(const echrono::Duration& _delta, const etk::String& _camera) {
 	// get the correct camera:
 	ememory::SharedPtr<ege::Camera> camera = getCamera(_camera);
 	if (camera == nullptr) {
@@ -531,11 +531,11 @@ void ege::Environement::onCallbackPeriodicCall(const ewol::event::Time& _event) 
 }
 
 
-void ege::Environement::addCamera(const std::string& _name, const ememory::SharedPtr<ege::Camera>& _camera) {
-	m_listCamera.insert(std::make_pair(_name, _camera));
+void ege::Environement::addCamera(const etk::String& _name, const ememory::SharedPtr<ege::Camera>& _camera) {
+	m_listCamera.insert(etk::makePair(_name, _camera));
 }
 
-ememory::SharedPtr<ege::Camera> ege::Environement::getCamera(const std::string& _name) {
+ememory::SharedPtr<ege::Camera> ege::Environement::getCamera(const etk::String& _name) {
 	auto cameraIt = m_listCamera.find(_name);
 	if (cameraIt != m_listCamera.end()) {
 		return cameraIt->second;

@@ -26,7 +26,7 @@ namespace ege {
 		
 		class Shape {
 			public:
-				static ememory::SharedPtr<ege::physics::Shape> create(const std::string& _name);
+				static ememory::SharedPtr<ege::physics::Shape> create(const etk::String& _name);
 			public:
 				enum class type {
 					unknow,

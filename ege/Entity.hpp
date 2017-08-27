@@ -8,7 +8,7 @@
 #include <etk/types.hpp>
 #include <etk/math/Vector3D.hpp>
 #include <etk/math/Matrix4x4.hpp>
-#include <vector>
+#include <etk/Vector.hpp>
 #include <ewol/debug.hpp>
 #include <ewol/widget/Widget.hpp>
 #include <gale/renderer/openGL/openGL.hpp>
@@ -41,17 +41,17 @@ namespace ege {
 			 */
 			virtual ~Entity();
 		protected:
-			std::vector<ememory::SharedPtr<ege::Component>> m_component;
+			etk::Vector<ememory::SharedPtr<ege::Component>> m_component;
 		public:
 			void addComponent(const ememory::SharedPtr<ege::Component>& _ref);
 			void rmComponent(const ememory::SharedPtr<ege::Component>& _ref);
-			void rmComponent(const std::string& _type);
+			void rmComponent(const etk::String& _type);
 			
 			/**
 			 * @brief get the Entity Type description string.
 			 * @return A reference on the descriptive string.
 			 */
-			virtual const std::string& getType() const;
+			virtual const etk::String& getType() const;
 			/**
 			 * @brief init the Entity with the defined properties
 			 * @param[in] _property Type of the next Entity
@@ -59,7 +59,7 @@ namespace ege {
 			 * @return true, the Entity is corectly initialized.
 			 */
 			virtual bool init();
-			virtual bool initString(const std::string& _description);
+			virtual bool initString(const etk::String& _description);
 			virtual bool initXML(const exml::Node& _node);
 			virtual bool initJSON(const ejson::Value& _value);
 			virtual bool initVoid(void* _value);

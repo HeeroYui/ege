@@ -8,8 +8,8 @@
 namespace ege {
 	class FaceIndexing {
 		public:
-			std::vector<Face> m_faces;
-			std::vector<uint32_t> m_index; //!< index of the vertex in the VBO not in the Mesh.m_listVertex
+			etk::Vector<Face> m_faces;
+			etk::Vector<uint32_t> m_index; //!< index of the vertex in the VBO not in the Mesh.m_listVertex
 	};
 }
 

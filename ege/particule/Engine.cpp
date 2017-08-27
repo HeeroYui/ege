@@ -18,8 +18,8 @@ ege::particule::Engine::~Engine() {
 	clear();
 }
 
-const std::string& ege::particule::Engine::getType() const {
-	static std::string tmp("particule");
+const etk::String& ege::particule::Engine::getType() const {
+	static etk::String tmp("particule");
 	return tmp;
 }
 
@@ -46,7 +46,7 @@ void ege::particule::Engine::add(const ememory::SharedPtr<ege::particule::Compon
 		return;
 	}
 	// Just add it at the end ...
-	m_particuleList.push_back(_particule);
+	m_particuleList.pushBack(_particule);
 }
 
 void ege::particule::Engine::addRemoved(const ememory::SharedPtr<ege::particule::Component>& _particule) {
@@ -61,7 +61,7 @@ void ege::particule::Engine::addRemoved(const ememory::SharedPtr<ege::particule:
 		return;
 	}
 	// Just add it at the end ...
-	m_particuleRemoved.push_back(_particule);
+	m_particuleRemoved.pushBack(_particule);
 }
 
 ememory::SharedPtr<ege::particule::Component> ege::particule::Engine::respown(const char* _particuleType) {

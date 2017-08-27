@@ -29,7 +29,7 @@ ege::resource::Mesh::Mesh() :
 	addResourceType("ege::resource::Mesh");
 }
 
-void ege::resource::Mesh::init(const std::string& _fileName, const std::string& _shaderName) {
+void ege::resource::Mesh::init(const etk::String& _fileName, const etk::String& _shaderName) {
 	gale::Resource::init(_fileName);
 	EGE_VERBOSE("Load a new mesh : '" << _fileName << "'");
 	// get the shader resource :
@@ -63,7 +63,7 @@ void ege::resource::Mesh::init(const std::string& _fileName, const std::string& 
 	// TO facilitate some debugs we add a name of the VBO:
 	m_verticesVBO->setName("[VBO] of " + _fileName);
 	// load the curent file :
-	std::string tmpName = etk::tolower(_fileName);
+	etk::String tmpName = etk::tolower(_fileName);
 	// select the corect loader :
 	if (etk::end_with(tmpName, ".obj") == true) {
 		if (loadOBJ(_fileName) == false) {
@@ -180,16 +180,16 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 			vec3 cameraNormal = vec3(0,0,-1);
 			cameraNormal.normalized();
 			// remove face that is notin the view ...
-			std::vector<uint32_t> tmpIndexResult;
-			std::vector<ege::Face>& tmppFaces = m_listFaces.getValue(kkk).m_faces;
-			//std::vector<uint32_t>& tmppIndex = m_listFaces.getValue(kkk).m_index;
+			etk::Vector<uint32_t> tmpIndexResult;
+			etk::Vector<ege::Face>& tmppFaces = m_listFaces.getValue(kkk).m_faces;
+			//etk::Vector<uint32_t>& tmppIndex = m_listFaces.getValue(kkk).m_index;
 			switch(m_normalMode) {
 				case ege::resource::Mesh::normalMode::face:
 					for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
 						if((mattttt * m_listFacesNormal[tmppFaces[iii].m_normal[0]]).dot(cameraNormal) >= 0.0f) {
-							tmpIndexResult.push_back(iii*3);
-							tmpIndexResult.push_back(iii*3+1);
-							tmpIndexResult.push_back(iii*3+2);
+							tmpIndexResult.pushBack(iii*3);
+							tmpIndexResult.pushBack(iii*3+1);
+							tmpIndexResult.pushBack(iii*3+2);
 						}
 					}
 					break;
@@ -198,17 +198,17 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 						if(    ((mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[0]]).dot(cameraNormal) >= -0.2f)
 						    || ((mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[1]]).dot(cameraNormal) >= -0.2f)
 						    || ((mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[2]]).dot(cameraNormal) >= -0.2f) ) {
-							tmpIndexResult.push_back(iii*3);
-							tmpIndexResult.push_back(iii*3+1);
-							tmpIndexResult.push_back(iii*3+2);
+							tmpIndexResult.pushBack(iii*3);
+							tmpIndexResult.pushBack(iii*3+1);
+							tmpIndexResult.pushBack(iii*3+2);
 						}
 					}
 					break;
 				default:
 					for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
-						tmpIndexResult.push_back(iii*3);
-						tmpIndexResult.push_back(iii*3+1);
-						tmpIndexResult.push_back(iii*3+2);
+						tmpIndexResult.pushBack(iii*3);
+						tmpIndexResult.pushBack(iii*3+1);
+						tmpIndexResult.pushBack(iii*3+2);
 					}
 					break;
 			}
@@ -246,7 +246,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 void ege::resource::Mesh::drawNormal(mat4& _positionMatrix,
                                      ememory::SharedPtr<ewol::resource::Colored3DObject> _draw) {
 	etk::Color<float> tmpColor(0.0, 1.0, 0.0, 1.0);
-	std::vector<vec3> vertices;
+	etk::Vector<vec3> vertices;
 	// generate element in 2 pass : 
 	//    - create new index dependeng a vertex is a unique componenet of position, texture, normal
 	//    - the index list generation (can be dynamic ... (TODO later)
@@ -284,8 +284,8 @@ void ege::resource::Mesh::drawNormal(mat4& _positionMatrix,
 						for(size_t indice=0 ; indice<nbIndicInFace; indice++) {
 							vec3 position = m_listVertex[tmpFaceList.m_faces[iii].m_vertex[indice]];
 							vec3 normal = m_listVertexNormal[tmpFaceList.m_faces[iii].m_normal[indice]];
-							vertices.push_back(position);
-							vertices.push_back(position+normal*0.5f);
+							vertices.pushBack(position);
+							vertices.pushBack(position+normal*0.5f);
 						}
 					} break;
 				case ege::resource::Mesh::normalMode::face:
@@ -302,8 +302,8 @@ void ege::resource::Mesh::drawNormal(mat4& _positionMatrix,
 							return;
 						}
 						vec3 normal = m_listFacesNormal[index];
-						vertices.push_back(center);
-						vertices.push_back(center+normal*0.5f);
+						vertices.pushBack(center);
+						vertices.pushBack(center+normal*0.5f);
 					} break;
 				case ege::resource::Mesh::normalMode::none:
 					break;
@@ -319,7 +319,7 @@ void ege::resource::Mesh::setNormalMode(enum normalMode _mode) {
 
 // normal calculation of the normal face is really easy :
 // TODO : Use it for multiple Material interface
-void ege::resource::Mesh::calculateNormaleFace(const std::string& _materialName) {
+void ege::resource::Mesh::calculateNormaleFace(const etk::String& _materialName) {
 	m_listFacesNormal.clear();
 	if (m_normalMode == ege::resource::Mesh::normalMode::face) {
 		EGE_VERBOSE("calculateNormaleFace(" << _materialName << ")");
@@ -338,9 +338,9 @@ void ege::resource::Mesh::calculateNormaleFace(const std::string& _materialName)
 			//EGE_INFO("normal: " << normal.normalized());
 			if (normal == vec3(0,0,0)) {
 				EGE_ERROR("Null vertor for a face ... " << m_listVertex[it.m_vertex[0]] << " " << m_listVertex[it.m_vertex[1]] << " " << m_listVertex[it.m_vertex[2]]);
-				m_listFacesNormal.push_back(vec3(1,0,0));
+				m_listFacesNormal.pushBack(vec3(1,0,0));
 			} else {
-				m_listFacesNormal.push_back(normal.normalized());
+				m_listFacesNormal.pushBack(normal.normalized());
 			}
 			int32_t normalID = m_listFacesNormal.size() - 1;
 			it.m_normal[0] = normalID;
@@ -350,7 +350,7 @@ void ege::resource::Mesh::calculateNormaleFace(const std::string& _materialName)
 	}
 }
 
-void ege::resource::Mesh::calculateNormaleEdge(const std::string& _materialName) {
+void ege::resource::Mesh::calculateNormaleEdge(const etk::String& _materialName) {
 	m_listVertexNormal.clear();
 	if (m_normalMode == ege::resource::Mesh::normalMode::vertex) {
 		EGE_INFO("calculateNormaleEdge(" << _materialName << ")");
@@ -364,7 +364,7 @@ void ege::resource::Mesh::calculateNormaleEdge(const std::string& _materialName)
 			return;
 		}
 		for(size_t iii=0 ; iii<m_listVertex.size() ; iii++) {
-			std::vector<Face>& tmpFaceList = m_listFaces[_materialName].m_faces;
+			etk::Vector<Face>& tmpFaceList = m_listFaces[_materialName].m_faces;
 			vec3 normal(0,0,0);
 			// add the vertex from all the element in the list for face when the element in the face ...
 			for(size_t jjj=0 ; jjj<tmpFaceList.size() ; jjj++) {
@@ -376,9 +376,9 @@ void ege::resource::Mesh::calculateNormaleEdge(const std::string& _materialName)
 				}
 			}
 			if (normal == vec3(0,0,0)) {
-				m_listVertexNormal.push_back(vec3(1,1,1));
+				m_listVertexNormal.pushBack(vec3(1,1,1));
 			} else {
-				m_listVertexNormal.push_back(normal.normalized());
+				m_listVertexNormal.pushBack(normal.normalized());
 			}
 		}
 	}
@@ -396,7 +396,7 @@ void ege::resource::Mesh::generateVBO() {
 		EGE_ERROR("Calculate normal face ... in case ????");
 		calculateNormaleFace(m_listFaces.getKeys()[0]);
 	}
-	EGE_WARNING("Generate VBO for nb faces layers: " << m_listFaces.size() << " list layer=" << etk::to_string(m_listFaces.getKeys()));
+	EGE_WARNING("Generate VBO for nb faces layers: " << m_listFaces.size() << " list layer=" << etk::toString(m_listFaces.getKeys()));
 	
 	// generate element in 2 pass:
 	//    - create new index depending on a vertex is a unique component of position, texture, normal
@@ -494,7 +494,7 @@ void ege::resource::Mesh::generateVBO() {
 				}
 			}
 			for(size_t indice=0 ; indice<nbIndicInFace; indice++) {
-				tmpFaceList.m_index.push_back(vertexVBOId[indice]);
+				tmpFaceList.m_index.pushBack(vertexVBOId[indice]);
 			}
 		}
 		#ifdef TRY_MINIMAL_VBO
@@ -506,14 +506,14 @@ void ege::resource::Mesh::generateVBO() {
 }
 
 
-void ege::resource::Mesh::createViewBox(const std::string& _materialName,float _size) {
+void ege::resource::Mesh::createViewBox(const etk::String& _materialName,float _size) {
 	m_normalMode = ege::resource::Mesh::normalMode::none;
 	ege::viewBox::create(m_materials, m_listFaces, m_listVertex, m_listUV,
 	                     _materialName, _size);
 	calculateNormaleFace(_materialName);
 }
 
-void ege::resource::Mesh::createIcoSphere(const std::string& _materialName,float _size, int32_t _subdivision) {
+void ege::resource::Mesh::createIcoSphere(const etk::String& _materialName,float _size, int32_t _subdivision) {
 	m_normalMode = ege::resource::Mesh::normalMode::none;
 	ege::icoSphere::create(m_materials, m_listFaces, m_listVertex, m_listUV,
 	                       _materialName, _size, _subdivision);
@@ -521,7 +521,7 @@ void ege::resource::Mesh::createIcoSphere(const std::string& _materialName,float
 }
 
 
-void ege::resource::Mesh::addMaterial(const std::string& _name, ememory::SharedPtr<ege::Material> _data) {
+void ege::resource::Mesh::addMaterial(const etk::String& _name, ememory::SharedPtr<ege::Material> _data) {
 	if (_data == nullptr) {
 		EGE_ERROR(" can not add material with null pointer");
 		return;
@@ -548,7 +548,7 @@ int32_t ege::resource::Mesh::findPositionInList(const vec3& _pos) {
 			return iii;
 		}
 	}
-	m_listVertex.push_back(_pos);
+	m_listVertex.pushBack(_pos);
 	return m_listVertex.size()-1;
 }
 int32_t ege::resource::Mesh::findTextureInList(const vec2& _uv) {
@@ -557,7 +557,7 @@ int32_t ege::resource::Mesh::findTextureInList(const vec2& _uv) {
 			return iii;
 		}
 	}
-	m_listUV.push_back(_uv);
+	m_listUV.pushBack(_uv);
 	return m_listUV.size()-1;
 }
 int32_t ege::resource::Mesh::findColorInList(const etk::Color<float>& _color) {
@@ -566,19 +566,19 @@ int32_t ege::resource::Mesh::findColorInList(const etk::Color<float>& _color) {
 			return iii;
 		}
 	}
-	m_listColor.push_back(_color);
+	m_listColor.pushBack(_color);
 	return m_listColor.size()-1;
 }
 
 
-void ege::resource::Mesh::addFaceIndexing(const std::string& _layerName) {
+void ege::resource::Mesh::addFaceIndexing(const etk::String& _layerName) {
 	if (m_listFaces.exist(_layerName) == false) {
 		FaceIndexing empty;
 		m_listFaces.add(_layerName, empty);
 	}
 }
 
-void ege::resource::Mesh::addPoint(const std::string& _layerName, const vec3& _pos, const etk::Color<float>& _color) {
+void ege::resource::Mesh::addPoint(const etk::String& _layerName, const vec3& _pos, const etk::Color<float>& _color) {
 	if (    m_listFaces.exist(_layerName) == false
 	     || m_materials.exist(_layerName) == false) {
 		EGE_ERROR("Mesh layer : " << _layerName << " does not exist in list faces=" << m_listFaces.exist(_layerName) << " materials=" << m_listFaces.exist(_layerName) << " ...");
@@ -596,10 +596,10 @@ void ege::resource::Mesh::addPoint(const std::string& _layerName, const vec3& _p
 	Face tmpFace;
 	tmpFace.setVertex(pos);
 	tmpFace.setColor(color, color, color);
-	m_listFaces[_layerName].m_faces.push_back(tmpFace);
+	m_listFaces[_layerName].m_faces.pushBack(tmpFace);
 }
 
-void ege::resource::Mesh::addLine(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const etk::Color<float>& _color1, const etk::Color<float>& _color2) {
+void ege::resource::Mesh::addLine(const etk::String& _layerName, const vec3& _pos1, const vec3& _pos2, const etk::Color<float>& _color1, const etk::Color<float>& _color2) {
 	if (    m_listFaces.exist(_layerName) == false
 	     || m_materials.exist(_layerName) == false) {
 		EGE_ERROR("Mesh layer : " << _layerName << " does not exist in list faces=" << m_listFaces.exist(_layerName) << " materials=" << m_listFaces.exist(_layerName) << " ...");
@@ -621,16 +621,16 @@ void ege::resource::Mesh::addLine(const std::string& _layerName, const vec3& _po
 	Face tmpFace;
 	tmpFace.setVertex(pos1, pos2);
 	tmpFace.setColor(color1, color2, color2);
-	m_listFaces[_layerName].m_faces.push_back(tmpFace);
+	m_listFaces[_layerName].m_faces.pushBack(tmpFace);
 }
 
-void ege::resource::Mesh::addLines(const std::string& _layerName, const std::vector<vec3>& _list, const etk::Color<float>& _color) {
+void ege::resource::Mesh::addLines(const etk::String& _layerName, const etk::Vector<vec3>& _list, const etk::Color<float>& _color) {
 	for (size_t iii=1; iii<_list.size(); ++iii) {
 		addLine(_layerName, _list[iii-1], _list[iii], _color);
 	}
 }
 
-void ege::resource::Mesh::addLines(const std::string& _layerName, const std::vector<vec3>& _list, const std::vector<etk::Color<float>>& _color) {
+void ege::resource::Mesh::addLines(const etk::String& _layerName, const etk::Vector<vec3>& _list, const etk::Vector<etk::Color<float>>& _color) {
 	if (_color.size() != _list.size()) {
 		EGE_ERROR("Can not add line with changing color without same number of color");
 		return;
@@ -641,7 +641,7 @@ void ege::resource::Mesh::addLines(const std::string& _layerName, const std::vec
 }
 
 
-void ege::resource::Mesh::addTriangle(const std::string& _layerName,
+void ege::resource::Mesh::addTriangle(const etk::String& _layerName,
                                       const vec3& _pos1, const vec3& _pos2, const vec3& _pos3,
                                       const vec2& _uv1, const vec2& _uv2, const vec2& _uv3,
                                       const etk::Color<float>& _color1, const etk::Color<float>& _color2, const etk::Color<float>& _color3) {
@@ -674,11 +674,11 @@ void ege::resource::Mesh::addTriangle(const std::string& _layerName,
 	             pos2, uv2,
 	             pos3, uv3);
 	tmpFace.setColor(color1, color2, color3);
-	m_listFaces[_layerName].m_faces.push_back(tmpFace);
+	m_listFaces[_layerName].m_faces.pushBack(tmpFace);
 	EGE_INFO("    nbFace: " << m_listFaces[_layerName].m_faces.size());
 }
 
-void ege::resource::Mesh::addTriangle(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3,
+void ege::resource::Mesh::addTriangle(const etk::String& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3,
                                       const etk::Color<float>& _color1, const etk::Color<float>& _color2, const etk::Color<float>& _color3) {
 	if (    m_listFaces.exist(_layerName) == false
 	     || m_materials.exist(_layerName) == false) {
@@ -705,7 +705,7 @@ void ege::resource::Mesh::addTriangle(const std::string& _layerName, const vec3&
 		             pos2, -1,
 		             pos3, -1);
 		tmpFace.setColor(color1, color2, color3);
-		m_listFaces[_layerName].m_faces.push_back(tmpFace);
+		m_listFaces[_layerName].m_faces.pushBack(tmpFace);
 	} else {
 		EGE_ERROR("try to add Quad in a mesh material section that not support Quad");
 		return;
@@ -713,7 +713,7 @@ void ege::resource::Mesh::addTriangle(const std::string& _layerName, const vec3&
 }
 
 #include <ege/physics/shape/Concave.hpp>
-const std::vector<ememory::SharedPtr<ege::physics::Shape>>& ege::resource::Mesh::getPhysicalProperties() {
+const etk::Vector<ememory::SharedPtr<ege::physics::Shape>>& ege::resource::Mesh::getPhysicalProperties() {
 	for (auto &it: m_physics) {
 		if (it->getType() == ege::physics::Shape::type::concave) {
 			// need to generate the internal list of point and triangle needed:
@@ -726,11 +726,11 @@ const std::vector<ememory::SharedPtr<ege::physics::Shape>>& ege::resource::Mesh:
 			//EGE_INFO(" add vertices : " << m_listVertex);
 			tmpElement->setListOfVertex(m_listVertex);
 			for (size_t kkk=0; kkk<m_listFaces.size(); ++kkk) {
-				std::vector<uint32_t> index;
+				etk::Vector<uint32_t> index;
 				for (auto &it : m_listFaces.getValue(kkk).m_faces) {
-					index.push_back(it.m_vertex[0]);
-					index.push_back(it.m_vertex[1]);
-					index.push_back(it.m_vertex[2]);
+					index.pushBack(it.m_vertex[0]);
+					index.pushBack(it.m_vertex[1]);
+					index.pushBack(it.m_vertex[2]);
 				}
 				//EGE_INFO(" add triangle : " << m_listFaces.getValue(kkk).m_index);
 				

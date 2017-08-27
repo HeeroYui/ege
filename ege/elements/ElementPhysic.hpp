@@ -15,7 +15,7 @@
 #include <etk/types.hpp>
 #include <etk/math/Vector3D.hpp>
 #include <etk/math/Matrix4x4.hpp>
-#include <vector>
+#include <etk/Vector.hpp>
 #include <ewol/debug.hpp>
 #include <ewol/widget/Widget.hpp>
 #include <gale/renderer/openGL/openGL.hpp>
@@ -59,7 +59,7 @@ namespace ege {
 			 * @brief get the element Type description string.
 			 * @return A reference on the descriptive string.
 			 */
-			virtual const std::string& getType() const;
+			virtual const etk::String& getType() const;
 		protected:
 			//btCollisionShape* m_shape; //!< shape of the element (set a copy here to have the debug display of it)
 		public:
@@ -192,7 +192,7 @@ namespace ege {
 			void drawShape(/*const btCollisionShape* _shape,*/
 			               ememory::SharedPtr<ewol::resource::Colored3DObject> _draw,
 			               mat4 _transformationMatrix,
-			               std::vector<vec3> _tmpVertices);
+			               etk::Vector<vec3> _tmpVertices);
 		protected:
 			bool m_detectCollisionEnable; //!< physic collision detect enable.
 		public:

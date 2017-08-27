@@ -9,7 +9,7 @@
 #include <cmath>
 
 // return index of point in the middle of p1 and p2
-static int32_t getMiddlePoint(std::vector<vec3>& _listVertex, int32_t _p1, int32_t _p2) {
+static int32_t getMiddlePoint(etk::Vector<vec3>& _listVertex, int32_t _p1, int32_t _p2) {
 	vec3 middle = (_listVertex[_p1] + _listVertex[_p2])*0.5f;
 	// check if this point exist:
 	int32_t id=0;
@@ -19,19 +19,19 @@ static int32_t getMiddlePoint(std::vector<vec3>& _listVertex, int32_t _p1, int32
 		}
 		id++;
 	}
-	_listVertex.push_back(middle.normalize());
+	_listVertex.pushBack(middle.normalize());
 	return _listVertex.size()-1;
 }
 
-static int32_t addUV(std::vector<vec2>& _listUV, int32_t _uvId, float _add) {
+static int32_t addUV(etk::Vector<vec2>& _listUV, int32_t _uvId, float _add) {
 	//vec2 plop(-_add, _listUV[_uvId].y());
-	//_listUV.push_back(plop);
-	_listUV.push_back(_listUV[_uvId] + vec2(_add, 0.0f));
+	//_listUV.pushBack(plop);
+	_listUV.pushBack(_listUV[_uvId] + vec2(_add, 0.0f));
 	return _listUV.size()-1;
 }
 
-void ege::icoSphere::create(etk::Hash<ememory::SharedPtr<ege::Material>>& _materials, etk::Hash<FaceIndexing>& _listFaces, std::vector<vec3>& _listVertex, std::vector<vec2>& _listUV,
-                            const std::string& _materialName, float _size, int32_t _recursionLevel) {
+void ege::icoSphere::create(etk::Hash<ememory::SharedPtr<ege::Material>>& _materials, etk::Hash<FaceIndexing>& _listFaces, etk::Vector<vec3>& _listVertex, etk::Vector<vec2>& _listUV,
+                            const etk::String& _materialName, float _size, int32_t _recursionLevel) {
 	/*
 	                                     5                                                  
 	                                    o                                                   
@@ -62,28 +62,28 @@ void ege::icoSphere::create(etk::Hash<ememory::SharedPtr<ege::Material>>& _mater
 	double size = 1.0;
 	double ttt = (1.0 + sqrt(5.0)) / 2.0*size;
 	EGE_ERROR("podition : " << ttt);
-	_listVertex.push_back(vec3(-size,  ttt,  0.0).normalize()); // 0
-	_listVertex.push_back(vec3( size,  ttt,  0.0).normalize()); // 1
-	_listVertex.push_back(vec3(-size, -ttt,  0.0).normalize()); // 2
-	_listVertex.push_back(vec3( size, -ttt,  0.0).normalize()); // 3
+	_listVertex.pushBack(vec3(-size,  ttt,  0.0).normalize()); // 0
+	_listVertex.pushBack(vec3( size,  ttt,  0.0).normalize()); // 1
+	_listVertex.pushBack(vec3(-size, -ttt,  0.0).normalize()); // 2
+	_listVertex.pushBack(vec3( size, -ttt,  0.0).normalize()); // 3
 
-	_listVertex.push_back(vec3( 0.0, -1,  ttt).normalize()); // 4
-	_listVertex.push_back(vec3( 0.0,  1,  ttt).normalize()); // 5
-	_listVertex.push_back(vec3( 0.0, -1, -ttt).normalize()); // 6
-	_listVertex.push_back(vec3( 0.0,  1, -ttt).normalize()); // 7
+	_listVertex.pushBack(vec3( 0.0, -1,  ttt).normalize()); // 4
+	_listVertex.pushBack(vec3( 0.0,  1,  ttt).normalize()); // 5
+	_listVertex.pushBack(vec3( 0.0, -1, -ttt).normalize()); // 6
+	_listVertex.pushBack(vec3( 0.0,  1, -ttt).normalize()); // 7
 
-	_listVertex.push_back(vec3( ttt,  0.0, -size).normalize()); // 8
-	_listVertex.push_back(vec3( ttt,  0.0,  size).normalize()); // 9
-	_listVertex.push_back(vec3(-ttt,  0.0, -size).normalize()); // 10
-	_listVertex.push_back(vec3(-ttt,  0.0,  size).normalize()); // 11
+	_listVertex.pushBack(vec3( ttt,  0.0, -size).normalize()); // 8
+	_listVertex.pushBack(vec3( ttt,  0.0,  size).normalize()); // 9
+	_listVertex.pushBack(vec3(-ttt,  0.0, -size).normalize()); // 10
+	_listVertex.pushBack(vec3(-ttt,  0.0,  size).normalize()); // 11
 
 	// _listUV ==> TODO : very bad code ... get from viewBox ....
-	_listUV.push_back(vec2(0.0, 0.0    )); // 0
-	_listUV.push_back(vec2(0.0, 1.0    )); // 1
-	_listUV.push_back(vec2(1.0, 0.0    )); // 2
+	_listUV.pushBack(vec2(0.0, 0.0    )); // 0
+	_listUV.pushBack(vec2(0.0, 1.0    )); // 1
+	_listUV.pushBack(vec2(1.0, 0.0    )); // 2
 	
 	for (auto &elem : _listVertex) {
-		EGE_INFO("plop : " << etk::to_string(elem));
+		EGE_INFO("plop : " << etk::toString(elem));
 	}
 	
 	if (_listFaces.exist(_materialName) == false) {
@@ -93,44 +93,44 @@ void ege::icoSphere::create(etk::Hash<ememory::SharedPtr<ege::Material>>& _mater
 	{
 		FaceIndexing& tmpElement = _listFaces[_materialName];
 		// 5 faces around point 0
-		tmpElement.m_faces.push_back(Face(0,0, 11,1,  5,2));
-		tmpElement.m_faces.push_back(Face(0,0,  5,1,  1,2));
-		tmpElement.m_faces.push_back(Face(0,0,  1,1,  7,2));
-		tmpElement.m_faces.push_back(Face(0,0,  7,1, 10,2));
-		tmpElement.m_faces.push_back(Face(0,0, 10,1, 11,2));
+		tmpElement.m_faces.pushBack(Face(0,0, 11,1,  5,2));
+		tmpElement.m_faces.pushBack(Face(0,0,  5,1,  1,2));
+		tmpElement.m_faces.pushBack(Face(0,0,  1,1,  7,2));
+		tmpElement.m_faces.pushBack(Face(0,0,  7,1, 10,2));
+		tmpElement.m_faces.pushBack(Face(0,0, 10,1, 11,2));
 		
 		// 5 adjacent faces
-		tmpElement.m_faces.push_back(Face( 1,0,  5,1, 9,2));
-		tmpElement.m_faces.push_back(Face( 5,0, 11,1, 4,2));
-		tmpElement.m_faces.push_back(Face(11,0, 10,1, 2,2));
-		tmpElement.m_faces.push_back(Face(10,0,  7,1, 6,2));
-		tmpElement.m_faces.push_back(Face( 7,0,  1,1, 8,2));
+		tmpElement.m_faces.pushBack(Face( 1,0,  5,1, 9,2));
+		tmpElement.m_faces.pushBack(Face( 5,0, 11,1, 4,2));
+		tmpElement.m_faces.pushBack(Face(11,0, 10,1, 2,2));
+		tmpElement.m_faces.pushBack(Face(10,0,  7,1, 6,2));
+		tmpElement.m_faces.pushBack(Face( 7,0,  1,1, 8,2));
 		
 		// 5 faces around point 3
-		tmpElement.m_faces.push_back(Face(3,0, 9,1, 4,2));
-		tmpElement.m_faces.push_back(Face(3,0, 4,1, 2,2));
-		tmpElement.m_faces.push_back(Face(3,0, 2,1, 6,2));
-		tmpElement.m_faces.push_back(Face(3,0, 6,1, 8,2));
-		tmpElement.m_faces.push_back(Face(3,0, 8,1, 9,2));
+		tmpElement.m_faces.pushBack(Face(3,0, 9,1, 4,2));
+		tmpElement.m_faces.pushBack(Face(3,0, 4,1, 2,2));
+		tmpElement.m_faces.pushBack(Face(3,0, 2,1, 6,2));
+		tmpElement.m_faces.pushBack(Face(3,0, 6,1, 8,2));
+		tmpElement.m_faces.pushBack(Face(3,0, 8,1, 9,2));
 		
 		// 5 adjacent faces 
-		tmpElement.m_faces.push_back(Face(4,0, 9,1, 5,2));
-		tmpElement.m_faces.push_back(Face(2,0, 4,1, 11,2));
-		tmpElement.m_faces.push_back(Face(6,0, 2,1, 10,2));
-		tmpElement.m_faces.push_back(Face(8,0, 6,1, 7,2));
-		tmpElement.m_faces.push_back(Face(9,0, 8,1, 1,2));
+		tmpElement.m_faces.pushBack(Face(4,0, 9,1, 5,2));
+		tmpElement.m_faces.pushBack(Face(2,0, 4,1, 11,2));
+		tmpElement.m_faces.pushBack(Face(6,0, 2,1, 10,2));
+		tmpElement.m_faces.pushBack(Face(8,0, 6,1, 7,2));
+		tmpElement.m_faces.pushBack(Face(9,0, 8,1, 1,2));
 		// refine triangles
 		for (int i = 0; i < _recursionLevel; i++) {
-			std::vector<Face> listFaces;
+			etk::Vector<Face> listFaces;
 			for (auto &tri : tmpElement.m_faces) {
 				// replace triangle by 4 triangles
 				int32_t a = getMiddlePoint(_listVertex, tri.m_vertex[0], tri.m_vertex[1]);
 				int32_t b = getMiddlePoint(_listVertex, tri.m_vertex[1], tri.m_vertex[2]);
 				int32_t c = getMiddlePoint(_listVertex, tri.m_vertex[2], tri.m_vertex[0]);
-				listFaces.push_back(Face(tri.m_vertex[0],0, a,1, c,2));
-				listFaces.push_back(Face(tri.m_vertex[1],0, b,1, a,2));
-				listFaces.push_back(Face(tri.m_vertex[2],0, c,1, b,2));
-				listFaces.push_back(Face(a,0,               b,1, c,2));
+				listFaces.pushBack(Face(tri.m_vertex[0],0, a,1, c,2));
+				listFaces.pushBack(Face(tri.m_vertex[1],0, b,1, a,2));
+				listFaces.pushBack(Face(tri.m_vertex[2],0, c,1, b,2));
+				listFaces.pushBack(Face(a,0,               b,1, c,2));
 			}
 			tmpElement.m_faces = listFaces;
 		}
@@ -156,20 +156,20 @@ void ege::icoSphere::create(etk::Hash<ememory::SharedPtr<ege::Material>>& _mater
 					angle = -angle;
 				}
 			}
-			//EGE_WARNING( "angle = " << (angle/M_PI*180.0f) << " from: vert=" << etk::to_string(vert) << " proj=" << proj );
+			//EGE_WARNING( "angle = " << (angle/M_PI*180.0f) << " from: vert=" << etk::toString(vert) << " proj=" << proj );
 			texturePos.setX(angle/(2.0f*M_PI)+0.5f);
 			
 			angle = std::acos(proj/1.0f);
 			if (vert.z()<0) {
 				angle = -angle;
 			}
-			//EGE_WARNING( "angle = " << (angle/M_PI*180.0f) << " from: vert=" << etk::to_string(vert) << " proj=" << proj );
+			//EGE_WARNING( "angle = " << (angle/M_PI*180.0f) << " from: vert=" << etk::toString(vert) << " proj=" << proj );
 			texturePos.setY(angle/(M_PI)+0.5);
 			
 			texturePos.setMax(vec2(0.0f, 0.0f));
 			texturePos.setMin(vec2(1.0f, 1.0f));
 			//EGE_WARNING("texturePosition = " << texturePos);
-			_listUV.push_back(texturePos);
+			_listUV.pushBack(texturePos);
 		}
 		for (auto &face : tmpElement.m_faces) {
 			float y0 = _listVertex[face.m_vertex[0]].y();

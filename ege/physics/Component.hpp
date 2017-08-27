@@ -28,8 +28,8 @@ namespace ege {
 			protected:
 				ememory::SharedPtr<ege::physics::Engine> m_engine;
 				ephysics::RigidBody* m_rigidBody;
-				std::vector<ephysics::CollisionShape*> m_listShape;
-				std::vector<ephysics::ProxyShape*> m_listProxyShape;
+				etk::Vector<ephysics::CollisionShape*> m_listShape;
+				etk::Vector<ephysics::ProxyShape*> m_listProxyShape;
 			public:
 				/**
 				 * @brief Create a basic position component (no orientation and position (0,0,0))
@@ -42,7 +42,7 @@ namespace ege {
 				Component(ememory::SharedPtr<ege::Environement> _env, const etk::Transform3D& _transform);
 				~Component();
 			public:
-				virtual const std::string& getType() const override;
+				virtual const etk::String& getType() const override;
 				
 				enum class type {
 					bodyDynamic,
@@ -150,10 +150,10 @@ namespace ege {
 				void applyRelativeTorque(const vec3& _torque, bool _static=false);
 				
 			protected:
-				std::vector<ememory::SharedPtr<ege::physics::Shape>> m_shape; //!< collision shape module ... (independent of bullet lib)
+				etk::Vector<ememory::SharedPtr<ege::physics::Shape>> m_shape; //!< collision shape module ... (independent of bullet lib)
 			public:
-				const std::vector<ememory::SharedPtr<ege::physics::Shape>>& getShape() const;
-				void setShape(const std::vector<ememory::SharedPtr<ege::physics::Shape>>& _prop);
+				const etk::Vector<ememory::SharedPtr<ege::physics::Shape>>& getShape() const;
+				void setShape(const etk::Vector<ememory::SharedPtr<ege::physics::Shape>>& _prop);
 				void addShape(const ememory::SharedPtr<ege::physics::Shape>& _shape);
 				void generate();
 				void drawShape(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera);

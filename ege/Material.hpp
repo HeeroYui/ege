@@ -24,7 +24,7 @@ namespace ege {
 			int32_t m_GL_shininess;
 			int32_t m_GL_texture0;
 			MaterialGlId();
-			void link(ememory::SharedPtr<gale::resource::Program> _prog, const std::string& _baseName);
+			void link(ememory::SharedPtr<gale::resource::Program> _prog, const etk::String& _baseName);
 	};
 	
 	
@@ -38,7 +38,7 @@ namespace ege {
 			enum gale::openGL::renderMode m_renderMode; // Select Render mode (triangle/Line/point ...)
 			ememory::SharedPtr<ewol::resource::Texture> m_texture0;
 		public:
-			std::vector<uint32_t> m_listIndexFaces;
+			etk::Vector<uint32_t> m_listIndexFaces;
 		public:
 			Material();
 			~Material();
@@ -60,7 +60,7 @@ namespace ege {
 			enum gale::openGL::renderMode getRenderMode() {
 				return m_renderMode;
 			}
-			void setTexture0(const std::string& _filename);
+			void setTexture0(const etk::String& _filename);
 			void setTexture0Magic(const ivec2& _size);
 			
 			void setImageSize(const ivec2& _newSize) {

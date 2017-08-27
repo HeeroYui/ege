@@ -18,8 +18,8 @@
 
 #include <ege/CollisionShapeCreator.hpp>
 
-const std::string& ege::ElementPhysic::getType() const {
-	static const std::string nameType("----");
+const etk::String& ege::ElementPhysic::getType() const {
+	static const etk::String nameType("----");
 	return nameType;
 }
 
@@ -180,7 +180,7 @@ const float ege::ElementPhysic::getInvMass() {
 void ege::ElementPhysic::drawShape(/*const btCollisionShape* _shape,*/
                                    ememory::SharedPtr<ewol::resource::Colored3DObject> _draw,
                                    mat4 _transformationMatrix,
-                                   std::vector<vec3> _tmpVertices) {
+                                   etk::Vector<vec3> _tmpVertices) {
 	#if 0
 	if(    _draw == nullptr
 	    || _shape == nullptr) {

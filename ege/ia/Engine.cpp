@@ -10,8 +10,8 @@ ege::ia::Engine::Engine(ege::Environement* _env) :
 	
 }
 
-const std::string& ege::ia::Engine::getType() const {
-	static std::string tmp("ia");
+const etk::String& ege::ia::Engine::getType() const {
+	static etk::String tmp("ia");
 	return tmp;
 }
 

@@ -17,8 +17,8 @@
 #include <ephysics/collision/shapes/ConcaveShape.hpp>
 #include <ephysics/collision/shapes/ConcaveMeshShape.hpp>
 
-const std::string& ege::physics::Component::getType() const {
-	static std::string tmp("physics");
+const etk::String& ege::physics::Component::getType() const {
+	static etk::String tmp("physics");
 	return tmp;
 }
 
@@ -116,13 +116,13 @@ void ege::physics::Component::generate() {
 				                                tmpElement->getSize().z());
 				// Create the box shape
 				ephysics::BoxShape* shape = new ephysics::BoxShape(halfExtents, 0.0001);
-				m_listShape.push_back(shape);
+				m_listShape.pushBack(shape);
 				// The ephysic use Y as UP ==> ege use Z as UP
 				//orientation = orientation * ephysics::Quaternion(-0.707107, 0, 0, 0.707107);
 				etk::Transform3D transform(it->getOrigin(), it->getOrientation());
 				ephysics::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
-				m_listProxyShape.push_back(proxyShape);
+				m_listProxyShape.pushBack(proxyShape);
 				break;
 			}
 			case ege::physics::Shape::type::cylinder: {
@@ -139,7 +139,7 @@ void ege::physics::Component::generate() {
 				etk::Transform3D transform(it->getOrigin(), orientation);
 				ephysics::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
-				m_listProxyShape.push_back(proxyShape);
+				m_listProxyShape.pushBack(proxyShape);
 				break;
 			}
 			case ege::physics::Shape::type::capsule: {
@@ -156,7 +156,7 @@ void ege::physics::Component::generate() {
 				etk::Transform3D transform(it->getOrigin(), orientation);
 				ephysics::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
-				m_listProxyShape.push_back(proxyShape);
+				m_listProxyShape.pushBack(proxyShape);
 				break;
 			}
 			case ege::physics::Shape::type::cone: {
@@ -173,7 +173,7 @@ void ege::physics::Component::generate() {
 				etk::Transform3D transform(it->getOrigin(), orientation);
 				ephysics::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
-				m_listProxyShape.push_back(proxyShape);
+				m_listProxyShape.pushBack(proxyShape);
 				break;
 			}
 			case ege::physics::Shape::type::sphere: {
@@ -190,7 +190,7 @@ void ege::physics::Component::generate() {
 				etk::Transform3D transform(it->getOrigin(), orientation);
 				ephysics::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
-				m_listProxyShape.push_back(proxyShape);
+				m_listProxyShape.pushBack(proxyShape);
 				break;
 			}
 			case ege::physics::Shape::type::concave: {
@@ -201,8 +201,8 @@ void ege::physics::Component::generate() {
 					continue;
 				}
 				#if 0
-				static const std::vector<vec3> vertices = {vec3(-100.0f,-100.0f,-50.0f),vec3(100.0f,-100.0f,-50.0f),vec3(100.0f,100.0f,-50.0f)};
-				static const std::vector<uint32_t> indices = {0,1,2};
+				static const etk::Vector<vec3> vertices = {vec3(-100.0f,-100.0f,-50.0f),vec3(100.0f,-100.0f,-50.0f),vec3(100.0f,100.0f,-50.0f)};
+				static const etk::Vector<uint32_t> indices = {0,1,2};
 				
 				ephysics::TriangleVertexArray* triangleArray = new ephysics::TriangleVertexArray(vertices, indices);
 				#else
@@ -221,7 +221,7 @@ void ege::physics::Component::generate() {
 				etk::Transform3D transform(it->getOrigin(), it->getOrientation());
 				ephysics::ProxyShape* proxyShape = m_rigidBody->addCollisionShape(shape, transform, it->getMass());
 				proxyShape->setUserData(this);
-				m_listProxyShape.push_back(proxyShape);
+				m_listProxyShape.pushBack(proxyShape);
 				break;
 			}
 			default :
@@ -385,16 +385,16 @@ void ege::physics::Component::applyRelativeTorque(const vec3& _torque, bool _sta
 	}
 }
 
-const std::vector<ememory::SharedPtr<ege::physics::Shape>>& ege::physics::Component::getShape() const {
+const etk::Vector<ememory::SharedPtr<ege::physics::Shape>>& ege::physics::Component::getShape() const {
 	return m_shape;
 }
 
-void ege::physics::Component::setShape(const std::vector<ememory::SharedPtr<ege::physics::Shape>>& _prop) {
+void ege::physics::Component::setShape(const etk::Vector<ememory::SharedPtr<ege::physics::Shape>>& _prop) {
 	m_shape = _prop;
 }
 
 void ege::physics::Component::addShape(const ememory::SharedPtr<ege::physics::Shape>& _shape) {
-	m_shape.push_back(_shape);
+	m_shape.pushBack(_shape);
 }
 
 

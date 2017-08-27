@@ -6,7 +6,7 @@
 #pragma once
 #include <ege/Engine.hpp>
 #include <etk/types.hpp>
-#include <vector>
+#include <etk/Vector.hpp>
 #include <ege/particule/Component.hpp>
 
 namespace ege {
@@ -18,8 +18,8 @@ namespace ege {
 				Engine(ege::Environement* _env); // note : need the engine to register has an dynamic element ... (the first ...)
 				~Engine();
 			private:
-				std::vector<ememory::SharedPtr<ege::particule::Component>> m_particuleList; //!< all particule created and active
-				std::vector<ememory::SharedPtr<ege::particule::Component>> m_particuleRemoved; //!< removed particule
+				etk::Vector<ememory::SharedPtr<ege::particule::Component>> m_particuleList; //!< all particule created and active
+				etk::Vector<ememory::SharedPtr<ege::particule::Component>> m_particuleRemoved; //!< removed particule
 			public:
 				/**
 				 * @brief clear the particule engine
@@ -47,7 +47,7 @@ namespace ege {
 				ememory::SharedPtr<ege::particule::Component> respown(const char* _particuleType);
 				
 			public:
-				const std::string& getType() const override;
+				const etk::String& getType() const override;
 				void componentRemove(const ememory::SharedPtr<ege::Component>& _ref) override;
 				void componentAdd(const ememory::SharedPtr<ege::Component>& _ref) override;
 				void update(const echrono::Duration& _delta) override;

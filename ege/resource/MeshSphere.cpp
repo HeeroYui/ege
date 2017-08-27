@@ -7,7 +7,7 @@
 #include <ege/debug.hpp>
 #include <ege/resource/Mesh.hpp>
 
-ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createSphere(float _radius, const std::string& _materialName, const etk::Color<float>& _color, int32_t _lats, int32_t _longs) {
+ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createSphere(float _radius, const etk::String& _materialName, const etk::Color<float>& _color, int32_t _lats, int32_t _longs) {
 	EGE_VERBOSE(" create a sphere _size=" << _radius << " _materialName=" << _materialName << " _color=" << _color);
 	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("---", "DATA:color3.prog");
 	if (out != nullptr) {

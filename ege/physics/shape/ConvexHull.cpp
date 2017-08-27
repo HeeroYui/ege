@@ -20,12 +20,12 @@ bool ege::physics::shape::ConvexHull::parse(const char* _line) {
 		while (tmp != nullptr) {
 			*tmp = '\0';
 			sscanf(base, "%f %f %f", &pos.m_floats[0], &pos.m_floats[1], &pos.m_floats[2] );
-			m_points.push_back(pos);
+			m_points.pushBack(pos);
 			base = tmp+1;
 			tmp= strchr(base, '|');
 		}
 		sscanf(base, "%f %f %f", &pos.m_floats[0], &pos.m_floats[1], &pos.m_floats[2] );
-		m_points.push_back(pos);
+		m_points.pushBack(pos);
 		/*
 		for (int32_t iii=0; iii<m_points.size(); iii++) {
 			EGE_VERBOSE("    parsed " << m_points[iii]);

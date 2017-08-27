@@ -11,8 +11,8 @@ ege::Engine::Engine(ege::Environement* _env) :
 	
 }
 
-const std::string& ege::Engine::getType() const {
-	static std::string tmp("engine");
+const etk::String& ege::Engine::getType() const {
+	static etk::String tmp("engine");
 	return tmp;
 }
 

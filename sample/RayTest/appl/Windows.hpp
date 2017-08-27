@@ -31,8 +31,8 @@ namespace appl {
 			bool onEventEntry(const ewol::event::Entry& _event) override;
 			bool onEventInput(const ewol::event::Input& _event) override;
 			void onCallbackDisplayDebug(const ememory::SharedPtr<ewol::resource::Colored3DObject>& _obj);
-			std::pair<vec3,vec3> m_ray;
-			std::pair<vec3,vec3> m_destination;
+			etk::Pair<vec3,vec3> m_ray;
+			etk::Pair<vec3,vec3> m_destination;
 	};
 }
 

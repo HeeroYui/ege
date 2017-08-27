@@ -7,7 +7,7 @@
 #include <ege/debug.hpp>
 #include <ege/resource/Mesh.hpp>
 
-ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createGrid(int32_t _lineCount, const vec3& _position, float _size, const std::string& _materialName) {
+ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createGrid(int32_t _lineCount, const vec3& _position, float _size, const etk::String& _materialName) {
 	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("---", "DATA:color3.prog");
 	if (out != nullptr) {
 		ememory::SharedPtr<ege::Material> material = ememory::makeShared<ege::Material>();
@@ -73,12 +73,12 @@ ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createGrid(int32_t 
 				out->addLine(_materialName, _position+vec3(-1,-1,_lineCount+2.0f)*_size, _position+vec3(-1, 1,_lineCount+2.0f)*_size, etk::color::blue);
 				
 			} else {
-				std::vector<vec3> list;
-				list.push_back(_position+vec3(-1,-1,iii)*_size);
-				list.push_back(_position+vec3(1,-1,iii)*_size);
-				list.push_back(_position+vec3(1,1,iii)*_size);
-				list.push_back(_position+vec3(-1,1,iii)*_size);
-				list.push_back(_position+vec3(-1,-1,iii)*_size);
+				etk::Vector<vec3> list;
+				list.pushBack(_position+vec3(-1,-1,iii)*_size);
+				list.pushBack(_position+vec3(1,-1,iii)*_size);
+				list.pushBack(_position+vec3(1,1,iii)*_size);
+				list.pushBack(_position+vec3(-1,1,iii)*_size);
+				list.pushBack(_position+vec3(-1,-1,iii)*_size);
 				out->addLines(_materialName, list, etk::color::gray);
 			}
 			//out->addPoint(_materialName, vec3(iii,-_lineCount,0), etk::color::white);

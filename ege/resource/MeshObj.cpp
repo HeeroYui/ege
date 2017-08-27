@@ -8,7 +8,7 @@
 #include <ege/resource/Mesh.hpp>
 
 
-bool ege::resource::Mesh::loadOBJ(const std::string& _fileName) {
+bool ege::resource::Mesh::loadOBJ(const etk::String& _fileName) {
 	m_normalMode = ege::resource::Mesh::normalMode::none;
 #if 0
 	etk::FSNode fileName(_fileName);
@@ -37,12 +37,12 @@ bool ege::resource::Mesh::loadOBJ(const std::string& _fileName) {
 				// Texture position : vt 0.748573 0.750412
 				vec2 vertex(0,0);
 				sscanf(&inputDataLine[3], "%f %f", &vertex.m_floats[0], &vertex.m_floats[1]);
-				m_listUV.push_back(vertex);
+				m_listUV.pushBack(vertex);
 			} else {
 				// Vertice position : v 1.000000 -1.000000 -1.000000
 				vec3 vertex(0,0,0);
 				sscanf(&inputDataLine[2], "%f %f %f", &vertex.m_floats[0], &vertex.m_floats[1], &vertex.m_floats[2] );
-				m_listVertex.push_back(vertex);
+				m_listVertex.pushBack(vertex);
 			}
 		} else if (inputDataLine[0] == 'f') {
 			// face : f 5/1/1 1/2/1 4/3/1*
@@ -80,12 +80,12 @@ bool ege::resource::Mesh::loadOBJ(const std::string& _fileName) {
 				}
 			}
 			if (quadMode == true) {
-				m_listFaces.push_back(Face(vertexIndex[0]-1, uvIndex[0]-1,
+				m_listFaces.pushBack(Face(vertexIndex[0]-1, uvIndex[0]-1,
 				                          vertexIndex[1]-1, uvIndex[1]-1,
 				                          vertexIndex[2]-1, uvIndex[2]-1,
 				                          vertexIndex[3]-1, uvIndex[3]-1));
 			} else {
-				m_listFaces.push_back(Face(vertexIndex[0]-1, uvIndex[0]-1,
+				m_listFaces.pushBack(Face(vertexIndex[0]-1, uvIndex[0]-1,
 				                          vertexIndex[1]-1, uvIndex[1]-1,
 				                          vertexIndex[2]-1, uvIndex[2]-1));
 			}
@@ -114,7 +114,7 @@ bool ege::resource::Mesh::loadOBJ(const std::string& _fileName) {
 				}
 				inputDataLine[strlen(inputDataLine)-1] = '\0';
 			}
-			std::string tmpVal(&inputDataLine[7]);
+			etk::String tmpVal(&inputDataLine[7]);
 			setTexture(fileName.getRelativeFolder() + tmpVal);
 		} else if(    inputDataLine[0] == 'm'
 		           && inputDataLine[1] == 't'

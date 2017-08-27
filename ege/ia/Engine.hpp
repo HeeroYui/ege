@@ -8,7 +8,7 @@
 #include <etk/types.hpp>
 #include <etk/math/Vector3D.hpp>
 #include <etk/math/Matrix4x4.hpp>
-#include <vector>
+#include <etk/Vector.hpp>
 #include <ege/debug.hpp>
 
 
@@ -22,7 +22,7 @@ namespace ege {
 				// update cycle
 				void update(float _delta) {}
 			public:
-				const std::string& getType() const override;
+				const etk::String& getType() const override;
 				void componentRemove(const ememory::SharedPtr<ege::Component>& _ref) override;
 				void componentAdd(const ememory::SharedPtr<ege::Component>& _ref) override;
 		};

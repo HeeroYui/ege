@@ -8,7 +8,7 @@
 #include <etk/types.hpp>
 #include <etk/math/Vector3D.hpp>
 #include <etk/math/Matrix4x4.hpp>
-#include <vector>
+#include <etk/Vector.hpp>
 #include <ewol/debug.hpp>
 #include <ege/camera/Camera.hpp>
 #include <ewol/widget/Widget.hpp>
@@ -51,23 +51,23 @@ namespace ege {
 				 */
 				virtual ~Scene();
 			protected:
-				std::string m_cameraName; //!< current camera name
+				etk::String m_cameraName; //!< current camera name
 			public:
 				/** 
 				 * @brief Select a Camera for the display.
 				 * @param[in] _cameraName New name of the camera.
 				 */
-				void setCamera(const std::string& _cameraName);
+				void setCamera(const etk::String& _cameraName);
 				/** 
 				 * @brief Get the current camera name to display the environnement.
 				 * @return the current camera name.
 				 */
-				const std::string& getCamera() const {
+				const etk::String& getCamera() const {
 					return m_cameraName;
 				}
 			protected:
 				// Note : This is only for temporary entitys : on the display
-				std::vector<ege::Environement::ResultNearestEntity> m_displayEntityOrdered;
+				etk::Vector<ege::Environement::ResultNearestEntity> m_displayEntityOrdered;
 			protected:
 				esignal::Connection m_PCH; //!< Periodic call handle to remove it when needed
 				/**

@@ -7,8 +7,8 @@
 #include <ege/position/Component.hpp>
 #include <ege/physics/Component.hpp>
 
-const std::string& ege::render::Component::getType() const {
-	static std::string tmp("render");
+const etk::String& ege::render::Component::getType() const {
+	static etk::String tmp("render");
 	return tmp;
 }
 
@@ -16,7 +16,7 @@ ege::render::Component::Component() {
 	
 }
 
-ege::render::Component::Component(const std::string& _fileName) {
+ege::render::Component::Component(const etk::String& _fileName) {
 	loadMesh(_fileName);
 }
 
@@ -47,7 +47,7 @@ void ege::render::Component::onSignalPositionChange(const etk::Transform3D& _tra
 	m_transform = _transform;
 }
 
-bool ege::render::Component::loadMesh(const std::string& _meshFileName) {
+bool ege::render::Component::loadMesh(const etk::String& _meshFileName) {
 	ememory::SharedPtr<ege::resource::Mesh> tmpMesh = ege::resource::Mesh::create(_meshFileName);
 	if(tmpMesh == nullptr) {
 		EGE_ERROR("can not load the resources : " << _meshFileName);

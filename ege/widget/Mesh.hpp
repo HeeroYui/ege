@@ -19,7 +19,7 @@ namespace ege {
 				esignal::Signal<> signalPressed;
 			private:
 				// mesh name :
-				std::string m_meshName;
+				etk::String m_meshName;
 				ememory::SharedPtr<ege::resource::Mesh> m_object;
 				// mesh display properties:
 				vec3 m_position;
@@ -48,7 +48,7 @@ namespace ege {
 				 * @brief set a mesh name file
 				 * @param[in] _filename Name of the new mesh
 				 */
-				void setFile(const std::string& _filename);
+				void setFile(const etk::String& _filename);
 				/**
 				 * @brief set the mesh position
 				 * @param[in] _pos The new position of the mesh

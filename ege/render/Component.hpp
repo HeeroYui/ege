@@ -25,7 +25,7 @@ namespace ege {
 				 * @brief contruct with a mesh filename
 				 * @param[in] _fileName filename of the Mesh.
 				 */
-				Component(const std::string& _fileName);
+				Component(const etk::String& _fileName);
 				/**
 				 * @brief contruct with a prebuild mesh
 				 * @param[in] _mesh The mesh pointer.
@@ -40,7 +40,7 @@ namespace ege {
 				 * @note Automaticly load the shape if it is specify in the mesh file
 				 * @return true if no error occured
 				 */
-				virtual bool loadMesh(const std::string& _fileName);
+				virtual bool loadMesh(const etk::String& _fileName);
 				/**
 				 * @brief set the the Mesh properties.
 				 * @param[in] _mesh The mesh pointer. (nullptr to force the mesh remove ...)
@@ -70,7 +70,7 @@ namespace ege {
 				 */
 				void drawNormalDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw);
 			public:
-				const std::string& getType() const override;
+				const etk::String& getType() const override;
 				void addFriendComponent(const ememory::SharedPtr<ege::Component>& _component) override;
 			private:
 				void onSignalPositionChange(const etk::Transform3D& _transform);

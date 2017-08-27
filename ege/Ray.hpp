@@ -66,6 +66,6 @@ namespace ege {
 		public:
 			vec3 testRayZeroPlane();
 	};
-	std::ostream& operator <<(std::ostream& _os, const ege::Ray& _obj);
+	etk::Stream& operator <<(etk::Stream& _os, const ege::Ray& _obj);
 }
 

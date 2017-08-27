@@ -47,33 +47,33 @@ namespace ege {
 				static ememory::SharedPtr<ege::resource::Mesh> createGrid(int32_t _lineCount,
 				                                                          const vec3& _position=vec3(0,0,0),
 				                                                          float _size=1.0f,
-				                                                          const std::string& _materialName="basics");
+				                                                          const etk::String& _materialName="basics");
 				static ememory::SharedPtr<ege::resource::Mesh> createCube(float _size=1.0f,
-				                                                          const std::string& _materialName="basics",
+				                                                          const etk::String& _materialName="basics",
 				                                                          const etk::Color<float>& _color=etk::color::green);
 				static ememory::SharedPtr<ege::resource::Mesh> createCube(const vec3& _size=vec3(1.0f, 1.0f, 1.0f),
-				                                                          const std::string& _materialName="basics",
+				                                                          const etk::String& _materialName="basics",
 				                                                          const etk::Color<float>& _color=etk::color::green);
 				static ememory::SharedPtr<ege::resource::Mesh> createSphere(float _size=1.0f,
-				                                                            const std::string& _materialName="basics",
+				                                                            const etk::String& _materialName="basics",
 				                                                            const etk::Color<float>& _color=etk::color::green,
 				                                                            int32_t _lats = 10,
 				                                                            int32_t _longs = 10);
 				static ememory::SharedPtr<ege::resource::Mesh> createCylinder(float _radius = 1.0f,
 				                                                              float _size = 1.0f, 
-				                                                              const std::string& _materialName="basics",
+				                                                              const etk::String& _materialName="basics",
 				                                                              const etk::Color<float>& _color=etk::color::green,
 				                                                              int32_t _lats = 10,
 				                                                              int32_t _longs = 10);
 				static ememory::SharedPtr<ege::resource::Mesh> createCapsule(float _radius = 1.0f,
 				                                                             float _size = 1.0f, 
-				                                                             const std::string& _materialName="basics",
+				                                                             const etk::String& _materialName="basics",
 				                                                             const etk::Color<float>& _color=etk::color::green,
 				                                                             int32_t _lats = 10,
 				                                                             int32_t _longs = 10);
 				static ememory::SharedPtr<ege::resource::Mesh> createCone(float _radius = 1.0f,
 				                                                          float _size = 1.0f, 
-				                                                          const std::string& _materialName="basics",
+				                                                          const etk::String& _materialName="basics",
 				                                                          const etk::Color<float>& _color=etk::color::green,
 				                                                          int32_t _lats = 10,
 				                                                          int32_t _longs = 10);
@@ -105,22 +105,22 @@ namespace ege {
 				MaterialGlId m_GLMaterial;
 				ege::Light m_light;
 			protected:
-				std::vector<vec3> m_listVertex; //!< List of all vertex in the element
-				std::vector<vec2> m_listUV; //!< List of all UV point in the mesh (for the specify texture)
-				std::vector<etk::Color<float>> m_listColor; //!< List of all Color point in the mesh
-				std::vector<vec3> m_listFacesNormal; //!< List of all Face normal, when calculated
-				std::vector<vec3> m_listVertexNormal; //!< List of all Face normal, when calculated
+				etk::Vector<vec3> m_listVertex; //!< List of all vertex in the element
+				etk::Vector<vec2> m_listUV; //!< List of all UV point in the mesh (for the specify texture)
+				etk::Vector<etk::Color<float>> m_listColor; //!< List of all Color point in the mesh
+				etk::Vector<vec3> m_listFacesNormal; //!< List of all Face normal, when calculated
+				etk::Vector<vec3> m_listVertexNormal; //!< List of all Face normal, when calculated
 				etk::Hash<FaceIndexing> m_listFaces; //!< List of all Face for the mesh
 				etk::Hash<ememory::SharedPtr<ege::Material>> m_materials;
-				std::vector<ememory::SharedPtr<ege::physics::Shape>> m_physics; //!< collision shape module ... (independent of bullet lib)
+				etk::Vector<ememory::SharedPtr<ege::physics::Shape>> m_physics; //!< collision shape module ... (independent of bullet lib)
 				void clean();
 			protected:
 				ememory::SharedPtr<gale::resource::VirtualBufferObject> m_verticesVBO;
 			protected:
 				Mesh();
-				void init(const std::string& _fileName="---",
-				          //const std::string& _shaderName="DATA:textured3D2.prog"
-				          const std::string& _shaderName="DATA:material3D.prog"
+				void init(const etk::String& _fileName="---",
+				          //const etk::String& _shaderName="DATA:textured3D2.prog"
+				          const etk::String& _shaderName="DATA:material3D.prog"
 				          );
 			public:
 				virtual ~Mesh();
@@ -138,16 +138,16 @@ namespace ege {
 				                ememory::SharedPtr<ewol::resource::Colored3DObject> _draw);
 				void generateVBO();
 			private:
-				void calculateNormaleFace(const std::string& _materialName);
-				void calculateNormaleEdge(const std::string& _materialName);
+				void calculateNormaleFace(const etk::String& _materialName);
+				void calculateNormaleEdge(const etk::String& _materialName);
 			public :
-				void createViewBox(const std::string& _materialName,float _size=1.0);
-				void createIcoSphere(const std::string& _materialName,float _size=1.0, int32_t _subdivision=3);
+				void createViewBox(const etk::String& _materialName,float _size=1.0);
+				void createIcoSphere(const etk::String& _materialName,float _size=1.0, int32_t _subdivision=3);
 			private:
-				bool loadOBJ(const std::string& _fileName);
-				bool loadEMF(const std::string& _fileName);
+				bool loadOBJ(const etk::String& _fileName);
+				bool loadEMF(const etk::String& _fileName);
 			public:
-				void addMaterial(const std::string& _name, ememory::SharedPtr<ege::Material> _data);
+				void addMaterial(const etk::String& _name, ememory::SharedPtr<ege::Material> _data);
 			public:
 				/**
 				 * @brief set the check of normal position befor sending it to the openGl card
@@ -163,9 +163,9 @@ namespace ege {
 				bool getCheckNormal() {
 					return m_checkNormal;
 				};
-				const std::vector<ememory::SharedPtr<ege::physics::Shape>>& getPhysicalProperties();
+				const etk::Vector<ememory::SharedPtr<ege::physics::Shape>>& getPhysicalProperties();
 				void addPhysicElement(const ememory::SharedPtr<ege::physics::Shape>& _shape) {
-					m_physics.push_back(_shape);
+					m_physics.pushBack(_shape);
 				}
 			private:
 				void* m_pointerShape; //!< all mesh have a basic shape (bullet or other) the void pointer mermit to not depent on the bullet lib
@@ -192,17 +192,17 @@ namespace ege {
 				 * @brief Add in the faces list the layer requested
 				 * @param[in] _layerName face index to add
 				 */
-				void addFaceIndexing(const std::string& _layerName);
+				void addFaceIndexing(const etk::String& _layerName);
 			public:
 				
-				void addPoint(const std::string& _layerName, const vec3& _pos, const etk::Color<float>& _color);
+				void addPoint(const etk::String& _layerName, const vec3& _pos, const etk::Color<float>& _color);
 				
-				void addLine(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const etk::Color<float>& _color) {
+				void addLine(const etk::String& _layerName, const vec3& _pos1, const vec3& _pos2, const etk::Color<float>& _color) {
 					addLine( _layerName, _pos1, _pos2, _color, _color);
 				}
-				void addLine(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const etk::Color<float>& _color1, const etk::Color<float>& _color2);
-				void addLines(const std::string& _layerName, const std::vector<vec3>& _list, const etk::Color<float>& _color);
-				void addLines(const std::string& _layerName, const std::vector<vec3>& _list, const std::vector<etk::Color<float>>& _color);
+				void addLine(const etk::String& _layerName, const vec3& _pos1, const vec3& _pos2, const etk::Color<float>& _color1, const etk::Color<float>& _color2);
+				void addLines(const etk::String& _layerName, const etk::Vector<vec3>& _list, const etk::Color<float>& _color);
+				void addLines(const etk::String& _layerName, const etk::Vector<vec3>& _list, const etk::Vector<etk::Color<float>>& _color);
 				
 				/**
 				 * @not_in_doc
@@ -215,7 +215,7 @@ namespace ege {
 				 * @param[in] _color2 color of the _pos2 element
 				 * @param[in] _color3 color of the _pos3 element
 				 */
-				void addTriangle(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3, const etk::Color<float>& _color) {
+				void addTriangle(const etk::String& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3, const etk::Color<float>& _color) {
 					addTriangle(_layerName, _pos1, _pos2, _pos3, _color, _color, _color);
 				}
 				/**
@@ -229,7 +229,7 @@ namespace ege {
 				 * @param[in] _color2 color of the _pos2 element
 				 * @param[in] _color3 color of the _pos3 element
 				 */
-				void addTriangle(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3,
+				void addTriangle(const etk::String& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3,
 				                 const etk::Color<float>& _color1, const etk::Color<float>& _color2, const etk::Color<float>& _color3);
 				/**
 				 * @not_in_doc
@@ -241,7 +241,7 @@ namespace ege {
 				 * @param[in] _pos4 faurth point position
 				 * @param[in] _color color of all elements
 				 */
-				void addQuad(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3, const vec3& _pos4, const etk::Color<float>& _color) {
+				void addQuad(const etk::String& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3, const vec3& _pos4, const etk::Color<float>& _color) {
 					addQuad(_layerName, _pos1, _pos2, _pos3, _pos4, _color, _color, _color, _color);
 				}
 				/**
@@ -257,7 +257,7 @@ namespace ege {
 				 * @param[in] _color3 color of the _pos3 element
 				 * @param[in] _color4 color of the _pos4 element
 				 */
-				void addQuad(const std::string& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3, const vec3& _pos4,
+				void addQuad(const etk::String& _layerName, const vec3& _pos1, const vec3& _pos2, const vec3& _pos3, const vec3& _pos4,
 				                 const etk::Color<float>& _color1, const etk::Color<float>& _color2, const etk::Color<float>& _color3, const etk::Color<float>& _color4) {
 					addTriangle(_layerName, _pos1, _pos2, _pos3, _color1, _color2, _color3);
 					addTriangle(_layerName, _pos1, _pos3, _pos4, _color1, _color3, _color4);
@@ -274,7 +274,7 @@ namespace ege {
 				 * @param[in] _uv2 texture position of the _pos2 element
 				 * @param[in] _uv3 texture position of the _pos3 element
 				 */
-				void addTriangle(const std::string& _layerName,
+				void addTriangle(const etk::String& _layerName,
 				                 const vec3& _pos1, const vec3& _pos2, const vec3& _pos3,
 				                 const vec2& _uv1, const vec2& _uv2, const vec2& _uv3,
 				                 const etk::Color<float>& _color) {
@@ -294,7 +294,7 @@ namespace ege {
 				 * @param[in] _uv2 texture position of the _pos2 element
 				 * @param[in] _uv3 texture position of the _pos3 element
 				 */
-				void addTriangle(const std::string& _layerName,
+				void addTriangle(const etk::String& _layerName,
 				                 const vec3& _pos1, const vec3& _pos2, const vec3& _pos3,
 				                 const vec2& _uv1, const vec2& _uv2, const vec2& _uv3,
 				                 const etk::Color<float>& _color1=etk::color::white, const etk::Color<float>& _color2=etk::color::white, const etk::Color<float>& _color3=etk::color::white);
@@ -312,7 +312,7 @@ namespace ege {
 				 * @param[in] _uv3 texture position of the _pos3 element
 				 * @param[in] _uv4 texture position of the _pos4 element
 				 */
-				void addQuad(const std::string& _layerName,
+				void addQuad(const etk::String& _layerName,
 				             const vec3& _pos1, const vec3& _pos2, const vec3& _pos3, const vec3& _pos4,
 				             const vec2& _uv1, const vec2& _uv2, const vec2& _uv3, const vec2& _uv4,
 				             const etk::Color<float>& _color) {
@@ -335,7 +335,7 @@ namespace ege {
 				 * @param[in] _color3 color of the _pos3 element
 				 * @param[in] _color4 color of the _pos4 element
 				 */
-				void addQuad(const std::string& _layerName,
+				void addQuad(const etk::String& _layerName,
 				             const vec3& _pos1, const vec3& _pos2, const vec3& _pos3, const vec3& _pos4,
 				             const vec2& _uv1, const vec2& _uv2, const vec2& _uv3, const vec2& _uv4,
 				             const etk::Color<float>& _color1=etk::color::white, const etk::Color<float>& _color2=etk::color::white, const etk::Color<float>& _color3=etk::color::white, const etk::Color<float>& _color4=etk::color::white) {

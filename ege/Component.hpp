@@ -15,7 +15,7 @@ namespace ege {
 		protected:
 			
 		public:
-			virtual const std::string& getType() const;
+			virtual const etk::String& getType() const;
 			
 			/**
 			 * @brief Evironement notify that a new component is added on the same Element

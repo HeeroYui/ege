@@ -21,7 +21,7 @@ ege::ElementBase::~ElementBase() {
 	EGE_WARNING("Remove ... ");
 }
 
-const std::string& ege::ElementBase::getType() const {
+const etk::String& ege::ElementBase::getType() const {
 	return ege::Element::getType();
 }
 

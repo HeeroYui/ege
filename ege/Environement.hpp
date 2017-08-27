@@ -15,7 +15,7 @@ namespace ege {
 
 
 #include <etk/types.hpp>
-#include <vector>
+#include <etk/Vector.hpp>
 #include <etk/math/Vector3D.hpp>
 #include <ejson/ejson.hpp>
 #include <exml/exml.hpp>
@@ -50,13 +50,13 @@ namespace ege {
 				return m_groupSource;
 			};
 		protected:
-			std::vector<int32_t> m_groupDestination;
+			etk::Vector<int32_t> m_groupDestination;
 		public:
-			const std::vector<int32_t>& getDestinationGroup() {
+			const etk::Vector<int32_t>& getDestinationGroup() {
 				return m_groupDestination;
 			};
 			void addGroupDestination(int32_t _id) {
-				m_groupDestination.push_back(_id);
+				m_groupDestination.pushBack(_id);
 			};
 		protected:
 			vec3 m_positionSource;
@@ -83,44 +83,44 @@ namespace ege {
 			eproperty::List<enum gameStatus> propertyStatus; //!< the display is running (not in pause)
 			eproperty::Value<float> propertyRatio; //!< Speed ratio
 		protected:
-			std::vector<ememory::SharedPtr<ege::Engine>> m_engine; //!< EGE sub engine interface (like physique, rendering, audio, ...).
+			etk::Vector<ememory::SharedPtr<ege::Engine>> m_engine; //!< EGE sub engine interface (like physique, rendering, audio, ...).
 		public:
 			void addEngine(const ememory::SharedPtr<ege::Engine>& _ref);
 			void rmEngine(const ememory::SharedPtr<ege::Engine>& _ref);
-			void rmEngine(const std::string& _type);
-			ememory::SharedPtr<ege::Engine> getEngine(const std::string& _type);
+			void rmEngine(const etk::String& _type);
+			ememory::SharedPtr<ege::Engine> getEngine(const etk::String& _type);
 			void engineComponentRemove(const ememory::SharedPtr<ege::Component>& _ref);
 			void engineComponentAdd(const ememory::SharedPtr<ege::Component>& _ref);
 			
 		private:
-			std::vector<ememory::SharedPtr<ege::Entity>> m_listEntity; //!< List of all entity added in the Game
+			etk::Vector<ememory::SharedPtr<ege::Entity>> m_listEntity; //!< List of all entity added in the Game
 		protected:
 			Environement();
 		public:
 			DECLARE_FACTORY(Environement);
 			virtual ~Environement() { };
 		public:
-			void render(const echrono::Duration& _delta, const std::string& _camera);
+			void render(const echrono::Duration& _delta, const etk::String& _camera);
 		protected:
-			std::map<std::string, ememory::SharedPtr<ege::Camera>> m_listCamera; //!< list of all camera in the world
+			etk::Map<etk::String, ememory::SharedPtr<ege::Camera>> m_listCamera; //!< list of all camera in the world
 		public:
 			/**
 			 * @brief Add a camera in the camera pool.
 			 * @param[in] _name Name of the camera.
 			 * @param[in] _camera Pointer on the camera to add.
 			 */
-			void addCamera(const std::string& _name, const ememory::SharedPtr<ege::Camera>& _camera);
+			void addCamera(const etk::String& _name, const ememory::SharedPtr<ege::Camera>& _camera);
 			/**
 			 * @brief Get a specific camera.
 			 * @param[in] _name Name of the camera.
 			 * @return A pointer on the camera requested.
 			 */
-			ememory::SharedPtr<ege::Camera> getCamera(const std::string& _name);
+			ememory::SharedPtr<ege::Camera> getCamera(const etk::String& _name);
 			/**
 			 * @brief Get List of all camera.
 			 * @return All the camera registerred.
 			 */
-			std::map<std::string, ememory::SharedPtr<ege::Camera>> getCameraList() const {
+			etk::Map<etk::String, ememory::SharedPtr<ege::Camera>> getCameraList() const {
 				return m_listCamera;
 			}
 		public:
@@ -133,7 +133,7 @@ namespace ege {
 			 * @param[in] _type Type of the entity.
 			 * @param[in] _creator Function pointer that reference the entity creating.
 			 */
-			static void addCreator(const std::string& _type, ege::createEntity_tf _creator);
+			static void addCreator(const etk::String& _type, ege::createEntity_tf _creator);
 			/**
 			 * @brief Create an entity on the curent scene.
 			 * @param[in] _type Type of the entity that might be created.
@@ -142,11 +142,11 @@ namespace ege {
 			 * @return nullptr if an error occured OR the pointer on the entity and it is already added on the system.
 			 * @note Pointer is return in case of setting properties on it...
 			 */
-			ememory::SharedPtr<ege::Entity> createEntity(const std::string& _type, const std::string& _description, bool _autoAddEntity=true);
-			ememory::SharedPtr<ege::Entity> createEntity(const std::string& _type, const ejson::Value& _value, bool _autoAddEntity=true);
-			ememory::SharedPtr<ege::Entity> createEntity(const std::string& _type, const exml::Node& _node, bool _autoAddEntity=true);
-			ememory::SharedPtr<ege::Entity> createEntity(const std::string& _type, void* _data, bool _autoAddEntity=true);
-			ememory::SharedPtr<ege::Entity> createEntity(const std::string& _type, bool _autoAddEntity=true);
+			ememory::SharedPtr<ege::Entity> createEntity(const etk::String& _type, const etk::String& _description, bool _autoAddEntity=true);
+			ememory::SharedPtr<ege::Entity> createEntity(const etk::String& _type, const ejson::Value& _value, bool _autoAddEntity=true);
+			ememory::SharedPtr<ege::Entity> createEntity(const etk::String& _type, const exml::Node& _node, bool _autoAddEntity=true);
+			ememory::SharedPtr<ege::Entity> createEntity(const etk::String& _type, void* _data, bool _autoAddEntity=true);
+			ememory::SharedPtr<ege::Entity> createEntity(const etk::String& _type, bool _autoAddEntity=true);
 		public:
 			class ResultNearestEntity {
 				public:
@@ -173,7 +173,7 @@ namespace ege {
 			 * @breif get a reference on the curent list of entity games
 			 * @return all entity list
 			 */
-			std::vector<ememory::SharedPtr<ege::Entity>>& getEntity() {
+			etk::Vector<ememory::SharedPtr<ege::Entity>>& getEntity() {
 				return m_listEntity;
 			};
 			/**
@@ -187,10 +187,10 @@ namespace ege {
 			
 			void getEntityNearest(const vec3& _sourcePosition,
 			                       float _distanceMax,
-			                       std::vector<ege::Environement::ResultNearestEntity>& _resultList);
+			                       etk::Vector<ege::Environement::ResultNearestEntity>& _resultList);
 			void getEntityNearestFixed(const vec3& _sourcePosition,
 			                            float _distanceMax,
-			                            std::vector<ege::Environement::ResultNearestEntity>& _resultList);
+			                            etk::Vector<ege::Environement::ResultNearestEntity>& _resultList);
 			*/
 			/**
 			 * @brief add an entity on the list availlable.
@@ -214,12 +214,12 @@ namespace ege {
 		private:
 			void onCallbackPeriodicCall(const ewol::event::Time& _event);
 		protected:
-			std::vector<ememory::SharedPtr<ege::resource::Mesh>> m_listMeshToDrawFirst;
+			etk::Vector<ememory::SharedPtr<ege::resource::Mesh>> m_listMeshToDrawFirst;
 		public:
 			void addStaticMeshToDraw(const ememory::SharedPtr<ege::resource::Mesh>& _mesh) {
-				m_listMeshToDrawFirst.push_back(_mesh);
+				m_listMeshToDrawFirst.pushBack(_mesh);
 			}
-			std::vector<ememory::SharedPtr<ege::resource::Mesh>>& getStaticMeshToDraw() {
+			etk::Vector<ememory::SharedPtr<ege::resource::Mesh>>& getStaticMeshToDraw() {
 				return m_listMeshToDrawFirst;
 			}
 			virtual void onChangePropertyStatus();

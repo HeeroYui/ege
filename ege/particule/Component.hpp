@@ -16,7 +16,7 @@ namespace ege {
 		class Engine;
 		class Component : public ege::Component {
 			public:
-				virtual const std::string& getType() const override;
+				virtual const etk::String& getType() const override;
 			protected:
 				ege::particule::Engine* m_particuleEngine;
 				const char* m_particuleType;

@@ -7,8 +7,8 @@
 #include <ege/debug.hpp>
 #include <ege/particule/Engine.hpp>
 
-const std::string& ege::particule::Component::getType() const {
-	static std::string tmp("particule");
+const etk::String& ege::particule::Component::getType() const {
+	static etk::String tmp("particule");
 	return tmp;
 }
 

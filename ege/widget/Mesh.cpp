@@ -85,7 +85,7 @@ bool ege::widget::Mesh::onEventInput(const ewol::event::Input& _event) {
 	return false;
 }
 
-void ege::widget::Mesh::setFile(const std::string& _filename) {
+void ege::widget::Mesh::setFile(const etk::String& _filename) {
 	if(    _filename != ""
 	    && m_meshName != _filename ) {
 		m_meshName = _filename;

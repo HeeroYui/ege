@@ -27,7 +27,7 @@ namespace appl {
 		private:
 			void onCallbackPeriodicUpdateCamera(const ewol::event::Time& _event);
 		public:
-			void setMeshName(const std::string& _fileName);
+			void setMeshName(const etk::String& _fileName);
 			void setDebugNormal();
 			void setDebugAABB();
 			void setDebugShape();

@@ -10,8 +10,8 @@
 #include <ege/Environement.hpp>
 
 
-const std::string& ege::Entity::getType() const {
-	static const std::string nameType("----");
+const etk::String& ege::Entity::getType() const {
+	static const etk::String nameType("----");
 	return nameType;
 }
 
@@ -67,7 +67,7 @@ void ege::Entity::addComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 	// add it at the end ...
 	if (findId == -1) {
 		findId = m_component.size();
-		m_component.push_back(_ref);
+		m_component.pushBack(_ref);
 	}
 	for (size_t iii=0; iii<m_component.size(); ++iii) {
 		if (m_component[iii] == nullptr) {
@@ -123,7 +123,7 @@ void ege::Entity::rmComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 	}
 }
 
-void ege::Entity::rmComponent(const std::string& _type) {
+void ege::Entity::rmComponent(const etk::String& _type) {
 	int32_t findId = -1;
 	ememory::SharedPtr<ege::Component> componentRemoved;
 	// check if not exist
@@ -159,7 +159,7 @@ bool ege::Entity::init() {
 	EGE_WARNING("init() not implemented: uId=" << m_uID);
 	return false;
 }
-bool ege::Entity::initString(const std::string& _description) {
+bool ege::Entity::initString(const etk::String& _description) {
 	EGE_WARNING("String Init not implemented: uId=" << m_uID);
 	return false;
 }
@@ -191,7 +191,7 @@ float ege::Entity::getLifeRatio() {
 void ege::Entity::setFireOn(int32_t _groupIdSource, int32_t _type, float _power, const vec3& _center) {
 	float previousLife = m_life;
 	m_life += _power;
-	m_life = std::avg(0.0f, m_life, m_lifeMax);
+	m_life = etk::avg(0.0f, m_life, m_lifeMax);
 	if (m_life <= 0) {
 		EGE_DEBUG("[" << getUID() << "] Entity is killed ..." << getType());
 	}
@@ -218,23 +218,23 @@ void ege::Entity::drawLife(ememory::SharedPtr<ewol::resource::Colored3DObject> _
 	mat4 transformationMatrix =   etk::matTranslate(getPosition())
 	                            * etk::matRotate(vec3(0,0,1),_camera.getAngleZ())
 	                            * etk::matRotate(vec3(1,0,0),(M_PI/2.0f-_camera.getAngleTeta()));
-	std::vector<vec3> localVertices;
-	localVertices.push_back(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos           -lifeBorder,0));
-	localVertices.push_back(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
-	localVertices.push_back(vec3( lifeWidth/2.0+lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
-	localVertices.push_back(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos           -lifeBorder,0));
-	localVertices.push_back(vec3( lifeWidth/2.0+lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
-	localVertices.push_back(vec3( lifeWidth/2.0+lifeBorder,lifeYPos           -lifeBorder,0));
+	etk::Vector<vec3> localVertices;
+	localVertices.pushBack(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos           -lifeBorder,0));
+	localVertices.pushBack(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
+	localVertices.pushBack(vec3( lifeWidth/2.0+lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
+	localVertices.pushBack(vec3(-lifeWidth/2.0-lifeBorder,lifeYPos           -lifeBorder,0));
+	localVertices.pushBack(vec3( lifeWidth/2.0+lifeBorder,lifeYPos+lifeHeight+lifeBorder,0));
+	localVertices.pushBack(vec3( lifeWidth/2.0+lifeBorder,lifeYPos           -lifeBorder,0));
 	etk::Color<float> myColor(0x0000FF99);
 	_draw->draw(localVertices, myColor, transformationMatrix, false, false);
 	localVertices.clear();
 	/** Bounding box  == > model shape **/
-	localVertices.push_back(vec3(-lifeWidth/2.0                ,lifeYPos,0));
-	localVertices.push_back(vec3(-lifeWidth/2.0                ,lifeYPos + lifeHeight,0));
-	localVertices.push_back(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos + lifeHeight,0));
-	localVertices.push_back(vec3(-lifeWidth/2.0                ,lifeYPos,0));
-	localVertices.push_back(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos + lifeHeight,0));
-	localVertices.push_back(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos,0));
+	localVertices.pushBack(vec3(-lifeWidth/2.0                ,lifeYPos,0));
+	localVertices.pushBack(vec3(-lifeWidth/2.0                ,lifeYPos + lifeHeight,0));
+	localVertices.pushBack(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos + lifeHeight,0));
+	localVertices.pushBack(vec3(-lifeWidth/2.0                ,lifeYPos,0));
+	localVertices.pushBack(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos + lifeHeight,0));
+	localVertices.pushBack(vec3(-lifeWidth/2.0+lifeWidth*ratio,lifeYPos,0));
 	myColor =0x00FF00FF;
 	if (ratio < 0.2f) {
 		myColor = 0xFF0000FF;
@@ -253,9 +253,9 @@ void ege::Entity::drawDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> 
 	m_debugText.setPos(vec3(-20,32,0));
 	m_debugText.print(getType());
 	m_debugText.setPos(vec3(-20,20,0));
-	m_debugText.print("life=("+etk::to_string(getLifeRatio()));
+	m_debugText.print("life=("+etk::toString(getLifeRatio()));
 	*/
-	//m_debugText.print(std::string("Axe=(")+std::string(m_tmpAxe.x())+std::string(",")+etk::UString(m_tmpAxe.y())+etk::UString(",")+etk::UString(m_tmpAxe.z())+etk::UString(")"));
+	//m_debugText.print(etk::String("Axe=(")+etk::String(m_tmpAxe.x())+etk::String(",")+etk::UString(m_tmpAxe.y())+etk::UString(",")+etk::UString(m_tmpAxe.z())+etk::UString(")"));
 	/*
 	// TODO : Keep this it can be usefull to print something in direction of the camera ...
 	m_debugText.draw(   etk::matTranslate(getPosition())

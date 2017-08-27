@@ -32,17 +32,17 @@ namespace ege {
 						return this;
 					}
 				private:
-					std::vector<vec3> m_listVertex;
-					std::vector<uint32_t> m_indices;
+					etk::Vector<vec3> m_listVertex;
+					etk::Vector<uint32_t> m_indices;
 				public:
 					void clear() {
 						m_listVertex.clear();
 						m_indices.clear();
 					}
-					void setListOfVertex(const std::vector<vec3>& _listVertex) {
+					void setListOfVertex(const etk::Vector<vec3>& _listVertex) {
 						m_listVertex = _listVertex;
 					}
-					void addTriangle(const std::vector<uint32_t>& _index) {
+					void addTriangle(const etk::Vector<uint32_t>& _index) {
 						/*
 						if (m_indices.size() == 0) {
 							m_indices = _index;
@@ -54,13 +54,13 @@ namespace ege {
 							return;
 						}
 						for (auto &it: _index) {
-							m_indices.push_back(it);
+							m_indices.pushBack(it);
 						}
 					}
-					const std::vector<vec3>& getVertex() const {
+					const etk::Vector<vec3>& getVertex() const {
 						return m_listVertex;
 					}
-					const std::vector<uint32_t>& getIndices() const {
+					const etk::Vector<uint32_t>& getIndices() const {
 						return m_indices;
 					}
 			};

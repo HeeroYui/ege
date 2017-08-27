@@ -15,7 +15,7 @@ namespace ege {
 #include <etk/types.hpp>
 #include <etk/math/Vector3D.hpp>
 #include <etk/math/Matrix4x4.hpp>
-#include <vector>
+#include <etk/Vector.hpp>
 #include <ewol/debug.hpp>
 #include <ege/camera/Camera.hpp>
 #include <ewol/widget/Widget.hpp>
@@ -53,11 +53,11 @@ namespace ege {
 					return m_dynamicsWorld;
 				}
 			protected:
-				std::vector<ememory::SharedPtr<ege::physics::Component>> m_component;
+				etk::Vector<ememory::SharedPtr<ege::physics::Component>> m_component;
 				//TODO :  set it not in ewol ...
 				ememory::SharedPtr<ewol::resource::Colored3DObject> m_debugDrawProperty;
 			public:
-				const std::string& getType() const override;
+				const etk::String& getType() const override;
 				void componentRemove(const ememory::SharedPtr<ege::Component>& _ref) override;
 				void componentAdd(const ememory::SharedPtr<ege::Component>& _ref) override;
 				void update(const echrono::Duration& _delta) override;
@@ -72,13 +72,13 @@ namespace ege {
 				 * @param[in] _ray Ray top test
 				 * @return Impact position and normal of the impact (if normal == vec3(0,0,0) then no object impact...
 				 */
-				std::pair<vec3,vec3> testRay(const ege::Ray& _ray);
+				etk::Pair<vec3,vec3> testRay(const ege::Ray& _ray);
 				/**
 				 * @brief Test a rayCasting on the physic engine
 				 * @param[in] _ray Ray top test
 				 * @return Impact Component, position and normal of the impact (if normal == vec3(0,0,0) then no object impact...
 				 */
-				std::pair<ememory::SharedPtr<ege::Component>, std::pair<vec3,vec3>> testRayObject(const ege::Ray& _ray);
+				etk::Pair<ememory::SharedPtr<ege::Component>, etk::Pair<vec3,vec3>> testRayObject(const ege::Ray& _ray);
 		};
 	}
 }

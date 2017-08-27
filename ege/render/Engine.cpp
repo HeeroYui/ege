@@ -11,8 +11,8 @@ ege::render::Engine::Engine(ege::Environement* _env) :
 	m_debugDrawProperty = ewol::resource::Colored3DObject::create();
 }
 
-const std::string& ege::render::Engine::getType() const {
-	static std::string tmp("render");
+const etk::String& ege::render::Engine::getType() const {
+	static etk::String tmp("render");
 	return tmp;
 }
 
@@ -38,11 +38,11 @@ void ege::render::Engine::componentAdd(const ememory::SharedPtr<ege::Component>&
 			return;
 		}
 	}
-	m_component.push_back(ref);
+	m_component.pushBack(ref);
 }
 
 
-void ege::render::Engine::getOrderedElementForDisplay(std::vector<ege::render::Engine::ResultNearestElement>& _resultList,
+void ege::render::Engine::getOrderedElementForDisplay(etk::Vector<ege::render::Engine::ResultNearestElement>& _resultList,
                                                       const vec3& _position,
                                                       const vec3& _direction) {
 	// TODO : Set it back ... corrected...
@@ -89,7 +89,7 @@ void ege::render::Engine::getOrderedElementForDisplay(std::vector<ege::render::E
 		}
 		// add element at the end :
 		if (jjj >= _resultList.size()) {
-			_resultList.push_back(result);
+			_resultList.pushBack(result);
 		}
 	}
 }
@@ -135,7 +135,7 @@ void ege::render::Engine::renderDebug(const echrono::Duration& _delta, const eme
 		}
 		// Draw debug ... (Camera)
 		/*
-		std::map<std::string, ememory::SharedPtr<ege::Camera>> listCamera = m_env->getCameraList();
+		etk::Map<etk::String, ememory::SharedPtr<ege::Camera>> listCamera = m_env->getCameraList();
 		for (auto &itCam : listCamera) {
 			if (itCam.second != nullptr) {
 				itCam.second->drawDebug(m_debugDrawProperty, camera);

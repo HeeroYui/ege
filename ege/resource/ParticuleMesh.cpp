@@ -13,7 +13,7 @@ ege::resource::ParticuleMesh::ParticuleMesh() {
 	addResourceType("ege::resource::ParticuleMesh");
 }
 
-void ege::resource::ParticuleMesh::init(const std::string& _fileName, const std::string& _shaderName) {
+void ege::resource::ParticuleMesh::init(const etk::String& _fileName, const etk::String& _shaderName) {
 	ege::resource::Mesh::init(_fileName, _shaderName);
 	if (m_GLprogram != nullptr) {
 		m_GLMainColor = m_GLprogram->getUniform("EW_mainColor");
@@ -85,15 +85,15 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 			vec3 cameraNormal = vec3(0,0,-1);
 			cameraNormal.normalized();
 			// remove face that is notin the view ...
-			std::vector<uint32_t> tmpIndexResult;
-			std::vector<ege::Face>& tmppFaces = m_listFaces.getValue(kkk).m_faces;
-			//std::vector<uint32_t>& tmppIndex = m_listFaces.getValue(kkk).m_index;
+			etk::Vector<uint32_t> tmpIndexResult;
+			etk::Vector<ege::Face>& tmppFaces = m_listFaces.getValue(kkk).m_faces;
+			//etk::Vector<uint32_t>& tmppIndex = m_listFaces.getValue(kkk).m_index;
 			if (m_normalMode == ege::resource::Mesh::normalMode::face) {
 				for(size_t iii=0; iii<tmppFaces.size() ; ++iii) {
 					if((mattttt * m_listFacesNormal[tmppFaces[iii].m_normal[0]]).dot(cameraNormal) >= 0.0f) {
-						tmpIndexResult.push_back(iii*3);
-						tmpIndexResult.push_back(iii*3+1);
-						tmpIndexResult.push_back(iii*3+2);
+						tmpIndexResult.pushBack(iii*3);
+						tmpIndexResult.pushBack(iii*3+1);
+						tmpIndexResult.pushBack(iii*3+2);
 					}
 				}
 			} else {
@@ -101,9 +101,9 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 					if(    ((mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[0]]).dot(cameraNormal) >= -0.2f)
 					    || ((mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[1]]).dot(cameraNormal) >= -0.2f)
 					    || ((mattttt * m_listVertexNormal[tmppFaces[iii].m_normal[2]]).dot(cameraNormal) >= -0.2f) ) {
-						tmpIndexResult.push_back(iii*3);
-						tmpIndexResult.push_back(iii*3+1);
-						tmpIndexResult.push_back(iii*3+2);
+						tmpIndexResult.pushBack(iii*3);
+						tmpIndexResult.pushBack(iii*3+1);
+						tmpIndexResult.pushBack(iii*3+2);
 					}
 				}
 			}
