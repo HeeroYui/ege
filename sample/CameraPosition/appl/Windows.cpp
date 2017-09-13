@@ -127,7 +127,7 @@ void appl::Windows::onCallbackPeriodicUpdateCamera(const ewol::event::Time& _eve
 	offset += 0.01;
 	static float offset2 = 0;
 	offset2 += 0.003;
-	m_camera->setEye(vec3(100*std::sin(offset),100*std::cos(offset),40*std::cos(offset2)));
+	m_camera->setEye(vec3(100*etk::sin(offset),100*etk::cos(offset),40*etk::cos(offset2)));
 }
 
 

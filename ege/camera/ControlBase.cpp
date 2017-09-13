@@ -27,7 +27,7 @@ void ege::camera::ControlBase::setCamera(const ememory::SharedPtr<ege::camera::V
 	}
 	m_camera = _camera;
 	m_camera->setTarget(vec3(0,0,0));
-	m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),80*std::cos(m_anglePsy))*m_distance);
+	m_camera->setEye(vec3(100*etk::sin(m_angleTetha),100*etk::cos(m_angleTetha),80*etk::cos(m_anglePsy))*m_distance);
 	m_PCH = ewol::Object::getObjectManager().periodicCall.connect(this, &ege::camera::ControlBase::periodicCall);
 }
 
@@ -117,7 +117,7 @@ bool ege::camera::ControlBase::onEventInput(const ewol::event::Input& _event, co
 	if (_event.getId() == 4) {
 		// scrool button ==> zoom in
 		m_distance += 0.01f;
-		m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),80*std::cos(m_anglePsy))*m_distance);
+		m_camera->setEye(vec3(100*etk::sin(m_angleTetha),100*etk::cos(m_angleTetha),80*etk::cos(m_anglePsy))*m_distance);
 		return true;
 	} else if (_event.getId() == 5) {
 		// scrool button ==> zoom OUT
@@ -125,7 +125,7 @@ bool ege::camera::ControlBase::onEventInput(const ewol::event::Input& _event, co
 		if (m_distance <= 0.05f) {
 			m_distance = 0.05f;
 		}
-		m_camera->setEye(vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),80*std::cos(m_anglePsy))*m_distance);
+		m_camera->setEye(vec3(100*etk::sin(m_angleTetha),100*etk::cos(m_angleTetha),80*etk::cos(m_anglePsy))*m_distance);
 		return true;
 	} else if (_event.getId() == 3) {
 		// Middle button ==> move around the target position
@@ -135,7 +135,7 @@ bool ege::camera::ControlBase::onEventInput(const ewol::event::Input& _event, co
 			vec2 pos = _relativePosition;
 			m_angleTetha += (m_oldScreenPos.x()-pos.x())*0.02f;
 			m_anglePsy += (m_oldScreenPos.y()-pos.y())*0.01f;
-			m_camera->setEye(m_camera->getTarget() + vec3(100*std::sin(m_angleTetha),100*std::cos(m_angleTetha),80*std::cos(m_anglePsy))*m_distance);
+			m_camera->setEye(m_camera->getTarget() + vec3(100*etk::sin(m_angleTetha),100*etk::cos(m_angleTetha),80*etk::cos(m_anglePsy))*m_distance);
 			m_oldScreenPos = _relativePosition;
 		}
 		return true;
@@ -147,8 +147,8 @@ bool ege::camera::ControlBase::onEventInput(const ewol::event::Input& _event, co
 			vec2 pos = _relativePosition*0.2;
 			pos -= m_oldScreenPos*0.2;
 			float cameraAngle = m_camera->getTetha();
-			vec3 newPos = vec3(std::sin(cameraAngle)*pos.x() + std::cos(cameraAngle)*pos.y(),
-			                   std::cos(cameraAngle)*pos.x() + std::sin(cameraAngle)*pos.y(),
+			vec3 newPos = vec3(etk::sin(cameraAngle)*pos.x() + etk::cos(cameraAngle)*pos.y(),
+			                   etk::cos(cameraAngle)*pos.x() + etk::sin(cameraAngle)*pos.y(),
 			                   0);
 			EGE_ERROR("apply offset = " << newPos << " from pos=" << pos << " angle=" << cameraAngle);
 			newPos += m_camera->getTarget();

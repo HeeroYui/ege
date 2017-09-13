@@ -140,10 +140,10 @@ void ege::icoSphere::create(etk::Hash<ememory::SharedPtr<ege::Material>>& _mater
 			vec2 texturePos;
 			// projection sur le plan XY:
 			float proj = vert.x()*vert.x() + vert.y()*vert.y();
-			proj = std::sqrt(proj);
+			proj = etk::sqrt(proj);
 			float angle = M_PI;
 			if (proj != 0.0f) {
-				angle = std::acos(std::abs(vert.x()) / proj);
+				angle = etk::acos(etk::abs(vert.x()) / proj);
 			}
 			if (vert.x()<0) {
 				if (vert.y()<0) {
@@ -159,7 +159,7 @@ void ege::icoSphere::create(etk::Hash<ememory::SharedPtr<ege::Material>>& _mater
 			//EGE_WARNING( "angle = " << (angle/M_PI*180.0f) << " from: vert=" << etk::toString(vert) << " proj=" << proj );
 			texturePos.setX(angle/(2.0f*M_PI)+0.5f);
 			
-			angle = std::acos(proj/1.0f);
+			angle = etk::acos(proj/1.0f);
 			if (vert.z()<0) {
 				angle = -angle;
 			}
