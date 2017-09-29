@@ -6,7 +6,7 @@
 #pragma once
 
 #include <etk/types.hpp>
-#include <etk/Hash.hpp>
+#include <etk/Map.hpp>
 #include <gale/resource/Resource.hpp>
 #include <ewol/resource/Image.hpp>
 #include <gale/resource/Shader.hpp>
@@ -110,8 +110,8 @@ namespace ege {
 				etk::Vector<etk::Color<float>> m_listColor; //!< List of all Color point in the mesh
 				etk::Vector<vec3> m_listFacesNormal; //!< List of all Face normal, when calculated
 				etk::Vector<vec3> m_listVertexNormal; //!< List of all Face normal, when calculated
-				etk::Hash<FaceIndexing> m_listFaces; //!< List of all Face for the mesh
-				etk::Hash<ememory::SharedPtr<ege::Material>> m_materials;
+				etk::Map<etk::String,FaceIndexing> m_listFaces; //!< List of all Face for the mesh
+				etk::Map<etk::String,ememory::SharedPtr<ege::Material>> m_materials;
 				etk::Vector<ememory::SharedPtr<ege::physics::Shape>> m_physics; //!< collision shape module ... (independent of bullet lib)
 				void clean();
 			protected:

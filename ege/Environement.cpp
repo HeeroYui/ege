@@ -16,7 +16,9 @@
 
 #include <gale/renderer/openGL/openGL.hpp>
 #include <etk/math/Matrix4x4.hpp>
+#include <etk/typeInfo.hpp>
 
+ETK_DECLARE_TYPE(ege::gameStatus);
 
 void ege::Environement::addEngine(const ememory::SharedPtr<ege::Engine>& _ref) {
 	if (_ref == nullptr) {
@@ -212,8 +214,8 @@ void ege::Environement::getEntityNearestFixed(const vec3& _sourcePosition,
 }
 */
 
-static etk::Hash<ege::createEntity_tf>& getHachTableCreating() {
-	static etk::Hash<ege::createEntity_tf> s_table;
+static etk::Map<etk::String,ege::createEntity_tf>& getHachTableCreating() {
+	static etk::Map<etk::String,ege::createEntity_tf> s_table(0,false);
 	return s_table;
 }
 
@@ -532,7 +534,7 @@ void ege::Environement::onCallbackPeriodicCall(const ewol::event::Time& _event) 
 
 
 void ege::Environement::addCamera(const etk::String& _name, const ememory::SharedPtr<ege::Camera>& _camera) {
-	m_listCamera.insert(etk::makePair(_name, _camera));
+	m_listCamera.set(_name, _camera);
 }
 
 ememory::SharedPtr<ege::Camera> ege::Environement::getCamera(const etk::String& _name) {

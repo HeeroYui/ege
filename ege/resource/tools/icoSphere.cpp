@@ -30,7 +30,7 @@ static int32_t addUV(etk::Vector<vec2>& _listUV, int32_t _uvId, float _add) {
 	return _listUV.size()-1;
 }
 
-void ege::icoSphere::create(etk::Hash<ememory::SharedPtr<ege::Material>>& _materials, etk::Hash<FaceIndexing>& _listFaces, etk::Vector<vec3>& _listVertex, etk::Vector<vec2>& _listUV,
+void ege::icoSphere::create(etk::Map<etk::String,ememory::SharedPtr<ege::Material>>& _materials, etk::Map<etk::String,FaceIndexing>& _listFaces, etk::Vector<vec3>& _listVertex, etk::Vector<vec2>& _listUV,
                             const etk::String& _materialName, float _size, int32_t _recursionLevel) {
 	/*
 	                                     5                                                  

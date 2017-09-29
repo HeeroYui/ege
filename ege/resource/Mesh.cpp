@@ -24,6 +24,8 @@ ege::resource::Mesh::Mesh() :
   m_GLColor(-1),
   m_bufferOfset(-1),
   m_numberOfElments(-1),
+  m_listFaces(0,false),
+  m_materials(0,false),
   m_pointerShape(nullptr),
   m_functionFreeShape(nullptr) {
 	addResourceType("ege::resource::Mesh");

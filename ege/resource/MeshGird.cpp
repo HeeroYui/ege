@@ -79,7 +79,7 @@ ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createGrid(int32_t 
 				list.pushBack(_position+vec3(1,1,iii)*_size);
 				list.pushBack(_position+vec3(-1,1,iii)*_size);
 				list.pushBack(_position+vec3(-1,-1,iii)*_size);
-				out->addLines(_materialName, list, etk::color::gray);
+				out->addLines(_materialName, list, etk::Color<float>(etk::color::gray));
 			}
 			//out->addPoint(_materialName, vec3(iii,-_lineCount,0), etk::color::white);
 			//out->addPoint(_materialName, vec3(iii,_lineCount,0), etk::color::white);

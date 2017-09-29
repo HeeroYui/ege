@@ -7,7 +7,7 @@
 #include <ege/debug.hpp>
 #include <ege/resource/tools/isoSphere.hpp>
 
-void ege::isoSphere::create(etk::Hash<ememory::SharedPtr<ege::Material>>& _materials, etk::Hash<FaceIndexing>& _listFaces, etk::Vector<vec3>& _listVertex, etk::Vector<vec2>& _listUV,
+void ege::isoSphere::create(etk::Map<etk::String,ememory::SharedPtr<ege::Material>>& _materials, etk::Map<etk::String,FaceIndexing>& _listFaces, etk::Vector<vec3>& _listVertex, etk::Vector<vec2>& _listUV,
                             const etk::String& _materialName, int32_t _recursionLevel) {
 	_recursionLevel = etk::max(_recursionLevel, 3);
 	float size = 1.0f;

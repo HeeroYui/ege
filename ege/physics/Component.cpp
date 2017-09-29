@@ -197,7 +197,7 @@ void ege::physics::Component::generate() {
 				EGE_DEBUG("    Concave");
 				const ege::physics::shape::Concave* tmpElement = it->toConcave();
 				if (tmpElement == nullptr) {
-					EGE_ERROR("    Concave ==> can not cast in Concave");
+					EGE_ERROR("    etkConcave ==> can not cast in Concave");
 					continue;
 				}
 				#if 0

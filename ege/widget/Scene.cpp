@@ -39,7 +39,7 @@ ege::widget::Scene::Scene() :
 
 void ege::widget::Scene::init() {
 	ewol::Widget::init();
-	setKeyboardRepeate(false);
+	setKeyboardRepeat(false);
 	propertyCanFocus.set(true);
 	m_PCH = getObjectManager().periodicCall.connect(this, &ege::widget::Scene::periodicCall);
 	m_debugDrawProperty = ewol::resource::Colored3DObject::create();

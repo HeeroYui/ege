@@ -9,7 +9,7 @@
 
 
 
-void ege::viewBox::create(etk::Hash<ememory::SharedPtr<ege::Material>>& _materials, etk::Hash<FaceIndexing>& _listFaces, etk::Vector<vec3>& _listVertex, etk::Vector<vec2>& _listUV,
+void ege::viewBox::create(etk::Map<etk::String,ememory::SharedPtr<ege::Material>>& _materials, etk::Map<etk::String,FaceIndexing>& _listFaces, etk::Vector<vec3>& _listVertex, etk::Vector<vec2>& _listUV,
                           const etk::String& _materialName, float _size) {
 	// This is the direct generation basis on the .obj system
 	/*
