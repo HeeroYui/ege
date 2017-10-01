@@ -71,7 +71,7 @@ static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
 
 
 // TODO : Assert When a dynamic object is sponed inside a static object
-// loke:
+// like:
 //             o-------o
 //             |       |
 //    o--------|   X   |--------o
@@ -146,7 +146,7 @@ void appl::Windows::init() {
 		m_env->addEntity(entity);
 	}
 	
-	// create cubes (surface)
+	// create cubes (surface) (the colision is bigger than the display)
 	myMesh = ege::resource::Mesh::createCube(vec3(50,50,10), "basics", etk::color::green);
 	if (myMesh != nullptr) {
 		ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
@@ -184,8 +184,8 @@ void appl::Windows::init() {
 		ememory::SharedPtr<ege::physics::shape::Box> physic = ememory::makeShared<ege::physics::shape::Box>();
 		physic->setSize(vec3(5.01,5.01,5.01));
 		physic->setMass(300000);
-		componentPhysics->setType(ege::physics::Component::type::bodyDynamic);
 		componentPhysics->addShape(physic);
+		componentPhysics->setType(ege::physics::Component::type::bodyDynamic);
 		componentPhysics->generate();
 		entity->addComponent(componentPhysics);
 		// add it ..
