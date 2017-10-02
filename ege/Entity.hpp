@@ -46,6 +46,7 @@ namespace ege {
 			void addComponent(const ememory::SharedPtr<ege::Component>& _ref);
 			void rmComponent(const ememory::SharedPtr<ege::Component>& _ref);
 			void rmComponent(const etk::String& _type);
+			ememory::SharedPtr<ege::Component> getComponent(const etk::String& _type);
 			
 			/**
 			 * @brief get the Entity Type description string.

@@ -151,6 +151,18 @@ void ege::Entity::rmComponent(const etk::String& _type) {
 	}
 }
 
+ememory::SharedPtr<ege::Component> ege::Entity::getComponent(const etk::String& _type) {
+	// check if not exist
+	for (size_t iii=0; iii<m_component.size(); ++iii) {
+		if (m_component[iii] == nullptr) {
+			continue;
+		}
+		if (m_component[iii]->getType() == _type) {
+			return m_component[iii];
+		}
+	}
+	return nullptr;
+}
 
 
 
