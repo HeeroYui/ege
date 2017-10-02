@@ -183,7 +183,7 @@ void appl::Windows::init() {
 		ememory::SharedPtr<ege::physics::Component> componentPhysics = ememory::makeShared<ege::physics::Component>(m_env, transform);
 		ememory::SharedPtr<ege::physics::shape::Box> physic = ememory::makeShared<ege::physics::shape::Box>();
 		physic->setSize(vec3(5.01,5.01,5.01));
-		physic->setMass(300000);
+		physic->setMass(3000);
 		componentPhysics->addShape(physic);
 		componentPhysics->setType(ege::physics::Component::type::bodyDynamic);
 		componentPhysics->generate();
@@ -199,12 +199,102 @@ bool appl::Windows::onEventEntry(const ewol::event::Entry& _event) {
 	if (m_cameraControler.onEventEntry(_event) == true) {
 		return true;
 	}
+	if(_event.getType() == gale::key::keyboard::character ) {
+		ememory::SharedPtr<ege::physics::Component> physic = ememory::dynamicPointerCast<ege::physics::Component>(m_entity->getComponent("physics"));
+		if (physic == nullptr) {
+			APPL_ERROR("Can not get the component");
+			return false;
+		}
+		if (_event.getChar() == 'r') {
+			if (_event.getStatus() == gale::key::status::up) {
+				physic->applyTorque(vec3(0,0,0), true);
+			} else if (_event.getStatus() == gale::key::status::down) {
+				physic->applyTorque(vec3(0,0,10000000), true);
+			}
+			return true;
+		}
+		if (_event.getChar() == 'u') {
+			if (_event.getStatus() == gale::key::status::up) {
+				physic->applyForceToCenterOfMass(vec3(0,0,0), true);
+			} else if (_event.getStatus() == gale::key::status::down) {
+				physic->applyForceToCenterOfMass(vec3(0,0,10000000), true);
+			}
+			return true;
+		}
+		if (_event.getChar() == 'z') {
+			if (_event.getStatus() == gale::key::status::up) {
+				physic->applyForceToCenterOfMass(vec3(0,0,0), true);
+			} else if (_event.getStatus() == gale::key::status::down) {
+				physic->applyForceToCenterOfMass(vec3(0,10000000,0), true);
+			}
+			return true;
+		}
+		if (_event.getChar() == 's') {
+			if (_event.getStatus() == gale::key::status::up) {
+				physic->applyForceToCenterOfMass(vec3(0,0,0), true);
+			} else if (_event.getStatus() == gale::key::status::down) {
+				physic->applyForceToCenterOfMass(vec3(0,-10000000,0), true);
+			}
+			return true;
+		}
+		if (_event.getChar() == 'q') {
+			if (_event.getStatus() == gale::key::status::up) {
+				physic->applyForceToCenterOfMass(vec3(0,0,0), true);
+			} else if (_event.getStatus() == gale::key::status::down) {
+				physic->applyForceToCenterOfMass(vec3(10000000,0,0), true);
+			}
+			return true;
+		}
+		if (_event.getChar() == 'd') {
+			if (_event.getStatus() == gale::key::status::up) {
+				physic->applyForceToCenterOfMass(vec3(0,0,0), true);
+			} else if (_event.getStatus() == gale::key::status::down) {
+				physic->applyForceToCenterOfMass(vec3(-10000000,0,0), true);
+			}
+			return true;
+		}
+	}
 	return false;
 }
 
 bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 	if (m_cameraControler.onEventInput(_event, relativePosition(_event.getPos())) == true) {
 		return true;
+	}
+	if (_event.getId() == 2) {
+		if (_event.getStatus() == gale::key::status::down) {
+			ememory::SharedPtr<ege::physics::Component> physic = ememory::dynamicPointerCast<ege::physics::Component>(m_entity->getComponent("physics"));
+			if (physic == nullptr) {
+				APPL_ERROR("Can not get the component");
+				return false;
+			}
+			physic->applyForceToCenterOfMass(vec3(0,0,10000000), true);
+		} else if (_event.getStatus() == gale::key::status::up) {
+			ememory::SharedPtr<ege::physics::Component> physic = ememory::dynamicPointerCast<ege::physics::Component>(m_entity->getComponent("physics"));
+			if (physic == nullptr) {
+				APPL_ERROR("Can not get the component");
+				return false;
+			}
+			physic->applyForceToCenterOfMass(vec3(0,0,0), true);
+		}
+	}
+	if (_event.getId() == 1) {
+		if (_event.getStatus() == gale::key::status::down) {
+			ememory::SharedPtr<ege::physics::Component> physic = ememory::dynamicPointerCast<ege::physics::Component>(m_entity->getComponent("physics"));
+			if (physic == nullptr) {
+				APPL_ERROR("Can not get the component");
+				return false;
+			}
+			//physic->applyForce(vec3(0,0,10),vec3(0,0,0));
+			physic->applyRelativeTorque(vec3(0,0,10000000), true);
+		} else if (_event.getStatus() == gale::key::status::up) {
+			ememory::SharedPtr<ege::physics::Component> physic = ememory::dynamicPointerCast<ege::physics::Component>(m_entity->getComponent("physics"));
+			if (physic == nullptr) {
+				APPL_ERROR("Can not get the component");
+				return false;
+			}
+			physic->applyRelativeTorque(vec3(0,0,0), true);
+		}
 	}
 	/*
 	if (_event.getId() == 1) {
