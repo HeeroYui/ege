@@ -9,7 +9,7 @@
 #include <etk/math/Vector3D.hpp>
 #include <etk/math/Vector4D.hpp>
 #include <gale/resource/Program.hpp>
-#include <ewol/resource/Image.hpp>
+#include <ewol/resource/TextureFile.hpp>
 
 namespace ege {
 	/**

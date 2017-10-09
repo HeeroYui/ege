@@ -8,7 +8,7 @@
 #include <etk/types.hpp>
 #include <etk/Map.hpp>
 #include <gale/resource/Resource.hpp>
-#include <ewol/resource/Image.hpp>
+#include <ewol/resource/TextureFile.hpp>
 #include <gale/resource/Shader.hpp>
 #include <gale/resource/Program.hpp>
 #include <gale/resource/VirtualBufferObject.hpp>
