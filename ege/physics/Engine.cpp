@@ -94,7 +94,7 @@ ege::physics::Engine::Engine(ege::Environement* _env) :
 	// Start engine with no gravity
 	vec3 gravity(0.0f, 0.0f, 0.0f);
 	// Create the dynamics world
-	m_dynamicsWorld = new ephysics::DynamicsWorld(gravity);
+	m_dynamicsWorld = ETK_NEW(ephysics::DynamicsWorld, gravity);
 	if (m_dynamicsWorld != nullptr) {
 		// Set the number of iterations of the constraint solver
 		m_dynamicsWorld->setNbIterationsVelocitySolver(15);
@@ -105,7 +105,7 @@ ege::physics::Engine::Engine(ege::Environement* _env) :
 ege::physics::Engine::~Engine() {
 	if (m_dynamicsWorld != nullptr) {
 		m_dynamicsWorld->setEventListener(nullptr);
-		delete m_dynamicsWorld;
+		ETK_DELETE(ephysics::DynamicsWorld, m_dynamicsWorld);
 		m_dynamicsWorld = nullptr;
 	}
 }

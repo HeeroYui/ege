@@ -115,7 +115,7 @@ void ege::physics::Component::generate() {
 				                                tmpElement->getSize().y(),
 				                                tmpElement->getSize().z());
 				// Create the box shape
-				ephysics::BoxShape* shape = new ephysics::BoxShape(halfExtents, 0.0001);
+				ephysics::BoxShape* shape = ETK_NEW(ephysics::BoxShape, halfExtents, 0.0001);
 				m_listShape.pushBack(shape);
 				// The ephysic use Y as UP ==> ege use Z as UP
 				//orientation = orientation * ephysics::Quaternion(-0.707107, 0, 0, 0.707107);
@@ -133,7 +133,7 @@ void ege::physics::Component::generate() {
 					continue;
 				}
 				// Create the Cylinder shape
-				ephysics::CylinderShape* shape = new ephysics::CylinderShape(tmpElement->getRadius(), tmpElement->getSize());
+				ephysics::CylinderShape* shape = ETK_NEW(ephysics::CylinderShape, tmpElement->getRadius(), tmpElement->getSize());
 				// The ephysic use Y as UP ==> ege use Z as UP
 				etk::Quaternion orientation = it->getOrientation() * etk::Quaternion(-0.707107, 0, 0, 0.707107);
 				etk::Transform3D transform(it->getOrigin(), orientation);
@@ -150,7 +150,7 @@ void ege::physics::Component::generate() {
 					continue;
 				}
 				// Create the Capsule shape
-				ephysics::CapsuleShape* shape = new ephysics::CapsuleShape(tmpElement->getRadius(), tmpElement->getSize());
+				ephysics::CapsuleShape* shape = ETK_NEW(ephysics::CapsuleShape, tmpElement->getRadius(), tmpElement->getSize());
 				// The ephysic use Y as UP ==> ege use Z as UP
 				etk::Quaternion orientation = it->getOrientation() * etk::Quaternion(-0.707107, 0, 0, 0.707107);
 				etk::Transform3D transform(it->getOrigin(), orientation);
@@ -167,7 +167,7 @@ void ege::physics::Component::generate() {
 					continue;
 				}
 				// Create the Cone shape
-				ephysics::ConeShape* shape = new ephysics::ConeShape(tmpElement->getRadius(), tmpElement->getSize());
+				ephysics::ConeShape* shape = ETK_NEW(ephysics::ConeShape, tmpElement->getRadius(), tmpElement->getSize());
 				// The ephysic use Y as UP ==> ege use Z as UP
 				etk::Quaternion orientation = it->getOrientation() * etk::Quaternion(-0.707107, 0, 0, 0.707107);
 				etk::Transform3D transform(it->getOrigin(), orientation);
@@ -184,7 +184,7 @@ void ege::physics::Component::generate() {
 					continue;
 				}
 				// Create the box shape
-				ephysics::SphereShape* shape = new ephysics::SphereShape(tmpElement->getRadius());
+				ephysics::SphereShape* shape = ETK_NEW(ephysics::SphereShape, tmpElement->getRadius());
 				// The ephysic use Y as UP ==> ege use Z as UP
 				etk::Quaternion orientation = it->getOrientation() * etk::Quaternion(-0.707107, 0, 0, 0.707107);
 				etk::Transform3D transform(it->getOrigin(), orientation);
@@ -204,18 +204,18 @@ void ege::physics::Component::generate() {
 				static const etk::Vector<vec3> vertices = {vec3(-100.0f,-100.0f,-50.0f),vec3(100.0f,-100.0f,-50.0f),vec3(100.0f,100.0f,-50.0f)};
 				static const etk::Vector<uint32_t> indices = {0,1,2};
 				
-				ephysics::TriangleVertexArray* triangleArray = new ephysics::TriangleVertexArray(vertices, indices);
+				ephysics::TriangleVertexArray* triangleArray = ETK_NEW(ephysics::TriangleVertexArray, vertices, indices);
 				#else
-				ephysics::TriangleVertexArray* triangleArray = new ephysics::TriangleVertexArray(tmpElement->getVertex(), tmpElement->getIndices());
+				ephysics::TriangleVertexArray* triangleArray = ETK_NEW(ephysics::TriangleVertexArray, tmpElement->getVertex(), tmpElement->getIndices());
 				#endif
 				// Now that we have a TriangleVertexArray, we need to create a TriangleMesh and add the TriangleVertexArray into it as a subpart.
 				// Once this is done, we can create the actual ConcaveMeshShape and add it to the body we want to simulate as in the following example:
-				ephysics::TriangleMesh* triangleMesh = new ephysics::TriangleMesh();
+				ephysics::TriangleMesh* triangleMesh = ETK_NEW(ephysics::TriangleMesh);
 				// Add the triangle vertex array to the triangle mesh
 				triangleMesh->addSubpart(triangleArray);
 				// Create the concave mesh shape
 				// TODO : Manage memory leak ...
-				ephysics::ConcaveShape* shape = new ephysics::ConcaveMeshShape(triangleMesh);
+				ephysics::ConcaveShape* shape = ETK_NEW(ephysics::ConcaveMeshShape, triangleMesh);
 				// The ephysic use Y as UP ==> ege use Z as UP
 				etk::Quaternion orientation = it->getOrientation() * etk::Quaternion(-0.707107, 0, 0, 0.707107);
 				etk::Transform3D transform(it->getOrigin(), it->getOrientation());

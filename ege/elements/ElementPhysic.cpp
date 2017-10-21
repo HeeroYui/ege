@@ -118,13 +118,13 @@ void ege::ElementPhysic::removeShape() {
 	// need to chek if the shape is the same as the mesh shape ...
 	if (m_mesh == nullptr) {
 		// no mesh  == > standalone shape
-		delete(m_shape);
+		ETK_DELETE(btCollisionShape, m_shape);
 		m_shape=nullptr;
 		EGE_WARNING("Remove shape .2.");
 		return;
 	}
 	if (m_shape != m_mesh->getShape()) {
-		delete(m_shape);
+		ETK_DELETE(btCollisionShape, m_shape);
 		m_shape=nullptr;
 		EGE_WARNING("Remove shape .3.");
 		return;
@@ -136,7 +136,7 @@ void ege::ElementPhysic::FunctionFreeShape(void* _pointer) {
 	if (_pointer == nullptr) {
 		return;
 	}
-	delete(static_cast<btCollisionShape*>(_pointer));
+	ETK_DELETE(btCollisionShape, _pointer);
 }
 */
 void ege::ElementPhysic::setPosition(const vec3& _pos) {
@@ -389,7 +389,7 @@ void ege::ElementPhysic::iaEnable() {
 		// IA already started ...
 		return;
 	}
-	m_IA = new localIA(*this);
+	m_IA = ETK_NEW(localIA, *this);
 	if (m_IA == nullptr) {
 		EGE_ERROR("Can not start the IA == > allocation error");
 		return;
@@ -408,7 +408,7 @@ void ege::ElementPhysic::iaDisable() {
 		//m_env->getPhysicEngine().getDynamicWorld()->removeAction(m_IA);
 	}
 	// remove IA:
-	delete(m_IA);
+	ETK_DELETE(localIA, m_IA);
 	m_IA = nullptr;
 }
 
