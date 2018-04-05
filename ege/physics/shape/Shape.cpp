@@ -16,7 +16,7 @@
 
 ememory::SharedPtr<ege::physics::Shape> ege::physics::Shape::create(const etk::String& _name) {
 	ememory::SharedPtr<ege::physics::Shape> tmpp = nullptr;
-	etk::String name = etk::tolower(_name);
+	etk::String name = etk::toLower(_name);
 	if (name == "box") {
 		tmpp = ememory::makeShared<ege::physics::shape::Box>();
 	} else if (name == "sphere") {

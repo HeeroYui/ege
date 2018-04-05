@@ -165,6 +165,9 @@ namespace ege {
 				};
 				const etk::Vector<ememory::SharedPtr<ege::physics::Shape>>& getPhysicalProperties();
 				void addPhysicElement(const ememory::SharedPtr<ege::physics::Shape>& _shape) {
+					if (_shape == nullptr) {
+						return;
+					}
 					m_physics.pushBack(_shape);
 				}
 			private:

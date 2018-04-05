@@ -65,7 +65,7 @@ void ege::resource::Mesh::init(const etk::String& _fileName, const etk::String& 
 	// TO facilitate some debugs we add a name of the VBO:
 	m_verticesVBO->setName("[VBO] of " + _fileName);
 	// load the curent file :
-	etk::String tmpName = etk::tolower(_fileName);
+	etk::String tmpName = etk::toLower(_fileName);
 	// select the corect loader :
 	if (etk::end_with(tmpName, ".obj") == true) {
 		if (loadOBJ(_fileName) == false) {
@@ -717,6 +717,10 @@ void ege::resource::Mesh::addTriangle(const etk::String& _layerName, const vec3&
 #include <ege/physics/shape/Concave.hpp>
 const etk::Vector<ememory::SharedPtr<ege::physics::Shape>>& ege::resource::Mesh::getPhysicalProperties() {
 	for (auto &it: m_physics) {
+		if (it == nullptr) {
+			EGE_WARNING("Get nullptr ... ");
+			continue;
+		}
 		if (it->getType() == ege::physics::Shape::type::concave) {
 			// need to generate the internal list of point and triangle needed:
 			ege::physics::shape::Concave* tmpElement = it->toConcave();

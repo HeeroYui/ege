@@ -230,31 +230,6 @@ void ege::Environement::addCreator(const etk::String& _type, ege::createEntity_t
 }
 
 
-ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const etk::String& _type, const etk::String& _description, bool _autoAddEntity) {
-	if (getHachTableCreating().exist(_type) == false) {
-		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
-		return nullptr;
-	}
-	ege::createEntity_tf creatorPointer = getHachTableCreating()[_type];
-	if (creatorPointer == nullptr) {
-		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
-		return nullptr;
-	}
-	ememory::SharedPtr<ege::Entity> tmpEntity = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
-	if (tmpEntity == nullptr) {
-		EGE_ERROR("allocation error '" << _type << "'");
-		return nullptr;
-	}
-	if (tmpEntity->initString(_description) == false) {
-		EGE_ERROR("Init error ... '" << _type << "'");
-		return nullptr;
-	}
-	if (_autoAddEntity == true) {
-		addEntity(tmpEntity);
-	}
-	return tmpEntity;
-}
-
 ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const etk::String& _type, const ejson::Value& _value, bool _autoAddEntity) {
 	if (getHachTableCreating().exist(_type) == false) {
 		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
@@ -265,63 +240,9 @@ ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const etk::Strin
 		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
 		return nullptr;
 	}
-	ememory::SharedPtr<ege::Entity> tmpEntity = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
+	ememory::SharedPtr<ege::Entity> tmpEntity = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()), _value);
 	if (tmpEntity == nullptr) {
 		EGE_ERROR("allocation error '" << _type << "'");
-		return nullptr;
-	}
-	if (tmpEntity->initJSON(_value) == false) {
-		EGE_ERROR("Init error ... '" << _type << "'");
-		return nullptr;
-	}
-	if (_autoAddEntity == true) {
-		addEntity(tmpEntity);
-	}
-	return tmpEntity;
-}
-
-ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const etk::String& _type, const exml::Node& _node, bool _autoAddEntity) {
-	if (getHachTableCreating().exist(_type) == false) {
-		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
-		return nullptr;
-	}
-	ege::createEntity_tf creatorPointer = getHachTableCreating()[_type];
-	if (creatorPointer == nullptr) {
-		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
-		return nullptr;
-	}
-	ememory::SharedPtr<ege::Entity> tmpEntity = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
-	if (tmpEntity == nullptr) {
-		EGE_ERROR("allocation error '" << _type << "'");
-		return nullptr;
-	}
-	if (tmpEntity->initXML(_node) == false) {
-		EGE_ERROR("Init error ... '" << _type << "'");
-		return nullptr;
-	}
-	if (_autoAddEntity == true) {
-		addEntity(tmpEntity);
-	}
-	return tmpEntity;
-}
-
-ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const etk::String& _type, void* _data, bool _autoAddEntity) {
-	if (getHachTableCreating().exist(_type) == false) {
-		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
-		return nullptr;
-	}
-	ege::createEntity_tf creatorPointer = getHachTableCreating()[_type];
-	if (creatorPointer == nullptr) {
-		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
-		return nullptr;
-	}
-	ememory::SharedPtr<ege::Entity> tmpEntity = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
-	if (tmpEntity == nullptr) {
-		EGE_ERROR("allocation error '" << _type << "'");
-		return nullptr;
-	}
-	if (tmpEntity->initVoid(_data) == false) {
-		EGE_ERROR("Init error ... '" << _type << "'");
 		return nullptr;
 	}
 	if (_autoAddEntity == true) {
@@ -331,28 +252,8 @@ ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const etk::Strin
 }
 
 ememory::SharedPtr<ege::Entity> ege::Environement::createEntity(const etk::String& _type, bool _autoAddEntity) {
-	if (getHachTableCreating().exist(_type) == false) {
-		EGE_ERROR("Request creating of an type that is not known '" << _type << "'");
-		return nullptr;
-	}
-	ege::createEntity_tf creatorPointer = getHachTableCreating()[_type];
-	if (creatorPointer == nullptr) {
-		EGE_ERROR("nullptr pointer creator  == > internal error... '" << _type << "'");
-		return nullptr;
-	}
-	ememory::SharedPtr<ege::Entity> tmpEntity = creatorPointer(ememory::dynamicPointerCast<ege::Environement>(sharedFromThis()));
-	if (tmpEntity == nullptr) {
-		EGE_ERROR("allocation error '" << _type << "'");
-		return nullptr;
-	}
-	if (tmpEntity->init() == false) {
-		EGE_ERROR("Init error ... '" << _type << "'");
-		return nullptr;
-	}
-	if (_autoAddEntity == true) {
-		addEntity(tmpEntity);
-	}
-	return tmpEntity;
+	ejson::Value empty;
+	return createEntity(_type, empty, _autoAddEntity);
 }
 
 void ege::Environement::addEntity(ememory::SharedPtr<ege::Entity> _newEntity) {

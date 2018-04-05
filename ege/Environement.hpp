@@ -18,7 +18,6 @@ namespace ege {
 #include <etk/Vector.hpp>
 #include <etk/math/Vector3D.hpp>
 #include <ejson/ejson.hpp>
-#include <exml/exml.hpp>
 #include <ewol/object/Object.hpp>
 #include <esignal/Signal.hpp>
 #include <ewol/event/Time.hpp>
@@ -28,7 +27,7 @@ namespace ege {
 namespace ege {
 	class Entity;
 	class Environement;
-	typedef ememory::SharedPtr<ege::Entity> (*createEntity_tf)(const ememory::SharedPtr<ege::Environement>& _env);
+	typedef ememory::SharedPtr<ege::Entity> (*createEntity_tf)(const ememory::SharedPtr<ege::Environement>& _env, const ejson::Value& _property);
 	
 	enum gameStatus {
 		gameStart,
@@ -142,10 +141,7 @@ namespace ege {
 			 * @return nullptr if an error occured OR the pointer on the entity and it is already added on the system.
 			 * @note Pointer is return in case of setting properties on it...
 			 */
-			ememory::SharedPtr<ege::Entity> createEntity(const etk::String& _type, const etk::String& _description, bool _autoAddEntity=true);
 			ememory::SharedPtr<ege::Entity> createEntity(const etk::String& _type, const ejson::Value& _value, bool _autoAddEntity=true);
-			ememory::SharedPtr<ege::Entity> createEntity(const etk::String& _type, const exml::Node& _node, bool _autoAddEntity=true);
-			ememory::SharedPtr<ege::Entity> createEntity(const etk::String& _type, void* _data, bool _autoAddEntity=true);
 			ememory::SharedPtr<ege::Entity> createEntity(const etk::String& _type, bool _autoAddEntity=true);
 		public:
 			class ResultNearestEntity {

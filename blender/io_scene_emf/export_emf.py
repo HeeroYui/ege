@@ -6,6 +6,8 @@ import bpy
 import mathutils
 import bpy_extras.io_utils
 
+EXPORT_COLLISION_NAME = ""
+
 #blender myscene.blend --background --python myscript.py
 
 def getChildren(obj):
@@ -523,10 +525,10 @@ def write_mesh(scene, file, object, mtl_dict):
 	if object.dupli_type != 'NONE':
 		object.dupli_list_clear()
 	#####################################################################
-	## Save collision shapes (for one object:
+	## Save collision shapes (for one object):
 	#####################################################################
 	for subObj in getChildren(object):
-		print("     child:'%s'" % (subObj.name))
+		print("     child:'%s' check if start with : '%s'" % (subObj.name, EXPORT_COLLISION_NAME))
 		if subObj.name.lower().startswith(EXPORT_COLLISION_NAME):
 			print("     find physics:'%s'" % (subObj.name))
 			write_collision_shape(subObj, file, object.scale, 1)
