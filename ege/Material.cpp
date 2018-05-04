@@ -66,6 +66,23 @@ void ege::Material::draw(ememory::SharedPtr<gale::resource::Program> _prog, cons
 	EGE_VERBOSE("draw Material: ( end )");
 }
 
+void ege::Material::setAmbientFactor(const vec4& _val) {
+	m_ambientFactor = _val;
+}
+
+void ege::Material::setDiffuseFactor(const vec4& _val) {
+	//EGE_ERROR("****************  set difuse factor:" << _val);
+	m_diffuseFactor = _val;
+}
+
+void ege::Material::setSpecularFactor(const vec4& _val) {
+	m_specularFactor = _val;
+}
+
+void ege::Material::setShininess(float _val) {
+	m_shininess = _val;
+}
+
 void ege::Material::setTexture0(const etk::String& _filename) {
 	ivec2 tmpSize(256, 256);
 	if (_filename != "") {
@@ -102,6 +119,9 @@ void ege::Material::setTexture0Magic(const ivec2& _size) {
 }
 
 enum gale::openGL::renderMode ege::Material::getRenderModeOpenGl() {
+	return m_renderMode;
+}
+enum gale::openGL::renderMode ege::Material::getRenderMode() {
 	return m_renderMode;
 }
 
@@ -143,5 +163,26 @@ void ege::Material::setRenderMode(enum gale::openGL::renderMode _val) {
 			break;
 	}
 	m_renderMode = _val;
+}
+
+void ege::Material::setImageSize(const ivec2& _newSize) {
+	if (m_texture0 == nullptr){
+		return;
+	}
+	m_texture0->setImageSize(_newSize);
+}
+
+egami::Image* ege::Material::get() {
+	if (m_texture0 == nullptr){
+		return nullptr;
+	}
+	return &m_texture0->get();
+}
+
+void ege::Material::flush() {
+	if (m_texture0 == nullptr){
+		return;
+	}
+	m_texture0->flush();
 }
 

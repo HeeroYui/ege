@@ -485,10 +485,13 @@ bool ege::resource::Mesh::loadEMF(const etk::String& _fileName) {
 					float tmpVal1=0;
 					float tmpVal2=0;
 					float tmpVal3=0;
+					EGE_ERROR("************************** DiffuseFactor '" << inputDataLine << "'");
+					EGE_ERROR("************************** DiffuseFactor '" << &inputDataLine[3] << "'");
+					
 					sscanf(&inputDataLine[3], "%f %f %f", &tmpVal1, &tmpVal2, &tmpVal3);
 					vec4 tmp(tmpVal1, tmpVal2, tmpVal3, 1);
 					material->setDiffuseFactor(tmp);
-					EGE_VERBOSE("        DiffuseFactor " << tmp);
+					EGE_ERROR("        DiffuseFactor " << tmp);
 				} else if(strncmp(inputDataLine,"Ks ",3) == 0) {
 					float tmpVal1=0;
 					float tmpVal2=0;

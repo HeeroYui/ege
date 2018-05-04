@@ -10,6 +10,7 @@
 #include <etk/math/Vector4D.hpp>
 #include <gale/resource/Program.hpp>
 #include <ewol/resource/TextureFile.hpp>
+#include <ege/debug.hpp>
 
 namespace ege {
 	/**
@@ -26,8 +27,6 @@ namespace ege {
 			MaterialGlId();
 			void link(ememory::SharedPtr<gale::resource::Program> _prog, const etk::String& _baseName);
 	};
-	
-	
 	class Material {
 		private:
 			// values
@@ -35,7 +34,7 @@ namespace ege {
 			vec4 m_diffuseFactor;
 			vec4 m_specularFactor;
 			float m_shininess;
-			enum gale::openGL::renderMode m_renderMode; // Select Render mode (triangle/Line/point ...)
+			enum gale::openGL::renderMode m_renderMode; //!< Select Render mode (triangle/Line/point ...)
 			ememory::SharedPtr<ewol::resource::Texture> m_texture0;
 		public:
 			etk::Vector<uint32_t> m_listIndexFaces;
@@ -43,46 +42,20 @@ namespace ege {
 			Material();
 			~Material();
 			void draw(ememory::SharedPtr<gale::resource::Program> _prog, const ege::MaterialGlId& _glID);
-			void setAmbientFactor(const vec4& _val) {
-				m_ambientFactor = _val;
-			}
-			void setDiffuseFactor(const vec4& _val) {
-				m_diffuseFactor = _val;
-			}
-			void setSpecularFactor(const vec4& _val) {
-				m_specularFactor = _val;
-			}
-			void setShininess(float _val) {
-				m_shininess = _val;
-			}
+			void setAmbientFactor(const vec4& _val);
+			void setDiffuseFactor(const vec4& _val);
+			void setSpecularFactor(const vec4& _val);
+			void setShininess(float _val);
 			void setRenderMode(enum gale::openGL::renderMode _val);
 			enum gale::openGL::renderMode getRenderModeOpenGl();
-			enum gale::openGL::renderMode getRenderMode() {
-				return m_renderMode;
-			}
+			enum gale::openGL::renderMode getRenderMode();
 			void setTexture0(const etk::String& _filename);
 			void setTexture0Magic(const ivec2& _size);
-			
-			void setImageSize(const ivec2& _newSize) {
-				if (m_texture0 == nullptr){
-					return;
-				}
-				m_texture0->setImageSize(_newSize);
-			};
+			void setImageSize(const ivec2& _newSize);
 			// get the reference on this image to draw nomething on it ...
-			egami::Image* get() {
-				if (m_texture0 == nullptr){
-					return nullptr;
-				}
-				return &m_texture0->get();
-			};
+			egami::Image* get();
 			// flush the data to send it at the openGl system
-			void flush() {
-				if (m_texture0 == nullptr){
-					return;
-				}
-				m_texture0->flush();
-			};
+			void flush();
 	};
 }
 
