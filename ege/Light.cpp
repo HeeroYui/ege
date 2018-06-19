@@ -26,7 +26,7 @@ ege::Light::~Light() {
 }
 
 void ege::Light::link(ememory::SharedPtr<gale::resource::Program> _prog, const etk::String& _baseName) {
-	if (_prog == nullptr) {
+	if (_prog == null) {
 		return;
 	}
 	m_GL_direction = _prog->getUniform(_baseName+".direction");

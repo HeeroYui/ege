@@ -17,7 +17,7 @@ bool ege::physics::shape::ConvexHull::parse(const char* _line) {
 		char* base = (char*)(&_line[6]);
 		char* tmp= strchr(base, '|');
 		vec3 pos(0,0,0);
-		while (tmp != nullptr) {
+		while (tmp != null) {
 			*tmp = '\0';
 			sscanf(base, "%f %f %f", &pos.m_floats[0], &pos.m_floats[1], &pos.m_floats[2] );
 			m_points.pushBack(pos);

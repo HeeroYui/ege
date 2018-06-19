@@ -24,9 +24,9 @@ namespace ege {
 				/**
 				 * @brief Constructor.
 				 * @param[in] _particuleEngine reference on the particule engine ...
-				 * @param[in] _particuleType Type of the particule (set nullptr if you did not want to use the respowner ...)
+				 * @param[in] _particuleType Type of the particule (set null if you did not want to use the respowner ...)
 				 */
-				Component(ege::particule::Engine* _particuleEngine, const char* _particuleType = nullptr);
+				Component(ege::particule::Engine* _particuleEngine, const char* _particuleType = null);
 				/**
 				 * @brief Destructor.
 				 */

@@ -33,7 +33,7 @@ void ege::render::Engine::componentAdd(const ememory::SharedPtr<ege::Component>&
 	for (auto it=m_component.begin();
 	     it != m_component.end();
 	     ++it) {
-		if (*it == nullptr) {
+		if (*it == null) {
 			*it = ref;
 			return;
 		}
@@ -51,11 +51,11 @@ void ege::render::Engine::getOrderedElementForDisplay(etk::Vector<ege::render::E
 	// basic element result
 	ege::render::Engine::ResultNearestElement result;
 	result.dist = 99999999999.0f;
-	result.element = nullptr;
+	result.element = null;
 	// for all element in the game we chek if it is needed to display it ...
 	for (auto &it: m_component) {
-		// check nullptr  pointer
-		if (it == nullptr) {
+		// check null  pointer
+		if (it == null) {
 			// no pointer null are set in the output list ...
 			continue;
 		}
@@ -98,7 +98,7 @@ void ege::render::Engine::getOrderedElementForDisplay(etk::Vector<ege::render::E
 void ege::render::Engine::render(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) {
 	/*
 	for (auto &it : m_component) {
-		if (it == nullptr) {
+		if (it == null) {
 			continue;
 		}
 		
@@ -137,7 +137,7 @@ void ege::render::Engine::renderDebug(const echrono::Duration& _delta, const eme
 		/*
 		etk::Map<etk::String, ememory::SharedPtr<ege::Camera>> listCamera = m_env->getCameraList();
 		for (auto &itCam : listCamera) {
-			if (itCam.second != nullptr) {
+			if (itCam.second != null) {
 				itCam.second->drawDebug(m_debugDrawProperty, camera);
 			}
 		}
@@ -156,7 +156,7 @@ void ege::render::Engine::renderDebug(const echrono::Duration& _delta, const eme
 		signalDisplayDebug.emit(m_debugDrawProperty);
 	}
 	/* TODO: set it back ...
-	if (camera != nullptr) {
+	if (camera != null) {
 		m_env->getParticuleEngine().draw(*camera);
 	}
 	*/

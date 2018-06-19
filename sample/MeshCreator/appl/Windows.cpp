@@ -32,7 +32,7 @@ appl::Windows::Windows() {
 
 static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
 	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("---", "DATA:texturedNoMaterial.prog");
-	if (out != nullptr) {
+	if (out != null) {
 		ememory::SharedPtr<ege::Material> material = ememory::makeShared<ege::Material>();
 		// set the entity material properties :
 		material->setAmbientFactor(vec4(1,1,1,1));
@@ -47,7 +47,7 @@ static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
 		int32_t size = 1<<11;
 		material->setImageSize(ivec2(size,size));
 		egami::Image* myImage = material->get();
-		if (nullptr == myImage) {
+		if (null == myImage) {
 			return out;
 		}
 		myImage->clear(etk::color::black);
@@ -67,7 +67,7 @@ static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
 
 static ememory::SharedPtr<ege::resource::Mesh> createMars() {
 	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("---");
-	if (out != nullptr) {
+	if (out != null) {
 		ememory::SharedPtr<ege::Material> material = ememory::makeShared<ege::Material>();
 		material->setAmbientFactor(vec4(0.112f,0.112f,0.112f,1.0f));
 		material->setDiffuseFactor(vec4(0.512f,0.512f,0.512f,1.0f));
@@ -94,7 +94,7 @@ void appl::Windows::init() {
 	m_cameraControler.setCamera(m_camera);
 	
 	ememory::SharedPtr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create();
-	if (tmpWidget == nullptr) {
+	if (tmpWidget == null) {
 		APPL_ERROR("Can not allocate widget ==> display might be in error");
 	} else {
 		tmpWidget->setEnv(m_env);
@@ -106,7 +106,7 @@ void appl::Windows::init() {
 	ememory::SharedPtr<ege::resource::Mesh> myMesh;
 	// Create an external box: (no physics)
 	myMesh = createViewBoxStar();
-	if (myMesh != nullptr) {
+	if (myMesh != null) {
 		ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
 		// 1st Position component:
 		etk::Transform3D transform(vec3(0,0,0), etk::Quaternion::identity());
@@ -120,7 +120,7 @@ void appl::Windows::init() {
 	}
 	// create basic gird: (no physics)
 	myMesh = ege::resource::Mesh::createGrid(10, vec3(0,0,0), 5);
-	if (myMesh != nullptr) {
+	if (myMesh != null) {
 		ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
 		// 1st Position component:
 		etk::Transform3D transform(vec3(0,0,0), etk::Quaternion::identity());
@@ -134,7 +134,7 @@ void appl::Windows::init() {
 	}
 	if (false) {
 		myMesh = createMars();
-		if (myMesh != nullptr) {
+		if (myMesh != null) {
 			ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
 			// 1st Position component:
 			etk::Transform3D transform(vec3(5,0,0), etk::Quaternion::identity());
@@ -163,7 +163,7 @@ void appl::Windows::setDebugShape() {
 void appl::Windows::setMeshName(const etk::String& _fileName) {
 	// Create an external box: (no physics)
 	ememory::SharedPtr<ege::resource::Mesh> myMesh = ege::resource::Mesh::create(_fileName);
-	if (myMesh != nullptr) {
+	if (myMesh != null) {
 		ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
 		// 1st Position component:
 		etk::Transform3D transform(vec3(0,0,0), etk::Quaternion::identity());
@@ -214,7 +214,7 @@ bool appl::Windows::onEventInput(const ewol::event::Input& _event) {
 			
 			ememory::SharedPtr<ege::resource::Mesh> myMesh;
 			myMesh = ege::resource::Mesh::createCube(1, "basics", etk::color::orange);
-			if (myMesh != nullptr) {
+			if (myMesh != null) {
 				ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
 				// add all component:
 				// 1st Position component:

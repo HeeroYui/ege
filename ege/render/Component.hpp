@@ -32,7 +32,7 @@ namespace ege {
 				 */
 				Component(ememory::SharedPtr<ege::resource::Mesh> _mesh);
 			protected:
-				ememory::SharedPtr<ege::resource::Mesh> m_mesh; //!< Mesh of the Element (can be nullptr)
+				ememory::SharedPtr<ege::resource::Mesh> m_mesh; //!< Mesh of the Element (can be null)
 			public:
 				/**
 				 * @brief Select a mesh with a specific name.
@@ -43,7 +43,7 @@ namespace ege {
 				virtual bool loadMesh(const etk::String& _fileName);
 				/**
 				 * @brief set the the Mesh properties.
-				 * @param[in] _mesh The mesh pointer. (nullptr to force the mesh remove ...)
+				 * @param[in] _mesh The mesh pointer. (null to force the mesh remove ...)
 				 * @note : this remove the shape and the mesh properties.
 				 * @return true if no error occured
 				 */

@@ -138,7 +138,7 @@ namespace ege {
 			 * @param[in] _type Type of the entity that might be created.
 			 * @param[in] _description String that describe the content of the entity properties.
 			 * @param[in] _autoAddEntity this permit to add the entity if it is created  == > no more action ...
-			 * @return nullptr if an error occured OR the pointer on the entity and it is already added on the system.
+			 * @return null if an error occured OR the pointer on the entity and it is already added on the system.
 			 * @note Pointer is return in case of setting properties on it...
 			 */
 			ememory::SharedPtr<ege::Entity> createEntity(const etk::String& _type, const ejson::Value& _value, bool _autoAddEntity=true);
@@ -176,7 +176,7 @@ namespace ege {
 			 * @brief get the nearest Entity
 			 * @param[in] _sourceRequest Pointer on the entity that request this.
 			 * @param[in] _distance Maximum distance search  == > return the entity distance
-			 * @return Pointer on the neares entity OR nullptr
+			 * @return Pointer on the neares entity OR null
 			 */
 			/*
 			ememory::SharedPtr<ege::Entity> getEntityNearest(ememory::SharedPtr<ege::Entity> _sourceRequest, float& _distance);

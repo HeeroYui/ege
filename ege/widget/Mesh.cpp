@@ -26,7 +26,7 @@ void ege::widget::Mesh::init() {
 	setMouseLimit(1);
 	if (*propertyName != "") {
 		m_object = ege::resource::Mesh::create(m_meshName);
-		if (m_object == nullptr) {
+		if (m_object == null) {
 			EGE_ERROR("Can not load the resource : \"" << m_meshName << "\"");
 		}
 	}
@@ -42,7 +42,7 @@ void ege::widget::Mesh::onDraw() {
 	                            * etk::matRotate(vec3(1,0,0),m_angle.x())
 	                            * etk::matRotate(vec3(0,1,0),m_angle.y())
 	                            * etk::matRotate(vec3(0,0,1),m_angle.z());
-	if (m_object != nullptr) {
+	if (m_object != null) {
 		m_object->draw(transformationMatrix);
 	}
 }
@@ -90,7 +90,7 @@ void ege::widget::Mesh::setFile(const etk::String& _filename) {
 	    && m_meshName != _filename ) {
 		m_meshName = _filename;
 		m_object = ege::resource::Mesh::create(m_meshName);
-		if (m_object == nullptr) {
+		if (m_object == null) {
 			EGE_ERROR("Can not load the resource : \"" << m_meshName << "\"");
 		}
 	}

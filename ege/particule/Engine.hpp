@@ -40,9 +40,9 @@ namespace ege {
 				/**
 				 * @brief get a particue with his type, we get particule that has been already removed, otherwise, you will create new
 				 * @param[in] _particuleType Particule type, this chek only the pointer not the data.
-				 * @return nullptr, the particule has not been removed from the created pool
+				 * @return null, the particule has not been removed from the created pool
 				 * @return The pointer on the requested element (an init has been done).
-				 * @note If you did not want to use respawn set type at nullptr.
+				 * @note If you did not want to use respawn set type at null.
 				 */
 				ememory::SharedPtr<ege::particule::Component> respown(const char* _particuleType);
 				

@@ -32,7 +32,7 @@ appl::Windows::Windows() {
 
 static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
 	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("viewBoxStar", "DATA:texturedNoMaterial.prog");
-	if (out != nullptr) {
+	if (out != null) {
 		ememory::SharedPtr<ege::Material> material = ememory::makeShared<ege::Material>();
 		// set the entity material properties :
 		material->setAmbientFactor(vec4(1,1,1,1));
@@ -48,7 +48,7 @@ static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
 		out->addMaterial("basics", material);
 		//material->setImageSize(ivec2(size,size));
 		egami::Image* myImage = material->get();
-		if (myImage == nullptr) {
+		if (myImage == null) {
 			return out;
 		}
 		myImage->clear(etk::color::black);
@@ -80,7 +80,7 @@ void appl::Windows::init() {
 	m_cameraControler.setCamera(m_camera);
 	
 	ememory::SharedPtr<ege::widget::Scene> tmpWidget = ege::widget::Scene::create();
-	if (tmpWidget == nullptr) {
+	if (tmpWidget == null) {
 		APPL_ERROR("Can not allocate widget ==> display might be in error");
 	} else {
 		tmpWidget->setEnv(m_env);
@@ -92,7 +92,7 @@ void appl::Windows::init() {
 	ememory::SharedPtr<ege::resource::Mesh> myMesh;
 	// Create an external box: (no physics)
 	myMesh = createViewBoxStar();
-	if (myMesh != nullptr) {
+	if (myMesh != null) {
 		ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
 		// 1st Position component:
 		etk::Transform3D transform(vec3(0,0,0), etk::Quaternion::identity());
@@ -106,7 +106,7 @@ void appl::Windows::init() {
 	}
 	// create basic gird: (no physics)
 	myMesh = ege::resource::Mesh::createGrid(10, vec3(0,0,0), 5);
-	if (myMesh != nullptr) {
+	if (myMesh != null) {
 		ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
 		// 1st Position component:
 		etk::Transform3D transform(vec3(0,0,0), etk::Quaternion::identity());
@@ -119,7 +119,7 @@ void appl::Windows::init() {
 		m_env->addEntity(entity);
 	}
 	myMesh = ege::resource::Mesh::create("DATA:tree_1.emf");
-	if (myMesh != nullptr) {
+	if (myMesh != null) {
 		ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
 		// add all component:
 		// 1st Position component:

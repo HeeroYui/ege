@@ -15,7 +15,7 @@
 
 
 ememory::SharedPtr<ege::physics::Shape> ege::physics::Shape::create(const etk::String& _name) {
-	ememory::SharedPtr<ege::physics::Shape> tmpp = nullptr;
+	ememory::SharedPtr<ege::physics::Shape> tmpp = null;
 	etk::String name = etk::toLower(_name);
 	if (name == "box") {
 		tmpp = ememory::makeShared<ege::physics::shape::Box>();
@@ -33,9 +33,9 @@ ememory::SharedPtr<ege::physics::Shape> ege::physics::Shape::create(const etk::S
 		tmpp = ememory::makeShared<ege::physics::shape::Concave>();
 	} else {
 		EGE_ERROR("Create an unknow element : '" << _name << "' availlable : [BOX,SPHERE,CONE,CYLINDER,CAPSULE,CONVEXHULL,autoConcave]");
-		return nullptr;
+		return null;
 	}
-	if (tmpp == nullptr) {
+	if (tmpp == null) {
 		EGE_ERROR("Allocation error for physical element : '" << _name << "'");
 	}
 	return tmpp;

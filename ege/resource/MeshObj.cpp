@@ -25,7 +25,7 @@ bool ege::resource::Mesh::loadOBJ(const etk::String& _fileName) {
 	char inputDataLine[2048];
 	
 	int32_t lineID = 0;
-	while (fileName.fileGets(inputDataLine, 2048) != nullptr)
+	while (fileName.fileGets(inputDataLine, 2048) != null)
 	{
 		lineID++;
 		if (inputDataLine[0] == 'v') {

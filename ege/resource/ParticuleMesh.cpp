@@ -15,7 +15,7 @@ ege::resource::ParticuleMesh::ParticuleMesh() {
 
 void ege::resource::ParticuleMesh::init(const etk::String& _fileName, const etk::String& _shaderName) {
 	ege::resource::Mesh::init(_fileName, _shaderName);
-	if (m_GLprogram != nullptr) {
+	if (m_GLprogram != null) {
 		m_GLMainColor = m_GLprogram->getUniform("EW_mainColor");
 	}
 }
@@ -29,7 +29,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
                                         bool _enableDepthTest,
                                         bool _enableDepthUpdate)
 {
-	if (m_GLprogram == nullptr) {
+	if (m_GLprogram == null) {
 		EGE_ERROR("No shader ...");
 		return;
 	}

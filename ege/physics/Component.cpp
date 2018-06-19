@@ -65,7 +65,7 @@ ege::physics::Component::Component(ememory::SharedPtr<ege::Environement> _env, c
 }
 
 void ege::physics::Component::setType(enum ege::physics::Component::type _type) {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return;
 	}
 	switch(_type) {
@@ -82,14 +82,14 @@ void ege::physics::Component::setType(enum ege::physics::Component::type _type) 
 }
 
 ege::physics::Component::~Component() {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return;
 	}
 	// disable callback
-	m_rigidBody->setUserData(nullptr);
-	m_engine->getDynamicWorld()->testCollision(m_rigidBody, nullptr);
+	m_rigidBody->setUserData(null);
+	m_engine->getDynamicWorld()->testCollision(m_rigidBody, null);
 	m_engine->getDynamicWorld()->destroyRigidBody(m_rigidBody);
-	m_rigidBody = nullptr;
+	m_rigidBody = null;
 }
 
 void ege::physics::Component::generate() {
@@ -99,14 +99,14 @@ void ege::physics::Component::generate() {
 	}
 	
 	for (auto &it: m_shape) {
-		if (it == nullptr) {
+		if (it == null) {
 			continue;
 		}
 		switch (it->getType()) {
 			case ege::physics::Shape::type::box: {
 				EGE_DEBUG("    Box");
 				const ege::physics::shape::Box* tmpElement = it->toBox();
-				if (tmpElement == nullptr) {
+				if (tmpElement == null) {
 					EGE_ERROR("    Box ==> can not cast in BOX");
 					continue;
 				}
@@ -128,7 +128,7 @@ void ege::physics::Component::generate() {
 			case ege::physics::Shape::type::cylinder: {
 				EGE_DEBUG("    Cylinder");
 				const ege::physics::shape::Cylinder* tmpElement = it->toCylinder();
-				if (tmpElement == nullptr) {
+				if (tmpElement == null) {
 					EGE_ERROR("    Cylinder ==> can not cast in Cylinder");
 					continue;
 				}
@@ -145,7 +145,7 @@ void ege::physics::Component::generate() {
 			case ege::physics::Shape::type::capsule: {
 				EGE_DEBUG("    Capsule");
 				const ege::physics::shape::Capsule* tmpElement = it->toCapsule();
-				if (tmpElement == nullptr) {
+				if (tmpElement == null) {
 					EGE_ERROR("    Capsule ==> can not cast in Capsule");
 					continue;
 				}
@@ -162,7 +162,7 @@ void ege::physics::Component::generate() {
 			case ege::physics::Shape::type::cone: {
 				EGE_DEBUG("    Cone");
 				const ege::physics::shape::Cone* tmpElement = it->toCone();
-				if (tmpElement == nullptr) {
+				if (tmpElement == null) {
 					EGE_ERROR("    Cone ==> can not cast in Cone");
 					continue;
 				}
@@ -179,7 +179,7 @@ void ege::physics::Component::generate() {
 			case ege::physics::Shape::type::sphere: {
 				EGE_DEBUG("    Sphere");
 				const ege::physics::shape::Sphere* tmpElement = it->toSphere();
-				if (tmpElement == nullptr) {
+				if (tmpElement == null) {
 					EGE_ERROR("    Sphere ==> can not cast in Sphere");
 					continue;
 				}
@@ -196,7 +196,7 @@ void ege::physics::Component::generate() {
 			case ege::physics::Shape::type::concave: {
 				EGE_DEBUG("    Concave");
 				const ege::physics::shape::Concave* tmpElement = it->toConcave();
-				if (tmpElement == nullptr) {
+				if (tmpElement == null) {
 					EGE_ERROR("    etkConcave ==> can not cast in Concave");
 					continue;
 				}
@@ -243,7 +243,7 @@ void ege::physics::Component::emitAll() {
 }
 
 void ege::physics::Component::update(float _delta) {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return;
 	}
 	if (m_staticForceApplyCenterOfMass != vec3(0,0,0)) {
@@ -260,35 +260,35 @@ void ege::physics::Component::update(float _delta) {
 
 
 void ege::physics::Component::setTransform(const etk::Transform3D& _transform) {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return;
 	}
 	m_rigidBody->setTransform(_transform);
 }
 
 etk::Transform3D ege::physics::Component::getTransform() const {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return etk::Transform3D::identity();
 	}
 	return m_rigidBody->getTransform();
 }
 
 vec3 ege::physics::Component::getLinearVelocity() const {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return vec3(0,0,0);
 	}
 	return m_rigidBody->getLinearVelocity();
 }
 
 void ege::physics::Component::setLinearVelocity(const vec3& _linearVelocity) {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return;
 	}
 	m_rigidBody->setLinearVelocity(_linearVelocity);
 }
 
 vec3 ege::physics::Component::getRelativeLinearVelocity() const {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return vec3(0,0,0);
 	}
 	vec3 value = m_rigidBody->getLinearVelocity();
@@ -296,7 +296,7 @@ vec3 ege::physics::Component::getRelativeLinearVelocity() const {
 }
 
 void ege::physics::Component::setRelativeLinearVelocity(const vec3& _linearVelocity) {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return;
 	}
 	vec3 value = m_rigidBody->getTransform().getOrientation()*_linearVelocity;
@@ -304,27 +304,27 @@ void ege::physics::Component::setRelativeLinearVelocity(const vec3& _linearVeloc
 }
 
 vec3 ege::physics::Component::getAngularVelocity() const {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return vec3(0,0,0);
 	}
 	return m_rigidBody->getAngularVelocity();
 }
 void ege::physics::Component::setAngularVelocity(const vec3& _angularVelocity) {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return;
 	}
 	m_rigidBody->setAngularVelocity(_angularVelocity);
 }
 
 vec3 ege::physics::Component::getRelativeAngularVelocity() const {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return vec3(0,0,0);
 	}
 	vec3 value = m_rigidBody->getAngularVelocity();
 	return m_rigidBody->getTransform().getOrientation().getInverse()*value;
 }
 void ege::physics::Component::setRelativeAngularVelocity(const vec3& _angularVelocity) {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return;
 	}
 	vec3 value = m_rigidBody->getTransform().getOrientation()*_angularVelocity;
@@ -333,14 +333,14 @@ void ege::physics::Component::setRelativeAngularVelocity(const vec3& _angularVel
 
 
 void ege::physics::Component::applyForce(const vec3& _force,const vec3& _point) {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return;
 	}
 	m_rigidBody->applyForce(_force, _point);
 }
 
 void ege::physics::Component::applyForceToCenterOfMass(const vec3& _force, bool _static) {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return;
 	}
 	if(_static == true) {
@@ -351,7 +351,7 @@ void ege::physics::Component::applyForceToCenterOfMass(const vec3& _force, bool 
 }
 
 void ege::physics::Component::applyRelativeForceToCenterOfMass(const vec3& _force, bool _static) {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return;
 	}
 	vec3 force = m_rigidBody->getTransform().getOrientation()*_force;
@@ -363,7 +363,7 @@ void ege::physics::Component::applyRelativeForceToCenterOfMass(const vec3& _forc
 }
 
 void ege::physics::Component::applyTorque(const vec3& _torque, bool _static) {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return;
 	}
 	if(_static == true) {
@@ -374,7 +374,7 @@ void ege::physics::Component::applyTorque(const vec3& _torque, bool _static) {
 }
 
 void ege::physics::Component::applyRelativeTorque(const vec3& _torque, bool _static) {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return;
 	}
 	vec3 torque = m_rigidBody->getTransform().getOrientation()*_torque;
@@ -407,14 +407,14 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 	transformationMatrix.transpose();
 	etk::Color<float> tmpColor(1.0, 0.0, 0.0, 0.3);
 	for (auto &it: m_shape) {
-		if (it == nullptr) {
+		if (it == null) {
 			continue;
 		}
 		switch (it->getType()) {
 			case ege::physics::Shape::type::box: {
 				EGE_DEBUG("    Box");
 				const ege::physics::shape::Box* tmpElement = it->toBox();
-				if (tmpElement == nullptr) {
+				if (tmpElement == null) {
 					EGE_ERROR("    Box ==> can not cast in BOX");
 					continue;
 				}
@@ -429,7 +429,7 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 			case ege::physics::Shape::type::cylinder: {
 				EGE_DEBUG("    Cylinder");
 				const ege::physics::shape::Cylinder* tmpElement = it->toCylinder();
-				if (tmpElement == nullptr) {
+				if (tmpElement == null) {
 					EGE_ERROR("    Cylinder ==> can not cast in Cylinder");
 					continue;
 				}
@@ -444,7 +444,7 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 			case ege::physics::Shape::type::capsule: {
 				EGE_DEBUG("    Capsule");
 				const ege::physics::shape::Capsule* tmpElement = it->toCapsule();
-				if (tmpElement == nullptr) {
+				if (tmpElement == null) {
 					EGE_ERROR("    Capsule ==> can not cast in Capsule");
 					continue;
 				}
@@ -459,7 +459,7 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 			case ege::physics::Shape::type::cone: {
 				EGE_DEBUG("    Cone");
 				const ege::physics::shape::Cone* tmpElement = it->toCone();
-				if (tmpElement == nullptr) {
+				if (tmpElement == null) {
 					EGE_ERROR("    Cone ==> can not cast in Cone");
 					continue;
 				}
@@ -474,7 +474,7 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 			case ege::physics::Shape::type::sphere: {
 				EGE_DEBUG("    Sphere");
 				const ege::physics::shape::Sphere* tmpElement = it->toSphere();
-				if (tmpElement == nullptr) {
+				if (tmpElement == null) {
 					EGE_ERROR("    Sphere ==> can not cast in Sphere");
 					continue;
 				}
@@ -489,7 +489,7 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 			case ege::physics::Shape::type::concave: {
 				EGE_DEBUG("    concave");
 				const ege::physics::shape::Concave* tmpElement = it->toConcave();
-				if (tmpElement == nullptr) {
+				if (tmpElement == null) {
 					EGE_ERROR("    concave ==> can not cast in convexHull");
 					continue;
 				}
@@ -505,7 +505,7 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 			case ege::physics::Shape::type::convexHull: {
 				EGE_DEBUG("    convexHull");
 				const ege::physics::shape::ConvexHull* tmpElement = it->toConvexHull();
-				if (tmpElement == nullptr) {
+				if (tmpElement == null) {
 					EGE_ERROR("    convexHull ==> can not cast in convexHull");
 					continue;
 				}
@@ -520,7 +520,7 @@ void ege::physics::Component::drawShape(ememory::SharedPtr<ewol::resource::Color
 }
 
 void ege::physics::Component::drawAABB(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
-	if (m_rigidBody == nullptr) {
+	if (m_rigidBody == null) {
 		return;
 	}
 	mat4 transformationMatrix;

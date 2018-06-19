@@ -26,8 +26,8 @@ ege::resource::Mesh::Mesh() :
   m_numberOfElments(-1),
   m_listFaces(0,false),
   m_materials(0,false),
-  m_pointerShape(nullptr),
-  m_functionFreeShape(nullptr) {
+  m_pointerShape(null),
+  m_functionFreeShape(null) {
 	addResourceType("ege::resource::Mesh");
 }
 
@@ -45,7 +45,7 @@ void ege::resource::Mesh::init(const etk::String& _fileName, const etk::String& 
 	
 	EGE_VERBOSE(m_name << "  " << m_light << " shader=" << _shaderName);
 	m_GLprogram = gale::resource::Program::create(_shaderName);
-	if (m_GLprogram != nullptr) {
+	if (m_GLprogram != null) {
 		m_GLPosition = m_GLprogram->getAttribute("EW_coord3d");
 		m_GLtexture = m_GLprogram->getAttribute("EW_texture2d");
 		m_GLNormal = m_GLprogram->getAttribute("EW_normal");
@@ -58,7 +58,7 @@ void ege::resource::Mesh::init(const etk::String& _fileName, const etk::String& 
 	}
 	// this is the properties of the buffer requested : "r"/"w" + "-" + buffer type "f"=flaot "i"=integer
 	m_verticesVBO = gale::resource::VirtualBufferObject::create(5);
-	if (m_verticesVBO == nullptr) {
+	if (m_verticesVBO == null) {
 		EGE_ERROR("can not instanciate VBO ...");
 		return;
 	}
@@ -86,9 +86,9 @@ void ege::resource::Mesh::init(const etk::String& _fileName, const etk::String& 
 
 ege::resource::Mesh::~Mesh() {
 	// remove dynamics dependencies :
-	if (m_functionFreeShape != nullptr) {
+	if (m_functionFreeShape != null) {
 		m_functionFreeShape(m_pointerShape);
-		m_pointerShape = nullptr;
+		m_pointerShape = null;
 	}
 }
 
@@ -112,7 +112,7 @@ void ege::resource::Mesh::draw(mat4& _positionMatrix,
 	// TODO : Remove this, it is just for test the 23-04-2016
 	//m_checkNormal = false;
 	EGE_VERBOSE("draw Mesh : " << m_name << " (start)");
-	if (m_GLprogram == nullptr) {
+	if (m_GLprogram == null) {
 		EGE_ERROR("No shader ...");
 		return;
 	}
@@ -407,7 +407,7 @@ void ege::resource::Mesh::generateVBO() {
 		// clean faces indexes :
 		m_listFaces.getValue(kkk).m_index.clear();
 		int32_t nbIndicInFace = 3;
-		if (m_materials[m_listFaces.getKey(kkk)] == nullptr) {
+		if (m_materials[m_listFaces.getKey(kkk)] == null) {
 			EGE_ERROR("Can not get material : " << m_listFaces.getKey(kkk) << " pointer value: " << size_t(m_materials[m_listFaces.getKey(kkk)].get()));
 			continue;
 		}
@@ -524,7 +524,7 @@ void ege::resource::Mesh::createIcoSphere(const etk::String& _materialName,float
 
 
 void ege::resource::Mesh::addMaterial(const etk::String& _name, ememory::SharedPtr<ege::Material> _data) {
-	if (_data == nullptr) {
+	if (_data == null) {
 		EGE_ERROR(" can not add material with null pointer");
 		return;
 	}
@@ -537,9 +537,9 @@ void ege::resource::Mesh::addMaterial(const etk::String& _name, ememory::SharedP
 }
 
 void ege::resource::Mesh::setShape(void* _shape) {
-	if (m_functionFreeShape!=nullptr) {
+	if (m_functionFreeShape!=null) {
 		m_functionFreeShape(m_pointerShape);
-		m_pointerShape = nullptr;
+		m_pointerShape = null;
 	}
 	m_pointerShape=_shape;
 }
@@ -717,14 +717,14 @@ void ege::resource::Mesh::addTriangle(const etk::String& _layerName, const vec3&
 #include <ege/physics/shape/Concave.hpp>
 const etk::Vector<ememory::SharedPtr<ege::physics::Shape>>& ege::resource::Mesh::getPhysicalProperties() {
 	for (auto &it: m_physics) {
-		if (it == nullptr) {
-			EGE_WARNING("Get nullptr ... ");
+		if (it == null) {
+			EGE_WARNING("Get null ... ");
 			continue;
 		}
 		if (it->getType() == ege::physics::Shape::type::concave) {
 			// need to generate the internal list of point and triangle needed:
 			ege::physics::shape::Concave* tmpElement = it->toConcave();
-			if (tmpElement == nullptr) {
+			if (tmpElement == null) {
 				EGE_ERROR("    Concave ==> can not cast in Concave");
 				return m_physics;
 			}

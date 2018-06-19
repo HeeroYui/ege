@@ -22,7 +22,7 @@ ege::camera::ControlBase::ControlBase() :
 void ege::camera::ControlBase::setCamera(const ememory::SharedPtr<ege::camera::View>& _camera) {
 	m_camera.reset();
 	m_PCH.disconnect();
-	if (_camera == nullptr) {
+	if (_camera == null) {
 		return;
 	}
 	m_camera = _camera;
@@ -111,7 +111,7 @@ bool ege::camera::ControlBase::onEventEntry(const ewol::event::Entry& _event) {
 }
 
 bool ege::camera::ControlBase::onEventInput(const ewol::event::Input& _event, const vec2& _relativePosition) {
-	if (m_camera == nullptr) {
+	if (m_camera == null) {
 		return false;
 	}
 	if (_event.getId() == 4) {
@@ -163,7 +163,7 @@ bool ege::camera::ControlBase::onEventInput(const ewol::event::Input& _event, co
 }
 
 void ege::camera::ControlBase::periodicCall(const ewol::event::Time& _event) {
-	if (m_camera == nullptr) {
+	if (m_camera == null) {
 		return;
 	}
 	if (    m_destinationCameraOffset.x() < 0.7f

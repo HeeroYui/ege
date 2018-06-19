@@ -52,9 +52,9 @@ ege::widget::Scene::~Scene() {
 void ege::widget::Scene::onRegenerateDisplay() {
 	if (needRedraw() == true) {
 		// Update the curent camera with the aspect ratio
-		if (m_env != nullptr) {
+		if (m_env != null) {
 			ememory::SharedPtr<ege::Camera> camera = m_env->getCamera(m_cameraName);
-			if (camera != nullptr) {
+			if (camera != null) {
 				camera->setSceenSize(getSize());
 			}
 		}
@@ -107,7 +107,7 @@ void ege::widget::Scene::systemDraw(const ewol::DrawProperty& _displayProp) {
 	gale::openGL::setViewPort(m_origin, m_size);
 	// configure render with the camera...
 	ememory::SharedPtr<ege::Camera> camera = m_env->getCamera(m_cameraName);
-	if (camera != nullptr) {
+	if (camera != null) {
 		camera->configureOpenGL();
 	}
 	onDraw();
@@ -126,7 +126,7 @@ void ege::widget::Scene::setCamera(const etk::String& _cameraName) {
 	m_cameraName = _cameraName;
 	// Update camera aspect ratio:
 	ememory::SharedPtr<ege::Camera> camera = m_env->getCamera(m_cameraName);
-	if (camera != nullptr) {
+	if (camera != null) {
 		camera->setSceenSize(m_size);
 	}
 }
@@ -135,7 +135,7 @@ void ege::widget::Scene::calculateSize() {
 	ewol::Widget::calculateSize();
 	// Update camera aspect ratio:
 	ememory::SharedPtr<ege::Camera> camera = m_env->getCamera(m_cameraName);
-	if (camera != nullptr) {
+	if (camera != null) {
 		camera->setSceenSize(m_size);
 	}
 }

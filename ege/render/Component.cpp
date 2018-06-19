@@ -49,7 +49,7 @@ void ege::render::Component::onSignalPositionChange(const etk::Transform3D& _tra
 
 bool ege::render::Component::loadMesh(const etk::String& _meshFileName) {
 	ememory::SharedPtr<ege::resource::Mesh> tmpMesh = ege::resource::Mesh::create(_meshFileName);
-	if(tmpMesh == nullptr) {
+	if(tmpMesh == null) {
 		EGE_ERROR("can not load the resources : " << _meshFileName);
 		return false;
 	}
@@ -57,12 +57,12 @@ bool ege::render::Component::loadMesh(const etk::String& _meshFileName) {
 }
 
 bool ege::render::Component::setMesh(ememory::SharedPtr<ege::resource::Mesh> _mesh) {
-	if (m_mesh != nullptr) {
+	if (m_mesh != null) {
 		m_mesh.reset();
 	}
 	m_mesh = _mesh;
 	// auto load the shape :
-	if (m_mesh == nullptr) {
+	if (m_mesh == null) {
 		return true;
 	}
 	return true;
@@ -71,7 +71,7 @@ bool ege::render::Component::setMesh(ememory::SharedPtr<ege::resource::Mesh> _me
 void ege::render::Component::draw(int32_t _pass) {
 	//EGE_INFO("draw : " << _pass );
 	if (_pass == 0) {
-		if(m_mesh != nullptr) {
+		if(m_mesh != null) {
 			//EGE_INFO("element pos = " << getPosition());
 			float mmm[16];
 			// Get the OpenGL matrix array of the transform 
@@ -85,7 +85,7 @@ void ege::render::Component::draw(int32_t _pass) {
 }
 
 void ege::render::Component::drawNormalDebug(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw) {
-	if(m_mesh != nullptr) {
+	if(m_mesh != null) {
 		float mmm[16];
 		// Get the OpenGL matrix array of the transform 
 		m_transform.getOpenGLMatrix(mmm);

@@ -18,7 +18,7 @@ ege::MaterialGlId::MaterialGlId() :
 }
 
 void ege::MaterialGlId::link(ememory::SharedPtr<gale::resource::Program> _prog, const etk::String& _baseName) {
-	if (_prog == nullptr) {
+	if (_prog == null) {
 		return;
 	}
 	m_GL_ambientFactor = _prog->getUniform(_baseName+".ambientFactor");
@@ -34,7 +34,7 @@ ege::Material::Material() :
   m_specularFactor(0,0,0,1),
   m_shininess(1),
   m_renderMode(gale::openGL::renderMode::triangle),
-  m_texture0(nullptr) {
+  m_texture0(null) {
 	// nothing to do else ...
 }
 
@@ -48,7 +48,7 @@ void ege::Material::draw(ememory::SharedPtr<gale::resource::Program> _prog, cons
 	_prog->uniform4(_glID.m_GL_diffuseFactor, m_diffuseFactor);
 	_prog->uniform4(_glID.m_GL_specularFactor, m_specularFactor);
 	_prog->uniform1f(_glID.m_GL_shininess, m_shininess);
-	if (m_texture0 != nullptr) {
+	if (m_texture0 != null) {
 		EGE_VERBOSE("    set texture: " << _glID.m_GL_texture0 << " " << m_texture0->getId());
 		_prog->setTexture0(_glID.m_GL_texture0, m_texture0->getRendererId());
 		#if DEBUG
@@ -89,11 +89,11 @@ void ege::Material::setTexture0(const etk::String& _filename) {
 		// prevent overloard error :
 		ememory::SharedPtr<ewol::resource::Texture> tmpCopy = m_texture0;
 		m_texture0 = ewol::resource::TextureFile::create(_filename, tmpSize);
-		if (m_texture0 == nullptr) {
+		if (m_texture0 == null) {
 			EGE_ERROR("Can not load specific texture : " << _filename);
 			// retreave previous texture:
 			m_texture0 = tmpCopy;
-			if (m_texture0 != nullptr) {
+			if (m_texture0 != null) {
 				return;
 			}
 		}
@@ -105,7 +105,7 @@ void ege::Material::setTexture0(const etk::String& _filename) {
 void ege::Material::setTexture0Magic(const ivec2& _size) {
 	// create a simple custum texture :
 	m_texture0 = ewol::resource::Texture::create();
-	if (m_texture0 != nullptr) {
+	if (m_texture0 != null) {
 		setImageSize(_size);
 		egami::Image& img = m_texture0->get();
 		for (int32_t xxx=0; xxx<_size.x(); ++xxx) {
@@ -166,21 +166,21 @@ void ege::Material::setRenderMode(enum gale::openGL::renderMode _val) {
 }
 
 void ege::Material::setImageSize(const ivec2& _newSize) {
-	if (m_texture0 == nullptr){
+	if (m_texture0 == null){
 		return;
 	}
 	m_texture0->setImageSize(_newSize);
 }
 
 egami::Image* ege::Material::get() {
-	if (m_texture0 == nullptr){
-		return nullptr;
+	if (m_texture0 == null){
+		return null;
 	}
 	return &m_texture0->get();
 }
 
 void ege::Material::flush() {
-	if (m_texture0 == nullptr){
+	if (m_texture0 == null){
 		return;
 	}
 	m_texture0->flush();

@@ -101,51 +101,51 @@ namespace ege {
 				};
 				
 				virtual const ege::physics::shape::Box* toBox() const {
-					return nullptr;
+					return null;
 				};
 				virtual ege::physics::shape::Box* toBox() {
-					return nullptr;
+					return null;
 				};
 				
 				virtual const ege::physics::shape::Cylinder* toCylinder() const {
-					return nullptr;
+					return null;
 				};
 				virtual ege::physics::shape::Cylinder* toCylinder() {
-					return nullptr;
+					return null;
 				};
 				
 				virtual const ege::physics::shape::Capsule* toCapsule() const {
-					return nullptr;
+					return null;
 				};
 				virtual ege::physics::shape::Capsule* toCapsule() {
-					return nullptr;
+					return null;
 				};
 				
 				virtual const ege::physics::shape::Cone* toCone() const {
-					return nullptr;
+					return null;
 				};
 				virtual ege::physics::shape::Cone* toCone() {
-					return nullptr;
+					return null;
 				};
 				
 				virtual const ege::physics::shape::ConvexHull* toConvexHull() const {
-					return nullptr;
+					return null;
 				};
 				virtual ege::physics::shape::ConvexHull* toConvexHull() {
-					return nullptr;
+					return null;
 				};
 				
 				virtual const ege::physics::shape::Sphere* toSphere() const {
-					return nullptr;
+					return null;
 				};
 				virtual ege::physics::shape::Sphere* toSphere() {
-					return nullptr;
+					return null;
 				};
 				virtual const ege::physics::shape::Concave* toConcave() const {
-					return nullptr;
+					return null;
 				};
 				virtual ege::physics::shape::Concave* toConcave() {
-					return nullptr;
+					return null;
 				};
 		};
 	}

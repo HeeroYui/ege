@@ -34,12 +34,12 @@ void ege::particule::Engine::componentAdd(const ememory::SharedPtr<ege::Componen
 
 
 void ege::particule::Engine::add(const ememory::SharedPtr<ege::particule::Component>& _particule) {
-	if (_particule == nullptr) {
-		EGE_ERROR("Try to add particule nullptr");
+	if (_particule == null) {
+		EGE_ERROR("Try to add particule null");
 		return;
 	}
 	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
-		if (m_particuleList[iii] != nullptr) {
+		if (m_particuleList[iii] != null) {
 			continue;
 		}
 		m_particuleList[iii] = _particule;
@@ -50,11 +50,11 @@ void ege::particule::Engine::add(const ememory::SharedPtr<ege::particule::Compon
 }
 
 void ege::particule::Engine::addRemoved(const ememory::SharedPtr<ege::particule::Component>& _particule) {
-	if (_particule == nullptr) {
+	if (_particule == null) {
 		return;
 	}
 	for (size_t iii=0; iii<m_particuleRemoved.size(); ++iii) {
-		if (m_particuleRemoved[iii] != nullptr) {
+		if (m_particuleRemoved[iii] != null) {
 			continue;
 		}
 		m_particuleRemoved[iii] = _particule;
@@ -65,11 +65,11 @@ void ege::particule::Engine::addRemoved(const ememory::SharedPtr<ege::particule:
 }
 
 ememory::SharedPtr<ege::particule::Component> ege::particule::Engine::respown(const char* _particuleType) {
-	if (_particuleType == nullptr) {
-		return nullptr;
+	if (_particuleType == null) {
+		return null;
 	}
 	for (size_t iii=0; iii<m_particuleRemoved.size(); ++iii) {
-		if (m_particuleRemoved[iii] == nullptr) {
+		if (m_particuleRemoved[iii] == null) {
 			continue;
 		}
 		if (m_particuleRemoved[iii]->getParticuleType() == _particuleType) {
@@ -80,7 +80,7 @@ ememory::SharedPtr<ege::particule::Component> ege::particule::Engine::respown(co
 			return tmpParticule;
 		}
 	}
-	return nullptr;
+	return null;
 }
 
 void ege::particule::Engine::update(const echrono::Duration& _delta) {
@@ -90,31 +90,31 @@ void ege::particule::Engine::update(const echrono::Duration& _delta) {
 	}
 	EGE_DEBUG("Update the Particule engine ... " << deltaTime);
 	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
-		if (m_particuleList[iii] == nullptr) {
+		if (m_particuleList[iii] == null) {
 			continue;
 		}
 		m_particuleList[iii]->update(deltaTime);
 	}
 	// check removing elements
 	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
-		if (m_particuleList[iii] == nullptr) {
+		if (m_particuleList[iii] == null) {
 			continue;
 		}
 		if (m_particuleList[iii]->needRemove()) {
 			m_particuleList[iii]->onEnd();
-			if (m_particuleList[iii]->getParticuleType() == nullptr) {
+			if (m_particuleList[iii]->getParticuleType() == null) {
 				// Real remove particule ...
 				m_particuleList[iii].reset();
 			} else {
 				addRemoved(m_particuleList[iii]);
 			}
-			m_particuleList[iii] = nullptr;
+			m_particuleList[iii] = null;
 		}
 	}
 	/*
 	int32_t nbParticule = 0;
 	for (int32_t iii=0; iii<m_particuleList.size(); ++iii) {
-		if (m_particuleList[iii] == nullptr) {
+		if (m_particuleList[iii] == null) {
 			continue;
 		}
 		nbParticule++;
@@ -125,7 +125,7 @@ void ege::particule::Engine::update(const echrono::Duration& _delta) {
 
 void ege::particule::Engine::render(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) {
 	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
-		if (m_particuleList[iii] == nullptr) {
+		if (m_particuleList[iii] == null) {
 			continue;
 		}
 		m_particuleList[iii]->draw(*_camera);
@@ -135,7 +135,7 @@ void ege::particule::Engine::render(const echrono::Duration& _delta, const ememo
 void ege::particule::Engine::clear() {
 	// clear element not removed
 	for (size_t iii=0; iii<m_particuleList.size(); ++iii) {
-		if (m_particuleList[iii] == nullptr) {
+		if (m_particuleList[iii] == null) {
 			continue;
 		}
 		m_particuleList[iii].reset();
@@ -143,7 +143,7 @@ void ege::particule::Engine::clear() {
 	m_particuleList.clear();
 	// clear element that are auto-removed
 	for (size_t iii=0; iii<m_particuleRemoved.size(); ++iii) {
-		if (m_particuleRemoved[iii] == nullptr) {
+		if (m_particuleRemoved[iii] == null) {
 			continue;
 		}
 		m_particuleRemoved[iii].reset();

@@ -18,43 +18,43 @@ const etk::String& ege::physics::Engine::getType() const {
 }
 
 void ege::physics::Engine::beginContact(const ephysics::ContactPointInfo& _contact) {
-	ege::physics::Component* component1 = nullptr;
-	ege::physics::Component* component2 = nullptr;
+	ege::physics::Component* component1 = null;
+	ege::physics::Component* component2 = null;
 	// Called when a new contact point is found between two bodies that were separated before.
 	EGE_WARNING("collision detection [BEGIN] " << _contact.localPoint1 << " depth=" << _contact.penetrationDepth);
-	if (    _contact.shape1 != nullptr
-	     && _contact.shape1->getUserData() != nullptr) {
+	if (    _contact.shape1 != null
+	     && _contact.shape1->getUserData() != null) {
 		component1 = static_cast<ege::physics::Component*>(_contact.shape1->getUserData());
 	}
-	if (    _contact.shape2 != nullptr
-	     && _contact.shape2->getUserData() != nullptr) {
+	if (    _contact.shape2 != null
+	     && _contact.shape2->getUserData() != null) {
 		component2 = static_cast<ege::physics::Component*>(_contact.shape2->getUserData());
 	}
-	if (component1 != nullptr) {
+	if (component1 != null) {
 		component1->beginContact(component2, _contact.normal, _contact.localPoint1, _contact.localPoint2, _contact.penetrationDepth);
 	}
-	if (component2 != nullptr) {
+	if (component2 != null) {
 		component2->beginContact(component1, -_contact.normal, _contact.localPoint2, _contact.localPoint1, _contact.penetrationDepth);
 	}
 }
 
 void ege::physics::Engine::newContact(const ephysics::ContactPointInfo& _contact) {
-	ege::physics::Component* component1 = nullptr;
-	ege::physics::Component* component2 = nullptr;
+	ege::physics::Component* component1 = null;
+	ege::physics::Component* component2 = null;
 	//Called when a new contact point is found between two bodies.
 	EGE_WARNING("collision detection [ NEW ] " << _contact.localPoint1 << " depth=" << _contact.penetrationDepth);
-	if (    _contact.shape1 != nullptr
-	     && _contact.shape1->getUserData() != nullptr) {
+	if (    _contact.shape1 != null
+	     && _contact.shape1->getUserData() != null) {
 		component1 = static_cast<ege::physics::Component*>(_contact.shape1->getUserData());
 	}
-	if (    _contact.shape2 != nullptr
-	     && _contact.shape2->getUserData() != nullptr) {
+	if (    _contact.shape2 != null
+	     && _contact.shape2->getUserData() != null) {
 		component2 = static_cast<ege::physics::Component*>(_contact.shape2->getUserData());
 	}
-	if (component1 != nullptr) {
+	if (component1 != null) {
 		component1->newContact(component2, _contact.normal, _contact.localPoint1, _contact.localPoint2, _contact.penetrationDepth);
 	}
-	if (component2 != nullptr) {
+	if (component2 != null) {
 		component2->newContact(component1, -_contact.normal, _contact.localPoint2, _contact.localPoint1, _contact.penetrationDepth);
 	}
 }
@@ -76,7 +76,7 @@ void ege::physics::Engine::componentAdd(const ememory::SharedPtr<ege::Component>
 	for (auto it=m_component.begin();
 	     it != m_component.end();
 	     ++it) {
-		if (*it == nullptr) {
+		if (*it == null) {
 			*it = ref;
 			return;
 		}
@@ -88,14 +88,14 @@ ege::physics::Engine::Engine(ege::Environement* _env) :
   ege::Engine(_env),
   propertyDebugAABB(this, "debug-AABB", false, "display the global AABB box of every shape"),
   propertyDebugShape(this, "debug-shape", false, "display the physic shape"),
-  m_dynamicsWorld(nullptr),
+  m_dynamicsWorld(null),
   m_accumulator(0.0f) {
 	m_debugDrawProperty = ewol::resource::Colored3DObject::create();
 	// Start engine with no gravity
 	vec3 gravity(0.0f, 0.0f, 0.0f);
 	// Create the dynamics world
 	m_dynamicsWorld = ETK_NEW(ephysics::DynamicsWorld, gravity);
-	if (m_dynamicsWorld != nullptr) {
+	if (m_dynamicsWorld != null) {
 		// Set the number of iterations of the constraint solver
 		m_dynamicsWorld->setNbIterationsVelocitySolver(15);
 		m_dynamicsWorld->setEventListener(this);
@@ -103,15 +103,15 @@ ege::physics::Engine::Engine(ege::Environement* _env) :
 }
 
 ege::physics::Engine::~Engine() {
-	if (m_dynamicsWorld != nullptr) {
-		m_dynamicsWorld->setEventListener(nullptr);
+	if (m_dynamicsWorld != null) {
+		m_dynamicsWorld->setEventListener(null);
 		ETK_DELETE(ephysics::DynamicsWorld, m_dynamicsWorld);
-		m_dynamicsWorld = nullptr;
+		m_dynamicsWorld = null;
 	}
 }
 
 void ege::physics::Engine::setGravity(const vec3& _axePower) {
-	if (m_dynamicsWorld != nullptr) {
+	if (m_dynamicsWorld != null) {
 		vec3 gravity(_axePower);
 		m_dynamicsWorld->setGravity(gravity);
 	}
@@ -126,11 +126,11 @@ void ege::physics::Engine::update(const echrono::Duration& _delta) {
 	m_accumulator += deltaTime;
 	// While there is enough accumulated time to take one or several physics steps
 	while (m_accumulator >= timeStep) {
-		if (m_dynamicsWorld != nullptr) {
+		if (m_dynamicsWorld != null) {
 			// call every object to usdate their constant forces applyed
 			for (auto &it: m_component) {
-				// check nullptr  pointer
-				if (it == nullptr) {
+				// check null  pointer
+				if (it == null) {
 					// no pointer null are set in the output list ...
 					continue;
 				}
@@ -144,8 +144,8 @@ void ege::physics::Engine::update(const echrono::Duration& _delta) {
 		m_accumulator -= timeStep;
 	}
 	for (auto &it: m_component) {
-		// check nullptr  pointer
-		if (it == nullptr) {
+		// check null  pointer
+		if (it == null) {
 			// no pointer null are set in the output list ...
 			continue;
 		}
@@ -156,7 +156,7 @@ void ege::physics::Engine::update(const echrono::Duration& _delta) {
 void ege::physics::Engine::renderDebug(const echrono::Duration& _delta, const ememory::SharedPtr<ege::Camera>& _camera) {
 	if (propertyDebugShape.get() == true) {
 		for (auto &it : m_component) {
-			if (it == nullptr) {
+			if (it == null) {
 				continue;
 			}
 			it->drawShape(m_debugDrawProperty, _camera);
@@ -164,7 +164,7 @@ void ege::physics::Engine::renderDebug(const echrono::Duration& _delta, const em
 	}
 	if (propertyDebugAABB.get() == true) {
 		for (auto &it : m_component) {
-			if (it == nullptr) {
+			if (it == null) {
 				continue;
 			}
 			it->drawAABB(m_debugDrawProperty, _camera);
@@ -180,7 +180,7 @@ class MyCallbackClass : public ephysics::RaycastCallback {
 		ephysics::CollisionBody* m_body;
 		MyCallbackClass():
 		  m_haveImpact(false),
-		  m_body(nullptr) {
+		  m_body(null) {
 			
 		}
 	public:
@@ -224,15 +224,15 @@ etk::Pair<ememory::SharedPtr<ege::Component>, etk::Pair<vec3,vec3>> ege::physics
 	// Raycast test
 	m_dynamicsWorld->raycast(ray, &callbackObject);
 	if (callbackObject.m_haveImpact == true) {
-		if (    callbackObject.m_body == nullptr
-		     || callbackObject.m_body->getUserData() == nullptr) {
-			etk::Pair<ememory::SharedPtr<ege::Component>, etk::Pair<vec3,vec3>>(nullptr, etk::Pair<vec3,vec3>(callbackObject.m_position, callbackObject.m_normal));
+		if (    callbackObject.m_body == null
+		     || callbackObject.m_body->getUserData() == null) {
+			etk::Pair<ememory::SharedPtr<ege::Component>, etk::Pair<vec3,vec3>>(null, etk::Pair<vec3,vec3>(callbackObject.m_position, callbackObject.m_normal));
 		}
 		// TODO: je n'ai pas une entity, main un component ...
 		ege::physics::Component* elem = static_cast<ege::physics::Component*>(callbackObject.m_body->getUserData());
 		return etk::Pair<ememory::SharedPtr<ege::Component>, etk::Pair<vec3,vec3>>(elem->sharedFromThis(), etk::Pair<vec3,vec3>(callbackObject.m_position, callbackObject.m_normal));
 	}
 	EGE_VERBOSE("    No Hit");
-	return etk::Pair<ememory::SharedPtr<ege::Component>, etk::Pair<vec3,vec3>>(nullptr, etk::Pair<vec3,vec3>(vec3(0,0,0),vec3(0,0,0)));
+	return etk::Pair<ememory::SharedPtr<ege::Component>, etk::Pair<vec3,vec3>>(null, etk::Pair<vec3,vec3>(vec3(0,0,0),vec3(0,0,0)));
 	
 }

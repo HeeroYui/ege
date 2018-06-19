@@ -35,7 +35,7 @@ ege::Entity::~Entity() {
 }
 
 void ege::Entity::addComponent(const ememory::SharedPtr<ege::Component>& _ref) {
-	if (_ref == nullptr) {
+	if (_ref == null) {
 		EGE_ERROR("try to add an empty component");
 		return;
 	}
@@ -43,7 +43,7 @@ void ege::Entity::addComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 	int32_t findId = -1;
 	// check if not exist
 	for (size_t iii=0; iii<m_component.size(); ++iii) {
-		if (m_component[iii] == nullptr) {
+		if (m_component[iii] == null) {
 			continue;
 		}
 		if (m_component[iii]->getType() == _ref->getType()) {
@@ -56,7 +56,7 @@ void ege::Entity::addComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 	// try to add in an empty slot
 	if (findId == -1) {
 		for (size_t iii=0; iii<m_component.size(); ++iii) {
-			if (m_component[iii] != nullptr) {
+			if (m_component[iii] != null) {
 				continue;
 			}
 			findId = iii;
@@ -70,10 +70,10 @@ void ege::Entity::addComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 		m_component.pushBack(_ref);
 	}
 	for (size_t iii=0; iii<m_component.size(); ++iii) {
-		if (m_component[iii] == nullptr) {
+		if (m_component[iii] == null) {
 			continue;
 		}
-		if (componentRemoved != nullptr) {
+		if (componentRemoved != null) {
 			m_env->engineComponentRemove(componentRemoved);
 			m_component[iii]->removeFriendComponent(componentRemoved);
 		}
@@ -83,7 +83,7 @@ void ege::Entity::addComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 	// notify new component of all previously added component:
 	componentRemoved = _ref;
 	for (size_t iii=0; iii<m_component.size(); ++iii) {
-		if (m_component[iii] == nullptr) {
+		if (m_component[iii] == null) {
 			continue;
 		}
 		if (m_component[iii] == _ref) {
@@ -94,18 +94,18 @@ void ege::Entity::addComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 }
 
 void ege::Entity::rmComponent(const ememory::SharedPtr<ege::Component>& _ref) {
-	if (_ref == nullptr) {
+	if (_ref == null) {
 		EGE_ERROR("try to remove an empty component");
 		return;
 	}
 	int32_t findId = -1;
 	// check if not exist
 	for (size_t iii=0; iii<m_component.size(); ++iii) {
-		if (m_component[iii] == nullptr) {
+		if (m_component[iii] == null) {
 			continue;
 		}
 		if (m_component[iii] == _ref) {
-			m_component[iii] = nullptr;
+			m_component[iii] = null;
 			findId = iii;
 			break;
 		}
@@ -115,7 +115,7 @@ void ege::Entity::rmComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 		return;
 	}
 	for (size_t iii=0; iii<m_component.size(); ++iii) {
-		if (m_component[iii] == nullptr) {
+		if (m_component[iii] == null) {
 			continue;
 		}
 		m_env->engineComponentRemove(_ref);
@@ -128,12 +128,12 @@ void ege::Entity::rmComponent(const etk::String& _type) {
 	ememory::SharedPtr<ege::Component> componentRemoved;
 	// check if not exist
 	for (size_t iii=0; iii<m_component.size(); ++iii) {
-		if (m_component[iii] == nullptr) {
+		if (m_component[iii] == null) {
 			continue;
 		}
 		if (m_component[iii]->getType() == _type) {
 			componentRemoved = m_component[iii];
-			m_component[iii] = nullptr;
+			m_component[iii] = null;
 			findId = iii;
 			break;
 		}
@@ -143,7 +143,7 @@ void ege::Entity::rmComponent(const etk::String& _type) {
 		return;
 	}
 	for (size_t iii=0; iii<m_component.size(); ++iii) {
-		if (m_component[iii] == nullptr) {
+		if (m_component[iii] == null) {
 			continue;
 		}
 		m_env->engineComponentRemove(componentRemoved);
@@ -154,14 +154,14 @@ void ege::Entity::rmComponent(const etk::String& _type) {
 ememory::SharedPtr<ege::Component> ege::Entity::getComponent(const etk::String& _type) {
 	// check if not exist
 	for (size_t iii=0; iii<m_component.size(); ++iii) {
-		if (m_component[iii] == nullptr) {
+		if (m_component[iii] == null) {
 			continue;
 		}
 		if (m_component[iii]->getType() == _type) {
 			return m_component[iii];
 		}
 	}
-	return nullptr;
+	return null;
 }
 
 
@@ -219,7 +219,7 @@ const float lifeYPos = 1.7f;
 
 #if 0
 void ege::Entity::drawLife(ememory::SharedPtr<ewol::resource::Colored3DObject> _draw, ememory::SharedPtr<ege::Camera> _camera) {
-	if (_draw == nullptr) {
+	if (_draw == null) {
 		return;
 	}
 	float ratio = getLifeRatio();

@@ -26,10 +26,10 @@ const etk::String& ege::ElementPhysic::getType() const {
 
 ege::ElementPhysic::ElementPhysic(const ememory::SharedPtr<ege::Environement>& _env, bool _autoRigidBody) ://, float _mass) :
   ege::Element(_env),
-  m_body(nullptr),
-  //m_shape(nullptr),
+  m_body(null),
+  //m_shape(null),
   m_elementInPhysicsSystem(false),
-  m_IA(nullptr),
+  m_IA(null),
   m_detectCollisionEnable(false) {
 	if (_autoRigidBody == true) {
 		createRigidBody();
@@ -46,7 +46,7 @@ ege::ElementPhysic::~ElementPhysic() {
 	//removeShape();
 	// Destroy the rigid body
 	//m_dynamicsWorld->destroyRigidBody(m_body);
-	m_body = nullptr;
+	m_body = null;
 }
 
 
@@ -57,7 +57,7 @@ void ege::ElementPhysic::createRigidBody(float _mass, bool _static) {
 	rp3d::Transform transform(initPosition, initOrientation);
 	
 	// Create a rigid body in the world
-	m_body = nullptr;//m_dynamicsWorld->createRigidBody(transform);
+	m_body = null;//m_dynamicsWorld->createRigidBody(transform);
 	/*
 	if (_static = true) {
 		m_body->setType(STATIC);
@@ -72,16 +72,16 @@ void ege::ElementPhysic::createRigidBody(float _mass, bool _static) {
 
 bool ege::ElementPhysic::setMesh(ememory::SharedPtr<ege::resource::Mesh> _mesh) {
 	EGE_WARNING("Set Mesh");
-	if (m_mesh != nullptr) {
+	if (m_mesh != null) {
 		//removeShape();
 	}
 	ege::Element::setMesh(_mesh);
 	// auto load the shape:
-	if (m_mesh == nullptr) {
+	if (m_mesh == null) {
 		return true;
 	}
 	/*
-	if (m_mesh->getShape() != nullptr) {
+	if (m_mesh->getShape() != null) {
 		EGE_WARNING("create shape whith mesh internal shape ...");
 		m_shape = static_cast<btCollisionShape*>(m_mesh->getShape());
 		return true;
@@ -102,7 +102,7 @@ bool ege::ElementPhysic::setShape(btCollisionShape* _shape) {
 	EGE_DEBUG("Set Shape");
 	removeShape();
 	m_shape = _shape;
-	if (_shape == nullptr) {
+	if (_shape == null) {
 		EGE_WARNING("Remove shape ...");
 	} else {
 		EGE_INFO("set shape ...");
@@ -112,20 +112,20 @@ bool ege::ElementPhysic::setShape(btCollisionShape* _shape) {
 
 void ege::ElementPhysic::removeShape() {
 	// no shape
-	if (m_shape == nullptr) {
+	if (m_shape == null) {
 		return;
 	}
 	// need to chek if the shape is the same as the mesh shape ...
-	if (m_mesh == nullptr) {
+	if (m_mesh == null) {
 		// no mesh  == > standalone shape
 		ETK_DELETE(btCollisionShape, m_shape);
-		m_shape=nullptr;
+		m_shape=null;
 		EGE_WARNING("Remove shape .2.");
 		return;
 	}
 	if (m_shape != m_mesh->getShape()) {
 		ETK_DELETE(btCollisionShape, m_shape);
-		m_shape=nullptr;
+		m_shape=null;
 		EGE_WARNING("Remove shape .3.");
 		return;
 	}
@@ -133,14 +133,14 @@ void ege::ElementPhysic::removeShape() {
 }
 
 void ege::ElementPhysic::FunctionFreeShape(void* _pointer) {
-	if (_pointer == nullptr) {
+	if (_pointer == null) {
 		return;
 	}
 	ETK_DELETE(btCollisionShape, _pointer);
 }
 */
 void ege::ElementPhysic::setPosition(const vec3& _pos) {
-	if (m_body != nullptr) {
+	if (m_body != null) {
 		/*
 		btTransform transformation = m_body->getCenterOfMassTransform();
 		transformation.setOrigin(_pos);
@@ -151,7 +151,7 @@ void ege::ElementPhysic::setPosition(const vec3& _pos) {
 
 const vec3& ege::ElementPhysic::getPosition() {
 	/*
-	if (m_body != nullptr) {
+	if (m_body != null) {
 		return m_body->getCenterOfMassPosition();
 	}
 	*/
@@ -161,7 +161,7 @@ const vec3& ege::ElementPhysic::getPosition() {
 const vec3& ege::ElementPhysic::getSpeed() {
 	static vec3 emptySpeed(0,0,0);
 	/*
-	if (m_body != nullptr) {
+	if (m_body != null) {
 		return m_body->getLinearVelocity();
 	}
 	*/
@@ -170,7 +170,7 @@ const vec3& ege::ElementPhysic::getSpeed() {
 
 const float ege::ElementPhysic::getInvMass() {
 	/*
-	if (m_body != nullptr) {
+	if (m_body != null) {
 		return m_body->getInvMass();
 	}
 	*/
@@ -182,8 +182,8 @@ void ege::ElementPhysic::drawShape(/*const btCollisionShape* _shape,*/
                                    mat4 _transformationMatrix,
                                    etk::Vector<vec3> _tmpVertices) {
 	#if 0
-	if(    _draw == nullptr
-	    || _shape == nullptr) {
+	if(    _draw == null
+	    || _shape == null) {
 		return;
 	}
 	etk::Color<float> tmpColor(1.0, 0.0, 0.0, 0.3);
@@ -227,7 +227,7 @@ void ege::ElementPhysic::drawShape(/*const btCollisionShape* _shape,*/
 			if (_shape->isConvex()) {
 					EGE_DEBUG("                shape->isConvex()");
 					const btConvexPolyhedron* poly = _shape->isPolyhedral() ? ((btPolyhedralConvexShape*) _shape)->getConvexPolyhedron() : 0;
-					if (nullptr!=poly) {
+					if (null!=poly) {
 						EGE_DEBUG("                      have poly");
 						/*
 						glBegin(GL_TRIANGLES);
@@ -333,8 +333,8 @@ void ege::ElementPhysic::draw(int32_t _pass) {
 	/*
 	//EGE_INFO("draw : " << _pass );
 	if (_pass == 0) {
-		if(    m_body != nullptr
-		    && m_mesh != nullptr) {
+		if(    m_body != null
+		    && m_mesh != null) {
 			//EGE_INFO("element pos = " << getPosition());
 			float mmm[16];
 			// Get the interpolated transform of the rigid body 
@@ -356,11 +356,11 @@ void ege::ElementPhysic::dynamicEnable() {
 	if (m_elementInPhysicsSystem == true) {
 		return;
 	}
-	if(m_body != nullptr) {
+	if(m_body != null) {
 		EGE_VERBOSE("dynamicEnable : RigidBody");
 		//m_env->getPhysicEngine().getDynamicWorld()->addRigidBody(m_body);
 	}
-	if(m_IA != nullptr) {
+	if(m_IA != null) {
 		EGE_VERBOSE("dynamicEnable : IA");
 		//m_env->getPhysicEngine().getDynamicWorld()->addAction(m_IA);
 	}
@@ -371,11 +371,11 @@ void ege::ElementPhysic::dynamicDisable() {
 	if (m_elementInPhysicsSystem == false) {
 		return;
 	}
-	if(m_IA != nullptr) {
+	if(m_IA != null) {
 		EGE_VERBOSE("dynamicDisable : IA");
 		//m_env->getPhysicEngine().getDynamicWorld()->removeAction(m_IA);
 	}
-	if(m_body != nullptr) {
+	if(m_body != null) {
 		EGE_VERBOSE("dynamicDisable : RigidBody");
 		// Unlink element from the engine
 		//m_env->getPhysicEngine().getDynamicWorld()->removeRigidBody(m_body);
@@ -385,12 +385,12 @@ void ege::ElementPhysic::dynamicDisable() {
 }
 
 void ege::ElementPhysic::iaEnable() {
-	if (m_IA != nullptr) {
+	if (m_IA != null) {
 		// IA already started ...
 		return;
 	}
 	m_IA = ETK_NEW(localIA, *this);
-	if (m_IA == nullptr) {
+	if (m_IA == null) {
 		EGE_ERROR("Can not start the IA == > allocation error");
 		return;
 	}
@@ -400,7 +400,7 @@ void ege::ElementPhysic::iaEnable() {
 }
 
 void ege::ElementPhysic::iaDisable() {
-	if (m_IA == nullptr) {
+	if (m_IA == null) {
 		// IA already stopped ...
 		return;
 	}
@@ -409,16 +409,16 @@ void ege::ElementPhysic::iaDisable() {
 	}
 	// remove IA:
 	ETK_DELETE(localIA, m_IA);
-	m_IA = nullptr;
+	m_IA = null;
 }
 
 void ege::ElementPhysic::setMass(float _value) {
-	if (m_body == nullptr) {
+	if (m_body == null) {
 		return;
 	}
 	/*
 	vec3 localInertia(0,0,0);
-	if (_value != 0.0f && getShape()!=nullptr) {
+	if (_value != 0.0f && getShape()!=null) {
 		//getShape()->calculateLocalInertia(_value, localInertia);
 		EWOL_ERROR("Update inertia calculated : " << localInertia);
 	}
@@ -427,7 +427,7 @@ void ege::ElementPhysic::setMass(float _value) {
 }
 
 void ege::ElementPhysic::setLinearVelocity(const vec3& _value) {
-	if (m_body == nullptr) {
+	if (m_body == null) {
 		EGE_WARNING("no body");
 		return;
 	}
@@ -438,7 +438,7 @@ void ege::ElementPhysic::setLinearVelocity(const vec3& _value) {
 }
 
 void ege::ElementPhysic::setTorqueImpulse(const vec3& _value) {
-	if (m_body == nullptr) {
+	if (m_body == null) {
 		EGE_WARNING("no body");
 		return;
 	}
@@ -449,7 +449,7 @@ void ege::ElementPhysic::setTorqueImpulse(const vec3& _value) {
 }
 
 void ege::ElementPhysic::setAngularVelocity(const vec3& _value) {
-	if (m_body == nullptr) {
+	if (m_body == null) {
 		EGE_WARNING("no body");
 		return;
 	}
@@ -457,7 +457,7 @@ void ege::ElementPhysic::setAngularVelocity(const vec3& _value) {
 }
 /*
 btQuaternion ege::ElementPhysic::getOrientation() const {
-	if (m_body == nullptr) {
+	if (m_body == null) {
 		EGE_WARNING("no body");
 		return btQuaternion(0,0,0,0);
 	}
@@ -467,7 +467,7 @@ btQuaternion ege::ElementPhysic::getOrientation() const {
 */
 
 void ege::ElementPhysic::setCollisionDetectionStatus(bool _status) {
-	if (m_body == nullptr) {
+	if (m_body == null) {
 		EGE_WARNING("no body");
 		return;
 	}
