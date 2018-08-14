@@ -45,6 +45,7 @@ def configure(target, my_module):
 	    'ege/particule/Engine.cpp',
 	    'ege/particule/Simple.cpp',
 	    'ege/ia/Component.cpp',
+	    'ege/ia/ComponentLua.cpp',
 	    'ege/ia/Engine.cpp',
 	    'ege/render/Component.cpp',
 	    'ege/render/Engine.cpp',
@@ -77,7 +78,13 @@ def configure(target, my_module):
 	    ])
 	my_module.copy_path('data/ParticuleMesh.*')
 	my_module.copy_path('data/material3D.*')
-	my_module.add_depend(['ewol', 'ephysics', 'eproperty', 'echrono'])
+	my_module.add_depend([
+	    'ewol',
+	    'ephysics',
+	    'eproperty',
+	    'echrono',
+	    'luaWrapper',
+	    ])
 	my_module.add_flag('c++', [
 	    '-Wno-write-strings',
 	    '-Wmissing-field-initializers',
@@ -101,6 +108,7 @@ def configure(target, my_module):
 	    'ege/particule/Engine.hpp',
 	    'ege/particule/Simple.hpp',
 	    'ege/ia/Component.hpp',
+	    'ege/ia/ComponentLua.hpp',
 	    'ege/ia/Engine.hpp',
 	    'ege/render/Component.hpp',
 	    'ege/render/Engine.hpp',

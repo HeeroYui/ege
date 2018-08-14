@@ -64,7 +64,7 @@ void ege::resource::ParticuleMesh::draw(mat4& _positionMatrix,
 	int32_t nbElementDrawTheoric = 0;
 	int32_t nbElementDraw = 0;
 	#endif
-	for (int32_t kkk=0; kkk<m_listFaces.size(); kkk++) {
+	for (size_t kkk=0; kkk<m_listFaces.size(); kkk++) {
 		if (m_materials.exist(m_listFaces.getKey(kkk)) == false) {
 			EGE_WARNING("missing materials : '" << m_listFaces.getKey(kkk) << "'");
 			continue;

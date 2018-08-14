@@ -10,10 +10,10 @@ def get_sub_type():
 	return "SAMPLE"
 
 def get_name():
-	return "ege-sample-LowPoly"
+	return "ege-sample-ia"
 
 def get_desc():
-	return "ege sample : Low poly test"
+	return "ege sample : Artificial intelligence"
 
 def get_licence():
 	return "MPL-2"
@@ -40,6 +40,7 @@ def configure(target, my_module):
 	my_module.add_depend('ege')
 	my_module.add_path(".")
 	my_module.copy_path("data/*.emf")
+	my_module.copy_path("data/*.lua")
 	my_module.add_flag('c++', [
 	    "-DPROJECT_NAME=\"\\\"" + my_module.get_name() + "\\\"\"",
 	    "-DAPPL_VERSION=\"\\\"" + tools.version_to_string(get_version()) + "\\\"\"",

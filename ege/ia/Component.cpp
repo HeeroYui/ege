@@ -10,3 +10,6 @@ const etk::String& ege::ia::Component::getType() const {
 	return tmp;
 }
 
+void ege::ia::Component::update(float _delta) {
+	
+}

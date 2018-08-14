@@ -39,6 +39,8 @@ void ege::Entity::addComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 		EGE_ERROR("try to add an empty component");
 		return;
 	}
+	EGE_PRINT("Entity: Add New component ... [START]");
+	// Componenet to remove if it have the same type of the previous Component:
 	ememory::SharedPtr<ege::Component> componentRemoved;
 	int32_t findId = -1;
 	// check if not exist
@@ -74,11 +76,14 @@ void ege::Entity::addComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 			continue;
 		}
 		if (componentRemoved != null) {
+			EGE_PRINT("Entity:     ==> remove previous component");
 			m_env->engineComponentRemove(componentRemoved);
 			m_component[iii]->removeFriendComponent(componentRemoved);
 		}
+		EGE_PRINT("Entity:     ==> add New component");
 		m_env->engineComponentAdd(_ref);
 		m_component[iii]->addFriendComponent(_ref);
+		break;
 	}
 	// notify new component of all previously added component:
 	componentRemoved = _ref;
@@ -91,6 +96,7 @@ void ege::Entity::addComponent(const ememory::SharedPtr<ege::Component>& _ref) {
 		}
 		componentRemoved->addFriendComponent(m_component[iii]);
 	}
+	EGE_PRINT("Entity: Add New component ... [END]");
 }
 
 void ege::Entity::rmComponent(const ememory::SharedPtr<ege::Component>& _ref) {

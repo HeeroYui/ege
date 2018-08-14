@@ -10,6 +10,7 @@
 #include <etk/math/Matrix4x4.hpp>
 #include <etk/Vector.hpp>
 #include <ege/debug.hpp>
+#include <ege/ia/Component.hpp>
 
 
 namespace ege {
@@ -20,11 +21,14 @@ namespace ege {
 				~Engine() {}
 				
 				// update cycle
-				void update(float _delta) {}
+				void update(const echrono::Duration& _delta) override;
 			public:
 				const etk::String& getType() const override;
 				void componentRemove(const ememory::SharedPtr<ege::Component>& _ref) override;
 				void componentAdd(const ememory::SharedPtr<ege::Component>& _ref) override;
+			protected:
+				etk::Vector<ememory::SharedPtr<ege::ia::Component>> m_component;
+				float m_accumulator; // limit call of IA process
 		};
 	}
 }

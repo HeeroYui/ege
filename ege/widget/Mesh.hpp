@@ -28,7 +28,7 @@ namespace ege {
 				float m_cameraDistance;
 			protected:
 				Mesh();
-				void init(); // automatic considering in the appl Data older
+				void init() override; // automatic considering in the appl Data older
 			public:
 				virtual ~Mesh();
 			public:

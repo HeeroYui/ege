@@ -12,6 +12,7 @@ namespace ege {
 };
 #define EGE_BASE(info,data)  ELOG_BASE(ege::getLogId(),info,data)
 
+#define EGE_PRINT(data)         EGE_BASE(-1, data)
 #define EGE_CRITICAL(data)      EGE_BASE(1, data)
 #define EGE_ERROR(data)         EGE_BASE(2, data)
 #define EGE_WARNING(data)       EGE_BASE(3, data)

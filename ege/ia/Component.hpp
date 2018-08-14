@@ -16,6 +16,8 @@ namespace ege {
 				
 			public:
 				virtual const etk::String& getType() const override;
+				// call of this function every time the call will be done
+				virtual void update(float _delta);
 		};
 	}
 }

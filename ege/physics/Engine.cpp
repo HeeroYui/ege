@@ -73,6 +73,17 @@ void ege::physics::Engine::componentRemove(const ememory::SharedPtr<ege::Compone
 
 void ege::physics::Engine::componentAdd(const ememory::SharedPtr<ege::Component>& _ref) {
 	ememory::SharedPtr<ege::physics::Component> ref = ememory::dynamicPointerCast<ege::physics::Component>(_ref);
+	#if DEBUG
+		for (auto it=m_component.begin();
+		     it != m_component.end();
+		     ++it) {
+			if (*it != null) {
+				if (*it == ref) {
+					EGE_ERROR("Try Add multiple time the same Component in the Physic Engine " << uint64_t(ref.get()) );
+				}
+			}
+		}
+	#endif
 	for (auto it=m_component.begin();
 	     it != m_component.end();
 	     ++it) {
@@ -118,7 +129,7 @@ void ege::physics::Engine::setGravity(const vec3& _axePower) {
 }
 
 // Constant physics time step
-const float timeStep = 1.0 / 60.0;
+static const float timeStep = 1.0 / 60.0;
 
 void ege::physics::Engine::update(const echrono::Duration& _delta) {
 	float deltaTime = _delta.toSeconds();
