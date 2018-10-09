@@ -31,7 +31,7 @@ appl::Windows::Windows() {
 
 
 static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
-	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("viewBoxStar", "DATA:texturedNoMaterial.prog");
+	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("viewBoxStar", "DATA:///texturedNoMaterial.prog");
 	if (out != null) {
 		ememory::SharedPtr<ege::Material> material = ememory::makeShared<ege::Material>();
 		// set the entity material properties :
@@ -118,7 +118,7 @@ void appl::Windows::init() {
 		// add it ..
 		m_env->addEntity(entity);
 	}
-	myMesh = ege::resource::Mesh::create("DATA:tree_1.emf");
+	myMesh = ege::resource::Mesh::create("DATA:///tree_1.emf");
 	if (myMesh != null) {
 		ememory::SharedPtr<ege::Entity> entity = ememory::makeShared<ege::Entity>(m_env);
 		// add all component:

@@ -31,7 +31,7 @@ appl::Windows::Windows() {
 }
 
 static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
-	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("---", "DATA:texturedNoMaterial.prog");
+	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("---", "DATA:///texturedNoMaterial.prog");
 	if (out != null) {
 		ememory::SharedPtr<ege::Material> material = ememory::makeShared<ege::Material>();
 		// set the entity material properties :
@@ -73,7 +73,7 @@ static ememory::SharedPtr<ege::resource::Mesh> createMars() {
 		material->setDiffuseFactor(vec4(0.512f,0.512f,0.512f,1.0f));
 		material->setSpecularFactor(vec4(0.5f,0.5f,0.5f,1.0f));
 		material->setShininess(96.078431f);
-		material->setTexture0("DATA:texture_mars.png");
+		material->setTexture0("DATA:///texture_mars.png");
 		out->addMaterial("basics", material);
 		out->createIcoSphere("basics", 16, 3);
 		out->generateVBO();

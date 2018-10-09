@@ -8,7 +8,7 @@
 #include <ege/resource/Mesh.hpp>
 
 ememory::SharedPtr<ege::resource::Mesh> ege::resource::Mesh::createGrid(int32_t _lineCount, const vec3& _position, float _size, const etk::String& _materialName) {
-	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("---", "DATA:color3.prog");
+	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("---", "DATA:///color3.prog");
 	if (out != null) {
 		ememory::SharedPtr<ege::Material> material = ememory::makeShared<ege::Material>();
 		// set the element material properties :

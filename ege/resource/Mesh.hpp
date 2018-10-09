@@ -119,8 +119,8 @@ namespace ege {
 			protected:
 				Mesh();
 				void init(const etk::String& _fileName="---",
-				          //const etk::String& _shaderName="DATA:textured3D2.prog"
-				          const etk::String& _shaderName="DATA:material3D.prog"
+				          //const etk::String& _shaderName="DATA:///textured3D2.prog"
+				          const etk::String& _shaderName="DATA:///material3D.prog"
 				          );
 			public:
 				virtual ~Mesh();

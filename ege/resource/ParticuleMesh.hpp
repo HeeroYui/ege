@@ -14,7 +14,7 @@ namespace ege {
 				int32_t m_GLMainColor;
 			protected:
 				ParticuleMesh();
-				void init(const etk::String& _fileName, const etk::String& _shaderName="DATA:ParticuleMesh.prog");
+				void init(const etk::String& _fileName, const etk::String& _shaderName="DATA:///ParticuleMesh.prog");
 			public:
 				DECLARE_RESOURCE_NAMED_FACTORY(ParticuleMesh);
 				virtual ~ParticuleMesh();

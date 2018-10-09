@@ -33,7 +33,7 @@ appl::Windows::Windows() {
 
 
 static ememory::SharedPtr<ege::resource::Mesh> createViewBoxStar() {
-	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("viewBoxStar", "DATA:texturedNoMaterial.prog");
+	ememory::SharedPtr<ege::resource::Mesh> out = ege::resource::Mesh::create("viewBoxStar", "DATA:///texturedNoMaterial.prog");
 	if (out == null) {
 		return out;
 	}
