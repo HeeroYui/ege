@@ -118,13 +118,13 @@ namespace ege {
 				ememory::SharedPtr<gale::resource::VirtualBufferObject> m_verticesVBO;
 			protected:
 				Mesh();
-				void init(const etk::String& _fileName="---",
+				void init(const etk::Uri& _fileName="---",
 				          //const etk::String& _shaderName="DATA:///textured3D2.prog"
-				          const etk::String& _shaderName="DATA:///material3D.prog"
+				          const etk::Uri& _shaderName="DATA:///material3D.prog"
 				          );
 			public:
 				virtual ~Mesh();
-				DECLARE_RESOURCE_NAMED_FACTORY(Mesh);
+				DECLARE_RESOURCE_URI_FACTORY(Mesh);
 			public:
 				virtual void draw(mat4& _positionMatrix, bool _enableDepthTest=true, bool _enableDepthUpdate=true);
 				virtual void draw(mat4& _positionMatrix,
@@ -144,8 +144,8 @@ namespace ege {
 				void createViewBox(const etk::String& _materialName,float _size=1.0);
 				void createIcoSphere(const etk::String& _materialName,float _size=1.0, int32_t _subdivision=3);
 			private:
-				bool loadOBJ(const etk::String& _fileName);
-				bool loadEMF(const etk::String& _fileName);
+				bool loadOBJ(const etk::Uri& _fileName);
+				bool loadEMF(const etk::Uri& _fileName);
 			public:
 				void addMaterial(const etk::String& _name, ememory::SharedPtr<ege::Material> _data);
 			public:

@@ -8,7 +8,7 @@
 #include <ege/resource/Mesh.hpp>
 
 
-bool ege::resource::Mesh::loadOBJ(const etk::String& _fileName) {
+bool ege::resource::Mesh::loadOBJ(const etk::Uri& _fileName) {
 	m_normalMode = ege::resource::Mesh::normalMode::none;
 #if 0
 	etk::FSNode fileName(_fileName);

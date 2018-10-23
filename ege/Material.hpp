@@ -49,7 +49,7 @@ namespace ege {
 			void setRenderMode(enum gale::openGL::renderMode _val);
 			enum gale::openGL::renderMode getRenderModeOpenGl();
 			enum gale::openGL::renderMode getRenderMode();
-			void setTexture0(const etk::String& _filename);
+			void setTexture0(const etk::Uri& _uri);
 			void setTexture0Magic(const ivec2& _size);
 			void setImageSize(const ivec2& _newSize);
 			// get the reference on this image to draw nomething on it ...

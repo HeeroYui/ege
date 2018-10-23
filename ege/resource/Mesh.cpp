@@ -8,7 +8,7 @@
 #include <ege/resource/Mesh.hpp>
 #include <gale/resource/Manager.hpp>
 #include <gale/renderer/openGL/openGL-include.hpp>
-#include <etk/os/FSNode.hpp>
+#include <etk/uri/uri.hpp>
 #include <ege/resource/tools/viewBox.hpp>
 #include <ege/resource/tools/isoSphere.hpp>
 #include <ege/resource/tools/icoSphere.hpp>
@@ -31,8 +31,8 @@ ege::resource::Mesh::Mesh() :
 	addResourceType("ege::resource::Mesh");
 }
 
-void ege::resource::Mesh::init(const etk::String& _fileName, const etk::String& _shaderName) {
-	gale::Resource::init(_fileName);
+void ege::resource::Mesh::init(const etk::Uri& _fileName, const etk::Uri& _shaderName) {
+	gale::Resource::init(_fileName.getString());
 	EGE_VERBOSE("Load a new mesh : '" << _fileName << "'");
 	// get the shader resource :
 	m_GLPosition = 0;
@@ -63,18 +63,18 @@ void ege::resource::Mesh::init(const etk::String& _fileName, const etk::String& 
 		return;
 	}
 	// TO facilitate some debugs we add a name of the VBO:
-	m_verticesVBO->setName("[VBO] of " + _fileName);
+	m_verticesVBO->setName("[VBO] of " + _fileName.getString());
 	// load the curent file :
-	etk::String tmpName = etk::toLower(_fileName);
+	etk::String extention = etk::toLower(_fileName.getPath().getExtention());
 	// select the corect loader :
-	if (etk::end_with(tmpName, ".obj") == true) {
+	if (extention == "obj") {
 		if (loadOBJ(_fileName) == false) {
-			EGE_ERROR("Error To load OBJ file " << tmpName );
+			EGE_ERROR("Error To load OBJ file " << _fileName );
 			return;
 		}
-	} else if (etk::end_with(tmpName, ".emf") ) {
+	} else if (extention == "emf") {
 		if (loadEMF(_fileName) == false) {
-			EGE_ERROR("Error To load EMF file " << tmpName );
+			EGE_ERROR("Error To load EMF file " << _fileName );
 			return;
 		}
 		//EGE_CRITICAL("Load a new mesh : '" << _fileName << "' (end)");
@@ -407,6 +407,10 @@ void ege::resource::Mesh::generateVBO() {
 		// clean faces indexes :
 		m_listFaces.getValue(kkk).m_index.clear();
 		int32_t nbIndicInFace = 3;
+		if (m_materials.exist(m_listFaces.getKey(kkk)) == false) {
+			EGE_WARNING("missing materials : '" << m_listFaces.getKey(kkk) << "' not in " << m_materials.getKeys() );
+			continue;
+		}
 		if (m_materials[m_listFaces.getKey(kkk)] == null) {
 			EGE_ERROR("Can not get material : " << m_listFaces.getKey(kkk) << " pointer value: " << size_t(m_materials[m_listFaces.getKey(kkk)].get()));
 			continue;
@@ -532,7 +536,8 @@ void ege::resource::Mesh::addMaterial(const etk::String& _name, ememory::SharedP
 		EGE_ERROR(" can not add material with no name");
 		return;
 	}
-	// really add the material :
+	// really add the material:
+	EGE_WARNING("Add material: " << _name);
 	m_materials.add(_name, _data);
 }
 

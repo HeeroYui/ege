@@ -83,14 +83,14 @@ void ege::Material::setShininess(float _val) {
 	m_shininess = _val;
 }
 
-void ege::Material::setTexture0(const etk::String& _filename) {
+void ege::Material::setTexture0(const etk::Uri& _uri) {
 	ivec2 tmpSize(256, 256);
-	if (_filename != "") {
+	if (_uri.isEmpty() == false) {
 		// prevent overloard error :
 		ememory::SharedPtr<ewol::resource::Texture> tmpCopy = m_texture0;
-		m_texture0 = ewol::resource::TextureFile::create(_filename, tmpSize);
+		m_texture0 = ewol::resource::TextureFile::create(_uri, tmpSize);
 		if (m_texture0 == null) {
-			EGE_ERROR("Can not load specific texture : " << _filename);
+			EGE_ERROR("Can not load specific texture : " << _uri);
 			// retreave previous texture:
 			m_texture0 = tmpCopy;
 			if (m_texture0 != null) {
