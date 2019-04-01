@@ -119,8 +119,7 @@ namespace ege {
 			protected:
 				Mesh();
 				void init(const etk::Uri& _fileName="---",
-				          //const etk::String& _shaderName="DATA:///textured3D2.prog"
-				          const etk::Uri& _shaderName="DATA:///material3D.prog"
+				          const etk::Uri& _shaderName=etk::Uri() //==> Shader is automatically selected (depending on the presence or  ot of texture...
 				          );
 			public:
 				virtual ~Mesh();

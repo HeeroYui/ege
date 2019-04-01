@@ -34,6 +34,7 @@ ege::resource::Mesh::Mesh() :
 void ege::resource::Mesh::init(const etk::Uri& _fileName, const etk::Uri& _shaderName) {
 	gale::Resource::init(_fileName.getString());
 	EGE_VERBOSE("Load a new mesh : '" << _fileName << "'");
+	// ------------------------------------------------------------------------------------------------
 	// get the shader resource :
 	m_GLPosition = 0;
 	
@@ -42,20 +43,7 @@ void ege::resource::Mesh::init(const etk::Uri& _fileName, const etk::Uri& _shade
 	m_light.setAmbientColor(vec4(1.0f,1.0f,1.0f,1.0f)); // Global anbiant color of the scene
 	m_light.setDiffuseColor(vec4(1.0f,1.0f,1.0f,1.0f)); // Color of the object
 	m_light.setSpecularColor(vec4(0.0f,0.0f,0.0f,1.0f)); // Light color reflection
-	
-	EGE_VERBOSE(m_name << "  " << m_light << " shader=" << _shaderName);
-	m_GLprogram = gale::resource::Program::create(_shaderName);
-	if (m_GLprogram != null) {
-		m_GLPosition = m_GLprogram->getAttribute("EW_coord3d");
-		m_GLtexture = m_GLprogram->getAttribute("EW_texture2d");
-		m_GLNormal = m_GLprogram->getAttribute("EW_normal");
-		m_GLColor = m_GLprogram->getAttribute("EW_color");
-		m_GLMatrix = m_GLprogram->getUniform("EW_MatrixTransformation");
-		m_GLMatrixPosition = m_GLprogram->getUniform("EW_MatrixPosition");
-		// Link material and Lights
-		m_GLMaterial.link(m_GLprogram, "EW_material");
-		m_light.link(m_GLprogram, "EW_directionalLight");
-	}
+	// ------------------------------------------------------------------------------------------------
 	// this is the properties of the buffer requested : "r"/"w" + "-" + buffer type "f"=flaot "i"=integer
 	m_verticesVBO = gale::resource::VirtualBufferObject::create(5);
 	if (m_verticesVBO == null) {
@@ -64,6 +52,7 @@ void ege::resource::Mesh::init(const etk::Uri& _fileName, const etk::Uri& _shade
 	}
 	// TO facilitate some debugs we add a name of the VBO:
 	m_verticesVBO->setName("[VBO] of " + _fileName.getString());
+	// ------------------------------------------------------------------------------------------------
 	// load the curent file :
 	etk::String extention = etk::toLower(_fileName.getPath().getExtention());
 	// select the corect loader :
@@ -81,6 +70,32 @@ void ege::resource::Mesh::init(const etk::Uri& _fileName, const etk::Uri& _shade
 	} else {
 		// nothing to do  == > reqiest an enmpty mesh ==> user manage it ...
 	}
+	// ------------------------------------------------------------------------------------------------
+	etk::Uri shaderName = _shaderName;
+	if (shaderName.isEmpty() == true) {
+		shaderName = "DATA:///material3D.prog";
+		for (auto &it: m_materials) {
+			if (it.second->haveTexture() == true) {
+				shaderName = "DATA:///material3DTextured.prog";
+				break;
+			}
+		}
+	}
+	// ------------------------------------------------------------------------------------------------
+	EGE_VERBOSE(m_name << "  " << m_light << " shader=" << shaderName);
+	m_GLprogram = gale::resource::Program::create(shaderName);
+	if (m_GLprogram != null) {
+		m_GLPosition = m_GLprogram->getAttribute("EW_coord3d");
+		m_GLtexture = m_GLprogram->getAttribute("EW_texture2d");
+		m_GLNormal = m_GLprogram->getAttribute("EW_normal");
+		m_GLColor = m_GLprogram->getAttribute("EW_color");
+		m_GLMatrix = m_GLprogram->getUniform("EW_MatrixTransformation");
+		m_GLMatrixPosition = m_GLprogram->getUniform("EW_MatrixPosition");
+		// Link material and Lights
+		m_GLMaterial.link(m_GLprogram, "EW_material");
+		m_light.link(m_GLprogram, "EW_directionalLight");
+	}
+	// ------------------------------------------------------------------------------------------------
 }
 
 
