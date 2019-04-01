@@ -66,6 +66,10 @@ void ege::Material::draw(ememory::SharedPtr<gale::resource::Program> _prog, cons
 	EGE_VERBOSE("draw Material: ( end )");
 }
 
+bool ege::Material::haveTexture() const {
+	return m_texture0 != null;
+}
+
 void ege::Material::setAmbientFactor(const vec4& _val) {
 	m_ambientFactor = _val;
 }

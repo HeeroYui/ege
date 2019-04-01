@@ -56,6 +56,7 @@ namespace ege {
 			egami::Image* get();
 			// flush the data to send it at the openGl system
 			void flush();
+			bool haveTexture() const;
 	};
 }
 
